@@ -1,0 +1,12 @@
+color: yes
+original_year: yes
+per_disc_numbering: no
+write: yes
+import:
+    move: yes
+    resume: yes
+paths:
+    default: ${artist}/${original_year} - $album%aunique{}/${artist}_${original_year}_${artist}_${track}_${title}_${channels}.${bitdepth}.${samplerate}
+    singleton: ${artist}/${original_year} - $album%aunique{} [single]/${artist}_${original_year}_${artist}_${track}_${title}_${channels}.${bitdepth}.${samplerate}
+    comp: COMPILATIONS/$album%aunique{}/$album_$track_$title_${channels}.${bitdepth}.${samplerate}
+    soundtrack: SOUNDTRACKS/$album/$album_$track_$title_${channels}.${bitdepth}.${samplerate}
