@@ -1,12 +1,8 @@
-#!/usr/bin/env xdg-open
 [Desktop Entry]
-Encoding=UTF-8
-Type=Application
 Name=Music Player Daemon
 Comment=Server for playing audio files
 Exec=mpd
 Icon=mpd
-StartupNotify=false
 Terminal=false
-Hidden=false
-X-GNOME-Autostart-enabled=false
+Type=Application
+Categories=Audio;Music;
