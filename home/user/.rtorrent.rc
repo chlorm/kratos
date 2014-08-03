@@ -1,0 +1,54 @@
+# This assumes the following directory structure:
+# 
+# ~/Torrents/Completed ------------ Torrents are moved here when complete (see "on_finished")
+# ~/Torrents/Incomplete ----------- Temporaray location for torrents while downloading (see "directory")
+# ~/Torrents/Watch ---------------- The 'autoload' directory for rtorrent to use.
+# ~/.local/share/rtorrent/session - For storing rtorrent session information
+
+#min_peers = 40
+max_peers = 100
+
+min_peers_seed = -1
+max_peers_seed = -1
+
+max_uploads = 50
+
+download_rate = 0
+upload_rate = 0
+
+directory = ~/Torrents/Incomplete/
+
+session = ~/.local/share/rtorrent/session
+
+schedule = watch_directory,5,5,load_start=~/Torrents/Watch/*.torrent
+schedule = untied_directory,5,5,stop_untied=
+
+#schedule = low_diskspace,5,60,close_low_diskspace=200G
+
+#schedule = ratio,60,60,stop_on_ratio=200,200M,2000
+
+system.method.set_key = event.download.finished,move_complete,"d.set_directory=~/Torrents/Completed;execute=mv,-u,$d.get_base_path=,~/Torrents/Completed "
+
+#ip = 127.0.0.1
+#ip = nsa.gov
+
+#bind = 127.0.0.1
+#bind = rakshasa.no
+
+port_range = 6890-6999
+
+#port_random = yes
+
+scgi_port = 127.0.0.1:5000
+
+check_hash = yes
+
+#use_udp_trackers = no
+
+#encryption = allow_incoming,enable_retry,prefer_plaintext
+encryption = require,require_RC4,allow_incoming,try_outgoing,enable_retry
+
+dht = disable
+# dht_port = 6881
+
+peer_exchange = no
