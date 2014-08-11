@@ -1,0 +1,155 @@
+##       ________   ___       ___
+##      /  _____/  /  /      /  /
+##     /  /       /  /      /  /
+##    /  /       /  /____  /  / _______  _______  ____  ____
+##   /  /       /  ___  / /  / /  __  / /  ____/ /    \/    \
+##  /  /_____  /  /  / / /  / /  /_/ / /  /     /  /\    /\  \
+## /________/ /__/  /_/ /__/ /______/ /__/     /__/  \__/  \__\ TM
+##
+## Author: Cody Opel
+## E-mail: codyopel@gmail.com
+## Copyright (c) 2014 All Rights Reserved, http://www.chlorm.net
+## License: The MIT License - http://opensource.org/licenses/MIT
+## Comments:
+##    Assumed Directory Structure:
+##      ~/.ncmpcpp
+##      ~/.ncmpcpp/config
+##      ~/.local/share/mpd
+##    Legend:
+##      () - option
+##      [] - description
+##      ## - comments [not to be uncommented]
+##      # -- commented variables
+## MPD
+    mpd_host = "localhost"
+    mpd_port = "6600"
+    mpd_music_dir = "~/Music"
+    mpd_connection_timeout = "5"
+    #mpd_crossfade_time = "5"
+    #mpd_communication_mode = "notifications" (polling/notifications)
+## Global Settings
+        #ncmpcpp_directory = "~/.ncmpcpp"
+        startup_screen = "2"
+        search_engine_default_search_mode = "1" ##(1/2/3)
+        allow_physical_files_deletion = "no"
+        allow_physical_directories_deletion = "no"
+    ## Colors
+        colors_enabled = "yes" ##(yes/no)[enable or disable colors in ncmpcpp]
+        empty_tag_color = "yellow" ##[<empty>]
+        state_line_color = "white"
+        state_flags_color = "white"
+        main_window_color = "cyan" ##[default text color]
+        main_window_highlight_color = "white" ##[default highlight color]
+        alternative_ui_separator_color = "green" #[horizontal dividers]
+        active_column_color = "magenta" ##[highlighted selection]
+    ## Formatting
+        titles_visibility = "yes" ##[column titles]
+        jump_to_now_playing_song_at_start = "yes"
+        ignore_leading_the = "yes" ##(yes/no)[ignore 'the' in ordering artists/albums/tracks]
+        centered_cursor = "yes" ##(yes/no)[highlighted selection remains vertically centered]
+        lines_scrolled = "5"
+        autocenter_mode = "yes"
+        browser_display_mode = "columns" ##(classic/columns)
+        search_engine_display_mode = "classic" ##(classic/columns)
+        discard_colors_if_item_is_selected = "yes" ##(yes/no)
+    ## Mouse Support
+        mouse_support = "yes" ##(yes/no)[enable mouse in ncmpcpp]
+        mouse_list_scroll_whole_page = "yes" ##(yes/no)[scroll perline or per page]
+    ## Lyric
+        ## supported lyrics databases:
+        ## - 1 - lyricsplugin.com
+        #lyrics_database = "1"
+        lyrics_directory = "~/.local/share/mpd/lyrics"
+        follow_now_playing_lyrics = "no"
+        store_lyrics_in_song_dir = "no"
+        external_editor = "vim"
+        use_console_editor = "yes" #(set to yes, if your editor is console app)
+        ## Note: Language has to be expressed as an ISO 639-1 (alpha-2) code.
+        #lastfm_preferred_language = "en"
+    ## Delays
+        playlist_disable_highlight_delay = "5"
+        message_delay_time = "3"
+    ## Search
+        default_place_to_search_in = "database" #(database/playlist)
+    ## Window Title
+        enable_window_title = "yes"
+        song_window_title_format = "{%a - }{%t}|{%f}"
+    ## Header
+        user_interface = "alternative" #(classic/alternative)
+        alternative_header_first_line_format = "$0{%a}$9 $3•$9 $6{%y - %b}$9"
+        alternative_header_second_line_format ="{$7%t$8}"
+        header_window_color = "white"
+        volume_color = "yellow"
+        clock_display_seconds = "yes"
+        display_volume_level = "yes"
+        display_bitrate = "yes"
+        display_remaining_time = "no"
+        header_visibility = "yes"
+        display_screens_numbers_on_start = "no"
+        header_text_scrolling = "yes"
+        cyclic_scrolling = "no"
+    ## Progress Bar
+        progressbar_look = "─░─"
+        progressbar_color = "green"
+    ## Status Bar
+        statusbar_visibility = "yes"
+        song_status_format = "{$8%a} $3• $b{$6%b}$1$/b"
+        statusbar_color = "yellow" #(status bar warning messages)
+## Tab Settings
+    ## Playlist Tab
+        playlist_display_mode = "columns" #(classic/columns)
+        song_list_format = "{$8%a$9}$3•$9{$6%y - %b$9}$3•$9{$7%t$9}|{$7%f$9}$7$R{$3($b%l$/b)$9}"
+        song_columns_list_format = "(6)[green]{l:Length} (20)[white]{a:Artist} (5)[magenta]{y:Year} (30)[magenta]{b:Album} (50)[cyan]{t|f:Track}"
+        now_playing_prefix = "$9"
+        now_playing_suffix = " $4♫$9"
+        ask_before_clearing_main_playlist = "yes"
+        playlist_show_remaining_time = "yes"
+        playlist_shorten_total_times = "yes"
+        #playlist_separate_albums = "no"
+    ## Browser Tab
+        browser_sort_mode = "format" #(name/mtime/format)
+        browser_sort_format = "{$8%a - }{$7%t}|{$7%f} {($3%l)}"
+    ## Media Library Tab
+        media_library_left_column = "a" #(possible values: a,y,g,c,p, legend above)
+        #media_library_sort_by_mtime = "no"
+        media_library_display_date = "yes"
+        #media_library_disable_two_column_mode = "no"
+    ## Tag Editor Tab
+        default_tag_editor_pattern = "%n - %t"
+        tag_editor_album_format = "{$8%a} - {$7%b}"
+        empty_tag_marker = "<empty>"
+        #tags_separator = " | "
+        #tag_editor_extended_numeration = "no"
+    ## Visualizer Tab
+        visualizer_fifo_path = "./local/share/mpd/mpd.fifo"
+        visualizer_output_name = "fifo"
+        audio_output {
+            type "fifo"
+            name "My FIFO"
+            path "./local/share/mpd/mpd.fifo"
+            format "44100:16:2"
+        }
+        visualizer_in_stereo = "yes"
+        visualizer_sync_interval = "30"
+        visualizer_type = "spectrum" #(spectrum/wave)
+        #visualizer_look = "●│"
+        visualizer_look = "●▉"
+        visualizer_color = "white"
+
+song_library_format = "{$7%n - }{$7%t}|{$7%f}"
+
+seek_time = "1"
+
+default_find_mode = "wrapped" #(wrapped/normal)
+
+default_space_mode = "add" #(add/select)
+
+#ncmpc_like_songs_adding = "no" (enabled - add/remove, disabled - always add)
+
+#locked_screen_width_part = "50"
+
+#ask_for_locked_screen_width_part = "yes"
+
+regular_expressions = "basic" #(basic/extended)
+
+#block_search_constraints_change_if_items_found = "yes"
