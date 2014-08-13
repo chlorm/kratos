@@ -6,6 +6,7 @@
 ##  /  /_____  /  /  / / /  / /  /_/ / /  /     /  /\    /\  \
 ## /________/ /__/  /_/ /__/ /______/ /__/     /__/  \__/  \__\ TM
 ##
+<<<<<<< HEAD
 ## Title: Ncmpcpp Configuration File
 ## Author: Cody Opel
 ## E-mail: codyopel(at)gmail.com
@@ -18,6 +19,17 @@
 ##      ~/.config/mpd/ --------- mpd directory
 ##      ~/.config/mpd/lyrics --- mpd lyrics directory
 ##      ~/.config/mpd/mpd.fifo - mpd fifio ouput file
+=======
+## Author: Cody Opel
+## E-mail: codyopel@gmail.com
+## Copyright (c) 2014 All Rights Reserved, http://www.chlorm.net
+## License: The MIT License - http://opensource.org/licenses/MIT
+## Comments:
+##    Assumed Directory Structure:
+##      ~/.ncmpcpp
+##      ~/.ncmpcpp/config
+##      ~/.local/share/mpd
+>>>>>>> 06285a298b96c9d2b8ba055d4ebcb93672ca9fc5
 ##    Legend:
 ##      () - option
 ##      [] - description
@@ -32,7 +44,11 @@
     #mpd_communication_mode = "notifications" (polling/notifications)
 ## Global Settings
         #ncmpcpp_directory = "~/.ncmpcpp"
+<<<<<<< HEAD
         startup_screen = "2" ##(0/1/2/3/4/5/6/7/8/9)
+=======
+        startup_screen = "2"
+>>>>>>> 06285a298b96c9d2b8ba055d4ebcb93672ca9fc5
         search_engine_default_search_mode = "1" ##(1/2/3)
         allow_physical_files_deletion = "no"
         allow_physical_directories_deletion = "no"
@@ -62,23 +78,39 @@
         ## supported lyrics databases:
         ## - 1 - lyricsplugin.com
         #lyrics_database = "1"
+<<<<<<< HEAD
         lyrics_directory = "~/.config/mpd/lyrics"
         follow_now_playing_lyrics = "no"
         store_lyrics_in_song_dir = "no"
         external_editor = "vim"
         use_console_editor = "yes" ##[set to yes, if your editor is console app]
+=======
+        lyrics_directory = "~/.local/share/mpd/lyrics"
+        follow_now_playing_lyrics = "no"
+        store_lyrics_in_song_dir = "no"
+        external_editor = "vim"
+        use_console_editor = "yes" #(set to yes, if your editor is console app)
+>>>>>>> 06285a298b96c9d2b8ba055d4ebcb93672ca9fc5
         ## Note: Language has to be expressed as an ISO 639-1 (alpha-2) code.
         #lastfm_preferred_language = "en"
     ## Delays
         playlist_disable_highlight_delay = "5"
         message_delay_time = "3"
     ## Search
+<<<<<<< HEAD
         default_place_to_search_in = "database" ##(database/playlist)
+=======
+        default_place_to_search_in = "database" #(database/playlist)
+>>>>>>> 06285a298b96c9d2b8ba055d4ebcb93672ca9fc5
     ## Window Title
         enable_window_title = "yes"
         song_window_title_format = "{%a - }{%t}|{%f}"
     ## Header
+<<<<<<< HEAD
         user_interface = "alternative" ##(classic/alternative)
+=======
+        user_interface = "alternative" #(classic/alternative)
+>>>>>>> 06285a298b96c9d2b8ba055d4ebcb93672ca9fc5
         alternative_header_first_line_format = "$0{%a}$9 $3•$9 $6{%y - %b}$9"
         alternative_header_second_line_format ="{$7%t$8}"
         header_window_color = "white"
@@ -97,10 +129,17 @@
     ## Status Bar
         statusbar_visibility = "yes"
         song_status_format = "{$8%a} $3• $b{$6%b}$1$/b"
+<<<<<<< HEAD
         statusbar_color = "yellow" ##[status bar warning messages]
 ## Tab Settings
     ## Playlist Tab
         playlist_display_mode = "columns" ##(classic/columns)
+=======
+        statusbar_color = "yellow" #(status bar warning messages)
+## Tab Settings
+    ## Playlist Tab
+        playlist_display_mode = "columns" #(classic/columns)
+>>>>>>> 06285a298b96c9d2b8ba055d4ebcb93672ca9fc5
         song_list_format = "{$8%a$9}$3•$9{$6%y - %b$9}$3•$9{$7%t$9}|{$7%f$9}$7$R{$3($b%l$/b)$9}"
         song_columns_list_format = "(6)[green]{l:Length} (20)[white]{a:Artist} (5)[magenta]{y:Year} (30)[magenta]{b:Album} (50)[cyan]{t|f:Track}"
         now_playing_prefix = "$9"
@@ -108,6 +147,7 @@
         ask_before_clearing_main_playlist = "yes"
         playlist_show_remaining_time = "yes"
         playlist_shorten_total_times = "yes"
+<<<<<<< HEAD
     ## Browser Tab
         browser_sort_mode = "format" ##(name/mtime/format)
         browser_sort_format = "{$8%a - }{$7%t}|{$7%f} {($3%l)}"
@@ -115,6 +155,17 @@
         media_library_left_column = "a" ##(a/y/g/c/p)[artist]
         media_library_display_date = "yes"
         media_library_disable_two_column_mode = "yes"
+=======
+        #playlist_separate_albums = "no"
+    ## Browser Tab
+        browser_sort_mode = "format" #(name/mtime/format)
+        browser_sort_format = "{$8%a - }{$7%t}|{$7%f} {($3%l)}"
+    ## Media Library Tab
+        media_library_left_column = "a" #(possible values: a,y,g,c,p, legend above)
+        #media_library_sort_by_mtime = "no"
+        media_library_display_date = "yes"
+        #media_library_disable_two_column_mode = "no"
+>>>>>>> 06285a298b96c9d2b8ba055d4ebcb93672ca9fc5
     ## Tag Editor Tab
         default_tag_editor_pattern = "%n - %t"
         tag_editor_album_format = "{$8%a} - {$7%b}"
@@ -122,17 +173,29 @@
         #tags_separator = " | "
         #tag_editor_extended_numeration = "no"
     ## Visualizer Tab
+<<<<<<< HEAD
         visualizer_fifo_path = "./config/mpd/mpd.fifo"
+=======
+        visualizer_fifo_path = "./local/share/mpd/mpd.fifo"
+>>>>>>> 06285a298b96c9d2b8ba055d4ebcb93672ca9fc5
         visualizer_output_name = "fifo"
         audio_output {
             type "fifo"
             name "My FIFO"
+<<<<<<< HEAD
             path "./config/mpd/mpd.fifo"
+=======
+            path "./local/share/mpd/mpd.fifo"
+>>>>>>> 06285a298b96c9d2b8ba055d4ebcb93672ca9fc5
             format "44100:16:2"
         }
         visualizer_in_stereo = "yes"
         visualizer_sync_interval = "30"
+<<<<<<< HEAD
         visualizer_type = "spectrum" ##(spectrum/wave)
+=======
+        visualizer_type = "spectrum" #(spectrum/wave)
+>>>>>>> 06285a298b96c9d2b8ba055d4ebcb93672ca9fc5
         #visualizer_look = "●│"
         visualizer_look = "●▉"
         visualizer_color = "white"
@@ -141,16 +204,30 @@ song_library_format = "{$7%n - }{$7%t}|{$7%f}"
 
 seek_time = "1"
 
+<<<<<<< HEAD
 default_find_mode = "wrapped" ##(wrapped/normal)
 
 default_space_mode = "add" ##(add/select)
 
 #ncmpc_like_songs_adding = "no" ##[enabled - add/remove, disabled - always add]
+=======
+default_find_mode = "wrapped" #(wrapped/normal)
+
+default_space_mode = "add" #(add/select)
+
+#ncmpc_like_songs_adding = "no" (enabled - add/remove, disabled - always add)
+>>>>>>> 06285a298b96c9d2b8ba055d4ebcb93672ca9fc5
 
 #locked_screen_width_part = "50"
 
 #ask_for_locked_screen_width_part = "yes"
 
+<<<<<<< HEAD
 regular_expressions = "basic" ##(basic/extended)
 
 #block_search_constraints_change_if_items_found = "yes"
+=======
+regular_expressions = "basic" #(basic/extended)
+
+#block_search_constraints_change_if_items_found = "yes"
+>>>>>>> 06285a298b96c9d2b8ba055d4ebcb93672ca9fc5
