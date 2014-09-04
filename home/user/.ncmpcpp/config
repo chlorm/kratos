@@ -23,6 +23,41 @@
 ##      [] - description
 ##      ## - comments [not to be uncommented]
 ##      # -- commented variables
+
+## [configuration variables]
+    ## %l - length
+    ## %f - filename
+    ## %D - directory
+    ## %a - artist
+    ## %A - album artist
+    ## %t - title
+    ## %b - album
+    ## %y - year
+    ## %n - track number [01/12 -> 01]
+    ## %N - full track info [01/12 -> 01/12]
+    ## %g - genre
+    ## %c - composer
+    ## %p - performer
+    ## %d - disc
+    ## %C - comment
+    ## $R - begin right alignment
+    ## $b $/b - bold text
+    ## $u - underline text
+    ## $r - reverse colors
+    ## $a - use alternative character set
+
+    ## 0 - default window color [discards all other colors]
+    ## 1 - black
+    ## 2 - red
+    ## 3 - green
+    ## 4 - yellow
+    ## 5 - blue
+    ## 6 - magenta
+    ## 7 - cyan
+    ## 8 - white
+    ## 9 - end of current color
+
+
 ## [MPD]
     mpd_host = "localhost"
     mpd_port = "6600"
@@ -154,6 +189,8 @@
         ## (▉▉/●│/●▉)
         visualizer_look = "▉▉"
         visualizer_color = "white"
+
+## TODO: move the following to proper categories
 
 song_library_format = "{$7%n - }{$7%t}|{$7%f}"
 
