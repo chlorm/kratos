@@ -57,6 +57,13 @@
     ## 8 - white
     ## 9 - end of current color
 
+    ## Note: Width is by default in %, if you want a column to
+    ## have fixed size, add 'f' after the value, e.g. (10)[white]{a}
+    ## will be the column that take 10% of screen (so the real column's
+    ## width will depend on actual screen size), whereas (10f)[white]{a}
+
+    ## r - column will be right aligned
+    ## E - if tag is empty, empty tag marker won't be displayed
 
 ## [MPD]
     mpd_host = "localhost"
