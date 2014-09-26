@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# Determine if this is a workstation
+info_ws () {
+  [ "$WS" = "0" ] && return 0
+  [ "$(hostname -s | grep -e "\(prodigy\|legend\|fantom\)")" != "" ]
+}
+
+# Determine if the user is root
+info_root () {
+  [ "$(id -u)" -eq 0 ]
+}

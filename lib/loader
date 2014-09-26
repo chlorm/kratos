@@ -1,0 +1,105 @@
+#!/usr/bin/env sh
+[ -z "$RUNNER" ] && RUNNER=0
+
+# Resolves the name of the binary
+path_abs () {
+  BIN="$(whereis -b $1 2>/dev/null | awk '{print $2}')"
+  [ -z "$BIN" ] && return 1
+  echo "$BIN"
+  return 0
+}
+
+# Stores the output of the command into a variable without a subshell
+svar () {
+  local VAR; local TMP; local RET;
+  VAR="$1"
+  shift 1
+  TMP="$(mktemp 2>/dev/null)" || TMP="$(mktemp -t tmp 2>/dev/null)" || return 128
+  $@ >"$TMP"
+  RET="$?"
+  read "$VAR" <"$TMP"
+  rm "$TMP"
+  return "$RET"
+}
+
+# Returns the shell executing the current script
+shell () {
+  local LSHELL; local LPROC;
+  LPROC="$(ps hp $$ | grep "$$")"
+
+  # Workaround for su spawned shells
+  if [ -n "$(echo "$LPROC" | grep '\-su')" ]; then
+    LSHELL="$(basename "$(echo "$LPROC" | sed 's/^.*(\([^)]*\)).*$/\1/')")"
+  else
+    LSHELL="$(basename "$(echo "$LPROC" | sed 's/-//' | awk '{print $5}')")"
+  fi
+
+  # Resolve Symlinked Shells
+  basename "$(readlink -f "$(path_abs "$LSHELL")")"
+}
+
+# Returns the shell executing the current script without appended major version
+shell_nov () {
+  shell | sed 's/^\([a-z]*\).*/\1/'
+}
+
+# Determines the top level configuration directory
+dir_try () {
+  local DIR_BIN; local OLD;
+  OLD="$(pwd)"
+  DIR_BIN="$(readlink -f "$1" 2>/dev/null)" || return 1
+  cd "$(dirname "$DIR_BIN")" 2>/dev/null || return 1
+  DIR_CONF="$(git rev-parse --show-toplevel 2>/dev/null)" || return 1
+  export DIR_CONF
+  echo "$DIR_CONF"
+  cd "$OLD"
+}
+dir_conf () {
+  [ -z "$DIR_CONF" ] || { echo "$DIR_CONF"; return 0; }
+  dir_try "$1" && return 0
+  dir_try "$HOME/.zshrc" && return 0
+  dir_try "$HOME/.bashrc" && return 0
+  dir_try "$HOME/.xinitrc" && return 0
+  echo "Failed to find the configuration directory" >&2
+  return 1
+}
+
+# Loads the shell specific fixes
+svar DIRCONF dir_conf "$0" || return 1
+. "$DIRCONF/lib/fixes.$(shell_nov)" 2>/dev/null || {
+  echo "Failed to load the fixes for the current shell" >&2
+  exit 1
+}
+
+# Load configuration settings
+. "$DIRCONF/settings"
+
+# Extra array functions for accessor simplicity
+array_empty () {
+  [ "$(array_size $1)" -eq "0" ]
+}
+array_forall () {
+  [ "$(array_size $1)" -gt "0" ] || return 0
+  for I in $(seq 0 $(expr $(array_size $1) - 1)); do
+    eval "$2 \"$(array_at $1 $I)\"" || return 1
+  done
+}
+
+# Allows the functions to be reloaded at any time
+reload_all () {
+  . "$(dir_conf)/lib/loader"
+}
+
+# Source Modules
+load_one () {
+  [ "$(echo "$1" | grep '\(~$\|^#\)')" != "" ] && return 0
+  . "$1" || { echo "Failed to load module $1"; return 1; }
+}
+load_all () {
+  [ "$#" -ge "1" ] || return 1
+  local DIRCONF; local MODS;
+  svar DIRCONF dir_conf || return 1
+  array_from_str MODS "$(find "$DIRCONF/$1" -type f)"
+  array_forall MODS load_one
+}
+load_all lib/mod

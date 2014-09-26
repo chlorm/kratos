@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# Automatically configure editors
+editor_auto () {
+  rm -rf "$HOME/.emacs" "$HOME/.viminfo"
+  config_ln "emacs.d" "vimrc" "gvimrc"
+}

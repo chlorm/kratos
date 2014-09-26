@@ -1,0 +1,3 @@
+#/bin/bash
+echo DDIS > /sys/kernel/debug/vgaswitcheroo/switch
+echo OFF > /sys/kernel/debug/vgaswitcheroo/switch

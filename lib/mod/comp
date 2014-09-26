@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+
+# Sleeps the computer
+comp_sleep () {
+  comp_lock || return 1
+  systemctl suspend >&2 && return 0
+  suspend >&2 && return 0
+  pm-suspend >&2 && return 0
+}
+
+# Powers down the computer
+comp_off () {
+  sudo_wrap poweroff
+}
+
+# Locks the screen
+comp_lock () {
+  path_hasbin slock && {
+    run_quiet slock &
+    return 0
+  }
+  run_quiet gnome-screensaver-command -l && return 0
+  run_quiet xscreensaver-command -lock && return 0
+  echo "Failed to lock the screen" >&2
+  return 1
+}

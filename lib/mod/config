@@ -1,0 +1,133 @@
+#!/usr/bin/env sh
+
+git_cd () {
+  if [ -z "$1" ]; then
+    svar DIRCONF dir_conf || return 1
+    cd "$DIRCONF"
+  else
+    cd "$1"
+  fi
+}
+
+# Gets the current git branch
+git_cbr () {(
+    git_cd $1 || return 1
+    git rev-parse --abbrev-ref HEAD 2>/dev/null
+)}
+
+# Updates the root git tree
+# Returns 2 if failed, 1 if updated, 0 if up-to-date
+git_pull () {(
+    git_cd $1 || return 2
+    git reset --hard >/dev/null 2>&1
+    STR="$(git pull origin "$(git_cbr $1)" 2>&1)" || return 2
+    [ "$(echo "$STR" | grep 'Already up-to-date.')" != "" ]
+)}
+
+# Updates the root git tree and only returns >0 on error
+# Echos updated if the tree was updated
+git_pull_nostat () {
+  git_pull $@
+  case "$?" in
+    2)
+      return 1
+      ;;
+    1)
+      echo "Updated"
+  esac
+}
+
+# Initialize git submodules
+# Returns 2 if failed, 1 if initialized, 0 if up-to-date
+git_sub_init () {(
+    local ACUM
+    ACUM=0
+
+    git_cd $1 || return 2
+    array_from_str SUBS "$(git submodule status --recursive | grep -ve "([^)]*)" | awk '{print $2}')"
+    array_forall SUBS git_sub_init_one || return 2
+    return $ACUM
+)}
+git_sub_init_one () {
+  git submodule -q update --init --recursive "$1" || return 1
+  ACUM=1
+}
+
+# Update the submodules
+# Returns 2 if failed, 1 if updated, 0 if up-to-date
+git_sub_pull () {(
+    git_cd $1 || return 2
+    svar DIRCONF dir_conf || return 2
+    STR="$(git submodule -q foreach --recursive "\"$DIRCONF/bin/run\" git_pull_nostat .")" || return 2
+    [ "$(echo "$STR" | grep 'Updated')" = "" ]
+)}
+
+# Gets the latest version of the git config
+# Returns 2 if failed, 1 if updated, 0 if up-to-date
+config_latest () {
+  local ACUM
+  ACUM=0
+
+  git_pull
+  case "$?" in
+    2)
+      echo "Failed to update the configuration directory" >&2
+      return 2
+      ;;
+    1)
+      ACUM=1
+  esac
+
+  git_sub_init
+  case "$?" in
+    2)
+      echo "Failed to initialize configuration submodules" >&2
+      return 2
+      ;;
+    1)
+      ACUM=1
+  esac
+
+  git_sub_pull
+  case "$?" in
+    2)
+      echo "Failed to update configuration submodules" >&2
+      return 2
+      ;;
+    1)
+      ACUM=1
+  esac
+
+  return $ACUM
+}
+
+# Links the configuration file to its proper dotfile
+config_ln () {
+  [ "$#" -eq "0" ] && return 1
+  for LN in $@; do
+    symlink "$(dir_conf)/conf/$LN" "$HOME/.$LN"
+  done
+}
+
+# Installs the configuration files
+config_install () {
+  symlink "$(dir_conf)/bin" "$HOME/.bin"
+  shell_auto
+  ssh_auto
+  editor_auto
+  graphical_auto
+  dev_auto
+}
+
+# Updates the configuration files and all of the submodules
+config_update () {
+  config_latest
+  case "$?" in
+    2)
+      return 2
+      ;;
+    1)
+      reload_all
+      config_install
+  esac
+}

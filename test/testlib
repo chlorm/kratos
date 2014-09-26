@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+
+. "$(readlink -f $(dirname $(readlink -f $HOME/.xinitrc))/../)/test/lib"
+
+# Make sure initial state is correct
+array_empty TESTS || { echo "Tests were auto added by the library"; exit 1; }
+test_register hello
+[ "$(array_at TESTS 0)" = "hello" ] || { echo "Sample test 1 was not added correctly"; exit 1; }
+test_register world
+[ "$(array_at TESTS 0)" = "hello" ] || { echo "Sample test 2 was not added correctly"; exit 1; }
+[ "$(array_at TESTS 1)" = "world" ] || { echo "Sample test 2 was not added correctly"; exit 1; }
+test_clear
+array_empty TESTS || { echo "Tests were not cleared successfully"; exit 1; }
+
+# Run some simple test functions
+success_test () {
+  sleep 1
+  return 0
+}
+fail_test () {
+  echo "This is the error"
+  return 1
+}
+test_run success_test
+test_run fail_test
+echo ""
+
+# Register tests
+test_register success_test
+test_register fail_test
+test_run_all

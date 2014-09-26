@@ -1,0 +1,32 @@
+#!/bin/sh
+cd "$(readlink -f $(dirname $(readlink -f $0))/../)"
+. lib/integrity
+
+# Required Programs
+require_all
+
+# Check for Valid Arguments
+if [ "$#" -ne "1" ]; then
+  echo "$0 message" >&2
+  exit 1
+fi
+
+# Pull the Latest Changes
+
+# Commit Current Changes
+date -u +%s > .date
+git add .date
+git commit -m "$1" >/dev/null 2>&1
+
+# Sign and Commit Signature
+hash_commit "HEAD" > .hash
+rm -f .sig
+gpg -bo .sig .hash
+git add .hash .sig
+git commit -m "Signing Commit" >/dev/null 2>&1
+git push origin master >/dev/null 2>&1
+if [ "$?" -ne "0" ]; then
+  echo "Failed To Push Commit!" >&2
+  exit 1
+fi
+exit 0

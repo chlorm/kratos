@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+export DIR_CONF="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
+cd "$DIR_CONF"
+touch settings
+. lib/loader || exit 128
+git remote set-url origin https://github.com/codyopel/dotfiles
+git remote set-url --push origin git@github.com:codyopel/dotfiles
+
+echo "Updating Config Files"
+config_latest
+if [ "$?" -gt "1" ]; then
+  echo "Failed to update Config"
+  exit 1
+fi
+
+echo "Installing Config Files"
+if ! config_install; then
+  echo "Failed to Install Config"
+  exit 1
+fi

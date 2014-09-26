@@ -1,0 +1,101 @@
+#!/usr/bin/env sh
+
+# Constants
+TEST_PASS=0
+TEST_SKIP=120
+
+# Helpers
+test_longest_str () {
+  local MAX
+  MAX="0"
+  array_forall TESTS test_max
+  echo "$MAX"
+}
+test_max () {
+  [ "$MAX" -le "${#1}" ] && MAX="${#1}"
+  return 0
+}
+
+# Registering and running the test suite
+test_register () {
+  array_append TESTS "$1"
+}
+
+# Unregisters all tests
+test_clear () {
+  array_new TESTS
+}
+
+# Run a single test
+test_run_ () {
+  local TFILE;
+  TFILE="$(dir_tmp)/config_test_err"
+  if [ "$(shell_nov)" = "dash" ] || [ "$(shell_nov)" = "sh" ]; then
+    printf "%${1}s  [Running]" "$2"
+    (eval "$2") >"$TFILE" 2>&1
+    case "$?" in
+      $TEST_PASS)
+        printf "\r%${1}s  [Passed] \n" "$2"
+        ;;
+      $TEST_SKIP)
+        printf "\r%${1}s  [Skipped]\n" "$2"
+        ;;
+      *)
+        printf "\r%${1}s  [Failed] \n" "$2"
+        cat "$TFILE" 2>/dev/null
+        echo ""
+    esac
+  else
+    printf "%${1}s  [$(shell_color yellow 0)Running$(shell_color reset 0)]" "$2"
+    (eval "$2") >"$TFILE" 2>&1
+    case "$?" in
+      $TEST_PASS)
+        printf "\r\e[K%${1}s  [$(shell_color green 0)Passed$(shell_color reset 0)]\n" "$2"
+        ;;
+      $TEST_SKIP)
+        printf "\r\e[K%${1}s  [$(shell_color yellow 0)Skipped$(shell_color reset 0)]\n" "$2"
+        ;;
+      *)
+        printf "\r\e[K%${1}s  [$(shell_color red 0)Failed$(shell_color reset 0)]\n" "$2"
+        echo "Error output:"
+        cat "$TFILE" 2>/dev/null
+        echo ""
+    esac
+  fi
+  rm -f "$TFILE"
+}
+alias test_run='test_run_ 0'
+
+# Run all of the tests
+test_run_all () {
+  echo "$RUNNING_SHELL: Running Full Test Suite:"
+  array_forall TESTS "test_run_ $(test_longest_str)"
+}
+
+# Test Helpers
+test_seq () {
+  if [ "$1" != "$2" ]; then
+    echo "Expected: $1"
+    echo "Got: $2"
+    exit 1
+  fi
+}
+test_sneq () {
+  if [ "$1" = "$2" ]; then
+    echo "Expected: $1"
+    echo "Got: $2"
+    exit 1
+  fi
+}
+test_eq () {
+  if [ "$1" -ne "$2" ]; then
+    echo "Expected: $1"
+    echo "Got: $2"
+    exit 1
+  fi
+}
+
+# Setup the testing environment
+. "$(readlink -f $(dirname $(readlink -f $HOME/.xinitrc))/../)/lib/loader"
+[ -z "$RUNNING_SHELL" ] && RUNNING_SHELL="$(shell)"
+test_clear

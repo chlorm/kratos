@@ -1,0 +1,93 @@
+#!/usr/bin/env sh
+
+# Make sure that we have the required binaries
+ssh_path () {
+  path_hasbin ssh-keygen || { echo "No ssh installed" >&2; return 1; }
+  path_hasbin openssl || { echo "No openssl installed" >&2; return 1; }
+  return 0
+}
+
+# Makes sure the ssh directory exists
+ssh_dir () {
+  if [ ! -d "$HOME/.ssh" ]; then
+    mkdir "$HOME/.ssh" || return 1
+  fi
+}
+
+# Creates new ssh keys with the provided password
+# Passing no parameter prompts the user for a password
+ssh_genkey () {
+  ssh_path || return 1
+  local PASS; local PASS2
+  if [ "$#" -eq "0" ]; then
+    stty -echo
+    echo -n "Password: "
+    read PASS
+    echo ""
+    echo -n "Confirm: "
+    read PASS2
+    echo ""
+    stty echo
+    [ "$PASS" != "$PASS2" ] && { echo "Passwords do not match" >&2; return 1; }
+  elif [ "$#" -eq "1" ]; then
+    PASS="$1"
+  else
+    return 1
+  fi
+
+  ssh_dir || return 1
+  rm -f "$HOME/.ssh/"id_* 2>/dev/null
+
+  ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_rsa" -t rsa -b 4096
+  ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_ed25519" -t ed25519
+}
+
+# Create the keys from the git repo
+ssh_defkey () {
+  ssh_dir || return 1
+  local CPFX; local LPFX; local KEYS
+  CPFX="$(dir_conf)/conf/ssh/default_"
+  LPFX="$HOME/.ssh/id_"
+  
+  array_from_str KEYS "rsa rsa.pub ed25519 ed25519.pub"
+  array_forall KEYS ssh_defkey_one
+}
+ssh_defkey_one () {
+  if [ -f "$CPFX$1" ]; then
+    symlink "$CPFX$1" "$LPFX$1" || return 1
+  fi
+}
+
+# Populates the authorized_keys file
+ssh_auth () {
+  ssh_dir || return 1
+  rm -f "$HOME/.ssh/authorized_keys"
+  local KEYS
+  array_from_str KEYS "$(find $(dir_conf)/conf/ssh -type f | grep -v 'config$' | grep '.pub$')"
+  array_forall KEYS ssh_auth_one
+}
+ssh_auth_one () {
+  cat "$1" >> "$HOME/.ssh/authorized_keys"
+}
+
+# Makes sure the client configuration is installed
+ssh_client () {
+  ssh_dir || return 1
+  symlink "$(dir_conf)/conf/ssh/config" "$HOME/.ssh/config"
+  ssh-keygen -H >/dev/null 2>&1
+  rm -f "$HOME/.ssh/known_hosts.old"
+}
+
+# Automatically determine how to configure ssh
+ssh_auto () {
+  ssh_path || return 1
+  ssh_client || { echo "Failed to create client configuration" >&2; return 1; }
+  ssh_auth || { echo "Failed to update authorized_keys" >&2; return 1; }
+  if [ ! -f "$HOME/.ssh/id_rsa.pub" ] && [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
+    if info_ws; then
+      ssh_defkey || { echo "Failed to populate client keys" >&2; return 1; }
+    else
+      ssh_genkey "" || { echo "Failed to generate client keys" >&2; return 1; }
+    fi
+  fi
+}

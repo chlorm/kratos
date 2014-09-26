@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+
+test_array_new () {
+  array_new ARR || return 1
+
+  [ "$(array_size ARR)" -eq "0" ]
+}
+test_register test_array_new
+
+test_array_append () {
+  array_new ARR || return 1
+  array_append ARR "Hi" || return 1
+  array_append ARR "World" || return 1
+
+  [ "$(array_size ARR)" -eq "2" ] || return 1
+  [ "$(array_at ARR 0)" = "Hi" ] || return 1
+  [ "$(array_at ARR 1)" = "World" ]
+}
+test_register test_array_append
+
+test_array_clear () {
+  array_new ARR || return 1
+  array_append "Hi" || return 1
+  array_new ARR || return 1
+
+  [ "$(array_size ARR)" -eq "0" ]
+}
+test_register test_array_clear

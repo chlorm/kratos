@@ -1,0 +1,12 @@
+#!/bin/sh -e
+DIR="$(readlink -f "$(dirname $0)")"
+OUTDIR="$1"
+if [ -z "$OUTDIR" ]; then
+  OUTDIR="nixpkgs"
+fi
+git init "$OUTDIR"
+cd "$OUTDIR"
+git remote add origin https://github.com/wkennington/nixpkgs
+git remote set-url --push origin git@github.com:wkennington/nixpkgs
+git remote add upstream https://github.com/NixOS/nixpkgs
+$DIR/nixpkgs-update

@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+. "$(readlink -f $(dirname $(readlink -f $HOME/.xinitrc))/../)/test/lib"
+load_all test/tests
+test_run_all

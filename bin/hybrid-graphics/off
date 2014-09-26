@@ -1,0 +1,2 @@
+#!/bin/bash
+echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
