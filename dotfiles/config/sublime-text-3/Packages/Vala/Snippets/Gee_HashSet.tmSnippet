@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>Gee.HashSet&lt;${1:G}&gt;($0);</string>
+	<key>name</key>
+	<string>Gee.HashSet</string>
+	<key>scope</key>
+	<string>source.vala</string>
+	<key>tabTrigger</key>
+	<string>HashSet</string>
+	<key>uuid</key>
+	<string>F71E0406-8516-4192-A74E-EA092119B479</string>
+</dict>
+</plist>

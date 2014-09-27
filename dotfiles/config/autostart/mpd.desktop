@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Music Player Daemon
+Comment=Server for playing audio files
+Exec=mpd
+Icon=mpd
+Terminal=false
+Type=Application
+Categories=Audio;Music;

@@ -1,0 +1,5 @@
+[user]
+        email = codyopel@gmail.com
+        name = codyopel
+[push]
+	default = simple
