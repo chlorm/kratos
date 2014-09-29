@@ -93,6 +93,12 @@ shell_init () {
 
 # Returns the name of the preferred shell
 shell_get_best () {
+  # Sakura preferred
+  if path_hasbin sakura; then
+    echo "sakura"
+    return 0
+  fi
+
   # Fish preferred
   if path_hasbin fish; then
     echo "fish"
