@@ -84,12 +84,14 @@ graphical_autorun () {
 }
 
 graphical_st () {(
-  cd "$(dir_conf)/dotfiles/nixpkgs/st/"
-  if [ -f "config.$(hostname -s).h" ]; then
-    symlink "config.$(hostname -s).h" "config.mach.h"
-  else
-    symlink "config.other.h" "config.mach.h"
-  fi
+  if [ -z "$(dir_conf)/dotfiles/nixpkgs/st/" ]; then
+    cd "$(dir_conf)/dotfiles/nixpkgs/st/"
+    if [ -f "config.$(hostname -s).h" ]; then
+      symlink "config.$(hostname -s).h" "config.mach.h"
+    else
+      symlink "config.other.h" "config.mach.h"
+    fi
+  else echo ; fi
 )}
 
 # Automatically Configures the graphical interface
