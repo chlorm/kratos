@@ -106,6 +106,7 @@ config_ln () {
   [ "$#" -eq "0" ] && return 1
   for LN in $@; do
     symlink "$(dir_conf)/dotfiles/$LN" "$HOME/.$LN"
+    echo "Symlinked $LN"
   done
 }
 
