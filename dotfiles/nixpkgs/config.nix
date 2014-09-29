@@ -3,7 +3,7 @@ pkgs : {
   cabal.libraryProfiling = true;
   firefox = {
     jre = false;
-    enableAdobeFlash = false;
+    enableAdobeFlash = true;
     enableGoogleTalkPlugin = true;
     icedtea = true;
   };
@@ -25,39 +25,58 @@ pkgs : {
         #cs225
         #dev
         #orpheum
-        shell
+        #shell
         #profile
         #mumc
 
         # Pkgs
+        bc
         chromium
+        conky
         dmenu
+        dzen2
         emacs
+        ffmpeg
         firefoxWrapper
         filezilla
+        flac
         gimp
-        gnupg1compat
+        #gnupg1compat
         hsEnv
-        icedtea7_web
+        #icedtea7_web
+        lame
         #libreoffice
+        mpd
         mumble
-        nix-repl
-        nixops
+        ncmpcpp
+        networkmanager
+        networkmanagerapplet
+        #nix-repl
+        #nixops
         #notbit
+        p7zip
         pavucontrol
         pcsclite
+        pidgin
         pinentry
         pulseaudio
         kde4.quasselClient
+        qbittorrent
+        sakura
         scrot
-        sl
+        #sl
         speedtest_cli
-        st
+        #st
+        sublime
         #sup
-        virtmanager
+        texLive
+        texstudio
+        transmission
+        #virtmanager
         vlc
-        xlibs.xbacklight
-        zathura
+        haskellPackages.xdgBasedir
+        #xlibs.xbacklight
+        #zathura
       ];
     };
     profile = self.myEnvFun {
@@ -91,7 +110,7 @@ pkgs : {
         git
         htop
         mosh
-        openssh_hpn
+        #openssh_hpn
         openssl
         psmisc
         tmux
