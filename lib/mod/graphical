@@ -44,7 +44,7 @@ graphical_runwm () {
 
   # Configure applications
   local TERMRC
-  TERMRC="$(dir_conf)/conf/config/Terminal/terminalrc"
+  TERMRC="$(dir_conf)/dotfiles/config/Terminal/terminalrc"
   if [ "$TILING" -eq "1" ]; then
     HCFG="${TERMRC}.tiling.$(hostname -s)"
     if [ -f "$HCFG" ]; then
@@ -84,7 +84,7 @@ graphical_autorun () {
 }
 
 graphical_st () {(
-  cd "$(dir_conf)/conf/nixpkgs/st/"
+  cd "$(dir_conf)/dotfiles/nixpkgs/st/"
   if [ -f "config.$(hostname -s).h" ]; then
     symlink "config.$(hostname -s).h" "config.mach.h"
   else
