@@ -89,8 +89,7 @@ graphical_st () {(
     if [ -f "config.$(hostname -s).h" ];then
       symlink "config.$(hostname -s).h" "config.mach.h"
     else
-      symlink "config.other.h" "config.mach.h";fi
-  else echo;fi
+      symlink "config.other.h" "config.mach.h";fi;fi
 )}
 
 # Automatically Configures the graphical interface
