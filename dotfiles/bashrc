@@ -129,18 +129,18 @@ function man {
 }
 
 ##[consul]
-. ./consul_lib
-SESSION="$(session_create_persist updater)" || exit 1
-echo "$SESSION"
-echo "Entering lock acquire loop"
-IDX=0
-while ! lock acquire "key1" "$SESSION";do
-    IDX="$(wait_on_key "key1" "$IDX")"
-    echo "Lock key updated";done
-echo "Acquired Lock... Press Enter To Exit"
-read
-lock release "key1" "$SESSION"
-session_destroy "$SESSION"
+#. ./consul_lib
+#SESSION="$(session_create_persist updater)" || exit 1
+#echo "$SESSION"
+#echo "Entering lock acquire loop"
+#IDX=0
+#while ! lock acquire "key1" "$SESSION";do
+#    IDX="$(wait_on_key "key1" "$IDX")"
+#    echo "Lock key updated";done
+#echo "Acquired Lock... Press Enter To Exit"
+#read
+#lock release "key1" "$SESSION"
+#session_destroy "$SESSION"
 
 ## [for generating icons]
 ## TODO: modify to be a single function that takes an argument for the icon size
