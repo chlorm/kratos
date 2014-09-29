@@ -84,7 +84,7 @@ graphical_autorun () {
 }
 
 graphical_st () {(
-  if [ -z "$(dir_conf)/dotfiles/nixpkgs/st/" ];then
+  if [ -d "$(dir_conf)/dotfiles/nixpkgs/st/" ];then
     cd "$(dir_conf)/dotfiles/nixpkgs/st/"
     if [ -f "config.$(hostname -s).h" ];then
       symlink "config.$(hostname -s).h" "config.mach.h"
