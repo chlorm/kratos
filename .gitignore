@@ -1,6 +1,6 @@
-/conf/config/Terminal/terminalrc
-/conf/emacs.d/*
-/conf/xmonad/*
+/dotfiles/config/Terminal/terminalrc
+/dotfiles/emacs.d/*
+/dotfiles/xmonad/*
 *~
 */#*#
 *.local
