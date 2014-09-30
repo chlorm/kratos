@@ -32,8 +32,15 @@ import XMonad.Util.Run (spawnPipe)
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
+<<<<<<< HEAD
 -- [default terminal]
 myTerminal = "sakura"
+=======
+-- The preferred terminal program, which is used in a binding below and by
+-- certain contrib modules.
+--
+myTerminal      = "sakura"
+>>>>>>> c8827a5b7a38b14957b88bc9ce84d1cca9b8d7be
 
 -- [focus follows mouse pointer]
 myFocusFollowsMouse :: Bool
