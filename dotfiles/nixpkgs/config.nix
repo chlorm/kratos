@@ -67,7 +67,7 @@ pkgs : {
         #sl
         speedtest_cli
         #st
-        sublime
+        sublime3
         #sup
         texLive
         texstudio
