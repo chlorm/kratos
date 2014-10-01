@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+##[test]
+
 ##[list hostname of all workstations]
 export workStations='\(NOS-4-A2\|LGM\|Shivkatall\)'
 
