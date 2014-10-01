@@ -1,0 +1,34 @@
+#!/bin/sh
+
+rtorrentDependencies () {
+#check for rtorrent dependencies
+  libtorrent
+  xmlrpc-c
+  libcurl >=7.12.0
+  ncurses
+  daemon? screen
+  G++
+  sigc++
+
+  path_hasbin	
+}
+
+#download rtorrent git
+
+#download patch
+
+#apply patch
+
+#autogen
+
+#configure
+
+#make
+  build static binary
+
+#move binary to $USER/.bin
+  rotrrent
+
+#clean-up files
+  remove libtorrent git
+  remove rotrrent git
