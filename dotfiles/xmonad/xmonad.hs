@@ -27,7 +27,7 @@ import Data.Monoid
 import System.Directory
 -- getHomeDirectory
 import System.Exit
-import XMonad.Util.Run (spawnPipe)
+--import XMonad.Util.Run (spawnPipe)
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -181,13 +181,13 @@ myLogHook = return ()
 myStartupHook = return ()
 
 --[topbar]
-myXmonadBar = "dzen2 -x '0' -y '0' -h '14' -w '500' -ta 'l' -fg '"++foreground++"' -bg '"++background++"' -fn "++myFont
-myStatusBar = "/home/jackal/.xmonad/status_bar '"++foreground++"' '"++background++"' "++myFont
+--myXmonadBar = "dzen2 -x '0' -y '0' -h '14' -w '500' -ta 'l' -fg '"++foreground++"' -bg '"++background++"' -fn "++myFont
+--myStatusBar = "/home/jackal/.xmonad/status_bar '"++foreground++"' '"++background++"' "++myFont
 
 --[run xmonad]
 main = do
-  dzenLeftBar     <- spawnPipe myXmonadBar
-  dzenRightBar    <- spawnPipe myStatusBar
+--  dzenLeftBar     <- spawnPipe myXmonadBar
+--  dzenRightBar    <- spawnPipe myStatusBar
   xmonad defaults
 
 defaults = defaultConfig {
