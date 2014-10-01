@@ -9,7 +9,8 @@ ssh_path () {
 
 ##[makes sure the ssh directory exists]
 ssh_dir () {
-  if [ ! -d "$HOME/.ssh" ];then mkdir "$HOME/.ssh" || return 1;fi
+  if [ ! -d "$HOME/.ssh" ];then
+    mkdir "$HOME/.ssh" || return 1;fi
 }
 
 ##[creates new ssh keys with the provided password]
@@ -17,7 +18,7 @@ ssh_dir () {
 ssh_genkey () {
   ssh_path || return 1
   local PASS;local PASS2
-  if [ ! -f "$HOME/.ssh/id_rsa.pub" ] || [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
+  if [ "$#" -eq "0" ];then
     stty -echo
     echo -n "Password: "
     read PASS
@@ -26,12 +27,17 @@ ssh_genkey () {
     read PASS2
     echo ""
     stty echo
+    [ "$PASS" != "$PASS2" ] && { echo "Passwords do not match" >&2;return 1; }
+  elif [ "$#" -eq "1" ];then
+    PASS="$1"
+  else
+    return 1;fi
 
-    ssh_dir || return 1
-    rm -f "$HOME/.ssh/"id_* 2>/dev/null
+  ssh_dir || return 1
+  rm -f "$HOME/.ssh/"id_* 2>/dev/null
 
-    ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_rsa" -C "$userEmail" -t rsa -b 4096
-    ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_ed25519" -t ed25519
+  ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_rsa" -t rsa -b 4096
+  ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_ed25519" -t ed25519
 }
 
 # Create the keys from the git repo
@@ -75,6 +81,7 @@ ssh_auto () {
   ssh_path || return 1
   ssh_client || { echo "Failed to create client configuration" >&2; return 1; }
   ssh_auth || { echo "Failed to update authorized_keys" >&2; return 1; }
+  if [ ! -f "$HOME/.ssh/id_rsa.pub" ] && [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
     if info_ws; then
       ssh_defkey || { echo "Failed to populate client keys" >&2; return 1; }
     else
