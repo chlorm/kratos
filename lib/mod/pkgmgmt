@@ -105,8 +105,8 @@ pkg_install () {
     echo "OSX not yet supported"
     ## homebrew
   else
-  echo "Failed to find an install procedure, unsupported os" >&2;fi
-  return 1
+  echo "Failed to find an install procedure, unsupported os" >&2
+  return 1;fi
 }
 
 ##[removes and purges the package in the system's package manager]
@@ -155,7 +155,7 @@ pkg_remove () {
     ## homebrew
   else
   echo "Failed to find a remove procedure, unsupported os" >&2
-  return 1
+  return 1;fi
 }
 alias pkg_delete=pkg_remove
 
@@ -166,7 +166,8 @@ pkg_clean () {
     return $?
   elif os_linux_distro 'gentoo' && path_hasbin emerge;then
     sudo_wrap emerge --depclean && sudo_wrap emerge @preserved-rebuild
-    return $?;fi
-  echo "Failed to find a cleanup procedure" >&2
-  return 1
+    return $?
+  else
+    echo "Failed to find a cleanup procedure" >&2
+    return 1;fi
 }
