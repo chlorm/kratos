@@ -36,8 +36,8 @@ shell_theme () {
   [ "$(shell_nov)" = "fish" ] && return 0
 
   # Colors for LS
-  os_matches '\(Linux\|Cygwin\)' && { eval "$(dircolors -b)"; alias ls='ls --color=auto'; }
-  os_matches '\(FreeBSD\)' && { export CLICOLOR=1; export LSCOLORS="ExGxFxdxCxDhDxaBadaCeC"; }
+  os_base '\(Linux\|Cygwin\)' && { eval "$(dircolors -b)"; alias ls='ls --color=auto'; }
+  os_base '\(FreeBSD\)' && { export CLICOLOR=1; export LSCOLORS="ExGxFxdxCxDhDxaBadaCeC"; }
 
   # 256 Colors in the Terminal
   if [ "$TERM" = "xterm" ] || [ "$TERM" = "rxvt-unicode-256color" ]; then
@@ -46,18 +46,17 @@ shell_theme () {
   fi
 
   # Setup Special Colors
-  if info_root; then NCOLOR="$(shell_color cyan 0)"; else NCOLOR="$(shell_color white 1)"; fi
-  if info_ws; then HCOLOR="$(shell_color green 0)"; else HCOLOR="$(shell_color red 0)"; fi
+  if info_root;then NCOLOR="$(shell_color cyan 0)";else NCOLOR="$(shell_color white 1)";fi
+  if info_ws;then HCOLOR="$(shell_color green 0)";else HCOLOR="$(shell_color red 0)";fi
   DCOLOR="$(shell_color yellow 1)"
 
   # Create Prompt
-  if [ "$(shell_nov)" = "zsh" ]; then
+  if [ "$(shell_nov)" = "zsh" ];then
     PROMPT="[$NCOLOR%n$(shell_color reset 0)@"
     PROMPT="$PROMPT$HCOLOR%m$(shell_color reset 0):"
     PROMPT="$PROMPT$DCOLOR%30<...<%~%<<$(shell_color reset 0)]%(!.#.$) "
   else
-    PS1="[${NCOLOR}\u$(shell_color reset 0)@${HCOLOR}\h$(shell_color reset 0):${DCOLOR}\w$(shell_color reset 0)]\\$ "
-  fi
+    PS1="[${NCOLOR}\u$(shell_color reset 0)@${HCOLOR}\h$(shell_color reset 0):${DCOLOR}\w$(shell_color reset 0)]\\$ ";fi
 }
 
 # Create the temporary directory for the shell
@@ -68,8 +67,7 @@ shell_tmp () {
     export SAVEHIST="9999"
   else
     export HISTFILE="/dev/null"
-    export SAVEHIST="0"
-  fi
+    export SAVEHIST="0";fi
 }
 
 # Initializes useful functions if the caller is a shell
@@ -91,38 +89,21 @@ shell_init () {
   export PATH="$PATH:$HOME/.go/bin"
 }
 
-# Returns the name of the preferred shell
+##[returns the name of the preferred shell]
 shell_get_best () {
-  # Sakura preferred
-  if path_hasbin sakura; then
-    echo "sakura"
-    return 0
-  fi
-
-  # Fish preferred
-  if path_hasbin fish; then
-    echo "fish"
-    return 0
-  fi
-
-  # ZSH preferred
-  if path_hasbin zsh; then
+  ##[bash]
+  if path_hasbin bash;then echo "bash";return 0
+  ##[fish]
+  elif path_hasbin fish;then echo "fish";return 0
+  ##[zsh]
+  elif path_hasbin zsh; then
     VER="$(zsh --version | awk '{print $2}')"
-	VER="$(printf "4.3.9\n%s" "$VER" | sort -bt. -k1,1n -k2,2n -k3,3n -k4,4n -k5,5n | awk 'NR==1')"
-	if [ "$VER" = "4.3.9" ]; then
-      echo "zsh"
-      return 0
-    fi
-  fi
-
-  # Bash next
-  if path_hasbin bash; then
-    echo "bash"
-    return 0
-  fi
-
-  # Fallback to SH
-  echo "sh"
+	  VER="$(printf "4.3.9\n%s" "$VER" | \
+      sort -bt. -k1,1n -k2,2n -k3,3n -k4,4n -k5,5n | \
+      awk 'NR==1')"
+	  if [ "$VER" = "4.3.9" ]; then echo "zsh";return 0;fi
+  ##[fallback to sh]
+  else echo "sh";fi
 }
 
 # Automatically executes the preferred shell
@@ -135,5 +116,6 @@ shell_best () {
 
 # Automatically configures the shell configuration files
 shell_auto () {
-  config_ln "bash_profile" "bashrc" "bash_logout" "zshrc" "zprofile" "zlogout" "config/fish" "tmux.conf"
+  config_ln "bash_profile" "bashrc" "bash_logout" "zshrc" \
+            "zprofile" "zlogout" "config/fish" "tmux.conf"
 }
