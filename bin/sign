@@ -2,16 +2,15 @@
 cd "$(readlink -f $(dirname $(readlink -f $0))/../)"
 . lib/integrity
 
-# Required Programs
+##[required programs]
 require_all
 
-# Check for Valid Arguments
+##[check for valid arguments]
 if [ "$#" -ne "1" ]; then
   echo "$0 message" >&2
-  exit 1
-fi
+  exit 1;fi
 
-# Pull the Latest Changes
+##[pull the latest changes]
 
 # Commit Current Changes
 date -u +%s > .date
@@ -27,6 +26,5 @@ git commit -m "Signing Commit" >/dev/null 2>&1
 git push origin master >/dev/null 2>&1
 if [ "$?" -ne "0" ]; then
   echo "Failed To Push Commit!" >&2
-  exit 1
-fi
+  exit 1;fi
 exit 0

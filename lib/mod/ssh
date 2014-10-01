@@ -1,25 +1,24 @@
 #!/usr/bin/env sh
 
-# Make sure that we have the required binaries
+##[make sure that we have the required binaries]
 ssh_path () {
-  path_hasbin ssh-keygen || { echo "No ssh installed" >&2; return 1; }
-  path_hasbin openssl || { echo "No openssl installed" >&2; return 1; }
+  path_hasbin ssh-keygen || { echo "No ssh installed" >&2;return 1; }
+  path_hasbin openssl || { echo "No openssl installed" >&2;return 1; }
   return 0
 }
 
-# Makes sure the ssh directory exists
+##[makes sure the ssh directory exists]
 ssh_dir () {
-  if [ ! -d "$HOME/.ssh" ]; then
-    mkdir "$HOME/.ssh" || return 1
-  fi
+  if [ ! -d "$HOME/.ssh" ];then
+    mkdir "$HOME/.ssh" || return 1;fi
 }
 
-# Creates new ssh keys with the provided password
-# Passing no parameter prompts the user for a password
+##[creates new ssh keys with the provided password]
+##[passing no parameter prompts the user for a password]
 ssh_genkey () {
   ssh_path || return 1
-  local PASS; local PASS2
-  if [ "$#" -eq "0" ]; then
+  local PASS;local PASS2
+  if [ "$#" -eq "0" ];then
     stty -echo
     echo -n "Password: "
     read PASS
@@ -28,12 +27,11 @@ ssh_genkey () {
     read PASS2
     echo ""
     stty echo
-    [ "$PASS" != "$PASS2" ] && { echo "Passwords do not match" >&2; return 1; }
-  elif [ "$#" -eq "1" ]; then
+    [ "$PASS" != "$PASS2" ] && { echo "Passwords do not match" >&2;return 1; }
+  elif [ "$#" -eq "1" ];then
     PASS="$1"
   else
-    return 1
-  fi
+    return 1;fi
 
   ssh_dir || return 1
   rm -f "$HOME/.ssh/"id_* 2>/dev/null
@@ -45,7 +43,7 @@ ssh_genkey () {
 # Create the keys from the git repo
 ssh_defkey () {
   ssh_dir || return 1
-  local CPFX; local LPFX; local KEYS
+  local CPFX;local LPFX;local KEYS
   CPFX="$(dir_conf)/dotfiles/ssh/default_"
   LPFX="$HOME/.ssh/id_"
   
@@ -53,7 +51,7 @@ ssh_defkey () {
   array_forall KEYS ssh_defkey_one
 }
 ssh_defkey_one () {
-  if [ -f "$CPFX$1" ]; then
+  if [ -f "$CPFX$1" ];then
     symlink "$CPFX$1" "$LPFX$1" || return 1
   fi
 }

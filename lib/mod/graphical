@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+## TODO: detect installed wm's and copy config only if installed
+
 # Determine which window manager is best suited
 graphical_bestwm () {
   path_hasbin "xmonad" && { echo "xmonad"; return 0; }
@@ -95,7 +97,6 @@ graphical_st () {(
 # Automatically Configures the graphical interface
 graphical_auto () {
   install -d $HOME/.config
-#  rm -f $HOME/.Xdefaults $HOME/.config/sakura
   config_ln xinitrc xsession xmonad config/awesome config/Terminal config/wallpaper config/uzbl
   symlink "$HOME/.config/Terminal" "$HOME/.config/xfce4/terminal"
   graphical_st
