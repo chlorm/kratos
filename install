@@ -1,7 +1,5 @@
 #!/usr/bin/env sh
 
-##[test]
-
 ##[list hostname of all workstations]
 export workStations='\(NOS-4-A2\|LGM\|Shivkatall\)'
 
@@ -12,7 +10,7 @@ touch settings
 
 ##[set dotfiles git repo]
 git remote set-url origin https://github.com/codyopel/dotfiles
-git remote set-url --push origin git@github.com:codyopel/dotfiles
+git remote set-url --push origin https://github.com/codyopel/dotfiles
 
 echo "Updating Config Files"
 config_latest
