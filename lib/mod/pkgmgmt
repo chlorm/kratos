@@ -105,7 +105,7 @@ pkg_install () {
     echo "OSX not yet supported"
     ## homebrew
   else
-  echo "Failed to find an install procedure, unsupported os" >&2
+  echo "Failed to find an install procedure, unsupported os" >&2;fi
   return 1
 }
 
