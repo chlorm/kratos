@@ -1,18 +1,6 @@
 dotfiles
-===
+========
 
-### Global
-
-* Bash
-    + bashrc
-* Portage
-    + make.conf
-    + package.accept_keywords
-    + package.mask
-    + package.unmask
-    + package.use
-
-### Local
 * Bash
     + bashrc
 * Beets

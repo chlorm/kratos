@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+##[users email address for ssh keys]
+export userEmail="codyopel@gmail.com"
+
 ##[list hostname of all workstations]
 export workStations='\(NOS-4-A2\|LGM\|Shivkatall\)'
 
