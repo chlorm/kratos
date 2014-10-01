@@ -36,8 +36,8 @@ ssh_genkey () {
   ssh_dir || return 1
   rm -f "$HOME/.ssh/"id_* 2>/dev/null
 
-  ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_rsa" -t rsa -b 4096
-  ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_ed25519" -t ed25519
+  ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_rsa" -t rsa -b 4096 -C "$userEmail"
+  ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_ed25519" -t ed25519 -C "$userEmail"
 }
 
 # Create the keys from the git repo
