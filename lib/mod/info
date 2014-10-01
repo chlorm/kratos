@@ -3,7 +3,7 @@
 # Determine if this is a workstation
 info_ws () {
   [ "$WS" = "0" ] && return 0
-  [ "$(hostname -s | grep -e "\(prodigy\|legend\|fantom\)")" != "" ]
+  [ "$(uname -n | grep -e "$workStations")" != "" ]
 }
 
 # Determine if the user is root
