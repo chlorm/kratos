@@ -22,3 +22,5 @@ rtorrentDirectories () {
 rtorrentConfig () {
 	if [ ! -f "$HOME/.rtorrent.rc" ];then echo;fi
 }
+
+rtorrentDirectories
