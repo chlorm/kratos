@@ -62,6 +62,7 @@ pkgs : {
         pulseaudio
         kde4.quasselClient
         qbittorrent
+        rtorrent-git
         sakura
         scrot
         #sl
