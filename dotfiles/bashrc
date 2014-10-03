@@ -130,9 +130,8 @@ function man {
 
 ##[add all albums by music artist to local music library and convert lossless to mp3]
 addartist () {
-    inputArtist="$@"
-    echo $inputArtist
     if [[ -z "$@" ]];then echo "ERROR: no input";exit 1;fi
+    inputArtist="$@"
     artistAddPath="/home/jackal/Music/\"${@}\""
     ##[download artist's albums]
     scp -r -P 4497 "jackal@192.168.1.5:${artistAddPath}" "$HOME/Music/"
@@ -154,6 +153,7 @@ addartist () {
             wait "$ffmpegPid"
             rm -f "$curWorkFile"
         fi;done
+    exit 0
 }
 
 ##[consul]
