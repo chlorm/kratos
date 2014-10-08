@@ -46,6 +46,7 @@ pkgs : {
         #icedtea7_web
         lame
         #libreoffice
+        mkvtoolnix
         mpd
         mumble
         ncmpcpp
@@ -62,7 +63,7 @@ pkgs : {
         pulseaudio
         kde4.quasselClient
         qbittorrent
-        rtorrent-git
+        #rtorrent-git
         sakura
         scrot
         #sl
@@ -75,7 +76,9 @@ pkgs : {
         transmission
         #virtmanager
         vlc
+        vobsub2srt
         haskellPackages.xdgBasedir
+        x264
         #xlibs.xbacklight
         #zathura
       ];
