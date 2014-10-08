@@ -1,6 +1,9 @@
 /dotfiles/config/Terminal/terminalrc
 /dotfiles/emacs.d/*
 /dotfiles/xmonad/*
+/dotfiles/config/mpd/pid
+/dotfiles/config/mpd/database
+/dotfiles/config/mpd/log
 *~
 */#*#
 *.local
