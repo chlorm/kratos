@@ -1,9 +1,13 @@
-/dotfiles/config/Terminal/terminalrc
 /dotfiles/emacs.d/*
-/dotfiles/xmonad/*
-/dotfiles/config/mpd/pid
+/dotfiles/xmonad/xmonad.errors
+/dotfiles/xmonad/xmonad.hi
+/dotfiles/xmonad/xmonad.o
+/dotfiles/xmonad/xmonad-x86_64-linux
 /dotfiles/config/mpd/database
 /dotfiles/config/mpd/log
+/dotfiles/config/mpd/mpd.fifo
+/dotfiles/config/mpd/pid
+/dotfiles/config/mpd/state
 /dotfiles/config/fish/fish_history
 /dotfiles/config/fish/fishd.*
 /dotfiles/config/sublime-text-3/Cache/*

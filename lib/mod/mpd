@@ -22,11 +22,6 @@ mpdSessionFiles () {
 		touch "$HOME/.config/mpd/log"
 		echo "Created .config/mpd/log"
 	fi
-	# FIFO output file for ncmpcpp visualizer
-	if [ ! -f "$HOME/.config/mpd/mpd.fifo" ]; then
-		touch "$HOME/.config/mpd/mpd.fifo"
-		echo "Created .config/mpd/mpd.fifo"
-	fi
 }
 
 mpdSessionFiles
