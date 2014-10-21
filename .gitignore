@@ -4,6 +4,12 @@
 /dotfiles/config/mpd/pid
 /dotfiles/config/mpd/database
 /dotfiles/config/mpd/log
+/dotfiles/config/fish/fish_history
+/dotfiles/config/fish/fishd.*
+/dotfiles/config/sublime-text-3/Cache/*
+/dotfiles/config/sublime-text-3/Index/*
+/dotfiles/config/sublime-text-3/Local/*
+
 *~
 */#*#
 *.local

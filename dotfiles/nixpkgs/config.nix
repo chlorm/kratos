@@ -11,6 +11,7 @@ pkgs : {
     enablePepperFlash = true;
     enablePepperPDF = true;
   };
+  ffmpeg.fdk = true;
   st.conf = (builtins.readFile ./st/config.mach.h)
     + (builtins.readFile ./st/config.inc.h);
   packageOverrides = self : rec {
@@ -31,6 +32,7 @@ pkgs : {
 
         # Pkgs
         bc
+        pythonPackages.beets
         chromium
         conky
         dmenu
@@ -46,9 +48,12 @@ pkgs : {
         #icedtea7_web
         lame
         #libreoffice
+        ##mediainfo
         mkvtoolnix
         mpd
         mumble
+        ncdc
+        ncdu
         ncmpcpp
         networkmanager
         networkmanagerapplet
@@ -80,6 +85,7 @@ pkgs : {
         haskellPackages.xdgBasedir
         x264
         #xlibs.xbacklight
+        youtubeDL
         #zathura
       ];
     };
@@ -114,7 +120,7 @@ pkgs : {
         git
         htop
         mosh
-        #openssh_hpn
+        openssh_hpn
         openssl
         psmisc
         tmux

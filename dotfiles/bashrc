@@ -88,7 +88,7 @@ function fromover {
 }
 
 #[btrfs]
-alias defragmentroot="sudo btrfs filesystem defragment -r -v -czlib /"
+alias defragmentroot="sudo btrfs filesystem defragment -r -v -clzo /"
 alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
 
 function extract {
