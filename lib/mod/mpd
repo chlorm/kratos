@@ -4,22 +4,28 @@
 mpdSessionFiles () {
 	if [ ! -f "$HOME/.config/mpd/database" ]; then
 		touch "$HOME/.config/mpd/database"
+		echo "Created .config/mpd/database"
 	fi
 	if [ ! -f "$HOME/.config/mpd/pid" ]; then
 		touch "$HOME/.config/mpd/pid"
+		echo "Created .config/mpd/pid"
 	fi
 	if [ ! -f "$HOME/.config/mpd/state" ]; then
 		touch "$HOME/.config/mpd/state"
+		echo "Created .config/mpd/state"
 	fi
 	if [ ! -f "$HOME/.config/mpd/sticker.sql" ]; then
 		touch "$HOME/.config/mpd/sticker.sql"
+		echo "Created .config/mpd/sticker.sql"
 	fi
 	if [ ! -f "$HOME/.config/mpd/log" ]; then
 		touch "$HOME/.config/mpd/log"
+		echo "Created .config/mpd/log"
 	fi
 	# FIFO output file for ncmpcpp visualizer
 	if [ ! -f "$HOME/.config/mpd/mpd.fifo" ]; then
 		touch "$HOME/.config/mpd/mpd.fifo"
+		echo "Created .config/mpd/mpd.fifo"
 	fi
 }
 
