@@ -19,8 +19,4 @@ rtorrentDirectories () {
 		mkdir "$HOME/.local/share/rtorrent";fi
 }
 
-rtorrentConfig () {
-	if [ ! -f "$HOME/.rtorrent.rc" ];then echo;fi
-}
-
 rtorrentDirectories
