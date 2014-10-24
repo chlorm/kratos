@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+# Wrapper for all nix utilities
+
+# nixos-rebuild
+
+
+
+# nix-env
+# nix-build
+# nix-shell
+# nix-store
+# nix-channel
+# nix-collect-garbage
+# nix-copy-closure
+# nix-daemon
+# nix-hash
+# nix-install-package
+# nix-instantiate
+# nix-prefetch-url
+# nix-pull
+# nix-push
+
+#VERSION=${nix-env --version 2>&1 | grep }
+
+## [colors]
+clR="\033[1;31m"  # Red
+clG="\033[1;32m"  # Green
+clW="\033[1;37m"  # White
+clP="\033[1;35m"  # Purple
+clGa="\033[0;30m" # Gray
+clC="\033[0;36m"  # Cyan (light blue)
+clY="\033[0;33m"  # Yellow
+clU="\033[0;4m"   # Underline
+clD="\033[0;0m"   # default
+
+usage () {
+    HELP="\n\${clC}Nix version:\${clG} ${VERSION}
+\${clC}Nix is a purely functional package manager.
+
+Usage: \${clD}nix \${clU}\${clP}Utility\$clD [\${clU}\${clP}OPTIONS\$clD]\$clD
+    \${clG}build\${clD}           - build a Nix expression\$clD
+    \${clG}channel\${clD}         - manage Nix channels\$clD
+    \${clG}collect-garbage\${clD} - delete unreachable store paths\$clD
+    \${clG}copy-closure\${clD}    - copy a closure to or from a remote machine via SSH\$clD
+    \${clG}daemon\${clD}          - Nix multi-user support daemon\$clD
+    \${clG}env\${clD}             - manipulate or query Nix user environment\$clD
+    \${clG}hash\${clD}            - compute the cryptographic hash of a path\$clD
+    \${clG}install-package\${clD} - install a Nix Package file\$clD
+    \${clG}instantiate\${clD}     - instaltiate store derivations from Nix expressions\$clD
+    \${clG}prefetch-url\${clD}    - copy a file from a URL into the store and print its hash\$clD
+    \${clG}pull\${clD}            - pull substitutes from a network cache\$clD
+    \${clG}push\${clD}            - generate a binary cache\$clD
+    \${clG}shell\${clD}           - start an interactive shell based on a Nix expression\$clD
+    \${clG}store\${clD}           - manipulate or query the Nix store\$clD
+    \$clG-h|--help\${clD}       - print this message
+    \$clG-v|--version\${clD}    - print version\n\n"
+}
+
+usage
+
+if [ -z "$1" ]; then
+  echo -e "ERROR: \"nix\" requires an argument"
+  exit 1
+else
+	case "$1" in
+	  build)
+    ;;
+    channel)
+    ;;
+    collect-garbage)
+    ;;
+    copy-closure)
+    ;;
+    daemon)
+    ;;
+    env)
+    ;;
+    hash)
+    ;;
+    install-package)
+    ;;
+    instantiate)
+    ;;
+    prefetch-url)
+    ;;
+    pull)
+    ;;
+    push)
+    ;;
+    shell)
+    ;;
+    store)
+    ;;
+    *)
+      printf "ERROR: Unknown option $1\n"
+      eval "printf \"${HELP}\""
+    ;;
+	esac
+fi
