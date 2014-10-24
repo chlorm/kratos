@@ -13,8 +13,9 @@ pkgs : {
   };
   ffmpeg.fdk = true;
   st.conf = (builtins.readFile ./st/config.mach.h)
-    + (builtins.readFile ./st/config.inc.h);
+    + (builtins.readFile ./st/config.inc.h);  
   packageOverrides = self : rec {
+    rtorrent-git = self.rtorrent-git.override { colorSupport = true; };
     hsEnv = self.haskellPackages.ghcWithPackages (self : with self; [
       xmonad
       #yi
@@ -68,7 +69,7 @@ pkgs : {
         pulseaudio
         kde4.quasselClient
         qbittorrent
-        #rtorrent-git
+        rtorrent-git
         sakura
         scrot
         #sl
