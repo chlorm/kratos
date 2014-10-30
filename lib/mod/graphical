@@ -32,12 +32,12 @@ graphical_runwm () {
     TILING=1
     if [ -d "$HOME/.config/wallpaper" ]; then
       if [ "$(ls "$HOME/.config/wallpaper" | wc -l)" -gt "1" ]; then
-	    sleep 2
-	    while true; do
-		  awsetbg -r "$HOME/.config/wallpaper"
-		  sleep 300
-	    done &
-	  fi
+  	    sleep 2
+  	    while true; do
+    		  awsetbg -r "$HOME/.config/wallpaper"
+    		  sleep 300
+  	    done &
+	    fi
     fi
   elif [ "$WM" = "xmonad" ]; then
     TILING=1
@@ -91,15 +91,15 @@ graphical_st () {(
     if [ -f "config.$(hostname -s).h" ];then
       symlink "config.$(hostname -s).h" "config.mach.h"
     else
-      symlink "config.other.h" "config.mach.h";fi;fi
+      symlink "config.other.h" "config.mach.h"
+    fi
+  fi
 )}
 
 # Automatically Configures the graphical interface
 graphical_auto () {
   install -d $HOME/.config
-  config_ln ncmpcpp rtorrent.rc xinitrc xprofile xsession xmonad 
-config/awesome 
-config/beets config/mpd config/sublime-text-3 config/Terminal config/wallpaper config/uzbl
+  config_ln ncmpcpp rtorrent.rc xinitrc xprofile xsession xmonad config/awesome config/beets config/mpd config/sublime-text-3 config/Terminal config/wallpaper config/uzbl
   symlink "$HOME/.config/Terminal" "$HOME/.config/xfce4/terminal"
   graphical_st
   return 0
