@@ -8,7 +8,7 @@ os_base () {
 # Finds linux distro i.e. gentoo,nixos,ubuntu
 os_linux_distro () {
   if os_base 'Linux';then
-    linuxDistro=$(cat /etc/*-release 2>/dev/null | \
+    linuxDistro=$(uname -a 2>/dev/null | \
       grep -m 1 -w -o '\(Antergos\|Arch\|CentOS\|Debian\|Fedora\|Gentoo\|NixOS\|OpenSuse\|RedHat\|SuSe\|Ubuntu\)')
     case "$linuxDistro" in
       Antergos)
