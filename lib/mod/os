@@ -9,26 +9,36 @@ os_base () {
 os_linux_distro () {
   if os_base 'Linux';then
     linuxDistro=$(cat /etc/*-release 2>/dev/null | \
-      grep -m 1 -w '\(Arch\|CentOS\|Debian\|Fedora\|Gentoo\|NixOS\|OpenSuse\|Ubuntu\)')
+      grep -m 1 -w '\(Arch\|CentOS\|Debian\|Fedora\|Gentoo\|NixOS\|OpenSuse\|Ubuntu\)' | \
+      awk -F "=" '/NAME/ { print $2 }')
     case "$linuxDistro" in
-      *Antergos*)
-        linuxDistro="antergos";;
-      *Arch*)
-        linuxDistro="arch";;
-      *CentOS*)
-        linuxDistro="centos";;
-      *Debian*)
-        linuxDistro="debian";;
-      *Fedora*)
-        linuxDistro="fedora";;
-      *Gentoo*)
-        linuxDistro="gentoo";;
-      *NixOS*)
-        linuxDistro="nixos";;
-      *OpenSuse*)
-        linuxDistro="opensuse";;
-      *Ubuntu*)
-        linuxDistro="ubuntu";;
+      Antergos)
+        linuxDistro="antergos"
+        ;;
+      Arch)
+        linuxDistro="arch"
+        ;;
+      CentOS)
+        linuxDistro="centos"
+        ;;
+      Debian)
+        linuxDistro="debian"
+        ;;
+      Fedora)
+        linuxDistro="fedora"
+        ;;
+      Gentoo)
+        linuxDistro="gentoo"
+        ;;
+      NixOS)
+        linuxDistro="nixos"
+        ;;
+      OpenSuse)
+        linuxDistro="opensuse"
+        ;;
+      Ubuntu)
+        linuxDistro="ubuntu"
+        ;;
     esac
   fi
 }
