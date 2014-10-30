@@ -1,16 +1,18 @@
 #!/usr/bin/env sh
 
-##[returns base os i.e. linux,freebsd,darwin,cygwin]
+# Find base os i.e. linux,freebsd,darwin,cygwin
 os_base () {
   uname -s
 }
 
-##[finds linux distro i.e. gentoo,nixos,ubuntu]
+# Finds linux distro i.e. gentoo,nixos,ubuntu
 os_linux_distro () {
   if os_base 'Linux';then
     linuxDistro=$(cat /etc/*-release 2>/dev/null | \
       grep -m 1 -w '\(Arch\|CentOS\|Debian\|Fedora\|Gentoo\|NixOS\|OpenSuse\|Ubuntu\)')
     case "$linuxDistro" in
+      *Antergos*)
+        linuxDistro="antergos";;
       *Arch*)
         linuxDistro="arch";;
       *CentOS*)
@@ -27,28 +29,6 @@ os_linux_distro () {
         linuxDistro="opensuse";;
       *Ubuntu*)
         linuxDistro="ubuntu";;
-    esac;fi
-}
-
-####################################################################################
-
-## DEPCRECATED
-# Returns the issue of the operating system
-os_issue () {
-  local OS_ISSUE
-  [ -f "$ROOT/etc/issue" ] || return 0
-  OS_ISSUE="$(cat "$ROOT/etc/issue" 2>/dev/null)" && { echo "$OS_ISSUE"; return 0; }
-  echo "Failed to get OS Issue" >&2
-  return 1
-}
-
-## DEPCRECATED
-os_info () {
-  uname -a
-}
-
-## DEPCRECATED
-# Determines whether the os info matches the regex provided
-os_matches () {
-  echo $(os_issue) $(os_info) | grep $1 >/dev/null 2>&1
+    esac
+  fi
 }
