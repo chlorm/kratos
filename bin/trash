@@ -1,0 +1,113 @@
+#!/usr/bin/env sh
+# Trash Bin Utiliy
+
+# Complies to XDG specification:
+# http://freedesktop.org/wiki/Specifications/trash-spec/
+
+# Dependencies: coreutils(ls,mkdir,mv,rm)
+
+# Usage help
+usage () {
+  echo "usage info will go here"
+}
+
+# TODO: make sure directories exist or create them
+# TODO: Prevent deletion of trash directories by trash utility
+# Directories
+DIR_LOCAL="$HOME/.local"
+DIR_LOCAL_SHARE="$HOME/.local/share"
+DIR_TRASH="$HOME/.local/share/Trash"
+DIR_TRASH_INFO="$HOME/.local/share/Trash/info"
+DIR_TRASH_FILES="$HOME/.local/share/Trash/files"
+
+
+# Parse input
+if [ -z $@ ]; then
+  echo "ERROR: no input provided"
+  exit 1
+else
+  case $1 in
+    delete)
+      shift
+      # TODO: allow deletion of specific files and directories
+      ## Bypasses the trash-bin and permanently deletes the target
+      echo "incomplete"
+      # TODO: this should basically be plain rm
+      ;;
+    empty)
+      # Clear all files in trash
+      # TODO: read files in $HOME/.local/share/Trash/info and
+      # delete the .trashinfo file and the file it references
+      # TODO: prompt for confirmation before deleting multiple 
+      # files or directories
+      # TODO: add total file count and size to deletion prompt
+      # TODO: make an optional verbose flag
+      echo "Are you sure you want to empty the trash bin? (Y/N) "
+      read deletePrompt
+      # TODO: add while loop to continue until a valid response is given
+      if [ $deletePrompt = "Y" ] || [ $deletePrompt = "y" ]; then
+        rm -rfv $HOME/.local/share/Trash/info/* && \
+        rm -rfv $HOME/.local/share/Trash/files/* || \
+        echo "ERROR: failed to empty the trash bin"
+      elif [ $deletePrompt = "N" ] || [ $deletePrompt = "n" ]; then
+        exit 0
+      else
+        echo "WARNING: Invalid response, must be (Y/N)"
+        echo "wanna delete these"
+      fi
+      ;;
+    list)
+      # Lists the contents of the trash bin
+      # TODO: add trash files and directories to a file (an index of trash contents)
+      ls -ARhgo --group-directories-first $HOME/.local/share/Trash/files/
+      ;;
+    -h|--help)
+      usage
+      ;;
+    *)
+      if [ -f $@ || -d $@ ]; then
+        # TODO: This will handle the 'rm' functionality and compatibility layer
+        # TODO: implement ALL 'rm' options to ensure compatability, the options
+        # will be mapped by the compatibility layer to trash options, this
+        # ensures that trash will be a drop-in replacement for rm
+        echo "delete files"
+        # TODO: add while loop or similiar functionality
+        # Currently will not work as is
+        # Parse for 'rm' options and map to Trash
+        case $@ in
+          -d|--dir)
+            ;;
+          -f|--force)
+            ;;
+          -i)
+            ;;
+          -I)
+            ;;
+          --interactive[=WHEN])
+            ;;
+          --help)
+            ;;
+          --no-preserve-root)
+            echo "This action is not permitted by Trash"
+            ;;
+          --one-file-system)
+            ;;
+          --preserve-root)
+            # Always enabled, must be manually disabled in the code for Trash
+            ;;
+          -r|-R|--recursive)
+            ;;
+          -v|--verbose)
+            ;;
+          --version)
+            ;;
+        esac
+      else
+        echo "ERROR: invalid option: $1"
+        echo
+        usage
+        exit 1
+      fi
+      ;;
+  esac
+fi
