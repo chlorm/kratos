@@ -4,7 +4,14 @@
 # Complies to XDG specification:
 # http://freedesktop.org/wiki/Specifications/trash-spec/
 
-# Dependencies: coreutils(ls,mkdir,mv,rm)
+# Dependencies: coreutils(cksum,ls,mkdir,mv,rm)
+
+
+# TODO: get the checksum of the file before an after moving a file
+# before and after moving a file to the trash.  Should also be added
+# to the .trashinfo file.  Also need to be checked if the file is
+# restored.
+
 
 # Usage help
 usage () {
