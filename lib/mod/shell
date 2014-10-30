@@ -109,6 +109,25 @@ shell_init () {
   alias root="sudo_wrap su -"
   alias sprunge="curl -F 'sprunge=<-' http://sprunge.us" 
   alias t='laptop_bat; date'
+  alias sha1="openssl sha1"
+  alias sha256="openssl sha256"
+  alias sha512="openssl sha512"
+  alias youtube="youtube-dl --max-quality --no-check-certificate --prefer-insecure --console-title"
+  alias music="ncmpcpp"
+  alias tarxz="tar cjvf"
+  # Btrfs
+  alias defragmentroot="sudo btrfs filesystem defragment -r -v -clzo /"
+  alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
+  # Gentoo
+  alias inst="sudo emerge --ask"
+  alias search="emerge --search"
+  alias uses="equery uses"
+  alias layup="sudo layman -S"
+
+  export XDG_DATA_HOME="$HOME/.local/share"
+  export XDG_CONFIG_HOME="$HOME/.config"
+  export XDG_CACHE_HOME="$HOME/.cache"
+  export XDG_DOWNLOAD_DIR="$HOME/Downloads"
 
   export EDITOR="vim"
   export PAGER="less"
@@ -116,6 +135,8 @@ shell_init () {
 
   export GOPATH="$HOME/.go"
   export PATH="$PATH:$HOME/.go/bin"
+  #export PATH="${PATH}:/usr/bin"
+  #export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib64:/usr/lib32"
 }
 
 ##[returns the name of the preferred shell]

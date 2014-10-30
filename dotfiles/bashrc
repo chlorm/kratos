@@ -30,16 +30,6 @@ agent_auto
 shell_init
 shell_theme
 
-#export PATH="${PATH}:/usr/bin"
-#export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib64:/usr/lib32"
-
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DOWNLOAD_DIR="$HOME/Downloads"
-
-export EDITOR='vim'
-
 ## Test for an interactive shell.
 if [[ $- != *i* ]] ; then
 	## Shell is non-interactive.  Be done now!
@@ -53,24 +43,9 @@ export LANGUAGE="en_US:en"
 #export LS_COLORS
 ## TODO: Create global color scheme and export variables
 
-## [aliases]
-alias sha1="openssl sha1"
-alias sha256="openssl sha256"
-alias sha512="openssl sha512"
-alias youtube="youtube-dl --max-quality --no-check-certificate --prefer-insecure --console-title"
-alias music="ncmpcpp"
-alias tarxz="tar cjvf"
-
-## [gentoo specific]
-alias inst="sudo emerge --ask"
-alias search="emerge --search"
-alias uses="equery uses"
-alias layup="sudo layman -S"
 update () {
     sudo emerge --sync
     sudo emerge --ask --update --deep --with-bdeps=y --newuse --keep-going @world
-    ## TODO: add all 9999 and recompile on update [in order of dependencies]
-    ## x265,libvpx,ffmpeg,vlc,rtorrent
 }
 ## [list all packages from overlays with corresponding overlay name]
 fromover () {
@@ -80,10 +55,6 @@ fromover () {
         fi
     done
 }
-
-#[btrfs]
-alias defragmentroot="sudo btrfs filesystem defragment -r -v -clzo /"
-alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
 
 # [color man pages]
 ## TODO: update color scheme to match global
