@@ -2,7 +2,7 @@
 
 # Find base os i.e. linux,freebsd,darwin,cygwin
 os_base () {
-  uname -s
+  uname -s >/dev/null 2>&1
 }
 
 # Finds linux distro i.e. gentoo,nixos,ubuntu
