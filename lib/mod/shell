@@ -54,8 +54,14 @@ shell_theme () {
   [ "$(shell_nov)" = "fish" ] && return 0
 
   # Colors for LS
-  os_base '\(Linux\|Cygwin\)' && { eval "$(dircolors -b)"; alias ls='ls --color=auto'; }
-  os_base '\(FreeBSD\)' && { export CLICOLOR=1; export LSCOLORS="ExGxFxdxCxDhDxaBadaCeC"; }
+  case "$(os_base)" in
+    Linux|Cygwin)
+      eval "$(dircolors -b)"; alias ls='ls --color=auto'
+      ;;
+    FreeBSD)
+      export CLICOLOR=1; export LSCOLORS="ExGxFxdxCxDhDxaBadaCeC"
+      ;;
+  esac
 
   # 256 Colors in the Terminal
   if [ "$TERM" = "xterm" ] || [ "$TERM" = "rxvt-unicode-256color" ]; then
