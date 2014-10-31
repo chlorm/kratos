@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # Get colors for the current shell
-shell_color () {
+shclr () {
   [ "$(shell_nov)" = "zsh" ] && echo -n '%{' || echo -n '\['
   case "$1" in
     black)
@@ -27,6 +27,9 @@ shell_color () {
       ;;
     yellow)
       [ "$2" -eq "0" ] && echo -n '\e[0;33m' || echo -n '\e[1;33m'
+      ;;
+    underline)
+      echo -n '\033[0;4m'
       ;;
     reset)
       echo -n '\e[0m'
@@ -71,26 +74,26 @@ shell_theme () {
 
   # Setup Special Colors
   if info_root; then
-    NCOLOR="$(shell_color cyan 0)"
+    NCOLOR="$(shclr cyan 0)"
   else
-    NCOLOR="$(shell_color white 1)"
+    NCOLOR="$(shclr white 1)"
   fi
 
   if info_ws; then
-    HCOLOR="$(shell_color green 0)"
+    HCOLOR="$(shclr green 0)"
   else
-    HCOLOR="$(shell_color red 0)"
+    HCOLOR="$(shclr red 0)"
   fi
 
-  DCOLOR="$(shell_color yellow 1)"
+  DCOLOR="$(shclr yellow 1)"
 
   # Create Prompt
   if [ "$(shell_nov)" = "zsh" ];then
-    PROMPT="[$NCOLOR%n$(shell_color reset 0)@"
-    PROMPT="$PROMPT$HCOLOR%m$(shell_color reset 0):"
-    PROMPT="$PROMPT$DCOLOR%30<...<%~%<<$(shell_color reset 0)]%(!.#.$) "
+    PROMPT="[$NCOLOR%n$(shclr reset 0)@"
+    PROMPT="$PROMPT$HCOLOR%m$(shclr reset 0):"
+    PROMPT="$PROMPT$DCOLOR%30<...<%~%<<$(shclr reset 0)]%(!.#.$) "
   else
-    PS1="$(shell_color green 1)\u$(shell_color black 1)@$(shell_color white 1)\h$(shell_color black 1)[$(shell_color magenta 1)\w$(shell_color black 1)]\$([[ -n \$(git branch 2>/dev/null) ]] && echo \"$(shell_color green 1)git$(shell_color black 1)∫\")$(shell_color white 1)\$(git_branch)$(shell_color cyan 0)〉$(shell_color reset)"
+    PS1="$(shclr green 1)\u$(shclr black 1)@$(shclr white 1)\h$(shclr black 1)[$(shclr magenta 1)\w$(shclr black 1)]\$([[ -n \$(git branch 2>/dev/null) ]] && echo \"$(shclr green 1)git$(shclr black 1)∫\")$(shclr white 1)\$(git_branch)$(shclr cyan 0)〉$(shclr reset)"
   fi
 }
 
