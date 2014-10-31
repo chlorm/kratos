@@ -19,33 +19,37 @@ pkgs : {
 
   packageOverrides = self : rec {
     rtorrent-git = self.rtorrent-git.override { colorSupport = true; };
+    desktop-chlorm = self.haskellPackages.ghcWithPackages (self : with self; [
+      xmonad
+      #yi
+    ]);
     # Import Environments
     chlorm = self.buildEnv {
       name = "myChlorm";
       paths = with self; [
         # Required
-        base
+        base-chlorm
         # Optional
-        audio
-        communication
-        desktop
-        development
-        download
-        editors
-        haskell
-        headless
-        image
-        monitoring
-        networking
-        shells
-        terminals
-        video
-        virtualization
-        www
+        audio-chlorm
+        communication-chlorm
+        desktop-chlorm
+        development-chlorm
+        download-chlorm
+        editors-chlorm
+        haskell-chlorm
+        headless-chlorm
+        image-chlorm
+        monitoring-chlorm
+        networking-chlorm
+        shells-chlorm
+        terminals-chlorm
+        video-chlorm
+        virtualization-chlorm
+        www-chlorm
       ];
     };
     # Environments
-    base = self.buildEnv {
+    base-chlorm = self.buildEnv {
       name = "myBase";
       paths = with self; [
         git
@@ -56,7 +60,7 @@ pkgs : {
         wget
       ];
     };
-    audio = self.buildEnv {
+    audio-chlorm = self.buildEnv {
       name = "myAudio";
       paths = with self; [
         pythonPackages.beets
@@ -68,7 +72,7 @@ pkgs : {
         pulseaudio
       ];
     };
-    communication = self.buildEnv {
+    communication-chlorm = self.buildEnv {
       name = "myCommunication";
       paths = with self; [
         mumble
@@ -76,8 +80,7 @@ pkgs : {
         #kde4.quasselClient
       ];
     };
-    desktop = self.haskellPackages.ghcWithPackages (self : with self; [ xmonad ]);
-    development = self.buildEnv {
+    development-chlorm = self.buildEnv {
       name = "myDevelopment";
       paths = with self; [
         #icedtea7_web
@@ -87,7 +90,7 @@ pkgs : {
         texLive
       ];
     };
-    download = self.buildEnv {
+    download-chlorm = self.buildEnv {
       name = "myDownload";
       paths = with self; [
         filezilla
@@ -98,7 +101,7 @@ pkgs : {
         youtubeDL
       ];
     };
-    editors = self.buildEnv {
+    editors-chlorm = self.buildEnv {
       name = "myEditors";
       paths = with self; [
         atom
@@ -109,14 +112,13 @@ pkgs : {
         vim
       ];
     };
-    haskell = self.buildEnv {
+    haskell-chlorm = self.buildEnv {
       name = "myHaskell";
       paths = with self; [
-        haskell.packages_ghc763
         haskellPackages.xdgBasedir
       ];
     };
-    headless = self.buildEnv {
+    headless-chlorm = self.buildEnv {
       name = "myHeadless";
       paths = with self; [
         acpi
@@ -138,7 +140,7 @@ pkgs : {
         #zathura
       ];
     };
-    image = self.buildEnv {
+    image-chlorm = self.buildEnv {
       name = "myImage";
       paths = with self; [
         gimp
@@ -146,34 +148,34 @@ pkgs : {
         libpng
       ];
     };
-    monitoring = self.buildEnv {
+    monitoring-chlorm = self.buildEnv {
       name = "myMonitoring";
       paths = with self; [
         ncdu
         speedtest_cli
       ];
     };
-    networking = self.buildEnv {
+    networking-chlorm = self.buildEnv {
       name = "myNetworking";
       paths = with self; [
         networkmanager
         networkmanagerapplet
       ];
     };
-    shells = self.buildEnv {
+    shells-chlorm = self.buildEnv {
       name = "myShells";
       paths = with self; [
         fish
         #zsh
       ];
     };
-    terminals = self.buildEnv {
+    terminals-chlorm = self.buildEnv {
       name = "myTerminals";
       paths = with self; [
         sakura
       ];
     };
-    video = self.buildEnv {
+    video-chlorm = self.buildEnv {
       name = "myVideo";
       paths = with self; [
         ffmpeg
@@ -184,13 +186,13 @@ pkgs : {
         x264
       ];
     };
-    virtualization = self.buildEnv {
+    virtualization-chlorm = self.buildEnv {
       name = "myVirtualization";
       paths = with self; [
         virtmanager
       ];
     };
-    www = self.buildEnv {
+    www-chlorm = self.buildEnv {
       name = "myWww";
       paths = with self; [
         chromium
