@@ -1,197 +1,299 @@
 #!/usr/bin/env sh
 
-# Update packages using the system's package manager
-pkg_update () {
-  if os_base 'FreeBSD'; then
-    if path_hasbin portmaster; then
-      sudo_wrap portsnap fetch || return $?
-      sudo_wrap portsnap update || return $?
-      sudo_wrap portmaster -ayBd
-      return $?
-    fi
-  elif os_base 'Linux'; then
-    # apt
-    if os_linux_distro '\(Debian\|Ubuntu\)'; then
-      if path_hasbin apt-get; then
-        sudo_wrap apt-get update || return $?
-        sudo_wrap apt-get dist-upgrade
-        return $?
-      fi
-    # pacman, etc...
-    elif os_linux_distro 'Arch'; then
-      if path_hasbin aura; then
-        sudo_wrap aura -Syu || return $?
-        sudo_wrap aura -Aku
-        return $?
-      elif path_hasbin packer; then
-        sudo_wrap packer -Syu
-        return $?
-      elif path_hasbin pacman; then
-        sudo_wrap pacman -Syu
-        return $?
-      fi
-    # portage
-    elif os_linux_distro 'Gentoo'; then
-      if path_hasbin emerge; then
-        sudo_wrap emerge --sync || return $?
-        sudo_wrap emerge --keep-going --update --deep --with-bdeps=y --newuse @world
-        return $?
-      fi
-    # rpm
-    elif os_linux_distro '\(Red\ Hat\|CentOS\|Fedora\)'; then
-      if path_hasbin yum; then
-        sudo_wrap yum update
-        return $?
-      fi
-    # yast
-    elif os_linux_distro 'SUSE'; then
-      if path_hasbin zypper; then
-        sudo_wrap zypper refresh || return $?
-        sudo_wrap zypper update
-        return $?
-      fi
-    # unsupported distro
-    else
-      echo "Failed to find an update procedure, unsupported linux distro"
-      return 1
-    fi
-  elif os_base 'Darwin'; then
-    echo "OSX not yet supported"
-    ## homebrew
-  else
-    echo "Failed to find an update procedure, unsupported os"
-    return 1
-  fi
-}
-
-# Installs a package using the system's package manager
-pkg_install () {
-  if os_base 'FreeBSD'; then
-    if path_hasbin portmaster; then
-      sudo_wrap portmaster -yBd $@
-      return $?
-    fi
-  elif os_base 'Linux'; then
-    # apt
-    if os_linux_distro '\(Debian\|Ubuntu\)'; then
-      if path_hasbin apt-get; then
-        sudo_wrap apt-get install $@
-        return $?
-      fi
-    # pacman, etc...
-    elif os_linux_distro 'Arch'; then
-      if path_hasbin aura; then
-        if sudo_wrap aura -Si $@ >/dev/null 2>&1; then
-          sudo_wrap aura -S $@ && return 0
-        else
-          sudo_wrap aura -A $@ && return 0
-        fi
+pkg () {
+  case "$1" in
+    clean)
+        case "$(os_base)" in
+          Cygwin)
+            echo "Cygwin is currently unsupported"
+            ;;
+          Darwin)
+            echo "Darwin is currently unsupported"
+            ;;
+          FreeBSD)
+            echo "unsupported action"
+            ;;
+          Linux)
+            case "$(os_linux_distro)" in
+              # Apt
+              Debian|Ubuntu)
+                echo "unsupported action"
+                ;;
+              # Nix
+              NixOS)
+                echo "unsupported action"
+                ;;
+              # Pacman
+              Arch)
+                [ "$(pacman -Qqdt)" != "" ] && sudo_wrap pacman -Rns $(pacman -Qqdt)
+                return $?
+                ;;
+              # Portage
+              Gentoo)
+                sudo_wrap emerge --depclean && sudo_wrap emerge @preserved-rebuild
+                return $?
+                ;;
+              # Rpm
+              Red\ Hat|CentOS|Fedora)
+                echo "unsupported action"
+                ;;
+              # Yast
+              SUSE)
+                echo "unsupported action"
+                ;;
+              *)
+                echo "WARNING: Unsupported Linux distro"
+                return 1
+                ;;
+            esac
+            ;;
+          *)
+            echo "WARNING: Failed to find an update procedure: Unsupported Base OS"
+            ;;
+        esac
+      ;;
+    install)
+        case "$(os_base)" in
+          Cygwin)
+            shift
+            echo "Cygwin is currently unsupported"
+            ;;
+          Darwin)
+            shift
+            echo "Darwin is currently unsupported"
+            ;;
+          FreeBSD)
+            shift
+            if path_hasbin portmaster; then
+              sudo_wrap portmaster -yBd $@
+              return $?
+            fi
+            ;;
+          Linux)
+            shift
+            case "$(os_linux_distro)" in
+              # Apt
+              Debian|Ubuntu)
+                if path_hasbin apt-get; then
+                  sudo_wrap apt-get install $@
+                  return $?
+                fi
+                ;;
+              # Nix
+              NixOS)
+                if path_hasbin nix-env; then
+                  nix-env -i $@ && return 0
+                  return 1
+                fi
+                ;;
+              # Pacman
+              Arch)
+                if path_hasbin aura; then
+                  if sudo_wrap aura -Si $@ >/dev/null 2>&1; then
+                    sudo_wrap aura -S $@ && return 0
+                  else
+                    sudo_wrap aura -A $@ && return 0
+                  fi
+                  return 1
+                elif path_hasbin packer; then
+                  sudo_wrap packer -S $@
+                  return $?
+                elif path_hasbin pacman; then
+                  sudo_wrap pacman -S $@
+                  return $?
+                fi
+                ;;
+              # Portage
+              Gentoo)
+                if path_hasbin emerge; then
+                  sudo_wrap emerge --with-bdeps=y $@
+                  return $?
+                fi
+                ;;
+              # Rpm
+              Red\ Hat|CentOS|Fedora)
+                if path_hasbin yum; then
+                  sudo_wrap yum install $@
+                  return $?
+                fi
+                ;;
+              # Yast
+              SUSE)
+                if path_hasbin zypper; then
+                  #sudo_wrap zypper
+                  return $?
+                fi
+                ;;
+              *)
+                echo "WARNING: Unsupported Linux distro"
+                return 1
+                ;;
+            esac
+            ;;
+          *)
+            echo "WARNING: Failed to find an update procedure: Unsupported Base OS"
+            ;;
+        esac
+      ;;
+    uninstall)
+        case "$(os_base)" in
+          Cygwin)
+            shift
+            echo "Cygwin is currently unsupported"
+            ;;
+          Darwin)
+            shift
+            echo "Darwin is currently unsupported"
+            ;;
+          FreeBSD)
+            shift
+            if path_hasbin portmaster; then
+              sudo_wrap portmaster -esdy $@
+              return $?
+            fi
+            ;;
+          Linux)
+            shift
+            case "$(os_linux_distro)" in
+              # Apt
+              Debian|Ubuntu)
+                if path_hasbin apt-get; then
+                  sudo_wrap apt-get purge $@
+                  return $?
+                fi
+                ;;
+              # Nix
+              NixOS)
+                echo "unsupported action"
+                ;;
+              # Pacman
+              Arch)
+                if path_hasbin aura; then
+                  sudo_wrap aura -Rsdc $@
+                  return $?
+                elif path_hasbin pacman; then
+                  sudo_wrap pacman -Rsdc $@
+                  return $?
+                fi
+                ;;
+              # Portage
+              Gentoo)
+                if path_hasbin emerge; then
+                  sudo_wrap emerge --unmerge $@
+                  return $?
+                fi
+                ;;
+              # Rpm
+              Red\ Hat|CentOS|Fedora)
+                if path_hasbin yum; then
+                  #sudo_wrap yum install $@
+                  return $?
+                fi
+                ;;
+              # Yast
+              SUSE)
+                if path_hasbin zypper; then
+                  #sudo_wrap zypper
+                  return $?
+                fi
+                ;;
+              *)
+                echo "WARNING: Unsupported Linux distro"
+                return 1
+                ;;
+            esac
+            ;;
+          *)
+            echo "WARNING: Failed to find an update procedure: Unsupported Base OS"
+            ;;
+        esac
+      ;;
+    update)
+        case "$(os_base)" in
+          Cygwin)
+            echo "Cygwin is currently unsupported"
+            ;;
+          Darwin)
+            echo "Darwin is currently unsupported"
+            ;;
+          FreeBSD)
+            if path_hasbin portmaster; then
+              sudo_wrap portsnap fetch || return $?
+              sudo_wrap portsnap update || return $?
+              sudo_wrap portmaster -ayBd
+              return $?
+            fi
+            ;;
+          Linux)
+            case "$(os_linux_distro)" in
+              # Apt
+              Debian|Ubuntu)
+                if path_hasbin apt-get; then
+                  sudo_wrap apt-get update || return $?
+                  sudo_wrap apt-get dist-upgrade
+                  return $?
+                fi
+                ;;
+              # Nix
+              NixOS)
+                if path_hasbin nix-env; then
+                  sudo_wrap nix-channel --update && \
+                  nix-env -ir myChlorm
+                  return $?
+                fi
+                ;;
+              # Pacman
+              Arch)
+                if path_hasbin aura; then
+                  sudo_wrap aura -Syu || return $?
+                  sudo_wrap aura -Aku
+                  return $?
+                elif path_hasbin packer; then
+                  sudo_wrap packer -Syu
+                  return $?
+                elif path_hasbin pacman; then
+                  sudo_wrap pacman -Syu
+                  return $?
+                fi
+                ;;
+              # Portage
+              Gentoo)
+                if path_hasbin emerge; then
+                  sudo_wrap emerge --sync || return $?
+                  sudo_wrap emerge --keep-going --update --deep --with-bdeps=y --newuse @world
+                  return $?
+                fi
+                ;;
+              # Rpm
+              Red\ Hat|CentOS|Fedora)
+                if path_hasbin yum; then
+                  sudo_wrap yum update
+                  return $?
+                fi
+                ;;
+              # Yast
+              SUSE)
+                if path_hasbin zypper; then
+                  sudo_wrap zypper refresh || return $?
+                  sudo_wrap zypper update
+                  return $?
+                fi
+                ;;
+              *)
+                echo "WARNING: Unsupported Linux distro"
+                return 1
+                ;;
+            esac
+            ;;
+          *)
+            echo "WARNING: Failed to find an update procedure: Unsupported Base OS"
+            ;;
+        esac
+      ;;
+      *)
+        echo "WARNING: Invalid option: $1"
+        # return usage
         return 1
-      elif path_hasbin packer; then
-        sudo_wrap packer -S $@
-        return $?
-      elif path_hasbin pacman; then
-        sudo_wrap pacman -S $@
-        return $?
-      fi
-    # portage
-    elif os_linux_distro 'Gentoo'; then
-      if path_hasbin emerge; then
-        sudo_wrap emerge --with-bdeps=y $@
-        return $?
-      fi
-    # rpm
-    elif os_linux_distro '\(Red\ Hat\|CentOS\|Fedora\)'; then
-      if path_hasbin yum; then
-        sudo_wrap yum install $@
-        return $?
-      fi
-    # yast
-    elif os_linux_distro 'SUSE'; then
-      if path_hasbin zypper; then
-        #sudo_wrap zypper
-        return $?
-      fi
-    ##[unsupported distro]
-    else
-      echo "Failed to find an install procedure, unsupported linux distro"
-      return 1
-    fi
-  elif os_base 'Darwin'; then
-    echo "OSX not yet supported"
-    ## homebrew
-  else
-    echo "Failed to find an install procedure, unsupported os" >&2
-    return 1
-  fi
-}
-
-# Remove and purge a package using the system's package manager
-pkg_remove () {
-  if os_base 'FreeBSD'; then
-    if path_hasbin portmaster; then
-      sudo_wrap portmaster -esdy $@
-      return $?
-    fi
-  elif os_base 'Linux'; then
-    # apt
-    if os_linux_distro '\(Debian\|Ubuntu\)'; then
-      if path_hasbin apt-get; then
-        sudo_wrap apt-get purge $@
-        return $?
-      fi
-    # pacman, etc...
-    elif os_linux_distro 'Arch'; then
-      if path_hasbin aura; then
-        sudo_wrap aura -Rsdc $@
-        return $?
-      elif path_hasbin pacman; then
-        sudo_wrap pacman -Rsdc $@
-        return $?
-      fi
-    # portage
-    elif os_linux_distro 'Gentoo'; then
-      if path_hasbin emerge; then
-        sudo_wrap emerge --unmerge $@
-        return $?
-      fi
-    # rpm
-    elif os_linux_distro '\(Red\ Hat\|CentOS\|Fedora\)'; then
-      if path_hasbin yum; then
-        #sudo_wrap yum install $@
-        return $?
-      fi
-    # yast
-    elif os_linux_distro 'SUSE'; then
-      if path_hasbin zypper; then
-        #sudo_wrap zypper
-        return $?
-      fi
-    # unsupported linux distro
-    else
-      echo "Failed to find a remove procedure, unsupported linux distro"
-      return 1
-    fi
-  elif os_base 'Darwin'; then
-    echo "OSX not yet supported"
-    # homebrew
-  else
-    echo "Failed to find a remove procedure, unsupported os" >&2
-    return 1
-  fi
-}
-alias pkg_delete=pkg_remove
-
-# Cleans the package repository
-pkg_clean () {
-  if os_linux_distro 'Arch' && path_hasbin pacman; then
-    [ "$(pacman -Qqdt)" != "" ] && sudo_wrap pacman -Rns $(pacman -Qqdt)
-    return $?
-  elif os_linux_distro 'Gentoo' && path_hasbin emerge; then
-    sudo_wrap emerge --depclean && sudo_wrap emerge @preserved-rebuild
-    return $?
-  else
-    echo "Failed to find a cleanup procedure" >&2
-    return 1
-  fi
+        ;;
+  esac
 }
