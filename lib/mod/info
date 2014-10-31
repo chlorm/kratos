@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+## TODO: Using a standard hostname format and parse to determine machines features
+
 # Determine if this is a workstation
 info_ws () {
   [ "$WS" = "0" ] && return 0
