@@ -1,5 +1,16 @@
 #!/usr/bin/env sh
 
+usage () {
+    eval "printf \"Pkg is an abstraction layer for system package managers.
+
+Usage: pkg UTILITY [OPTIONS]
+    clean          - Remove orphanded dependencies
+    install        - Install a package
+    uninstall      - Uninstall a package
+    update         - Install Updates
+    -h|--help      - print this message\n\n\""
+}
+
 pkg () {
   case "$1" in
     clean)
@@ -290,9 +301,13 @@ pkg () {
             ;;
         esac
       ;;
+      -h|--help|help)
+        usage
+        return 0
+        ;;
       *)
         echo "WARNING: Invalid option: $1"
-        # return usage
+        usage
         return 1
         ;;
   esac
