@@ -1,27 +1,58 @@
 #!/usr/bin/env bash
-##[add all albums by music artist to local music library and convert lossless to mp3]
+##       ________   ___       ___
+##      /  _____/  /  /      /  /
+##     /  /       /  /      /  /
+##    /  /       /  /____  /  / _______  _______  ____  ____
+##   /  /       /  ___  / /  / /  __  / /  ____/ /    \/    \
+##  /  /_____  /  /  / / /  / /  /_/ / /  /     /  /\    /\  \
+## /________/ /__/  /_/ /__/ /______/ /__/     /__/  \__/  \__\ TM
+##
+## Title: Add Artist
+## Author: Cody Opel
+## E-mail: codyopel(at)gmail.com
+## Copyright (c) 2014 All Rights Reserved, http://www.chlorm.net
+## License: The MIT License - http://opensource.org/licenses/MIT
+## Comments:
+##    Assumed Directory & File Structure:
+##      ~/.bin/addartist
+##    Legend:
+##      () - option
+##      [] - description
+##      ## - comments [not to be uncommented]
+##      # -- commented variables
+##
+## Adds all albums by an artist to local music library and convert lossless to lossy
+##
+
+# Configuration Options
+remoteUser="cwopel"
+remoteAddress="192.168.1.5" # Should be an absolute path
+remotePort="22"
+remoteMusicDirectory="/home/cwopel/Music"
+localMusicDirectory="$HOME/Music/"
+
 if [[ -z "$@" ]]; then echo "ERROR: no input"; exit 1; fi
 inputArtist="$@"
-artistAddPath="/home/cwopel/Music/\"${@}\""
-## [download artist's albums]
+artistAddPath="$remoteMusicDirectory/\"${@}\""
+# Download artist's albums
 #scp -r -P 4497 "jackal@192.168.1.5:${artistAddPath}" "$HOME/Music/"
-scp -r "cwopel@192.168.1.5:${artistAddPath}" "$HOME/Music/"
-## [check for flac and convert to ogg]
+scp -r "$remoteUser@$remoteAddress:${artistAddPath}" "$localMusicDirectory"
+# Check for flac and convert to lossy
 find $HOME/Music/"${inputArtist}" -depth -name '*' | \
 while read curWorkFile; do
     curWorkFileExt=${curWorkFile##*.}
     if [[ -z "$curWorkFileExt" ]]; then
         echo "nothing to do here";
     elif [[ "$curWorkFileExt" = "flac" ]]; then
-        ## [path to current file]
+        # Path to current file
         curWorkDir=$(dirname "$curWorkFile")
-        ## [filename w/ ext]
+        # Filename w/ ext
         fileName=$(basename "$curWorkFile")
-        ## [filename w/o ext]
+        # Filename w/o ext
         fileName=$(echo "$fileName" | sed -r 's/\.[[:alnum:]]+$//')
         ffmpeg -y -i "$curWorkFile" -c:a libvorbis -qscale:a 5 "$curWorkDir/$fileName.ogg" & \
         ffmpegPid=$!
-        ## [don't delete before encoding completes]
+        # Don't delete before encoding completes
         wait "$ffmpegPid"
         rm -f "$curWorkFile"
     fi
