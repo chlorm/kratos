@@ -69,31 +69,3 @@ man () {
     LESS_TERMCAP_us=$(printf "\e[1;32m") \
     man "$@"
 }
-
-##[add all albums by music artist to local music library and convert lossless to mp3]
-addartist () {
-    if [[ -z "$@" ]];then echo "ERROR: no input";exit 1;fi
-    inputArtist="$@"
-    artistAddPath="/home/jackal/Music/\"${@}\""
-    ## [download artist's albums]
-    scp -r -P 4497 "jackal@192.168.1.5:${artistAddPath}" "$HOME/Music/"
-    ## [check for flac and convert to ogg]
-    find $HOME/Music/"${inputArtist}" -depth -name '*' | \
-    while read curWorkFile;do
-        curWorkFileExt=${curWorkFile##*.}
-        if [[ -z "$curWorkFileExt" ]];then echo "nothing to do here";
-        elif [[ "$curWorkFileExt" = "flac" ]];then
-            ## [path to current file]
-            curWorkDir=$(dirname "$curWorkFile")
-            ## [filename w/ ext]
-            fileName=$(basename "$curWorkFile")
-            ## [filename w/o ext]
-            fileName=$(echo "$fileName" | sed -r 's/\.[[:alnum:]]+$//')
-            ffmpeg -y -i "$curWorkFile" -c:a libvorbis -qscale:a 5 "$curWorkDir/$fileName.ogg" & \
-            ffmpegPid=$!
-            ## [don't delete before encoding completes]
-            wait "$ffmpegPid"
-            rm -f "$curWorkFile"
-        fi;done
-    exit 0
-}
