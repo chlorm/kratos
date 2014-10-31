@@ -51,6 +51,7 @@ pkgs : {
         #libreoffice
         ##mediainfo
         mkvtoolnix
+        most
         mpd
         mumble
         ncdc
@@ -67,7 +68,7 @@ pkgs : {
         pidgin
         pinentry
         pulseaudio
-        kde4.quasselClient
+        #kde4.quasselClient
         qbittorrent
         rtorrent-git
         sakura
