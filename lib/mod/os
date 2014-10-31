@@ -2,17 +2,21 @@
 
 # Find base os i.e. linux,freebsd,darwin,cygwin
 os_base () {
-  uname -s >/dev/null 2>&1
+	uname -s | grep -m 1 -w -o '\(Cygwin\|Darwin\|FreeBSD\|Linux\)'
 }
 
-# Finds linux distro i.e. gentoo,nixos,ubuntu
+# Finds linux distro via /etc/*-release
+os_linux_distro_release () {
+  cat $ROOT/etc/*-release 2>/dev/null
+}
+
+# Finds linux distro via uname -a
+os_linux_distro_uname () {
+  uname -a 2>/dev/null
+}
+
+# Take first result of distro name match
 os_linux_distro () {
-  if os_base 'Linux'; then
-    linuxDistro=$(cat /etc/*-release 2>/dev/null | \
-      grep -m 1 -w -o '\(Arch\|CentOS\|Debian\|Fedora\|Gentoo\|NixOS\|OpenSuse\|Red\ Hat\|SUSE\|Ubuntu\)')
-    if [ -z "$linuxDistro"]; then
-      linuxDistro=$(uname -a 2>/dev/null | \
-        grep -m 1 -w -o '\(Arch\|CentOS\|Debian\|Fedora\|Gentoo\|NixOS\|OpenSuse\|Red\ Hat\|SUSE\|Ubuntu\)')
-    fi
-  fi
+  echo "$(os_linux_distro_release) $(os_linux_distro_uname)" | \
+  grep -m 1 -w -o '\(Arch\|CentOS\|Debian\|Fedora\|Gentoo\|NixOS\|OpenSuse\|Red\ Hat\|SUSE\|Ubuntu\)'
 }
