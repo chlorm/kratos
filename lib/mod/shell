@@ -54,8 +54,8 @@ shell_theme () {
   [ "$(shell_nov)" = "fish" ] && return 0
 
   # Colors for LS
-#  os_base '\(Linux\|Cygwin\)' && { eval "$(dircolors -b)"; alias ls='ls --color=auto'; }
-#  os_base '\(FreeBSD\)' && { export CLICOLOR=1; export LSCOLORS="ExGxFxdxCxDhDxaBadaCeC"; }
+  os_base '\(Linux\|Cygwin\)' && { eval "$(dircolors -b)"; alias ls='ls --color=auto'; }
+  os_base '\(FreeBSD\)' && { export CLICOLOR=1; export LSCOLORS="ExGxFxdxCxDhDxaBadaCeC"; }
 
   # 256 Colors in the Terminal
   if [ "$TERM" = "xterm" ] || [ "$TERM" = "rxvt-unicode-256color" ]; then
@@ -96,7 +96,8 @@ shell_tmp () {
     export SAVEHIST="9999"
   else
     export HISTFILE="/dev/null"
-    export SAVEHIST="0";fi
+    export SAVEHIST="0"
+  fi
 }
 
 # Initializes useful functions if the caller is a shell
@@ -123,12 +124,13 @@ shell_init () {
   alias search="emerge --search"
   alias uses="equery uses"
   alias layup="sudo layman -S"
-
+  # Directories
   export XDG_DATA_HOME="$HOME/.local/share"
   export XDG_CONFIG_HOME="$HOME/.config"
   export XDG_CACHE_HOME="$HOME/.cache"
   export XDG_DOWNLOAD_DIR="$HOME/Downloads"
-
+  # Defaults
+  export LANGUAGE="en_US:en"
   export EDITOR="vim"
   export PAGER="less"
   export BLOCKSIZE="K"
@@ -139,21 +141,29 @@ shell_init () {
   #export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib64:/usr/lib32"
 }
 
-##[returns the name of the preferred shell]
+# Returns the name of the preferred shell
 shell_get_best () {
-  ##[bash]
-  if path_hasbin bash;then echo "bash";return 0
-  ##[fish]
-  elif path_hasbin fish;then echo "fish";return 0
-  ##[zsh]
+  # Bash
+  if path_hasbin bash; then
+    echo "bash"
+    return 0
+  # Fish
+  elif path_hasbin fish; then
+    echo "fish"
+    return 0
+  # Zsh
   elif path_hasbin zsh; then
     VER="$(zsh --version | awk '{print $2}')"
 	  VER="$(printf "4.3.9\n%s" "$VER" | \
       sort -bt. -k1,1n -k2,2n -k3,3n -k4,4n -k5,5n | \
       awk 'NR==1')"
-	  if [ "$VER" = "4.3.9" ]; then echo "zsh";return 0;fi
-  ##[fallback to sh]
-  else echo "sh";fi
+	  if [ "$VER" = "4.3.9" ]; then echo "zsh"
+      return 0
+    fi
+  # Fallback to sh
+  else 
+    echo "sh"
+  fi
 }
 
 # Automatically executes the preferred shell
