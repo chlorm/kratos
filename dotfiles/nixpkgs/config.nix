@@ -56,6 +56,7 @@ pkgs : {
         htop
         openssh_hpn
         openssl
+        slock
         tmux
         wget
       ];
