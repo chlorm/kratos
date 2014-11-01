@@ -32,7 +32,8 @@ pkg () {
                 ;;
               # Nix
               NixOS)
-                echo "unsupported action"
+                sudo_wrap nix-collect-garbage -d
+                return $?
                 ;;
               # Pacman
               Arch)
