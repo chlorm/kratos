@@ -4,29 +4,62 @@
 # Complies to XDG specification:
 # http://freedesktop.org/wiki/Specifications/trash-spec/
 
-# Dependencies: coreutils(cksum,ls,mkdir,mv,rm)
+# Dependencies: coreutils(cksum,ls,mkdir,mv,rm),awk,grep,openssl(or other crypto hash),sha1sum
 
 
-# TODO: get the checksum of the file before an after moving a file
-# before and after moving a file to the trash.  Should also be added
-# to the .trashinfo file.  Also need to be checked if the file is
-# restored.
+# TODO: get the checksum of the file before and after moving a file
+# to the trash.  Should also be added to the .trashinfo file.  Also
+# need to be checked if the file is restored.
 
+#[Trash Info]
+#Path=/home/cwopel/Videos/Television/from.dusk.till.dawn-the.series/SMALL%20%28copy%29.JPG
+#DeletionDate=2014-10-29T19:10:25
+
+#[Trash Info]
+#Path=[orginal path including the orginal filename]
+#DeletionDate=[ISO 8601 compliant date and time]
+
+VERSION="0.1"
 
 # Usage help
 usage () {
   echo "usage info will go here"
 }
 
-# TODO: make sure directories exist or create them
-# TODO: Prevent deletion of trash directories by trash utility
 # Directories
 DIR_LOCAL="$HOME/.local"
 DIR_LOCAL_SHARE="$HOME/.local/share"
 DIR_TRASH="$HOME/.local/share/Trash"
 DIR_TRASH_INFO="$HOME/.local/share/Trash/info"
 DIR_TRASH_FILES="$HOME/.local/share/Trash/files"
-
+# Test to make sure directories exist, if not create them
+if [ ! -d "$DIR_LOCAL" ]; then
+  mkdir $DIR_LOCAL
+  mkdir $DIR_LOCAL_SHARE
+  mkdir $DIR_TRASH
+  mkdir $DIR_TRASH_INFO
+  mkdir $DIR_TRASH_FILES
+else
+  if [ ! -d "$DIR_LOCAL_SHARE" ]; then
+    mkdir $DIR_LOCAL_SHARE
+    mkdir $DIR_TRASH
+    mkdir $DIR_TRASH_INFO
+    mkdir $DIR_TRASH_FILES
+  else
+    if [ ! -d "$DIR_TRASH" ]; then
+      mkdir $DIR_TRASH
+      mkdir $DIR_TRASH_INFO
+      mkdir $DIR_TRASH_FILES
+    else
+      if [ ! -d "$DIR_TRASH_INFO" ]; then
+        mkdir $DIR_TRASH_INFO
+      fi
+      if [ ! -d "$DIR_TRASH_FILES" ]; then
+        mkdir $DIR_TRASH_FILES
+      fi
+    fi
+  fi
+fi
 
 # Parse input
 if [ -z $@ ]; then
@@ -38,8 +71,9 @@ else
       shift
       # TODO: allow deletion of specific files and directories
       ## Bypasses the trash-bin and permanently deletes the target
-      echo "incomplete"
-      # TODO: this should basically be plain rm
+      echo "incomplete: rm passthrough for now"
+      # TODO: grep $@ for trash directories and if a match is found exit with error
+      rm $@
       ;;
     empty)
       # Clear all files in trash
@@ -49,24 +83,91 @@ else
       # files or directories
       # TODO: add total file count and size to deletion prompt
       # TODO: make an optional verbose flag
-      echo "Are you sure you want to empty the trash bin? (Y/N) "
-      read deletePrompt
-      # TODO: add while loop to continue until a valid response is given
-      if [ $deletePrompt = "Y" ] || [ $deletePrompt = "y" ]; then
-        rm -rfv $HOME/.local/share/Trash/info/* && \
-        rm -rfv $HOME/.local/share/Trash/files/* || \
-        echo "ERROR: failed to empty the trash bin"
-      elif [ $deletePrompt = "N" ] || [ $deletePrompt = "n" ]; then
-        exit 0
-      else
-        echo "WARNING: Invalid response, must be (Y/N)"
-        echo "wanna delete these"
-      fi
+
+      totalTrashSize="0"
+      totalTrashFiles="0"
+
+      for *.trashinfo in "$DIR_TRASH_INFO"; do
+        # Get filename INCOMPLETE
+        findFileName=$(ls -al .trashinfo | awk -F " " '{ print $5 }')
+        # remove trashinfo extension
+        # if -f file exists
+        if [ -f fileExists ]; then
+          # Get filesize INCOMPLETE
+          findFileSize=$(ls -al .trashinfo | awk -F " " '{ print $9 }')
+          # Add filesize to total
+          totalTrashSize=$(( $findFileSize + $totalTrashSize ))
+          # Add one to file counter
+          totalTrashfiles=$(( 1 + $totalTrashFiles ))
+        fi
+      done
+      # Convert totalTrashSize to a human readable format (Kb/Mb/Gb/Tb)INCOMPLETE
+      totalTrashSize="incomplete"
+
+      # Ask user if they want to delete xfiles to free up xspace
+      echo "Are you sure you want to permanently delete $totalTrashfiles($totalTrashSize) (Y/N)"
+      read confirmDeletion
+
+      while [ "$confirmDeletion" != "Y" ] || \
+            [ "$confirmDeletion" != "y" ] || \
+            [ "$confirmDeletion" != "N" ] || \
+            [ "$confirmDeletion" != "n" ]; do
+        case "$confirmDeletion" in
+          Y|y)
+            #delete files
+
+            for FILE.trashinfo in "$DIR_TRASH_INFO"; do
+              # Read trashinfo file
+              findFileName=$(ls -al .trashinfo | awk -F " " '{ print $5 }')
+              
+              # find file in $DIR_TRASH_FILES with matching name
+
+              # delete file in $DIR_TRASH_FILES and if successful, delete file in $DIR_TRASH_INFO
+            done
+            ;;
+          N|n)
+            exit 0
+            ;;
+          *)
+            echo "ERROR: Invalid response"
+            echo
+            echo "Are you sure you want to permanently delete $numTrashFiles($sizeTrashFiles) (Y/N)"
+            read confirmDeletion
+            ;;
+        esac
+      done
       ;;
     list)
       # Lists the contents of the trash bin
       # TODO: add trash files and directories to a file (an index of trash contents)
-      ls -ARhgo --group-directories-first $HOME/.local/share/Trash/files/
+      # WILL NOT WORK ONCE RANDOM NAMING IS IMPLEMENTED, NEEDS TO BE FIXED
+      ls -ARhgo --group-directories-first $DIR_TRASH_FILES
+
+
+
+find $DIR_TRASH_INFO -type f -name '*.trashinfo' | \
+while IFS= read -r f; do
+  echo "$f"
+done
+for f in *.trashinfo; do
+
+done
+
+
+for i in */; do
+  cd "$i"
+  for f in *.trasfinfo ; do
+    cat "$f"
+  done
+  cd ..
+done
+
+
+      for i in "$DIR_TRASH_INFO*.trashinfo"; do
+        cat .trashinfo | grep (path) | grep (filename)
+
+        print filename filesize orginal file path
+      done
       ;;
     -h|--help)
       usage
@@ -107,6 +208,7 @@ else
           -v|--verbose)
             ;;
           --version)
+            echo "Trash version: $VERSION"
             ;;
         esac
       else
