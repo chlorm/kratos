@@ -86,9 +86,9 @@ graphical_autorun () {
 }
 
 graphical_st () {(
-  if [ -d "$(dir_conf)/dotfiles/nixpkgs/st/" ];then
+  if [ -d "$(dir_conf)/dotfiles/nixpkgs/st/" ]; then
     cd "$(dir_conf)/dotfiles/nixpkgs/st/"
-    if [ -f "config.$(hostname -s).h" ];then
+    if [ -f "config.$(hostname -s).h" ]; then
       symlink "config.$(hostname -s).h" "config.mach.h"
     else
       symlink "config.other.h" "config.mach.h"
@@ -99,7 +99,7 @@ graphical_st () {(
 # Automatically Configures the graphical interface
 graphical_auto () {
   install -d $HOME/.config
-  config_ln ncmpcpp rtorrent.rc xinitrc xprofile xsession xmonad config/awesome config/beets config/mpd config/sublime-text-3 config/Terminal config/wallpaper config/uzbl
+  config_ln rtorrent.rc xinitrc xprofile xsession xmonad config/awesome config/beets config/Terminal config/wallpaper config/uzbl
   symlink "$HOME/.config/Terminal" "$HOME/.config/xfce4/terminal"
   graphical_st
   return 0

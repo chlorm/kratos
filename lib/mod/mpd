@@ -1,7 +1,17 @@
 #!/usr/bin/env sh
 
-# Create all necessary session files for mpd if they don't exist already
-mpdSessionFiles () {
+# TODO: need to check for mpd and ncmpcpp config directories
+# and delete if already existing
+
+mpd_auto () {
+
+	# Symlink MPD config directory
+	config_ln config/mpd
+
+	# Symlink ncmpcpp config
+	config_ln ncmpcpp
+
+	# Check for and create MPD session files
 	if [ ! -f "$HOME/.config/mpd/database" ]; then
 		touch "$HOME/.config/mpd/database"
 		echo "Created .config/mpd/database"
@@ -23,5 +33,3 @@ mpdSessionFiles () {
 		echo "Created .config/mpd/log"
 	fi
 }
-
-mpdSessionFiles
