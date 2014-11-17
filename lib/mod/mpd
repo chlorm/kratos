@@ -2,35 +2,48 @@
 
 # TODO: need to check for mpd and ncmpcpp config directories
 # and delete if already existing
+### if dir in not a symlink delete
+
+mpd_path () {
+
+  # Make sure mpd and ncmpcpp are installed
+  path_hasbin mpd || { echo "No mpd installed" ; return 1 }
+  path_hasbin ncmpccp || { echo "No mpd installed" ; return 1 }
+  return 0
+
+}
 
 mpd_auto () {
 
-	# Symlink MPD config directory
-	config_ln config/mpd
+  # If both mpd and ncmpcpp aren't installed, be done now
+  mpd_path || return 1
 
-	# Symlink ncmpcpp config directory
-	config_ln ncmpcpp
+  # Symlink MPD config directory
+  config_ln "config/mpd"
 
-	# Check for and create MPD session files
-	if [ ! -f "$HOME/.config/mpd/database" ]; then
-		touch "$HOME/.config/mpd/database"
-		echo "Created .config/mpd/database"
-	fi
-	if [ ! -f "$HOME/.config/mpd/pid" ]; then
-		touch "$HOME/.config/mpd/pid"
-		echo "Created .config/mpd/pid"
-	fi
-	if [ ! -f "$HOME/.config/mpd/state" ]; then
-		touch "$HOME/.config/mpd/state"
-		echo "Created .config/mpd/state"
-	fi
-	if [ ! -f "$HOME/.config/mpd/sticker.sql" ]; then
-		touch "$HOME/.config/mpd/sticker.sql"
-		echo "Created .config/mpd/sticker.sql"
-	fi
-	if [ ! -f "$HOME/.config/mpd/log" ]; then
-		touch "$HOME/.config/mpd/log"
-		echo "Created .config/mpd/log"
-	fi
+  # Symlink ncmpcpp config directory
+  config_ln "ncmpcpp"
+
+  # Check for and create missing MPD session files
+  if [ ! -f "$HOME/.config/mpd/database" ]; then
+    touch "$HOME/.config/mpd/database"
+    echo "Created .config/mpd/database"
+  fi
+  if [ ! -f "$HOME/.config/mpd/pid" ]; then
+    touch "$HOME/.config/mpd/pid"
+    echo "Created .config/mpd/pid"
+  fi
+  if [ ! -f "$HOME/.config/mpd/state" ]; then
+    touch "$HOME/.config/mpd/state"
+    echo "Created .config/mpd/state"
+  fi
+  if [ ! -f "$HOME/.config/mpd/sticker.sql" ]; then
+    touch "$HOME/.config/mpd/sticker.sql"
+    echo "Created .config/mpd/sticker.sql"
+  fi
+  if [ ! -f "$HOME/.config/mpd/log" ]; then
+    touch "$HOME/.config/mpd/log"
+    echo "Created .config/mpd/log"
+  fi
 
 }
