@@ -46,6 +46,8 @@ pkgs : {
         video-chlorm
         virtualization-chlorm
         www-chlorm
+	# Unsorted
+	xfe
       ];
     };
     # Environments
@@ -78,7 +80,7 @@ pkgs : {
       paths = with self; [
         mumble
         pidgin
-        #kde4.quasselClient
+        kde4.quasselClient
       ];
     };
     development-chlorm = self.buildEnv {
@@ -96,9 +98,9 @@ pkgs : {
       paths = with self; [
         filezilla
         ncdc
-        qbittorrent
+        #qbittorrent
         rtorrent-git
-        transmission
+        #transmission
         youtubeDL
       ];
     };
@@ -138,12 +140,14 @@ pkgs : {
         scrot
         unzip
         #xlibs.xbacklight
+	xz
         #zathura
       ];
     };
     image-chlorm = self.buildEnv {
       name = "myImage";
       paths = with self; [
+        geeqie
         gimp
         imagemagick
         libpng
@@ -185,6 +189,8 @@ pkgs : {
         vlc
         vobsub2srt
         x264
+        #x265
+        #x265-hg
       ];
     };
     virtualization-chlorm = self.buildEnv {
