@@ -94,7 +94,8 @@ load_one () {
 }
 load_all () {
   [ "$#" -ge "1" ] || return 1
-  local DIRCONF; local MODS;
+  local DIRCONF
+  local MODS
   svar DIRCONF dir_conf || return 1
   array_from_str MODS "$(find "$DIRCONF/$1" -type f)"
   array_forall MODS load_one
