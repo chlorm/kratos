@@ -7,8 +7,8 @@
 mpd_path () {
 
   # Make sure mpd and ncmpcpp are installed
-  path_hasbin mpd || { echo "No mpd installed" ; return 1 }
-  path_hasbin ncmpccp || { echo "No mpd installed" ; return 1 }
+  path_hasbin mpd || { echo "'mpd' installed" ; return 1 }
+  path_hasbin ncmpccp || { echo "'ncmpcpp' installed" ; return 1 }
   return 0
 
 }
@@ -18,11 +18,8 @@ mpd_auto () {
   # If both mpd and ncmpcpp aren't installed, be done now
   mpd_path || return 1
 
-  # Symlink MPD config directory
-  config_ln "config/mpd"
-
-  # Symlink ncmpcpp config directory
-  config_ln "ncmpcpp"
+  # Symlink MPD & ncmpcpp config directories
+  config_ln "config/mpd" "ncmpcpp"
 
   # Check for and create missing MPD session files
   if [ ! -f "$HOME/.config/mpd/database" ]; then
