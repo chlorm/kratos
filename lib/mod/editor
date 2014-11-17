@@ -2,6 +2,10 @@
 
 # Automatically configure editors
 editor_auto () {
+
   rm -rf "$HOME/.emacs" "$HOME/.viminfo"
+
+  # Symlink config files
   config_ln "emacs.d" "vimrc" "gvimrc" "config/sublime-text-3"
+
 }

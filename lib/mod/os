@@ -1,22 +1,30 @@
 #!/usr/bin/env sh
 
-# Find base os i.e. linux,freebsd,darwin,cygwin
 os_base () {
-	uname -s | grep -m 1 -w -o '\(Cygwin\|Darwin\|FreeBSD\|Linux\)'
+
+  # Find base os i.e. linux,freebsd,darwin,cygwin
+  uname -s | grep -m 1 -w -o '\(Cygwin\|Darwin\|FreeBSD\|Linux\)'
+
 }
 
-# Finds linux distro via /etc/*-release
 os_linux_distro_release () {
+
+  # Finds linux distro via /etc/*-release
   cat $ROOT/etc/*-release 2>/dev/null
+
 }
 
-# Finds linux distro via uname -a
 os_linux_distro_uname () {
+
+  # Finds linux distro via uname -a
   uname -a 2>/dev/null
+
 }
 
-# Take first result of distro name match
 os_linux_distro () {
+
+  # Take first result of distro name match
   echo "$(os_linux_distro_release) $(os_linux_distro_uname)" | \
   grep -m 1 -w -o '\(Arch\|CentOS\|Debian\|Fedora\|Gentoo\|NixOS\|OpenSuse\|Red\ Hat\|SUSE\|Ubuntu\)'
+
 }

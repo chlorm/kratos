@@ -3,9 +3,10 @@
 # Enforces that an application is installed
 require_app () {
   which "$1" >/dev/null 2>&1
-  if [ "$?" -ne "0" ];then
+  if [ "$?" -ne "0" ]; then
     echo "Requires: $1" >&2
-    exit 2;fi
+    exit 2
+  fi
 }
 require_all () {
   require_app git
