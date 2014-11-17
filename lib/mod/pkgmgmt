@@ -61,6 +61,7 @@ pkg () {
             ;;
           *)
             echo "WARNING: Failed to find an update procedure: Unsupported Base OS"
+            return 1
             ;;
         esac
       ;;
@@ -144,6 +145,7 @@ pkg () {
             ;;
           *)
             echo "WARNING: Failed to find an update procedure: Unsupported Base OS"
+            return 1
             ;;
         esac
       ;;
@@ -217,6 +219,7 @@ pkg () {
             ;;
           *)
             echo "WARNING: Failed to find an update procedure: Unsupported Base OS"
+            return 1
             ;;
         esac
       ;;
@@ -299,6 +302,7 @@ pkg () {
             ;;
           *)
             echo "WARNING: Failed to find an update procedure: Unsupported Base OS"
+            return 1
             ;;
         esac
       ;;
