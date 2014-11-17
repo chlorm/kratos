@@ -99,7 +99,7 @@ graphical_st () {(
 # Automatically Configures the graphical interface
 graphical_auto () {
   install -d $HOME/.config
-  config_ln rtorrent.rc xinitrc xprofile xsession xmonad config/awesome config/beets config/Terminal config/wallpaper config/uzbl
+  config_ln xinitrc xprofile xsession xmonad config/awesome config/beets config/Terminal config/wallpaper config/uzbl
   symlink "$HOME/.config/Terminal" "$HOME/.config/xfce4/terminal"
   graphical_st
   return 0

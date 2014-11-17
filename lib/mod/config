@@ -119,6 +119,7 @@ config_install () {
   graphical_auto
   dev_auto
   mpd_auto
+  rtorrent_auto
 }
 
 # Updates the configuration files and all of the submodules

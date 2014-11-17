@@ -1,22 +1,30 @@
 #!/usr/bin/env sh
 
-rtorrentDirectories () {
-	##[rtorrent download directories]
-	if [ ! -d "$HOME/Torrents" ];then
+rtorrent_auto () {
+
+	# rTorrent config
+	config_ln rtorrent.rc
+
+	# Download directories
+	if [ ! -d "$HOME/Torrents" ]; then
 		mkdir "$HOME/Torrents"
 		mkdir "$HOME/Torrents/Complete"
 		mkdir "$HOME/Torrents/Incomplete"
 		mkdir "$HOME/Torrents/Watch"
 	elif [ -d "$HOME/Torrents" ]; then
-		if [ ! -d "$HOME/Torrents/Complete" ];then
-			mkdir "$HOME/Torrents/Complete";fi
-		if [ ! -d "$HOME/Torrents/Incomplete" ];then
-			mkdir "$HOME/Torrents/Incomplete";fi
-		if [ ! -d "$HOME/Torrents/Watch" ];then
-			mkdir "$HOME/Torrents/Watch";fi;fi
-	##[rtorrent session directory]
+		if [ ! -d "$HOME/Torrents/Complete" ]; then
+			mkdir "$HOME/Torrents/Complete"
+		fi
+		if [ ! -d "$HOME/Torrents/Incomplete" ]; then
+			mkdir "$HOME/Torrents/Incomplete"
+		fi
+		if [ ! -d "$HOME/Torrents/Watch" ]; then
+			mkdir "$HOME/Torrents/Watch"
+		fi
+	fi
+	# Session Directory
 	if [ ! -d "$HOME/.local/share/rtorrent" ]; then
-		mkdir "$HOME/.local/share/rtorrent";fi
-}
+		mkdir "$HOME/.local/share/rtorrent"
+	fi
 
-rtorrentDirectories
+}

@@ -8,7 +8,7 @@ mpd_auto () {
 	# Symlink MPD config directory
 	config_ln config/mpd
 
-	# Symlink ncmpcpp config
+	# Symlink ncmpcpp config directory
 	config_ln ncmpcpp
 
 	# Check for and create MPD session files
@@ -32,4 +32,5 @@ mpd_auto () {
 		touch "$HOME/.config/mpd/log"
 		echo "Created .config/mpd/log"
 	fi
+
 }
