@@ -17,11 +17,11 @@ dotfiles
 * Sublime Text 3
     + Vala Syntax Highlighting
 
-scripts
--------
-* bin/addartist
+commands
+--------
+* addartist
 	+ Add all albums by an artist to users local music library
-* bin/arkhive
+* arkhive *WORK IN PROGRESS*
 	+ Automates transcoding according to predetermined settings
 * extract
 	+ Wrapper for .tar.*, .zip, .rar, etc....
@@ -34,7 +34,7 @@ scripts
 * nixpkgs-update
 * run
 * sign
-* trash
+* trash *WORK IN PROGRESS*
 	+ Implements trash bin functionality and works as a drop-in replacement to 'rm'
 * verify
 * vfio-bind
