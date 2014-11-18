@@ -2,7 +2,7 @@
 
 mpd_path () {
 
-  # Make sure mpd and ncmpcpp are installed
+  # Make sure both 'MPD' and 'ncmpcpp' are installed
   path_hasbin mpd || { echo "'mpd' not installed" ; return 1; }
   path_hasbin ncmpcpp || { echo "'ncmpcpp' not installed" ; return 1; }
   return 0
@@ -11,25 +11,32 @@ mpd_path () {
 
 mpd_auto () {
 
-  # If both mpd and ncmpcpp aren't installed, be done now
+  # If both 'MPD' and 'ncmpcpp' aren't installed, be done now
   mpd_path || return 1
 
-  # Remove default mpd config directory if it exists
+  # Remove default 'MPD' config directory if it exists
   if [ ! -L "$HOME/.config/mpd" ]; then
     rm -rf $HOME/.config/mpd
     echo "Removed default mpd config directory"
   fi
 
-  # Remove default ncmpcpp config directory if it exists
+  # Remove default 'ncmpcpp' config directory if it exists
   if [ ! -L "$HOME/.ncmpcpp" ]; then
     rm -rf $HOME/.ncmpcpp
     echo "Removed default ncmpcpp config directory"
   fi
 
-  # Symlink MPD & ncmpcpp config directories
-  config_ln "config/mpd" "ncmpcpp"
+  # Check for and create missing 'MPD' directories
+  if [ ! -d "$HOME/.config/mpd" ]; then
+    mkdir -p $HOME/.config/mpd
+  fi
 
-  # Check for and create missing MPD session files
+  # Check for and create missing 'ncmpcpp' directories
+  if [ ! -d "$HOME/.ncmpcpp" ]; then
+    mkdir -p "$HOME/.ncmpcpp"
+  fi
+
+  # Check for and create missing 'MPD' session files
   if [ ! -f "$HOME/.config/mpd/database" ]; then
     touch "$HOME/.config/mpd/database"
     echo "Created .config/mpd/database"
@@ -50,5 +57,8 @@ mpd_auto () {
     touch "$HOME/.config/mpd/log"
     echo "Created .config/mpd/log"
   fi
+
+  # Symlink MPD & ncmpcpp config directories
+  config_ln "config/mpd/mpd.conf" "ncmpcpp/config"
 
 }
