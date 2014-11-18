@@ -9,12 +9,17 @@ path_add "$HOME/.bin"
 agent_auto
 graphical_autorun $@
 
-##[gnome3]
-exec gnome-session
-systemd --user
-dbus-launch nm-applet &
-eval &(gnome-keyring-daemon --components=pkcs11,secrets,ssh,gpg)
-export GNOME_KEYRING_PID
-export GNOME_KEYRING_SOCKET
-export SSH_AUTH_SOCK
-export GPG_AGENT_INFO
+# Make sure'mpd' is installed
+mpd_path || return 1
+# Start 'mpd'
+mpd || { echo "ERROR: failed to start mpd"; }
+
+# Gnome 3.xx
+#exec gnome-session
+#systemd --user
+#dbus-launch nm-applet &
+#eval &(gnome-keyring-daemon --components=pkcs11,secrets,ssh,gpg)
+#export GNOME_KEYRING_PID
+#export GNOME_KEYRING_SOCKET
+#export SSH_AUTH_SOCK
+#export GPG_AGENT_INFO
