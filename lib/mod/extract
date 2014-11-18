@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
 
 extract () {
-  if [ -f $1 ]; then
+  if [ -z $1 ]; then
+    echo "ERROR: no input provided"; exit 1
+  elif [ -f $1 ]; then
     case $1 in
       *.tar)
         path_hasbin tar || { echo "'tar' not installed" ; exit 1; }
@@ -60,6 +62,6 @@ extract () {
         ;;
       esac
   else
-      echo "'$1' is not a valid file"
+      echo "'$1' is not a file"
   fi
 }
