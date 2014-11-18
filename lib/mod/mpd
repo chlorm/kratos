@@ -14,18 +14,6 @@ mpd_auto () {
   # If both 'MPD' and 'ncmpcpp' aren't installed, be done now
   mpd_path || return 1
 
-  # Remove default 'MPD' config directory if it exists
-  if [ ! -L "$HOME/.config/mpd" ]; then
-    rm -rf $HOME/.config/mpd
-    echo "Removed default mpd config directory"
-  fi
-
-  # Remove default 'ncmpcpp' config directory if it exists
-  if [ ! -L "$HOME/.ncmpcpp" ]; then
-    rm -rf $HOME/.ncmpcpp
-    echo "Removed default ncmpcpp config directory"
-  fi
-
   # Check for and create missing 'MPD' directories
   if [ ! -d "$HOME/.config/mpd" ]; then
     mkdir -p $HOME/.config/mpd
