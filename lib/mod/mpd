@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
 
-# TODO: need to check for mpd and ncmpcpp config directories
-# and delete if already existing
-### if dir in not a symlink delete
-
 mpd_path () {
 
   # Make sure mpd and ncmpcpp are installed
@@ -17,6 +13,18 @@ mpd_auto () {
 
   # If both mpd and ncmpcpp aren't installed, be done now
   mpd_path || return 1
+
+  # Remove default mpd config directory if it exists
+  if [ ! -L "$HOME/.config/mpd" ]; then
+    rm -rf $HOME/.config/mpd
+    echo "Removed default mpd config directory"
+  fi
+
+  # Remove default ncmpcpp config directory if it exists
+  if [ ! -L "$HOME/.ncmpcpp" ]; then
+    rm -rf $HOME/.config/mpd
+    echo "Removed default ncmpcpp config directory"
+  fi
 
   # Symlink MPD & ncmpcpp config directories
   config_ln "config/mpd" "ncmpcpp"
