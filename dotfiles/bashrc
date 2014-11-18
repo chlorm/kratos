@@ -36,10 +36,6 @@ shell_theme
 # Load the local config
 [ -f "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"
 
-update () {
-    sudo emerge --sync
-    sudo emerge --ask --update --deep --with-bdeps=y --newuse --keep-going @world
-}
 ## [list all packages from overlays with corresponding overlay name]
 fromover () {
     for i in /var/db/pkg/*/*; do
