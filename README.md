@@ -27,7 +27,7 @@ commands
 	+ Wrapper for .tar.*, .zip, .rar, etc....
 * icongen
 	+ Automates generating alternate size icons
-* nix
+* nix *WORK IN PROGRESS*
 	+ Wraps all nix utilities under a single command
 * nixpkgs-clone
 * nixpkgs-merge
