@@ -1,8 +1,3 @@
-/dotfiles/emacs.d/*
-/dotfiles/xmonad/xmonad.errors
-/dotfiles/xmonad/xmonad.hi
-/dotfiles/xmonad/xmonad.o
-/dotfiles/xmonad/xmonad-x86_64-linux
 /dotfiles/config/beets/library.db
 /dotfiles/config/beets/state.pickle
 /dotfiles/config/mpd/database
@@ -15,6 +10,12 @@
 /dotfiles/config/sublime-text-3/Cache/*
 /dotfiles/config/sublime-text-3/Index/*
 /dotfiles/config/sublime-text-3/Local/*
+/dotfiles/emacs.d/*
+/dotfiles/ncmpcpp/error.log
+/dotfiles/xmonad/xmonad.errors
+/dotfiles/xmonad/xmonad.hi
+/dotfiles/xmonad/xmonad.o
+/dotfiles/xmonad/xmonad-x86_64-linux
 
 *~
 */#*#
