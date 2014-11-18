@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 ##       ________   ___       ___
 ##      /  _____/  /  /      /  /
 ##     /  /       /  /      /  /
@@ -26,34 +26,44 @@
 
 # Configuration Options
 remoteUser="cwopel"
-remoteAddress="192.168.1.5" # Should be an absolute path
+remoteAddress="192.168.1.5"
 remotePort="22"
-remoteMusicDirectory="/home/cwopel/Music"
+remoteMusicDirectory="/home/cwopel/Music" # Should be an absolute path
 localMusicDirectory="$HOME/Music/"
-
-if [[ -z "$@" ]]; then echo "ERROR: no input"; exit 1; fi
+# Pass input to variable to work around bash errors
 inputArtist="$@"
+
+if [ -z "${inputArtist}" ]; then
+  echo "ERROR: no input provided"
+  exit 1
+fi
+
+# Sanitize input to prevent spaces from causing errors
 artistAddPath="$remoteMusicDirectory/\"${@}\""
-# Download artist's albums
-#scp -r -P 4497 "jackal@192.168.1.5:${artistAddPath}" "$HOME/Music/"
-scp -r "$remoteUser@$remoteAddress:${artistAddPath}" "$localMusicDirectory"
-# Check for flac and convert to lossy
+
+# Download artist directory
+scp -r -P "${remotePort}" "${remoteUser}"@"${remoteAddress}":"${artistAddPath}" "$localMusicDirectory"
+
+# Check for specified formats and convert to ogg
 find $HOME/Music/"${inputArtist}" -depth -name '*' | \
 while read curWorkFile; do
-    curWorkFileExt=${curWorkFile##*.}
-    if [[ -z "$curWorkFileExt" ]]; then
-        echo "nothing to do here";
-    elif [[ "$curWorkFileExt" = "flac" ]]; then
-        # Path to current file
-        curWorkDir=$(dirname "$curWorkFile")
-        # Filename w/ ext
-        fileName=$(basename "$curWorkFile")
-        # Filename w/o ext
-        fileName=$(echo "$fileName" | sed -r 's/\.[[:alnum:]]+$//')
-        ffmpeg -y -i "$curWorkFile" -c:a libvorbis -qscale:a 5 "$curWorkDir/$fileName.ogg" & \
-        ffmpegPid=$!
-        # Don't delete before encoding completes
-        wait "$ffmpegPid"
-        rm -f "$curWorkFile"
-    fi
+  curWorkFileExt=${curWorkFile##*.}
+  case $curWorkFileExt in
+    ape|flac|mp3|m4a|wav|wma)
+      # Path to current file
+      curWorkDir=$(dirname "$curWorkFile")
+      # Filename w/ ext
+      fileName=$(basename "$curWorkFile")
+      # Filename w/o ext
+      fileName=$(echo "$fileName" | sed -r 's/\.[[:alnum:]]+$//')
+      ffmpeg -y -i "$curWorkFile" -c:a libvorbis -qscale:a 5 "$curWorkDir/$fileName.ogg" & \
+      ffmpegPid=$!
+      # Don't delete before encoding completes
+      wait "$ffmpegPid"
+      rm -f "$curWorkFile"
+      ;;
+    *)
+      echo "Skipping: ${curWorkFile}"
+      ;;
+  esac
 done
