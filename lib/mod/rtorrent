@@ -26,7 +26,6 @@ rtorrent_auto () {
 	if [ ! -d "$HOME/Torrents/Watch" ]; then
 	  mkdir -p "$HOME/Torrents/Watch"
   fi
-  fi
   # Session Directory
   if [ ! -d "$HOME/.local/share/rtorrent" ]; then
 	  mkdir -p "$HOME/.local/share/rtorrent"
