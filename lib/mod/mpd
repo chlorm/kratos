@@ -22,7 +22,7 @@ mpd_auto () {
 
   # Remove default ncmpcpp config directory if it exists
   if [ ! -L "$HOME/.ncmpcpp" ]; then
-    rm -rf $HOME/.config/mpd
+    rm -rf $HOME/.ncmpcpp
     echo "Removed default ncmpcpp config directory"
   fi
 
