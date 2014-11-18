@@ -5,6 +5,7 @@
 /dotfiles/config/mpd/mpd.fifo
 /dotfiles/config/mpd/pid
 /dotfiles/config/mpd/state
+/dotfiles/config/mpd/sticker.sql
 /dotfiles/config/fish/fish_history
 /dotfiles/config/fish/fishd.*
 /dotfiles/config/sublime-text-3/Cache/*
