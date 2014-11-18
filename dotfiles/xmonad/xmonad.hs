@@ -32,21 +32,21 @@ import System.Exit
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
--- [default terminal]
+-- Default terminal
 myTerminal = "sakura"
 
--- [focus follows mouse pointer]
+-- Focus follows mouse pointer
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
--- [click on a window to focus and also pass the click to the window]
+-- Click on a window to focus and also pass the click to the window
 myClickJustFocuses :: Bool
 myClickJustFocuses = False
 
--- [window border width](in pixels)
+-- Window border width (in pixels)
 myBorderWidth = 2
 
---[super/mod key]
+-- Super/Mod key
 myModMask = mod4Mask
 
 -- The default number of workspaces (virtual screens) and their names.
@@ -56,12 +56,12 @@ myModMask = mod4Mask
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 
---[unfocused border color]
-myNormalBorderColor = "#dddddd"
---[focused border color]
-myFocusedBorderColor = "#ff0000"
+-- Focused border color
+myFocusedBorderColor = "#990000"
+-- Unfocused border color
+myNormalBorderColor = "#555555"
 
---[Key Bindings]
+-- Key bindings
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
   -- launch a terminal
   [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
@@ -134,7 +134,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
     , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
---[Mouse Bindings]
+-- Mouse bindings
 myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
   -- mod-button1, Set the window to floating mode and move by dragging
   [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
@@ -147,7 +147,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
   -- you may also bind events to the mouse scroll wheel (button4 and button5)
   ]
 
---[layout]
+-- Layout
 myLayout = tiled ||| Mirror tiled ||| Full
   where
     -- default tiling algorithm partitions the screen into two panes
@@ -159,7 +159,7 @@ myLayout = tiled ||| Mirror tiled ||| Full
     -- Percent of screen to increment by when resizing panes
     delta   = 3/100
 
---[application/window rules]
+-- Application/Window rules
 myManageHook = composeAll
   [ className =? "MPlayer"        --> doFloat
   , className =? "Gimp"           --> doFloat
@@ -213,25 +213,25 @@ defaults = defaultConfig {
     startupHook        = myStartupHook
 }
 
---[fonts]
+-- Fonts
 myFont = "-*-nu-*-*-*-*-*-*-*-*-*-*-*-*"
 
---[colors]
+-- Colors
 background = "#181512"
 foreground = "#D6C3B6"
 color0     = "#332d29"
-color8     = "#817267"
 color1     = "#8c644c"
-color9     = "#9f7155"
 color2     = "#746C48"
-color10    = "#9f7155"
 color3     = "#bfba92"
-color11    = "#E0DAAC"
 color4     = "#646a6d"
-color12    = "#777E82"
 color5     = "#766782"
-color13    = "#897796"
 color6     = "#4B5C5E"
-color14    = "#556D70"
 color7     = "#504339"
+color8     = "#817267"
+color9     = "#9f7155"
+color10    = "#9f7155"
+color11    = "#E0DAAC"
+color12    = "#777E82"
+color13    = "#897796"
+color14    = "#556D70"
 color15    = "#9a875f"
