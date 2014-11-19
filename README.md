@@ -38,3 +38,5 @@ commands
 	+ Implements trash bin functionality and works as a drop-in replacement to 'rm'
 * verify
 * vfio-bind
+* vol
+	+ Volume control utility
