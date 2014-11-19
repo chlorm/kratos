@@ -185,7 +185,7 @@ pkgs : {
       paths = with self; [
         ffmpeg
         #mediainfo
-        mkvtoolnix
+        #mkvtoolnix
         vlc
         vobsub2srt
         x264
