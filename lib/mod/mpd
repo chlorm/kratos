@@ -15,8 +15,8 @@ mpd_auto () {
   mpd_path || return 1
 
   # Check for and create missing 'MPD' directories
-  if [ ! -d "$HOME/.config/mpd" ]; then
-    mkdir -p $HOME/.config/mpd
+  if [ ! -d "$HOME/.config/mpd/playlists" ]; then
+    mkdir -p $HOME/.config/mpd/playlists
   fi
 
   # Check for and create missing 'ncmpcpp' directories
