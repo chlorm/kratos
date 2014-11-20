@@ -60,7 +60,7 @@ graphical_runwm () {
   if [ "${TILING}" -eq "1" ]; then
     HCFG="${TERMRC}.tiling.$(hostname -s)"
     if [ -f "${HCFG}" ]; then
-      symlink "${HCFG}" "$TERMRC"
+      symlink "${HCFG}" "${TERMRC}"
     else
       symlink "${TERMRC}.tiling" "${TERMRC}"
     fi
