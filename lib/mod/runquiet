@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+# Run an application in the background
+run_quiet () {
+
+  runApp="$@"
+
+  # Make sure application is installed before continuing
+  path_hasbin ${1} || { return 1; }
+
+  # Check to see if process is already started
+  runAppPID=$(pgrep ${1})
+
+  # If application is already running, no need to run it
+  if [ -z "$runAppPID" ]; then
+    ${runApp} &>/dev/null
+  fi
+
+  # Prevent terminal from defaulting to /nix/store
+  cd $HOME
+
+  return 0
+
+}
