@@ -1,17 +1,21 @@
 #!/usr/bin/env sh
 
-## TODO: detect installed wm's and copy config only if installed
-
-# Determine which window manager is best suited
 graphical_bestwm () {
+
+  # Determine preferred window manager
   path_hasbin "xmonad" && { echo "xmonad"; return 0; }
+  path_hasbin "gnome-session" && { echo "gnome-session"; return 0; }
+  path_hasbin "startkde" && { echo "startkde"; return 0; }
   path_hasbin "awesome" && { echo "awesome"; return 0; }
+  path_hasbin "i3" && { echo "i3"; return 0; }
   path_hasbin "startxfce4" && { echo "startxfce4"; return 0; }
   return 1
+
 }
 
 # Run the window manager with the best side apps
 graphical_runwm () {
+
   # Determine the type of WM
   WM="$1"
   TILING=0
@@ -28,38 +32,44 @@ graphical_runwm () {
   [ -f "$HOME/.xinitrc.start" ] && . "$HOME/.xinitrc.start"
 
   # Do specific WM init
-  if [ "$WM" = "awesome" ]; then
-    TILING=1
-    if [ -d "$HOME/.config/wallpaper" ]; then
-      if [ "$(ls "$HOME/.config/wallpaper" | wc -l)" -gt "1" ]; then
-  	    sleep 2
-  	    while true; do
-    		  awsetbg -r "$HOME/.config/wallpaper"
-    		  sleep 300
-  	    done &
-	    fi
-    fi
-  elif [ "$WM" = "xmonad" ]; then
-    TILING=1
-    run_quiet hhp &
-  fi
+  case ${WM} in
+    awesome)
+      TILING=1
+      if [ -d "$HOME/.config/wallpaper" ]; then
+        if [ "$(ls "$HOME/.config/wallpaper" | wc -l)" -gt "1" ]; then
+          sleep 2
+          while true; do
+            awsetbg -r "$HOME/.config/wallpaper"
+            sleep 300
+          done &
+        fi
+      fi
+      ;;
+    i3)
+      TILING=1
+      ;;
+    xmonad)
+      TILING=1
+      run_quiet hhp &
+      ;;
+  esac
 
   # Configure applications
   local TERMRC
   TERMRC="$(dir_conf)/dotfiles/config/Terminal/terminalrc"
-  if [ "$TILING" -eq "1" ]; then
+  if [ "${TILING}" -eq "1" ]; then
     HCFG="${TERMRC}.tiling.$(hostname -s)"
-    if [ -f "$HCFG" ]; then
-      symlink "$HCFG" "$TERMRC"
+    if [ -f "${HCFG}" ]; then
+      symlink "${HCFG}" "$TERMRC"
     else
-      symlink "${TERMRC}.tiling" "$TERMRC"
+      symlink "${TERMRC}.tiling" "${TERMRC}"
     fi
   else
     HCFG="${TERMRC}.window.$(hostname -s)"
-    if [ -f "$HCFG" ]; then
-      symlink "${HCFG}" "$TERMRC"
+    if [ -f "${HCFG}" ]; then
+      symlink "${HCFG}" "${TERMRC}"
     else
-      symlink "${TERMRC}.window" "$TERMRC"
+      symlink "${TERMRC}.window" "${TERMRC}"
     fi
   fi
 
@@ -85,6 +95,7 @@ graphical_autorun () {
   graphical_runwm $WM
 }
 
+# Suckless Terminal
 graphical_st () {(
   if [ -d "$(dir_conf)/dotfiles/nixpkgs/st/" ]; then
     cd "$(dir_conf)/dotfiles/nixpkgs/st/"
