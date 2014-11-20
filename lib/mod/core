@@ -1,10 +1,5 @@
 #!/usr/bin/env sh
 
-# Run the command silently
-run_quiet () {
-  $@ >/dev/null 2>&1
-}
-
 # Make sure the symbolic link points to the correct location $2 -> $1
 symlink () {
   mkdir -p "$(dirname "$2")"
