@@ -9,11 +9,6 @@ path_add "$HOME/.bin"
 agent_auto
 graphical_autorun $@
 
-# Make sure'mpd' is installed
-mpd_path || return 1
-# Start 'mpd'
-mpd || { echo "ERROR: failed to start mpd"; }
-
 # Gnome 3.xx
 #exec gnome-session
 #systemd --user
