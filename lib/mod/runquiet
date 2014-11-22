@@ -4,14 +4,16 @@
 run_quiet () {
 
   # Make sure application is installed before continuing
-  path_hasbin ${1} || { return 1; }
+  path_hasbin $1 || return 1
 
   # Check to see if process is already started
-  runAppPID=$(pgrep ${1})
+  runAppPID=$(pgrep $1)
 
   # If application is already running, no need to run it
   if [ -z "$runAppPID" ]; then
-    ${@} >/dev/null 2>&1
+    $@ &>/dev/null 2>&1
   fi
+
+  cd $HOME
 
 }
