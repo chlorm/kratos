@@ -11,7 +11,7 @@ run_quiet () {
 
   # If application is already running, no need to run it
   if [ -z "$runAppPID" ]; then
-    $@ &>/dev/null 2>&1
+    $@ >/dev/null 2>&1
   fi
 
   cd $HOME
