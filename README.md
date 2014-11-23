@@ -4,8 +4,6 @@ dotfiles
 dotfiles
 --------
 
-* autostart/mpd.desktop
-* autostart/mpdris2.desktop
 * Bash
 * Beets
 * Fish
