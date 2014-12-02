@@ -8,7 +8,9 @@ export workStations='\(NOS-4-A2\|LGM\|Shivkatall\)'
 
 export DIR_CONF="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
 cd "$DIR_CONF"
-touch settings
+if [ ! -f "$DIR_CONF/settings"]; then
+  touch settings
+fi
 . lib/loader || exit 128
 
 ##[set dotfiles git repo]
