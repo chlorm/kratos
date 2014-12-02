@@ -115,6 +115,7 @@ config_install () {
   symlink "$(dir_conf)/bin" "$HOME/.bin"
   shell_auto
   ssh_auto
+  audio_auto
   editor_auto
   graphical_auto
   dev_auto
