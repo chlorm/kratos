@@ -1,13 +1,13 @@
 #!/usr/bin/env sh
 
 # Configuration
-volumeMixer="Master"
-defaultIncrement="2"
+volumeMixer="1"
+defaultIncrement="5"
 
 vol_path () {
 
-  # Make sure 'amixer' is installed
-  path_hasbin amixer || { echo "'amixer' not installed" ; return 1; }
+  # Make sure 'pactl' is installed
+  path_hasbin pactl || { echo "'pactl' not installed" ; return 1 ; }
   return 0
 
 }
@@ -27,46 +27,45 @@ vol_usage () {
 
 vol () {
 
-  # If 'amixer' is not installed, be done now
+  # If 'pactl' is not installed, be done now
   vol_path || return 1
-
-  # Check for input
-  if [ -z "$@" ]; then
-    echo "ERROR: no input provided"
-    vol_usage
-    return 1
-  fi
 
   # Parse Arguments
   case "$1" in
-    up)
+    '')
+      volumeCurrent="doesn't work yet"
+      echo "Volume: ${volumeCurrent}"
+      ;;
+    'up')
+      volumeCommand="set-sink-volume"
       if [ -z "$2" ]; then
-        volumeIncrement="${defaultIncrement}%+"
+        volumeModify="+${defaultIncrement}%"
       else
-        volumeIncrement="${2}%+"
+        volumeModify="+${2}%"
       fi
       ;;
-    down)
+    'down')
+      volumeCommand="set-sink-volume"
       if [ -z "$2" ]; then
-        volumeIncrement="${defaultIncrement}%-"
+        volumeModify="-${defaultIncrement}%"
       else
-        volumeIncrement="${2}%-"
+        volumeModify="-${2}%"
       fi
       ;;
-    set)
+    'set')
+      volumeCommand="set-sink-volume"
       if [ -z "$2" ]; then
         echo "ERROR: 'vol set' requires an argument"
         return 1
       else
-        volumeIncrement="${2}%"
+        volumeModify="${2}%"
       fi
       ;;
-    mute)
-      #AMIXARG="toggle"
-      echo "doesn't work yet"
-      return 1
+    'mute')
+      volumeCommand="set-sink-mute"
+      volumeModify="toggle"
       ;;
-    h|-h|--help)
+    '-h'|'--help')
       vol_usage
       return 0
       ;;
@@ -79,6 +78,7 @@ vol () {
   esac
 
   # Actual volume change
-  amixer set "$volumeMixer" "${volumeIncrement}"
+  pactl ${volumeCommand} ${volumeMixer} ${volumeModify}
+
 
 }
