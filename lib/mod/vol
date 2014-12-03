@@ -44,7 +44,7 @@ active_sound_card () {
 volume_current () {
 
   pactl list sinks | \
-        grep --after-context=9 "Sink #${activeSoundCard}" | \
+        grep --after-context=9 "Sink #$(active_sound_card)" | \
         grep "Volume:" | \
         awk '/[^0-9]*\%/ { print $5 ; exit }'
 
