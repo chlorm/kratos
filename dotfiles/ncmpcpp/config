@@ -18,52 +18,6 @@
 ##      ~/.config/mpd/ --------- mpd directory
 ##      ~/.config/mpd/lyrics --- mpd lyrics directory
 ##      ~/.config/mpd/mpd.fifo - mpd fifo ouput file
-##    Legend:
-##      () - option
-##      [] - description
-##      ## - comments [not to be uncommented]
-##      # -- commented variables
-
-## [configuration variables]
-    ## %l - length
-    ## %f - filename
-    ## %D - directory
-    ## %a - artist
-    ## %A - album artist
-    ## %t - title
-    ## %b - album
-    ## %y - year
-    ## %n - track number [01/12 -> 01]
-    ## %N - full track info [01/12 -> 01/12]
-    ## %g - genre
-    ## %c - composer
-    ## %p - performer
-    ## %d - disc
-    ## %C - comment
-    ## $R - begin right alignment
-    ## $b $/b - bold text
-    ## $u - underline text
-    ## $r - reverse colors
-    ## $a - use alternative character set
-
-    ## 0 - default window color [discards all other colors]
-    ## 1 - black
-    ## 2 - red
-    ## 3 - green
-    ## 4 - yellow
-    ## 5 - blue
-    ## 6 - magenta
-    ## 7 - cyan
-    ## 8 - white
-    ## 9 - end of current color
-
-    ## Note: Width is by default in %, if you want a column to
-    ## have fixed size, add 'f' after the value, e.g. (10)[white]{a}
-    ## will be the column that take 10% of screen (so the real column's
-    ## width will depend on actual screen size), whereas (10f)[white]{a}
-
-    ## r - column will be right aligned
-    ## E - if tag is empty, empty tag marker won't be displayed
 
 # MPD
 mpd_host = localhost
