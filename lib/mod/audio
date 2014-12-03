@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+pulse_audio_configure () {
+
+  if [ ! -d "$HOME/.config/pulse" ]; then
+    mkdir -p "$HOME/.config/pulse"
+  fi
+
+  config_ln "config/pulse/daemon.conf"
+
+}
+
+audio_auto () {
+
+  pulse_audio_configure
+
+}
