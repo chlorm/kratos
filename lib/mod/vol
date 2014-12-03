@@ -22,33 +22,55 @@ vol_usage () {
 
 }
 
+active_sound_card () {
+
+  activeSoundCard=$(\
+    pactl list sinks | \
+    grep --before-context=1 "State: RUNNING" | \
+    awk -F'[^0-9]*' '/Sink\ \#/ { print $2 ; exit }')
+
+  # If no active sound card is found fallback to the default
+  if [ -z "$activeSoundCard" ]; then
+    activeSoundCard=$(\
+      pacmd list-sinks | \
+      grep -m 1 "* index: " | \
+      grep -o '[0-9]*')
+  fi
+
+  echo "$activeSoundCard"
+
+}
+
+volume_current () {
+
+  pactl list sinks | \
+        grep --after-context=9 "Sink #${activeSoundCard}" | \
+        grep "Volume:" | \
+        awk '/[^0-9]*\%/ { print $5 ; exit }'
+
+}
+
 vol () {
 
   # If 'pactl' is not installed, be done now
   vol_path || return 1
 
-  volumeActiveSoundCard=$(\
-    pactl list sinks | \
-    grep --before-context=1 "State: RUNNING" | \
-    awk -F'[^0-9]*' '/Sink\ \#/ { print $2 ; exit }')
-
   # Parse Arguments
   case "$1" in
     '')
-      volumeCurrent=$(pactl list sinks | \
-        grep --after-context=9 "Sink #${volumeActiveSoundCard}" | \
-        grep "Volume:" | \
-        awk '/[^0-9]*\%/ { print $5 ; exit }')
-      echo "Volume: ${volumeCurrent}"
+      echo "Volume: $(volume_current)"
       ;;
     U|u|[U,u][P,p])
-      pactl set-sink-volume ${volumeActiveSoundCard} -- "+5%"
+      pactl set-sink-volume $(active_sound_card) -- "+5%"
       ;;
     D|d|[D,d][O,o][W,w][N,n])
-      pactl set-sink-volume ${volumeActiveSoundCard} -- "-5%"
+      pactl set-sink-volume $(active_sound_card) -- "-5%"
       ;;
     M|m|[M,m][U,u][T,t][E,e])
-      pactl set-sink-mute ${volumeActiveSoundCard} toggle
+      pactl set-sink-mute $(active_sound_card) toggle
+      ;;
+    L|l|[L,l][I,i][S,s][T,t])
+      pactl list sinks | grep "Sink #\|alsa.mixer_name"
       ;;
     '--help')
       vol_usage
@@ -57,7 +79,7 @@ vol () {
     *)
       case $1 in
         [0-9]|[1-9][0-9]|1[0-4][0-9]|150)
-          pactl set-sink-volume ${volumeActiveSoundCard} -- "${1}%"
+          pactl set-sink-volume $(active_sound_card) -- "${1}%"
           ;;
         *)
           echo -e "$(termclr red 0)ERROR: must be an integer between 0 and 150$(termclr reset 0)"
