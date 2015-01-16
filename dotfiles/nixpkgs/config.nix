@@ -12,7 +12,9 @@ pkgs : {
     enablePepperPDF = true;
   };
   # FFmpeg - enable fdk-aac
-  ffmpeg.fdk = true;
+  ffmpeg = {
+    fdk = true;
+  };
   # Suckless
   st.conf = (builtins.readFile ./st/config.mach.h)
     + (builtins.readFile ./st/config.inc.h);
@@ -56,7 +58,8 @@ pkgs : {
       paths = with self; [
         git
         htop
-        openssh_hpn
+        #openssh_hpn
+	openssh
         openssl
         slock
         tmux
@@ -66,7 +69,7 @@ pkgs : {
     audio-chlorm = self.buildEnv {
       name = "myAudio";
       paths = with self; [
-        pythonPackages.beets
+        beets
         flac
         lame
         mpd
@@ -109,7 +112,7 @@ pkgs : {
       paths = with self; [
         atom
         emacs
-        #libreoffice
+        libreoffice
         sublime3
         texstudio
         vim
@@ -184,12 +187,12 @@ pkgs : {
       name = "myVideo";
       paths = with self; [
         ffmpeg
-        #mediainfo
-        #mkvtoolnix
+        mediainfo
+        mkvtoolnix
         vlc
         vobsub2srt
         x264
-        #x265
+        x265
         #x265-hg
       ];
     };
