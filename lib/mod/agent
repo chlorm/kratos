@@ -96,7 +96,7 @@ agent_proper () {
     if [ -n "$SSH_AGENT_PID" ]; then
       local OLD; local NEW;
       OLD="$(ps -p "$SSH_AGENT_PID" -o comm | tail -n 1)"
-      NEW="$(echo "$AGENT_CMD" | awk '{print $1}')"
+      NEW="$(basename "$AGENT_CMD" | awk '{print $1}')"
       if [ "$OLD" = "COMMAND" ]; then
         unset SSH_AGENT_PID
         unset SSH_AUTH_SOCK
