@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 ##[list hostname of all workstations]
-export workStations='\(NOS-4-A2\|LGM\|Shivkatall\)'
+export workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'
 
 export DIR_CONF="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
 cd "$DIR_CONF"
