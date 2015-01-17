@@ -25,9 +25,9 @@ if [ -z "$1" ] ; then
   usage_nix
   exit 1
 else
-	case "$1" in
+  case "$1" in
 
-	  build)
+    build)
       shift
       nix-build $@
       ;;
@@ -110,5 +110,5 @@ else
       usage_nix
       ;;
 
-	esac
+  esac
 fi
