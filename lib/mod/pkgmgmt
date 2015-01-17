@@ -14,14 +14,17 @@ Usage: pkg UTILITY [OPTIONS]
 }
 
 pkg_mgr () {
+
   case $(os_base) in
 
     'Cygwin')
-      # ??? chlocatley
+      # ??? chloclatey
+      echo "not supported"
       ;;
 
     'Darwin')
       # ??? homebrew
+      echo "not supported"
       ;;
 
     'FreeBSD') # Ports
@@ -40,7 +43,10 @@ pkg_mgr () {
           ;;
 
         'NixOS') # Nix
-          path_hasbin nix || return 1
+          path_hasbin nix-env || return 1
+          path_hasbin nixos-rebuild || return 1
+          path_hasbin nix-collect-garbage || return 1
+          path_hasbin nix-channel || return 1
           echo "nix"
           return 0
           ;;
@@ -69,11 +75,16 @@ pkg_mgr () {
           return 0
           ;;
 
+        *)
+          echo "ERROR: not a suppoted linux distro"
+          return 1
+          ;;
+
       esac
       ;;
 
     *)
-      echo "ERROR: no supported package manager found"
+      echo "ERROR: not a supported base OS"
       return 1
       ;;
 
@@ -85,7 +96,7 @@ pkg () {
 
   case "$1" in
 
-    clean)
+    'clean')
       case "$(pkg_mgr)" in
 
         'apt-get')
@@ -122,7 +133,7 @@ pkg () {
       esac
       ;;
 
-    install)
+    'install')
       case "$(pkg_mgr)" in
 
         'apt')
@@ -174,7 +185,7 @@ pkg () {
       esac
       ;;
 
-    uninstall)
+    'uninstall')
       case "$(pkg_mgr)" in
 
         'ports')
@@ -218,14 +229,13 @@ pkg () {
           ;;
 
         *)
-          echo "WARNING: Unsupported Linux distro"
           return 1
           ;;
 
       esac
       ;;
 
-    update)
+    'update')
       case "$(pkg_mgr)" in
 
         'ports')
