@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # Nix is a wrapper for all nix utilities
 
 # Current directory
@@ -20,77 +20,95 @@ clY="\033[0;33m"  # Yellow
 clU="\033[0;4m"   # Underline
 clD="\033[0;0m"   # default
 
-if [ -z "$1" ]; then
+if [ -z "$1" ] ; then
   echo -e "ERROR: \"nix\" requires an argument"
   usage_nix
   exit 1
 else
 	case "$1" in
+
 	  build)
       shift
       nix-build $@
-    ;;
+      ;;
+
     channel)
       shift
       nix-channel $@
-    ;;
+      ;;
+
     collect-garbage)
       shift
       nix-collect-garbage $@
-    ;;
+      ;;
+
     copy-closure)
       shift
       nix-copy-closure $@
-    ;;
+      ;;
+
     daemon)
       shift
       nix-daemon $@
-    ;;
+      ;;
+
     env)
       shift
       nix-env $@
-    ;;
+      ;;
+
     hash)
       shift
       nix-hash $@
-    ;;
+      ;;
+
     install-package)
       shift
       nix-install-package $@
-    ;;
+      ;;
+
     instantiate)
       shift
       nix-instantiate $@
-    ;;
+      ;;
+
     prefetch-url)
       shift
       nix-prefetch-url $@
-    ;;
+      ;;
+
     pull)
       shift
       nix-pull $@
-    ;;
+      ;;
+
     push)
       shift
       nix-push $@
-    ;;
+      ;;
+
     shell)
       shift
       nix-shell $@
-    ;;
+      ;;
+
     store)
       shift
       nix-store $@
-    ;;
+      ;;
+
     -h|--help)
       usage_nix
-    ;;
+      ;;
+
     -v|--version)
       echo "Nix version: $VERSION"
-    ;;
+      ;;
+
     *)
       printf "ERROR: Unknown option $1\n"
       usage_nix
-    ;;
+      ;;
+
 	esac
 fi
