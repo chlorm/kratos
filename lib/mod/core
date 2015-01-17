@@ -4,7 +4,7 @@
 symlink () {
 
   mkdir -p "$(dirname "$2")"
-  if [ "$(readlink -f "$2")" != "$1" ]; then
+  if [ "$(readlink -f "$2")" != "$1" ] ; then
     rm -rf "$2"
     ln -s "$1" "$2" 2>/dev/null || return 1
   fi
@@ -43,15 +43,15 @@ y_or_n () {
   local ANS
   local RET
 
-  while true; do
+  while true ; do
     echo -n "$1 "
     y_or_n_validate "$2"
     RET="$?"
-    if [ "$RET" -eq "0" ]; then
+    if [ "$RET" -eq "0" ] ; then
       echo -n "(Y/n) "
       read ANS
       [ -z "$ANS" ] && return 0
-    elif [ "$RET" -eq "1" ]; then
+    elif [ "$RET" -eq "1" ] ; then
       echo -n "(y/N)" 
       read ANS
       [ -z "$ANS" ] && return 1
@@ -72,7 +72,7 @@ dir_tmp () {
   local DIR_TMP
 
   dir_tmp_tryall
-  [ "$DIR_TMP" = "" ] && { echo "Failed to find a temporary folder" >&2; return 1; }
+  [ "$DIR_TMP" = "" ] && { echo "Failed to find a temporary folder" >&2 ; return 1 ; }
   [ ! -d "$DIR_TMP" ] && mkdir "$DIR_TMP" && chmod 0700 "$DIR_TMP"
   symlink "$DIR_TMP" "$HOME/.tmp"
   mkdir "$DIR_TMP/cache" >/dev/null 2>&1
@@ -93,6 +93,7 @@ dir_tmp_tryall() {
 dir_tmp_one () {
 
 	[ -w "$1" ] || return 1
+
   mount | grep '\(tmpfs\|ramfs\)' | grep $1 >/dev/null || return 1
   DIR_TMP="$1/$USER"
 
@@ -102,6 +103,7 @@ dir_tmp_one () {
 path_bin () {
 
   [ "$#" -ne "1" ] && return 2
+
   path_hasbin $1 && type $1 | awk '{print $3}' && return 0
 
   return 1
@@ -112,6 +114,7 @@ path_bin () {
 proc_exists () {
 
   [ "$#" -ne "1" ] && return 1
+
   kill -0 $1 >/dev/null 2>&1
 
 }
@@ -135,7 +138,7 @@ path_add () {
 # Wraps the command in sudo if sudo exists and runs it
 sudo_wrap () {
 
-  if path_hasbin sudo; then
+  if path_hasbin sudo ; then
     sudo $@
   else
     $@

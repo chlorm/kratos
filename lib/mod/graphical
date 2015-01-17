@@ -3,12 +3,14 @@
 graphical_bestwm () {
 
   # Determine preferred window manager
-  path_hasbin "xmonad" && { echo "xmonad"; return 0; }
-  path_hasbin "gnome-session" && { echo "gnome-session"; return 0; }
-  path_hasbin "startkde" && { echo "startkde"; return 0; }
-  path_hasbin "awesome" && { echo "awesome"; return 0; }
-  path_hasbin "i3" && { echo "i3"; return 0; }
-  path_hasbin "startxfce4" && { echo "startxfce4"; return 0; }
+  path_hasbin "xmonad" && { echo "xmonad" ; return 0 ; }
+  path_hasbin "cinnamon-session" && { echo "cinnamon-session" ; return 0 ; }
+  path_hasbin "gnome-session" && { echo "gnome-session" ; return 0 ; }
+  path_hasbin "startkde" && { echo "startkde" ; return 0 ; }
+  path_hasbin "awesome" && { echo "awesome" ; return 0 ; }
+  path_hasbin "i3" && { echo "i3" ; return 0 ; }
+  path_hasbin "startxfce4" && { echo "startxfce4" ; return 0 ; }
+
   return 1
 
 }
@@ -35,10 +37,10 @@ graphical_runwm () {
   case ${WM} in
     awesome)
       TILING=1
-      if [ -d "$HOME/.config/wallpaper" ]; then
-        if [ "$(ls "$HOME/.config/wallpaper" | wc -l)" -gt "1" ]; then
+      if [ -d "$HOME/.config/wallpaper" ] ; then
+        if [ "$(ls "$HOME/.config/wallpaper" | wc -l)" -gt "1" ] ; then
           sleep 2
-          while true; do
+          while true ; do
             awsetbg -r "$HOME/.config/wallpaper"
             sleep 300
           done &
@@ -57,16 +59,16 @@ graphical_runwm () {
   # Configure applications
   local TERMRC
   TERMRC="$(dir_conf)/dotfiles/config/Terminal/terminalrc"
-  if [ "${TILING}" -eq "1" ]; then
+  if [ "${TILING}" -eq "1" ] ; then
     HCFG="${TERMRC}.tiling.$(hostname)"
-    if [ -f "${HCFG}" ]; then
+    if [ -f "${HCFG}" ] ; then
       symlink "${HCFG}" "${TERMRC}"
     else
       symlink "${TERMRC}.tiling" "${TERMRC}"
     fi
   else
     HCFG="${TERMRC}.window.$(hostname)"
-    if [ -f "${HCFG}" ]; then
+    if [ -f "${HCFG}" ] ; then
       symlink "${HCFG}" "${TERMRC}"
     else
       symlink "${TERMRC}.window" "${TERMRC}"
@@ -86,7 +88,7 @@ graphical_runwm () {
 graphical_autorun () {
 
   local WM
-  if [ "$#" -ge "1" ]; then
+  if [ "$#" -ge "1" ] ; then
     WM="$(echo "$1" | tr '[A-Z]' '[a-z]')"
     [ "$WM" = "awesomewm" ] && WM="awesome"
     [ "$WM" = "xfce4" ] && WM="startxfce4"
@@ -102,9 +104,9 @@ graphical_autorun () {
 # Suckless Terminal
 graphical_st () {(
 
-  if [ -d "$(dir_conf)/dotfiles/nixpkgs/st/" ]; then
+  if [ -d "$(dir_conf)/dotfiles/nixpkgs/st/" ] ; then
     cd "$(dir_conf)/dotfiles/nixpkgs/st/"
-    if [ -f "config.$(hostname).h" ]; then
+    if [ -f "config.$(hostname).h" ] ; then
       symlink "config.$(hostname).h" "config.mach.h"
     else
       symlink "config.other.h" "config.mach.h"
@@ -117,9 +119,9 @@ graphical_st () {(
 graphical_auto () {
 
   install -d $HOME/.config
-  config_ln xinitrc xprofile xsession xmonad config/awesome config/beets config/Terminal config/wallpaper config/uzbl
+  config_ln "xinitrc" "xprofile" "xsession" "xmonad" "config/awesome" "config/beets" "config/Terminal" "config/wallpaper" "config/uzbl"
   symlink "$HOME/.config/Terminal" "$HOME/.config/xfce4/terminal"
-  graphical_st
+  #graphical_st
 
   return 0
 

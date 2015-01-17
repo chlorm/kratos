@@ -77,9 +77,10 @@ agent_gpg () {
   echo "card-timeout 5" >> "$HOME/.gnupg/scdaemon.conf"
   echo "disable-ccid" >> "$HOME/.gnupg/scdaemon.conf"
 
-  local PIN_PROG;
+  local PIN_PROG
+
   PIN_PROG="$(agent_pin_program)"
-  if [ "$?" -ne "0" ]; then
+  if [ "$?" -ne "0" ] ; then
     echo "Couldn't select gpg-agent: no pinentry program" >&2
   else
     agent_cmd gpg-agent --pinentry-program "\"$PIN_PROG\"" --daemon --enable-ssh-support && return 0
@@ -164,8 +165,10 @@ agent_spawn () {
 # Automatically determines which agent to use and starts it if necessary
 agent_auto () {
 
-  local AGENT_CMD;
+  local AGENT_CMD
+
   AGENT_CMD=$(agent_which $AGENT)
+
   agent_proper
   agent_running || agent_env
   agent_proper

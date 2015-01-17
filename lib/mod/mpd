@@ -3,8 +3,8 @@
 mpd_path () {
 
   # Make sure both 'MPD' and 'ncmpcpp' are installed
-  path_hasbin mpd || { echo "'mpd' not installed" ; return 1; }
-  path_hasbin ncmpcpp || { echo "'ncmpcpp' not installed" ; return 1; }
+  path_hasbin mpd || { echo "'mpd' not installed" ; return 1 ; }
+  path_hasbin ncmpcpp || { echo "'ncmpcpp' not installed" ; return 1 ; }
   return 0
 
 }
@@ -15,38 +15,38 @@ mpd_auto () {
   mpd_path || return 1
 
   # Check for and create missing 'MPD' directories
-  if [ ! -d "$HOME/.config/mpd/playlists" ]; then
+  if [ ! -d "$HOME/.config/mpd/playlists" ] ; then
     mkdir -p $HOME/.config/mpd/playlists
   fi
 
   # Check for and create missing 'ncmpcpp' directories
-  if [ ! -d "$HOME/.ncmpcpp" ]; then
+  if [ ! -d "$HOME/.ncmpcpp" ] ; then
     mkdir -p "$HOME/.ncmpcpp"
   fi
 
   # Check for and create missing 'MPD' session files
-  if [ ! -f "$HOME/.config/mpd/database" ]; then
+  if [ ! -f "$HOME/.config/mpd/database" ] ; then
     touch "$HOME/.config/mpd/database"
     echo "Created .config/mpd/database"
   fi
-  if [ ! -f "$HOME/.config/mpd/pid" ]; then
+  if [ ! -f "$HOME/.config/mpd/pid" ] ; then
     touch "$HOME/.config/mpd/pid"
     echo "Created .config/mpd/pid"
   fi
-  if [ ! -f "$HOME/.config/mpd/state" ]; then
+  if [ ! -f "$HOME/.config/mpd/state" ] ; then
     touch "$HOME/.config/mpd/state"
     echo "Created .config/mpd/state"
   fi
-  if [ ! -f "$HOME/.config/mpd/sticker.sql" ]; then
+  if [ ! -f "$HOME/.config/mpd/sticker.sql" ] ; then
     touch "$HOME/.config/mpd/sticker.sql"
     echo "Created .config/mpd/sticker.sql"
   fi
-  if [ ! -f "$HOME/.config/mpd/log" ]; then
+  if [ ! -f "$HOME/.config/mpd/log" ] ; then
     touch "$HOME/.config/mpd/log"
     echo "Created .config/mpd/log"
   fi
 
-  # Symlink MPD & ncmpcpp config directories
+  # Symlink MPD & ncmpcpp config files
   config_ln "config/mpd/mpd.conf" "ncmpcpp/config"
 
 }
