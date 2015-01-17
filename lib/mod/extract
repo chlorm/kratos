@@ -1,65 +1,81 @@
 #!/usr/bin/env sh
 
 extract () {
+
   if [ -z $1 ]; then
     echo "ERROR: no input provided"; exit 1
   elif [ -f $1 ]; then
     case $1 in
+
       *.tar)
         path_hasbin tar || { echo "'tar' not installed" ; exit 1; }
         tar xf $1
         ;;
+
       *.tar.bz2)
         path_hasbin tar || { echo "'tar' not installed" ; exit 1; }
         tar xjf $1
         ;;
+
       *.tbz2)
         path_hasbin tar || { echo "'tar' not installed" ; exit 1; }
         tar xjf $1
         ;;
+
       *.bz2)
         path_hasbin bunzip2 || { echo "'bunzip2' not installed" ; exit 1; }
         bunzip2 $1
         ;;
+
       *.tar.gz)
         path_hasbin tar || { echo "'tar' not installed" ; exit 1; }
         tar xzf $1
         ;;
+
       *.tgz)
         path_hasbin tar || { echo "'tar' not installed" ; exit 1; }
         tar xzf $1
         ;;
+
       *.gz)
         path_hasbin gunzip || { echo "'gunzip' not installed" ; exit 1; }
         gunzip $1
         ;;
+
       *.tar.xz)
         path_hasbin tar || { echo "'tar' not installed" ; exit 1; }
         tar xJf $1
         ;;
+
       *.txz)
         path_hasbin tar || { echo "'tar' not installed" ; exit 1; }
         tar xJf $1
         ;;
+
       *.rar)
         path_hasbin unrar || { echo "'unrar' not installed" ; exit 1; }
         unrar e $1
         ;;
+
       *.zip)
         path_hasbin unzip || { echo "'unzip' not installed" ; exit 1; }
         unzip $1
         ;;
+
       *.Z)
         path_hasbin uncompress || { echo "'uncompress' not installed" ; exit 1; }
         uncompress $1
         ;;
+
       *.7z)
         path_hasbin 7z || { echo "'7zip' not installed" ; exit 1; }
         7z x $1
         ;;
+
       *)
         echo "'$1' is not a file type supported by extract()"
         ;;
+
       esac
   else
       echo "'$1' is not a file"

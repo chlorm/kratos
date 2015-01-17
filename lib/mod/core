@@ -2,35 +2,47 @@
 
 # Make sure the symbolic link points to the correct location $2 -> $1
 symlink () {
+
   mkdir -p "$(dirname "$2")"
   if [ "$(readlink -f "$2")" != "$1" ]; then
     rm -rf "$2"
     ln -s "$1" "$2" 2>/dev/null || return 1
   fi
+
 }
 
 p_and_q () {
+
   local STAT
+
   STAT="$1"
   shift 1
   echo "$@"
   exit $STAT
+
 }
 
 # Validate the answer to a yes or no question
 y_or_n_validate () {
-  local ANS;
+
+  local ANS
+
   ANS="$(echo "$1" | tr '[A-Z]' '[a-z]')"
   [ "$ANS" = "yes" ] && return 0
   [ "$ANS" = "y" ] && return 0
   [ "$ANS" = "no" ] && return 1
   [ "$ANS" = "n" ] && return 1
+
   return 2
+
 }
 
 # Ask a yes or no question
 y_or_n () {
-  local ANS; local RET;
+
+  local ANS
+  local RET
+
   while true; do
     echo -n "$1 "
     y_or_n_validate "$2"
@@ -51,11 +63,14 @@ y_or_n () {
     RET="$?"
     [ "$RET" -lt "2" ] && return $RET
   done
+
 }
 
 # Get the path to the temporary directory
 dir_tmp () {
+
   local DIR_TMP
+
   dir_tmp_tryall
   [ "$DIR_TMP" = "" ] && { echo "Failed to find a temporary folder" >&2; return 1; }
   [ ! -d "$DIR_TMP" ] && mkdir "$DIR_TMP" && chmod 0700 "$DIR_TMP"
@@ -63,49 +78,67 @@ dir_tmp () {
   mkdir "$DIR_TMP/cache" >/dev/null 2>&1
   symlink "$DIR_TMP/cache" "$HOME/.cache"
   echo "$DIR_TMP"
+
 }
+
 dir_tmp_tryall() {
+
   dir_tmp_one "$ROOT/dev/shm" && return 0
   dir_tmp_one "$ROOT/run/shm" && return 0
   dir_tmp_one "$ROOT/tmp" && return 0
   dir_tmp_one "$ROOT/var/tmp" && return 0
+
 }
+
 dir_tmp_one () {
+
 	[ -w "$1" ] || return 1
   mount | grep '\(tmpfs\|ramfs\)' | grep $1 >/dev/null || return 1
   DIR_TMP="$1/$USER"
+
 }
 
 # Finds the path to the binary
 path_bin () {
+
   [ "$#" -ne "1" ] && return 2
   path_hasbin $1 && type $1 | awk '{print $3}' && return 0
+
   return 1
+
 }
 
 # Checks to see if the process is running
 proc_exists () {
+
   [ "$#" -ne "1" ] && return 1
   kill -0 $1 >/dev/null 2>&1
+
 }
 
 # Checks the pidfile to see if the process is running
 check_pidfile () {
+
   [ -f "$1" ] && proc_exists "$(cat $1 2>/dev/null)"
+
 }
 
 # Add to the path if the DIR doesn't exist
 path_add () {
+
   if [ "$(echo "$PATH" | grep "$1" 2>/dev/null)" = "" ]; then
     export PATH="${PATH}:$1"
   fi
+
 }
 
 # Wraps the command in sudo if sudo exists and runs it
 sudo_wrap () {
+
   if path_hasbin sudo; then
     sudo $@
   else
     $@
   fi
+
 }

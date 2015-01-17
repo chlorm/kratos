@@ -89,14 +89,17 @@ ssh_auth_one () {
 
 # Makes sure the client configuration is installed
 ssh_client () {
+
   ssh_dir || return 1
   symlink "$(dir_conf)/dotfiles/ssh/config" "$HOME/.ssh/config"
   ssh-keygen -H >/dev/null 2>&1
   rm -f "$HOME/.ssh/known_hosts.old"
+
 }
 
 # Automatically determine how to configure ssh
 ssh_auto () {
+
   ssh_path || return 1
   ssh_client || { echo "Failed to create client configuration" >&2; return 1; }
   ssh_auth || { echo "Failed to update authorized_keys" >&2; return 1; }
@@ -107,4 +110,5 @@ ssh_auto () {
       ssh_genkey "" || { echo "Failed to generate client keys" >&2; return 1; }
     fi
   fi
+
 }

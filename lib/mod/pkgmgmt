@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 pkg_usage () {
+
     eval "printf \"Pkg is an abstraction layer for system package managers.
 
 Usage: pkg UTILITY [OPTIONS]
@@ -9,9 +10,11 @@ Usage: pkg UTILITY [OPTIONS]
     uninstall      - Uninstall a package
     update         - Install Updates
     -h|--help      - print this message\n\n\""
+
 }
 
 pkg () {
+
   case "$1" in
     clean)
         case "$(os_base)" in
@@ -316,4 +319,5 @@ pkg () {
         return 1
         ;;
   esac
+
 }

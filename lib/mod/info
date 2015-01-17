@@ -4,11 +4,16 @@
 
 # Determine if this is a workstation
 info_ws () {
+
   [ "$WS" = "0" ] && return 0
-  [ "$(uname -n | grep -e "$workStations")" != "" ]
+
+  hostname | grep -q "$workStations"
+
 }
 
 # Determine if the user is root
 info_root () {
+
   [ "$(id -u)" -eq 0 ]
+
 }

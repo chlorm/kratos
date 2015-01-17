@@ -2,33 +2,43 @@
 
 # Exports extra params
 agent_export () {
+
   export SSH_AUTH_SOCK
   export GPG_AGENT_INFO
   export GNOME_KEYRING_CONTROL
   export GNOME_KEYRING_PID
+
 }
 
 # Retrieve the agent environment
 agent_file () {
+
   echo "$(dir_tmp)/agent-environment"
+
 }
 
 # Print cmd if agent exists
 agent_cmd () {
+
   [ "$#" -lt "1" ] && return 1
   path_hasbin $1 && echo "$@ ;"
+
 }
 
 # Find a specific pcsc driver
 agent_find_pcsc_lib () {
+
   VAL="$(find "$1" -name libpcsclite.so\* 2>/dev/null | head -n 1)"
   [ -z "$VAL" ] && return 1
   echo "$VAL"
+
   exit 0
+
 }
 
 # Find the path to the pcsc driver
 agent_find_pcsc () {
+
   agent_find_pcsc_lib "/run/current-system/sw/lib/"
   agent_find_pcsc_lib "$HOME/.nix-profile/lib/"
   agent_find_pcsc_lib "/usr/local/lib/"
@@ -36,28 +46,37 @@ agent_find_pcsc () {
   agent_find_pcsc_lib "/lib64/"
   agent_find_pcsc_lib "/usr/lib/"
   agent_find_pcsc_lib "/lib/"
+
   exit 1
+
 }
 
 agent_pin_program_check () {
+
   local PIN="$(path_bin "$1")"
   $PIN </dev/null >/dev/null 2>&1 || return 1
   echo $PIN
+
 }
 
 # Find the path to the pinentry application
 agent_pin_program () {
+
   agent_pin_program_check pinentry && return 0
   agent_pin_program_check pinentry-curses && return 0
+
   return 1
+
 }
 
 # Prints the command for running the gpg-agent
 agent_gpg () {
+
   mkdir -p "$HOME/.gnupg"
   echo "pcsc-driver $(agent_find_pcsc)" > "$HOME/.gnupg/scdaemon.conf"
   echo "card-timeout 5" >> "$HOME/.gnupg/scdaemon.conf"
   echo "disable-ccid" >> "$HOME/.gnupg/scdaemon.conf"
+
   local PIN_PROG;
   PIN_PROG="$(agent_pin_program)"
   if [ "$?" -ne "0" ]; then
@@ -65,33 +84,43 @@ agent_gpg () {
   else
     agent_cmd gpg-agent --pinentry-program "\"$PIN_PROG\"" --daemon --enable-ssh-support && return 0
   fi
+
   return 1
+
 }
 
 # Prints the command for running the ssh-agent
 agent_ssh () {
+
   agent_cmd ssh-agent
+
 }
 
 # Determine which agent to use
 agent_which () {
+
   [ "$1" = "ssh" ] && agent_ssh && return 0
   [ "$1" = "gpg" ] && agent_gpg && return 0
   [ "$(hostname)" = "fantom" ] && agent_ssh && return 0
   (info_ws && ! info_root) && agent_gpg && return 0
   agent_ssh && return 0
   echo "Failed to find an agent" >&2
+
   return 1
+
 }
 
 # Tests to see if the agent is already running
 agent_running () {
+
   run_quiet ssh-add -L
   [ "$?" -ne "2" ]
+
 }
 
 # Make sure that the running agent is the proper one
 agent_proper () {
+
   if agent_running; then
     if [ -n "$SSH_AGENT_PID" ]; then
       local OLD; local NEW;
@@ -110,30 +139,38 @@ agent_proper () {
       unset SSH_AUTH_SOCK
     fi
   fi
+
 }
 
 # Import already running agent data
 agent_env () {
+
   [ -f "$(agent_file)" ] && . "$(agent_file)"
   agent_export
   agent_running
+
 }
 
 # Spawn agent if it doesn't exist
 agent_spawn () {
+
   echo "Spawning $@"
   (eval "$@") | grep -v echo > "$(agent_file)"
   agent_env
   ssh-add
+
 }
 
 # Automatically determines which agent to use and starts it if necessary
 agent_auto () {
+
   local AGENT_CMD;
   AGENT_CMD=$(agent_which $AGENT)
   agent_proper
   agent_running || agent_env
   agent_proper
   ! agent_running && agent_spawn $AGENT_CMD && return 0
+
   return 1
+
 }
