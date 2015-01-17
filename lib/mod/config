@@ -41,6 +41,8 @@ git_pull_nostat () {
       ;;
     1)
       echo "Updated"
+      ;;
+
   esac
 
 }
