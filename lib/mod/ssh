@@ -3,8 +3,8 @@
 ssh_path () {
 
   # Make sure ssh and openssl are installed
-  path_hasbin ssh-keygen || { echo "No ssh installed" >&2 ; return 1; }
-  path_hasbin openssl || { echo "No openssl installed" >&2 ; return 1; }
+  path_hasbin ssh-keygen || return 1
+  path_hasbin openssl || return 1
 
   return 0
 
@@ -13,7 +13,7 @@ ssh_path () {
 ssh_dir () {
 
   # Makes sure the ssh directory exists
-  if [ ! -d "$HOME/.ssh" ]; then
+  if [ ! -d "$HOME/.ssh" ] ; then
     mkdir "$HOME/.ssh" || return 1
   fi
 
@@ -28,7 +28,7 @@ ssh_genkey () {
   local PASS
   local PASS2
 
-  if [ "$#" -eq "0" ]; then
+  if [ "$#" -eq "0" ] ; then
     stty -echo
     echo -n "Password: "
     read PASS
@@ -37,8 +37,8 @@ ssh_genkey () {
     read PASS2
     echo ""
     stty echo
-    [ "$PASS" != "$PASS2" ] && { echo "Passwords do not match" >&2 ; return 1; }
-  elif [ "$#" -eq "1" ]; then
+    [ "$PASS" != "$PASS2" ] && { echo "Passwords do not match" >&2 ; return 1 ; }
+  elif [ "$#" -eq "1" ] ; then
     PASS="$1"
   else
     return 1
@@ -71,7 +71,7 @@ ssh_defkey () {
 
 ssh_defkey_one () {
 
-  if [ -f "$CPFX$1" ]; then
+  if [ -f "$CPFX$1" ] ; then
     symlink "$CPFX$1" "$LPFX$1" || return 1
   fi
 
@@ -112,13 +112,13 @@ ssh_auto () {
 
   ssh_path || return 1
 
-  ssh_client || { echo "Failed to create client configuration" >&2; return 1; }
-  ssh_auth || { echo "Failed to update authorized_keys" >&2; return 1; }
-  if [ ! -f "$HOME/.ssh/id_rsa.pub" ] && [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
-    if info_ws; then
-      ssh_defkey || { echo "Failed to populate client keys" >&2; return 1; }
+  ssh_client || { echo "Failed to create client configuration" >&2 ; return 1 ; }
+  ssh_auth || { echo "Failed to update authorized_keys" >&2 ; return 1 ; }
+  if [ ! -f "$HOME/.ssh/id_rsa.pub" ] && [ ! -f "$HOME/.ssh/id_ed25519.pub" ] ; then
+    if info_ws ; then
+      ssh_defkey || { echo "Failed to populate client keys" >&2 ; return 1 ; }
     else
-      ssh_genkey "" || { echo "Failed to generate client keys" >&2; return 1; }
+      ssh_genkey "" || { echo "Failed to generate client keys" >&2 ; return 1 ; }
     fi
   fi
 

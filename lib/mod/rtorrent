@@ -3,7 +3,8 @@
 rtorrent_path () {
 
   # Make sure rTorrent is installed
-  path_hasbin rtorrent || { echo "'rtorrent' not installed" ; return 1; }
+  path_hasbin rtorrent || return 1
+
   return 0
 
 }

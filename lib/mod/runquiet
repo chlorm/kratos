@@ -10,7 +10,7 @@ run_quiet () {
   runAppPID=$(pgrep $1)
 
   # If application is already running, no need to run it
-  if [ -z "$runAppPID" ]; then
+  if [ -z "$runAppPID" ] ; then
     $@ >/dev/null 2>&1
   fi
 

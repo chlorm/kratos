@@ -3,8 +3,9 @@
 mpd_path () {
 
   # Make sure both 'MPD' and 'ncmpcpp' are installed
-  path_hasbin mpd || { echo "'mpd' not installed" ; return 1 ; }
-  path_hasbin ncmpcpp || { echo "'ncmpcpp' not installed" ; return 1 ; }
+  path_hasbin mpd || return 1
+  path_hasbin ncmpcpp || return 1
+
   return 0
 
 }

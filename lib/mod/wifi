@@ -5,7 +5,7 @@
 wifi_path () {
 
   # Make sure network manager is installed
-  path_hasbin nmcli || { echo "'network manager' not installed" ; return 1 ; }
+  path_hasbin nmcli || return 1
 
   return 0
 

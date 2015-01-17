@@ -3,7 +3,8 @@
 vol_path () {
 
   # Make sure 'pactl' is installed
-  path_hasbin pactl || { echo "$(termclr red 0)ERROR: 'pactl' is not installed$(termclr reset 0)" ; return 1 ; }
+  path_hasbin pactl || return 1
+
   return 0
 
 }
@@ -57,37 +58,48 @@ vol () {
 
   # Parse Arguments
   case "$1" in
+
     '')
       echo "Volume: $(volume_current)"
       ;;
-    U|u|[U,u][P,p])
+
+    [U,u]|[U,u][P,p])
       pactl set-sink-volume $(active_sound_card) -- "+5%"
       ;;
-    D|d|[D,d][O,o][W,w][N,n])
+
+    [D,d]|[D,d][O,o][W,w][N,n])
       pactl set-sink-volume $(active_sound_card) -- "-5%"
       ;;
-    M|m|[M,m][U,u][T,t][E,e])
+
+    [M,m]|[M,m][U,u][T,t][E,e])
       pactl set-sink-mute $(active_sound_card) toggle
       ;;
-    L|l|[L,l][I,i][S,s][T,t])
+
+    [L,l]|[L,l][I,i][S,s][T,t])
       pactl list sinks | grep "Sink #\|alsa.mixer_name"
       ;;
+
     '--help')
       vol_usage
       return 0
       ;;
+
     *)
       case $1 in
+
         [0-9]|[1-9][0-9]|1[0-4][0-9]|150)
           pactl set-sink-volume $(active_sound_card) -- "${1}%"
           ;;
+
         *)
           echo -e "$(termclr red 0)ERROR: must be an integer between 0 and 150$(termclr reset 0)"
           vol_usage
           return 1
           ;;
+
       esac
       ;;
+
   esac
 
 }
