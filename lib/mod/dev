@@ -1,14 +1,32 @@
 #!/usr/bin/env sh
 
-# Prepares the files needed for development
-dev_auto () {
+git_dev () {
+
+  config_ln "gitconfig"
+
+}
+
+golang_dev () {
+
+  path_hasbin go || return 1
 
   mkdir -p "$HOME/.go/src" >/dev/null 2>&1
 
-  # Git config
-  config_ln gitconfig
+}
 
-  # Nix package manager config
+nixpkgs_dev () {
+
+  path_hasbin nix-env || return 1
+
   config_ln "nixpkgs"
+
+}
+
+# Prepares the files needed for development
+dev_auto () {
+
+  git_dev
+  golang_dev
+  nixpkgs_dev
 
 }

@@ -1,11 +1,47 @@
 #!/usr/bin/env sh
 
+emacs_editor () {
+
+  path_hasbin emacs || return 1
+
+  rm -rf "$HOME/.emacs"
+
+  config_ln "emacs.d"
+
+}
+
+gvim_editor () {
+
+  path_hasbin gvim || return 1
+
+  config_ln "gvimrc"
+
+}
+
+sublime_editor () {
+
+  path_hasbin sublime || return 1
+
+  config_ln "config/sublime-text-3"
+
+}
+
+vim_editor () {
+
+  path_hasbin vim || return 1
+
+  rm -rf "$HOME/.viminfo"
+
+  config_ln "vimrc"
+
+}
+
 # Automatically configure editors
 editor_auto () {
 
-  rm -rf "$HOME/.emacs" "$HOME/.viminfo"
-
-  # Symlink config files
-  config_ln "emacs.d" "vimrc" "gvimrc" "config/sublime-text-3"
+  emacs_editor
+  gvim_editor
+  sublime_editor
+  vim_editor
 
 }

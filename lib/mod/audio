@@ -1,18 +1,9 @@
 #!/usr/bin/env sh
 
-pulseaudio_path () {
+pulseaudio_audio () {
 
-  # Make sure pulseaudio is installed
+  # If pulseaudio isn't installed, be done now
   path_hasbin pacmd || return 1
-
-  return 0
-
-}
-
-pulseaudio_configure () {
-
-  # if pulseaudio isn't installed, be done now
-  pulseaudio_path || return 1
 
   if [ ! -d "$HOME/.config/pulse" ] ; then
     mkdir -p "$HOME/.config/pulse"
@@ -24,6 +15,6 @@ pulseaudio_configure () {
 
 audio_auto () {
 
-  pulseaudio_configure
+  pulseaudio_audio
 
 }
