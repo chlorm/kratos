@@ -53,7 +53,10 @@ agent_find_pcsc () {
 
 agent_pin_program_check () {
 
-  local PIN="$(path_bin "$1")"
+  local PIN
+
+  PIN="$(path_bin "$1")"
+
   $PIN </dev/null >/dev/null 2>&1 || return 1
   echo $PIN
 
