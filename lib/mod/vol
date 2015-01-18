@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+# TODO: Support platforms without pulseaudio
+
 vol_path () {
 
   # Make sure 'pactl' is installed

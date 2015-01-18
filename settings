@@ -5,3 +5,9 @@ workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'
 
 # Set dotfiles git repo remote origin
 dotfilesRepo="https://github.com/codyopel/dotfiles.git"
+
+# TODO: Desktop Environment priority List
+
+# TODO: Shell priority list
+
+# TODO: Editor list
