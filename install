@@ -6,6 +6,7 @@ cd "$DIR_CONF"
 
 if [ ! -f "settings.local" ] ; then
   touch "settings.local"
+  echo '#!/usr/bin/env sh' >> "settings.local"
 fi
 
 . lib/loader || exit 128
