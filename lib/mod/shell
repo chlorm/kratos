@@ -80,11 +80,11 @@ shell_theme () {
   # Colors for LS
   case "$(os_base)" in
 
-    Linux|Cygwin)
+    linux|cygwin)
       eval "$(dircolors -b)"; alias ls='ls --color=auto'
       ;;
 
-    FreeBSD)
+    freebsd)
       export CLICOLOR=1; export LSCOLORS="ExGxFxdxCxDhDxaBadaCeC"
       ;;
 
@@ -184,18 +184,18 @@ shell_init () {
 shell_get_best () {
 
   # Bash
-  if path_hasbin bash; then
+  if path_hasbin bash ; then
     echo "bash" && return 0
   # Fish
-  elif path_hasbin fish; then
+  elif path_hasbin fish ; then
     echo "fish" && return 0
   # Zsh
-  elif path_hasbin zsh; then
+  elif path_hasbin zsh ; then
     VER="$(zsh --version | awk '{print $2}')"
 	  VER="$(printf "4.3.9\n%s" "$VER" | \
       sort -bt. -k1,1n -k2,2n -k3,3n -k4,4n -k5,5n | \
       awk 'NR==1')"
-	  if [ "$VER" = "4.3.9" ]; then
+	  if [ "$VER" = "4.3.9" ] ; then
       echo "zsh" && return 0
     fi
   # Fallback to sh
@@ -208,7 +208,7 @@ shell_get_best () {
 # Automatically executes the preferred shell
 shell_best () {
 
-  if [ "$(shell_nov)" != "$(shell_get_best)" ]; then
+  if [ "$(shell_nov)" != "$(shell_get_best)" ] ; then
     exec $(shell_get_best) $@
     exit $?
   fi

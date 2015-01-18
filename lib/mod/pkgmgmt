@@ -17,24 +17,24 @@ pkg_mgr () {
 
   case $(os_base) in
 
-    'Cygwin')
+    'cygwin')
       # ??? chloclatey
       echo "not supported"
       ;;
 
-    'Darwin')
+    'darwin')
       # ??? homebrew
       echo "not supported"
       ;;
 
-    'FreeBSD') # Ports
+    'freebsd') # Ports
       path_hasbin portmaster || return 1
       path_hasbin portsnap || return 1
       echo "ports"
       return 0
       ;;
 
-    'Linux')
+    'linux')
       case $(os_linux_distro) in
 
         'Debian'|'Ubuntu') # Apt
@@ -43,7 +43,7 @@ pkg_mgr () {
           return 0
           ;;
 
-        'NixOS') # Nix
+        'nixos') # Nix
           path_hasbin nix-env || return 1
           path_hasbin nixos-rebuild || return 1
           path_hasbin nix-collect-garbage || return 1
@@ -52,25 +52,25 @@ pkg_mgr () {
           return 0
           ;;
 
-        'Arch') # Pacman
+        'arch') # Pacman
           path_hasbin pacman || return 1
           echo "pacman"
           return 0
           ;;
 
-        'Gentoo') # Portage
+        'gentoo') # Portage
           path_hasbin emerge || return 1
           echo "portage"
           return 0
           ;;
 
-        'CentOS'|'Fedora'|'Red Hat') # Red Hat
+        'centos'|'fedora'|'red hat') # Red Hat
           path_hasbin yum || return 1
           echo "rpm"
           return 0
           ;;
 
-        'SUSE') # Yast, not sure about this cluster fuck
+        'suse') # Yast, not sure about this cluster fuck
           path_hasbin zypper || return 1
           echo "yast"
           return 0

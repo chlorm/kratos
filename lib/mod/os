@@ -3,7 +3,7 @@
 os_base () {
 
   # Find base os i.e. linux,freebsd,darwin,cygwin
-  uname -s | grep -m 1 -w -o '\(Cygwin\|Darwin\|FreeBSD\|Linux\)'
+  tolower $(uname -s) | grep -m 1 -w -o '\(cygwin\|dragonfly\|darwin\|freebsd\|linux\|netbsd\|openbsd\)'
 
 }
 
@@ -24,7 +24,7 @@ os_linux_distro_uname () {
 os_linux_distro () {
 
   # Take first result of distro name match
-  echo "$(os_linux_distro_release) $(os_linux_distro_uname)" | \
-  grep -m 1 -w -o '\(Arch\|CentOS\|Debian\|Fedora\|Gentoo\|NixOS\|OpenSuse\|Red\ Hat\|SUSE\|Ubuntu\)'
+  echo "$(tolower $(os_linux_distro_release) $(os_linux_distro_uname))" | \
+  grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)'
 
 }
