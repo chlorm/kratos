@@ -61,6 +61,7 @@ shell_nov () {
 
 # Determines the top level configuration directory
 dir_try () {
+
   local DIR_BIN
   local OLD
 
