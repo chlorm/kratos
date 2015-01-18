@@ -25,17 +25,20 @@ array_append () {
   eval "$1=(\"\${$1[@]}\" \"$2\")"
 
 }
+
 array_new () {
 
   unset "$1"
   declare -a "$1"
 
 }
+
 array_at () {
 
   eval "echo \"\${$1[$2]}\""
 
 }
+
 array_size () {
 
   eval "echo \${#$1[@]}"
