@@ -4,7 +4,7 @@ export DIR_CONF="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
 
 cd "$DIR_CONF"
 
-if [ ! -f "settings.local"] ; then
+if [ ! -f "settings.local" ] ; then
   touch "settings.local"
 fi
 
