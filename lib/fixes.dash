@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
 
-##[creates an array from the name of the variable and values]
+# Creates an array from the name of the variable and values
 array_from_str () {
 
   ([ "$#" -lt "1" ] || [ "$#" -gt "2" ]) && return 1
 
-  ##[read in the array data]
+  # Read in the array data
   local DATA
 
   if [ "$#" -eq "1" ] ; then
@@ -14,7 +14,7 @@ array_from_str () {
     DATA="$2"
   fi
 
-  ##[convert the data into an array]
+  # Convert the data into an array
   array_new $1
   for I in $DATA ; do
     array_append $1 "$I"
@@ -22,7 +22,7 @@ array_from_str () {
 
 }
 
-##[unique array functions with indicies starting at 0]
+# Unique array functions with indicies starting at 0
 array_append () {
 
   eval "$1$(array_size $1)=\"$2\"; $1=$(expr $(array_size $1) + 1)"

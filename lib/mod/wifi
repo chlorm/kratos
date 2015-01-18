@@ -13,6 +13,7 @@ wifi_path () {
 
 wireless_interface () {
 
+  # Find wireless interface name
   nmcli d | awk '/802-11-wireless/ {print $1}'
 
 }
@@ -36,7 +37,7 @@ Usage: pkg UTILITY [OPTIONS]
 
 wifi () {
 
-  # if nmcli isn't installed, be done now
+  # If nmcli isn't installed, be done now
   wifi_path || return 1
 
   case "$1" in

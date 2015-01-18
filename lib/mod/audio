@@ -2,7 +2,7 @@
 
 pulse_audio_configure () {
 
-  if [ ! -d "$HOME/.config/pulse" ]; then
+  if [ ! -d "$HOME/.config/pulse" ] ; then
     mkdir -p "$HOME/.config/pulse"
   fi
 

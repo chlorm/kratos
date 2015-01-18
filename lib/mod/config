@@ -2,7 +2,7 @@
 
 git_cd () {
 
-  if [ -z "$1" ]; then
+  if [ -z "$1" ] ; then
     svar DIRCONF dir_conf || return 1
     cd "$DIRCONF"
   else
@@ -150,7 +150,7 @@ config_ln () {
 
   [ "$#" -eq "0" ] && return 1
 
-  for LN in $@; do
+  for LN in $@ ; do
     symlink "$(dir_conf)/dotfiles/$LN" "$HOME/.$LN"
     echo "Symlinked $LN"
   done

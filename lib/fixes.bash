@@ -8,7 +8,7 @@ array_from_str () {
   # Read in the array data
   local DATA
 
-  if [ "$#" -eq "1" ];then
+  if [ "$#" -eq "1" ] ; then
     DATA="$(cat -)"
   else
     DATA="$2"

@@ -7,43 +7,43 @@ prompt_color () {
 
   case "$1" in
 
-    black)
+    'black')
       [ "$2" -eq "0" ] && echo -n '\e[0;30m' || echo -n '\e[1;30m'
       ;;
 
-    blue)
+    'blue')
       [ "$2" -eq "0" ] && echo -n '\e[0;34m' || echo -n '\e[1;34m'
       ;;
 
-    cyan)
+    'cyan')
       [ "$2" -eq "0" ] && echo -n '\e[0;36m' || echo -n '\e[1;36m'
       ;;
 
-    green)
+    'green')
       [ "$2" -eq "0" ] && echo -n '\e[0;32m' || echo -n '\e[1;32m'
       ;;
 
-    magenta)
+    'magenta')
       [ "$2" -eq "0" ] && echo -n '\e[0;35m' || echo -n '\e[1;35m'
       ;;
 
-    red)
+    'red')
       [ "$2" -eq "0" ] && echo -n '\e[0;31m' || echo -n '\e[1;31m'
       ;;
 
-    white)
+    'white')
       [ "$2" -eq "0" ] && echo -n '\e[0;37m' || echo -n '\e[1;37m'
       ;;
 
-    yellow)
+    'yellow')
       [ "$2" -eq "0" ] && echo -n '\e[0;33m' || echo -n '\e[1;33m'
       ;;
 
-    underline)
+    'underline')
       echo -n '\033[0;4m'
       ;;
 
-    reset)
+    'reset')
       echo -n '\e[0m'
       ;;
 
@@ -80,11 +80,11 @@ shell_theme () {
   # Colors for LS
   case "$(os_base)" in
 
-    linux|cygwin)
+    'linux'|'cygwin')
       eval "$(dircolors -b)"; alias ls='ls --color=auto'
       ;;
 
-    freebsd)
+    'freebsd')
       export CLICOLOR=1; export LSCOLORS="ExGxFxdxCxDhDxaBadaCeC"
       ;;
 
@@ -147,7 +147,7 @@ shell_init () {
 
   alias root="sudo_wrap su -"
   alias sprunge="curl -F 'sprunge=<-' http://sprunge.us" 
-  alias t='laptop_bat; date'
+  alias t='laptop_bat ; date'
   alias sha1="openssl sha1"
   alias sha256="openssl sha256"
   alias sha512="openssl sha512"

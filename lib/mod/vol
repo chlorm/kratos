@@ -31,7 +31,7 @@ active_sound_card () {
     awk -F'[^0-9]*' '/Sink\ \#/ { print $2 ; exit }')
 
   # If no active sound card is found fallback to the default
-  if [ -z "$activeSoundCard" ]; then
+  if [ -z "$activeSoundCard" ] ; then
     activeSoundCard=$(\
       pacmd list-sinks | \
       grep -m 1 "* index: " | \
@@ -45,9 +45,9 @@ active_sound_card () {
 volume_current () {
 
   pactl list sinks | \
-        grep --after-context=9 "Sink #$(active_sound_card)" | \
-        grep "Volume:" | \
-        awk '/[^0-9]*\%/ { print $5 ; exit }'
+    grep --after-context=9 "Sink #$(active_sound_card)" | \
+    grep "Volume:" | \
+    awk '/[^0-9]*\%/ { print $5 ; exit }'
 
 }
 

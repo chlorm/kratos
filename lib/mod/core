@@ -129,7 +129,7 @@ check_pidfile () {
 # Add to the path if the DIR doesn't exist
 path_add () {
 
-  if [ "$(echo "$PATH" | grep "$1" 2>/dev/null)" = "" ]; then
+  if [ "$(echo "$PATH" | grep "$1" 2>/dev/null)" = "" ] ; then
     export PATH="${PATH}:$1"
   fi
 

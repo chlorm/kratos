@@ -105,8 +105,8 @@ agent_which () {
   [ "$(hostname)" = "fantom" ] && agent_ssh && return 0
   (info_ws && ! info_root) && agent_gpg && return 0
   agent_ssh && return 0
-  echo "Failed to find an agent" >&2
 
+  echo "Failed to find an agent" >&2
   return 1
 
 }
@@ -122,21 +122,25 @@ agent_running () {
 # Make sure that the running agent is the proper one
 agent_proper () {
 
-  if agent_running; then
-    if [ -n "$SSH_AGENT_PID" ]; then
-      local OLD; local NEW;
+  if agent_running ; then
+    if [ -n "$SSH_AGENT_PID" ] ; then
+
+      local OLD
+      local NEW
+
       OLD="$(ps -p "$SSH_AGENT_PID" -o comm | tail -n 1)"
       NEW="$(basename "$AGENT_CMD" | awk '{print $1}')"
-      if [ "$OLD" = "COMMAND" ]; then
+
+      if [ "$OLD" = "COMMAND" ] ; then
         unset SSH_AGENT_PID
         unset SSH_AUTH_SOCK
-      elif [ "$OLD" != "$NEW" ]; then
+      elif [ "$OLD" != "$NEW" ] ; then
         echo "Killing '$OLD' for '$NEW'"
         kill $SSH_AGENT_PID
         unset SSH_AGENT_PID
         unset SSH_AUTH_SOCK
       fi
-    elif [ -z "$SSH_TTY" ]; then
+    elif [ -z "$SSH_TTY" ] ; then
       unset SSH_AUTH_SOCK
     fi
   fi

@@ -20,7 +20,7 @@ ssh_dir () {
 }
 
 # Creates new ssh keys with the provided password
-# Passing no parameter prompts the user for a password]
+# Passing no parameter prompts the user for a password
 ssh_genkey () {
 
   ssh_path || return 1
@@ -90,6 +90,7 @@ ssh_auth () {
   array_forall KEYS ssh_auth_one
 
 }
+
 ssh_auth_one () {
 
   cat "$1" >> "$HOME/.ssh/authorized_keys"
@@ -113,7 +114,9 @@ ssh_auto () {
   ssh_path || return 1
 
   ssh_client || { echo "Failed to create client configuration" >&2 ; return 1 ; }
+
   ssh_auth || { echo "Failed to update authorized_keys" >&2 ; return 1 ; }
+
   if [ ! -f "$HOME/.ssh/id_rsa.pub" ] && [ ! -f "$HOME/.ssh/id_ed25519.pub" ] ; then
     if info_ws ; then
       ssh_defkey || { echo "Failed to populate client keys" >&2 ; return 1 ; }

@@ -35,7 +35,8 @@ graphical_runwm () {
 
   # Do specific WM init
   case ${WM} in
-    awesome)
+
+    'awesome')
       TILING=1
       if [ -d "$HOME/.config/wallpaper" ] ; then
         if [ "$(ls "$HOME/.config/wallpaper" | wc -l)" -gt "1" ] ; then
@@ -47,18 +48,23 @@ graphical_runwm () {
         fi
       fi
       ;;
-    i3)
+
+    'i3')
       TILING=1
       ;;
-    xmonad)
+
+    'xmonad')
       TILING=1
       run_quiet hhp &
       ;;
+
   esac
 
   # Configure applications
   local TERMRC
+
   TERMRC="$(dir_conf)/dotfiles/config/Terminal/terminalrc"
+
   if [ "${TILING}" -eq "1" ] ; then
     HCFG="${TERMRC}.tiling.$(hostname)"
     if [ -f "${HCFG}" ] ; then
@@ -88,6 +94,7 @@ graphical_runwm () {
 graphical_autorun () {
 
   local WM
+
   if [ "$#" -ge "1" ] ; then
     WM="$(echo "$1" | tr '[A-Z]' '[a-z]')"
     [ "$WM" = "awesomewm" ] && WM="awesome"

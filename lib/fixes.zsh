@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-##[creates an array from the name of the variable and values]
+# Creates an array from the name of the variable and values
 array_from_str () {
 
   {[ "$#" -lt "1" ] || [ "$#" -gt "2" ]} && return 1
@@ -14,12 +14,12 @@ array_from_str () {
     DATA="$2"
   fi
 
-  ##[convert the data into an array]
+  # Convert the data into an array
   eval "$1=($DATA)"
 
 }
 
-##[unique array functions with indicies starting at 0]
+# Unique array functions with indicies starting at 0
 array_new () {
 
   unset "$1"
@@ -45,7 +45,7 @@ array_size () {
 
 }
 
-##[tests to see if a binary exists in the path]
+# Tests to see if a binary exists in the path
 path_hasbin () {
 
   [ "$#" -ne "1" ] && return 2

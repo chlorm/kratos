@@ -81,8 +81,8 @@ dir_conf () {
   dir_try "$HOME/.zshrc" && return 0
   dir_try "$HOME/.bashrc" && return 0
   dir_try "$HOME/.xinitrc" && return 0
-  echo "Failed to find the configuration directory" >&2
 
+  echo "Failed to find the configuration directory" >&2
   return 1
 
 }
