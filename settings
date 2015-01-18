@@ -1,0 +1,3 @@
+
+# List hostname of all workstations
+workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'

@@ -1,11 +1,13 @@
 #!/usr/bin/env sh
 
-# List hostname of all workstations
-export workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'
-
 export DIR_CONF="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
+
 cd "$DIR_CONF"
-touch settings
+
+if [ ! -f "settings.local"] ; then
+  touch "settings.local"
+fi
+
 . lib/loader || exit 128
 
 # Set dotfiles git repo
@@ -14,13 +16,13 @@ git remote set-url --push origin https://github.com/codyopel/dotfiles
 
 echo "Updating Config Files"
 config_latest
-if [ "$?" -gt "1" ]; then
+if [ "$?" -gt "1" ] ; then
   echo "Failed to update Config"
   exit 1
 fi
 
 echo "Installing Config Files"
-if ! config_install; then
+if ! config_install ; then
   echo "Failed to Install Config"
   exit 1
 fi

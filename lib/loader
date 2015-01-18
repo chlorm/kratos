@@ -97,6 +97,7 @@ svar DIRCONF dir_conf "$0" || return 1
 
 # Load configuration settings
 . "$DIRCONF/settings"
+. "$DIRCONF/settings.local"
 
 # Extra array functions for accessor simplicity
 array_empty () {
