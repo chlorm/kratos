@@ -2,6 +2,7 @@
 /dotfiles/config/beets/state.pickle
 /dotfiles/config/mpd/database
 /dotfiles/config/mpd/log
+/dotfiles/config/mpd/lyrics/*
 /dotfiles/config/mpd/mpd.fifo
 /dotfiles/config/mpd/pid
 /dotfiles/config/mpd/state
