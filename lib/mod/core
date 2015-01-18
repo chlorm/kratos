@@ -92,7 +92,7 @@ dir_tmp_tryall() {
 
 dir_tmp_one () {
 
-	[ -w "$1" ] || return 1
+  [ -w "$1" ] || return 1
 
   mount | grep '\(tmpfs\|ramfs\)' | grep $1 >/dev/null || return 1
   DIR_TMP="$1/$USER"
