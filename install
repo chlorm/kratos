@@ -9,6 +9,10 @@ if [ ! -f "settings.local" ] ; then
   echo '#!/usr/bin/env sh' >> "settings.local"
 fi
 
+# Load configuration settings
+. "$DIRCONF/settings"
+. "$DIRCONF/settings.local"
+
 . lib/loader || exit 128
 
 git remote set-url origin "$dotfilesRepo"
