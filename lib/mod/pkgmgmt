@@ -29,6 +29,7 @@ pkg_mgr () {
 
     'FreeBSD') # Ports
       path_hasbin portmaster || return 1
+      path_hasbin portsnap || return 1
       echo "ports"
       return 0
       ;;
@@ -64,7 +65,7 @@ pkg_mgr () {
           ;;
 
         'CentOS'|'Fedora'|'Red Hat') # Red Hat
-          path_hasbin rpm || return 1
+          path_hasbin yum || return 1
           echo "rpm"
           return 0
           ;;
