@@ -10,8 +10,8 @@ if [ ! -f "settings.local" ] ; then
 fi
 
 # Load configuration settings
-. "$DIR_CONF/settings"
-. "$DIR_CONF/settings.local"
+. settings
+. settings.local
 
 . lib/loader || exit 128
 
