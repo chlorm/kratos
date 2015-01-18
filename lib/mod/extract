@@ -8,67 +8,67 @@ extract () {
   elif [ -f $1 ] ; then
     case $1 in
 
-      *.tar)
+      *'.tar')
         path_hasbin tar || return 1
         tar xf $1
         ;;
 
-      *.tar.bz2)
+      *'.tar.bz2')
         path_hasbin tar || return 1
         tar xjf $1
         ;;
 
-      *.tbz2)
+      *'.tbz2')
         path_hasbin tar || return 1
         tar xjf $1
         ;;
 
-      *.bz2)
+      *'.bz2')
         path_hasbin bunzip2 || return 1
         bunzip2 $1
         ;;
 
-      *.tar.gz)
+      *'.tar.gz')
         path_hasbin tar || return 1
         tar xzf $1
         ;;
 
-      *.tgz)
+      *'.tgz')
         path_hasbin tar || return 1
         tar xzf $1
         ;;
 
-      *.gz)
+      *'.gz')
         path_hasbin gunzip || return 1
         gunzip $1
         ;;
 
-      *.tar.xz)
+      *'.tar.xz')
         path_hasbin tar || return 1
         tar xJf $1
         ;;
 
-      *.txz)
+      *'.txz')
         path_hasbin tar || return 1
         tar xJf $1
         ;;
 
-      *.rar)
+      *'.rar')
         path_hasbin unrar || return 1
         unrar e $1
         ;;
 
-      *.zip)
+      *'.zip')
         path_hasbin unzip || return 1
         unzip $1
         ;;
 
-      *.Z)
+      *'.Z')
         path_hasbin uncompress || return 1
         uncompress $1
         ;;
 
-      *.7z)
+      *'.7z')
         path_hasbin 7z || return 1
         7z x $1
         ;;
