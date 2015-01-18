@@ -25,4 +25,4 @@ echo "Installing Config Files"
 if ! config_install ; then
   echo "Failed to Install Config"
   exit 1
-fidotfilesRepoConfig
+fi
