@@ -27,7 +27,8 @@ y_or_n_validate () {
 
   local ANS
 
-  ANS="$(echo "$1" | tr '[A-Z]' '[a-z]')"
+  ANS="$(tolower $1)"
+
   [ "$ANS" = "yes" ] && return 0
   [ "$ANS" = "y" ] && return 0
   [ "$ANS" = "no" ] && return 1
@@ -148,12 +149,12 @@ sudo_wrap () {
 
 tolower () {
 
-  echo "$@" | tr ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz
+  echo "$@" | tr '[A-Z]' '[a-z]'
 
 }
 
 toupper () {
 
-  echo "$@" | tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ
+  echo "$@" | tr '[a-z]' '[A-Z]'
 
 }
