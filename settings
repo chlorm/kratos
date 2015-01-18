@@ -2,3 +2,6 @@
 
 # List hostname of all workstations
 workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'
+
+# Set dotfiles git repo remote origin
+dotfilesRepo="https://github.com/codyopel/dotfiles.git"
