@@ -89,6 +89,7 @@ pkgs : {
     development-chlorm = self.buildEnv {
       name = "myDevelopment";
       paths = with self; [
+        go
         #icedtea7_web
         #nix-repl
         #nixops
