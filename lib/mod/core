@@ -145,3 +145,15 @@ sudo_wrap () {
   fi
 
 }
+
+tolower () {
+
+  echo "$@" | tr ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz
+
+}
+
+toupper () {
+
+  echo "$@" | tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ
+
+}
