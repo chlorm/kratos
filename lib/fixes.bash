@@ -50,6 +50,6 @@ path_hasbin () {
 
   [ "$#" -ne "1" ] && return 2
   type $1 >/dev/null 2>&1 || \
-  { echo "'$1' not installed" ; }
+  { echo "'$1' not installed" 2> /dev/null ; }
 
 }
