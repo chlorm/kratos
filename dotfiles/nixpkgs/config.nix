@@ -48,8 +48,6 @@ pkgs : {
         video-chlorm
         virtualization-chlorm
         www-chlorm
-	# Unsorted
-	xfe
       ];
     };
     # Environments
@@ -59,7 +57,7 @@ pkgs : {
         git
         htop
         #openssh_hpn
-	openssh
+        openssh
         openssl
         slock
         tmux
@@ -119,6 +117,13 @@ pkgs : {
         vim
       ];
     };
+    graphical-chlorm = self.buildEnv {
+      name = "myGraphical";
+      paths = with self; [
+        vlc
+        xfe
+      ];
+    };
     haskell-chlorm = self.buildEnv {
       name = "myHaskell";
       paths = with self; [
@@ -144,7 +149,7 @@ pkgs : {
         scrot
         unzip
         #xlibs.xbacklight
-	xz
+        xz
         #zathura
       ];
     };
@@ -190,7 +195,6 @@ pkgs : {
         ffmpeg
         mediainfo
         mkvtoolnix
-        vlc
         vobsub2srt
         x264
         x265
