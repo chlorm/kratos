@@ -30,7 +30,7 @@ EOF
 trash () {
 
   # Check for input
-  [ -z $@ ] && { echo "ERROR: no input provided" ; exit 1 ; }
+  [ -z $@ ] && { echo "ERROR: no input provided" ; return 1 ; }
 
   # Make sure necessary directories exist before continuing
   dir_exist "$DIR_TRASH_FILES" || return 1
@@ -96,7 +96,7 @@ trash () {
               done
               ;;
             N|n)
-              exit 0
+              return 0
               ;;
             *)
               echo "ERROR: Invalid response"
@@ -188,14 +188,14 @@ trash () {
           echo "ERROR: invalid option: $1"
           echo
           trash_usage
-          exit 1
+          return 1
         fi
         ;;
 
     esac
 
   # Check for input
-  [ -z $@ ] && { echo "ERROR: no input provided" ; exit 1 ; }
+  [ -z $@ ] && { echo "ERROR: no input provided" ; return 1 ; }
 
   # Make sure necessary directories exist before continuing
   dir_exist "$DIR_TRASH_FILES" || return 1
@@ -261,7 +261,7 @@ trash () {
               done
               ;;
             N|n)
-              exit 0
+              return 0
               ;;
             *)
               echo "ERROR: Invalid response"
@@ -353,7 +353,7 @@ trash () {
           echo "ERROR: invalid option: $1"
           echo
           trash_usage
-          exit 1
+          return 1
         fi
         ;;
 
