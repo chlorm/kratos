@@ -4,7 +4,7 @@ emacs_editor () {
 
   path_hasbin emacs || return 1
 
-  rm -rf "$HOME/.emacs"
+  [ -d "$HOME/.emacs" ] && { rm -rf "$HOME/.emacs" ; return $? ; }
 
   config_ln "emacs.d"
 
@@ -30,7 +30,7 @@ vim_editor () {
 
   path_hasbin vim || return 1
 
-  rm -rf "$HOME/.viminfo"
+  [ -d "$HOME/.viminfo" ] && { rm -rf "$HOME/.viminfo" ; return $? ; }
 
   config_ln "vimrc"
 
