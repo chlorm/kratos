@@ -152,7 +152,7 @@ config_ln () {
 
   for LN in $@ ; do
     symlink "$(dir_conf)/dotfiles/$LN" "$HOME/.$LN"
-    echo "Symlinked $LN"
+    [ $? == "0" ] && echo "Symlinked $LN"
   done
 
 }
