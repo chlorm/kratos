@@ -5,9 +5,7 @@ pulseaudio_audio () {
   # If pulseaudio isn't installed, be done now
   path_hasbin pacmd || return 1
 
-  if [ ! -d "$HOME/.config/pulse" ] ; then
-    mkdir -p "$HOME/.config/pulse"
-  fi
+  dir_exist "$HOME/.config/pulse" || return 1
 
   config_ln "config/pulse/daemon.conf"
 

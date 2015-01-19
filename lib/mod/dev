@@ -10,7 +10,7 @@ golang_dev () {
 
   path_hasbin go || return 1
 
-  mkdir -p "$HOME/.go/src" >/dev/null 2>&1
+  dir_exist "$HOME/.go/src" || return 1 
 
 }
 

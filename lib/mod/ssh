@@ -13,9 +13,7 @@ ssh_path () {
 ssh_dir () {
 
   # Makes sure the ssh directory exists
-  if [ ! -d "$HOME/.ssh" ] ; then
-    mkdir "$HOME/.ssh" || return 1
-  fi
+  dir_exist "$HOME/.ssh" || return 1
 
 }
 

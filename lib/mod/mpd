@@ -7,36 +7,17 @@ mpd_auto () {
   path_hasbin ncmpcpp || return 1
 
   # Check for and create missing 'MPD' directories
-  if [ ! -d "$HOME/.config/mpd/playlists" ] ; then
-    mkdir -p $HOME/.config/mpd/playlists
-  fi
+  dir_exist "$HOME/.config/mpd/playlists" || return 1
 
   # Check for and create missing 'ncmpcpp' directories
-  if [ ! -d "$HOME/.ncmpcpp" ] ; then
-    mkdir -p "$HOME/.ncmpcpp"
-  fi
+  dir_exist "$HOME/.ncmpcpp" || return 1
 
   # Check for and create missing 'MPD' session files
-  if [ ! -f "$HOME/.config/mpd/database" ] ; then
-    touch "$HOME/.config/mpd/database"
-    echo "Created .config/mpd/database"
-  fi
-  if [ ! -f "$HOME/.config/mpd/pid" ] ; then
-    touch "$HOME/.config/mpd/pid"
-    echo "Created .config/mpd/pid"
-  fi
-  if [ ! -f "$HOME/.config/mpd/state" ] ; then
-    touch "$HOME/.config/mpd/state"
-    echo "Created .config/mpd/state"
-  fi
-  if [ ! -f "$HOME/.config/mpd/sticker.sql" ] ; then
-    touch "$HOME/.config/mpd/sticker.sql"
-    echo "Created .config/mpd/sticker.sql"
-  fi
-  if [ ! -f "$HOME/.config/mpd/log" ] ; then
-    touch "$HOME/.config/mpd/log"
-    echo "Created .config/mpd/log"
-  fi
+  file_exist "$HOME/.config/mpd/database" || return 1
+  file_exist "$HOME/.config/mpd/pid" || return 1
+  file_exist "$HOME/.config/mpd/state" || return 1
+  file_exist "$HOME/.config/mpd/sticker.sql" || return 1
+  file_exist "$HOME/.config/mpd/log" || return 1
 
   # Symlink MPD & ncmpcpp config files
   config_ln "config/mpd/mpd.conf" "ncmpcpp/config"

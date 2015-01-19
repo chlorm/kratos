@@ -75,7 +75,7 @@ agent_pin_program () {
 # Prints the command for running the gpg-agent
 agent_gpg () {
 
-  mkdir -p "$HOME/.gnupg"
+  dir_exist "$HOME/.gnupg" || return 1
   echo "pcsc-driver $(agent_find_pcsc)" > "$HOME/.gnupg/scdaemon.conf"
   echo "card-timeout 5" >> "$HOME/.gnupg/scdaemon.conf"
   echo "disable-ccid" >> "$HOME/.gnupg/scdaemon.conf"

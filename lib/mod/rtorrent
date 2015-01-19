@@ -5,22 +5,14 @@ rtorrent_auto () {
   # if rTorrent isn't installed, be done now
   path_hasbin rtorrent || return 1
 
+  # Download directories
+	dir_exist "$HOME/Torrents/Complete" || return 1
+  dir_exist "$HOME/Torrents/Incomplete" || return 1
+	dir_exist "$HOME/Torrents/Watch" || return 1
+  # Session Directory
+  dir_exist "$HOME/.local/share/rtorrent" || return 1
+
   # Symlink rTorrent config
   config_ln "rtorrent.rc"
-
-  # Download directories
-	if [ ! -d "$HOME/Torrents/Complete" ]; then
-	 mkdir -p "$HOME/Torrents/Complete"
-  fi
-  if [ ! -d "$HOME/Torrents/Incomplete" ]; then
-  	mkdir -p "$HOME/Torrents/Incomplete"
-  fi
-	if [ ! -d "$HOME/Torrents/Watch" ]; then
-	  mkdir -p "$HOME/Torrents/Watch"
-  fi
-  # Session Directory
-  if [ ! -d "$HOME/.local/share/rtorrent" ]; then
-	  mkdir -p "$HOME/.local/share/rtorrent"
-  fi
 
 }
