@@ -151,8 +151,8 @@ config_ln () {
   [ "$#" -eq "0" ] && return 1
 
   for LN in $@ ; do
-    symlink "$(dir_conf)/dotfiles/$LN" "$HOME/.$LN"
-    [ $? == "0" ] && echo "Symlinked $LN"
+    symlink "$(dir_conf)/dotfiles/$LN" "$HOME/.$LN" || { echo "ERROR: failed to symlink $LN" 2> /dev/null ; }
+    [ "$?" -eq "0" ] && echo "Symlinked $LN"
   done
 
 }
