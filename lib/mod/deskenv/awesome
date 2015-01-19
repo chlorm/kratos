@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+awesome_deskenv () {
+
+  path_hasbin awesome || return 1
+
+  config_ln "config/awesome"
+
+}

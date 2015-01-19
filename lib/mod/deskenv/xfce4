@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+xfce4_deskenv () {
+
+  path_hasbin startxfce4 || return 1
+
+}

@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+kde4_deskenv () {
+
+  path_hasbin startkde || return 1
+
+}

@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+xmonad_deskenv () {
+
+  path_hasbin xmonad || return 1
+
+}

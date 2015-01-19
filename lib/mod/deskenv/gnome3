@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+gnome3_deskenv () {
+
+  path_hasbin gnome-session || return 1
+
+}

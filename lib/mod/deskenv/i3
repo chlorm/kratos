@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+i3_deskenv () {
+
+  path_hasbin i3 || return 1
+
+}
