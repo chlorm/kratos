@@ -126,7 +126,7 @@ graphical_st () {(
 graphical_auto () {
 
   install -d $HOME/.config
-  config_ln "xinitrc" "xprofile" "xsession" "xmonad" "config/awesome" "config/beets" "config/Terminal" "config/wallpaper" "config/uzbl"
+  config_ln "xinitrc" "xprofile" "xsession" "xmonad" "config/awesome" "config/Terminal" "config/wallpaper" "config/uzbl"
   symlink "$HOME/.config/Terminal" "$HOME/.config/xfce4/terminal"
   #graphical_st
 
