@@ -1,10 +1,14 @@
 #!/usr/bin/env sh
 
+# Set dotfiles git repo remote origin
+dotfilesRepo="https://github.com/codyopel/dotfiles.git"
+
 # List hostname of all workstations
 workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'
 
-# Set dotfiles git repo remote origin
-dotfilesRepo="https://github.com/codyopel/dotfiles.git"
+# Trash directories
+DIR_TRASH_INFO="$HOME/.local/share/Trash/info"
+DIR_TRASH_FILES="$HOME/.local/share/Trash/files"
 
 # TODO: Desktop Environment priority List
 
