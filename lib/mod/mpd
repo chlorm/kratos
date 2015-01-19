@@ -1,19 +1,10 @@
 #!/usr/bin/env sh
 
-mpd_path () {
-
-  # Make sure both 'MPD' and 'ncmpcpp' are installed
-  path_hasbin mpd || return 1
-  path_hasbin ncmpcpp || return 1
-
-  return 0
-
-}
-
 mpd_auto () {
 
   # If both 'MPD' and 'ncmpcpp' aren't installed, be done now
-  mpd_path || return 1
+  path_hasbin mpd || return 1
+  path_hasbin ncmpcpp || return 1
 
   # Check for and create missing 'MPD' directories
   if [ ! -d "$HOME/.config/mpd/playlists" ] ; then

@@ -47,7 +47,7 @@ EOF
 wifi () {
 
   # If nmcli isn't installed, be done now
-  wifi_path || return 1
+  path_hasbin nmcli || return 1
 
   case "$1" in
 

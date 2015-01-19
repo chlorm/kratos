@@ -2,15 +2,6 @@
 
 # TODO: Support platforms without pulseaudio
 
-vol_path () {
-
-  # Make sure 'pactl' is installed
-  path_hasbin pactl || return 1
-
-  return 0
-
-}
-
 vol_usage () {
 
 cat <<EOF
@@ -59,7 +50,7 @@ volume_current () {
 vol () {
 
   # If 'pactl' is not installed, be done now
-  vol_path || return 1
+  path_hasbin pactl || return 1
 
   # Parse Arguments
   case "$1" in

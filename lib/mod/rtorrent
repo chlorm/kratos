@@ -1,18 +1,9 @@
 #!/usr/bin/env sh
 
-rtorrent_path () {
-
-  # Make sure rTorrent is installed
-  path_hasbin rtorrent || return 1
-
-  return 0
-
-}
-
 rtorrent_auto () {
 
   # if rTorrent isn't installed, be done now
-  rtorrent_path || return 1
+  path_hasbin rtorrent || return 1
 
   # Symlink rTorrent config
   config_ln "rtorrent.rc"
