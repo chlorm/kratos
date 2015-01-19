@@ -32,7 +32,7 @@ svar () {
 
 }
 
-##[returns the shell executing the current script]
+# Returns the shell executing the current script
 shell () {
 
   local LSHELL
@@ -47,7 +47,7 @@ shell () {
     LSHELL="$(basename "$(echo "$LPROC" | sed 's/-//' | awk '{print $5}')")"
   fi
 
-  ##[resolve symlinked shells]
+  # Resolve symlinked shells
   basename "$(readlink -f "$(path_abs "$LSHELL")")"
 
 }
