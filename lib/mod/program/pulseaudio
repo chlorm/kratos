@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-pulseaudio_audio () {
+pulseaudio_program () {
 
   # If pulseaudio isn't installed, be done now
   path_hasbin pacmd || return 1
@@ -8,11 +8,5 @@ pulseaudio_audio () {
   dir_exist "$HOME/.config/pulse" || return 1
 
   config_ln "config/pulse/daemon.conf"
-
-}
-
-audio_auto () {
-
-  pulseaudio_audio
 
 }

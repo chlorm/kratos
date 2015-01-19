@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-rtorrent_auto () {
+rtorrent_program () {
 
   # if rTorrent isn't installed, be done now
   path_hasbin rtorrent || return 1

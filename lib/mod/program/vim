@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+vim_program () {
+
+  path_hasbin vim || return 1
+
+  [ -d "$HOME/.viminfo" ] && { rm -rf "$HOME/.viminfo" ; return $? ; }
+
+  config_ln "vimrc"
+
+}

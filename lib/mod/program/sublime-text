@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+sublime-text_program () {
+
+  path_hasbin sublime || return 1
+
+  config_ln "config/sublime-text-3"
+
+}

@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+golang_program () {
+
+  path_hasbin go || return 1
+
+  dir_exist "$HOME/.go/src" || return 1 
+
+}

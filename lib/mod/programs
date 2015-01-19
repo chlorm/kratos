@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+# Program specific configs
+
+programs_auto () {
+
+  emacs_program
+  git_program
+  golang_program
+  gvim_program
+  mpd_program
+  nixpkgs_program
+  pulseaudio_program
+  rtorrent_program
+  sublime-text_program
+  vim_program
+
+}
