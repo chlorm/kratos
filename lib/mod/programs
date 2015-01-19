@@ -12,7 +12,7 @@ programs_auto () {
   nixpkgs_program
   pulseaudio_program
   rtorrent_program
-  sublime-text_program
+  sublime_text_program
   vim_program
 
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-sublime-text_program () {
+sublime_text_program () {
 
   path_hasbin sublime || return 1
 
