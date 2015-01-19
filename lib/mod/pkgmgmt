@@ -2,14 +2,18 @@
 
 pkg_usage () {
 
-    eval "printf \"Pkg is an abstraction layer for system package managers.
+cat <<EOF
+Pkg is an abstraction layer for system package managers.
 
 Usage: pkg UTILITY [OPTIONS]
+
     clean          - Remove orphanded dependencies
     install        - Install a package
     uninstall      - Uninstall a package
     update         - Install Updates
-    -h|--help      - print this message\n\n\""
+    -h|--help      - print this message
+
+EOF
 
 }
 

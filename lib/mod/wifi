@@ -23,9 +23,11 @@ wireless_interface () {
 
 wifi_usage () {
 
-    eval "printf \"Wifi is a wrapper for nmcli.
+cat <<EOF
+Wifi is a wrapper for nmcli.
 
 Usage: pkg UTILITY [OPTIONS]
+
     list           - List available wireless connections
     connections    - List saved connections
     add            - Add a new connection
@@ -34,7 +36,11 @@ Usage: pkg UTILITY [OPTIONS]
     status         - List active connections
     on             - Turn wireless on
     off            - Turn wireless off
-    -h|--help      - print this message\n\n\""
+    -h|--help      - print this message
+
+EOF
+
+  return 0
 
 }
 

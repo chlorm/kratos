@@ -13,15 +13,18 @@ vol_path () {
 
 vol_usage () {
 
-  echo
-  echo "Usage: vol [integer/option]"
-  echo
-  echo "Options:"
-  echo "     [0-150] - set volume percentage"
-  echo "     up      - increase volume by \`argument'"
-  echo "     down    - decrease volume by \`argument'"
-  echo "     mute    - toggle mute on and off"
-  echo "     --help  - display this message"
+cat <<EOF
+Vol is a wrapper for pacmd
+
+Usage: vol [integer/option]"
+
+    [0-150] - set volume percentage"
+    up      - increase volume by \`argument'"
+    down    - decrease volume by \`argument'"
+    mute    - toggle mute on and off"
+    --help  - display this message"
+
+EOF
 
 }
 
