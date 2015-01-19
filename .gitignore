@@ -1,3 +1,6 @@
+*~
+*/#*#
+*.local
 /dotfiles/config/beets/library.db
 /dotfiles/config/beets/state.pickle
 /dotfiles/config/mpd/database
@@ -18,8 +21,3 @@
 /dotfiles/xmonad/xmonad.hi
 /dotfiles/xmonad/xmonad.o
 /dotfiles/xmonad/xmonad-x86_64-linux
-
-*~
-*/#*#
-*.local
-/settings.local
