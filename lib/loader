@@ -40,7 +40,7 @@ shell () {
 
   LPROC="$(ps hp $$ | grep "$$")"
 
-  ##[workaround for su spawned shells]
+  # Workaround for su spawned shells
   if [ -n "$(echo "$LPROC" | grep '\-su')" ];then
     LSHELL="$(basename "$(echo "$LPROC" | sed 's/^.*(\([^)]*\)).*$/\1/')")"
   else
