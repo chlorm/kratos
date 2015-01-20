@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+# https://nixos.org/wiki/How_to_install_nix_in_home_%28on_another_distribution%29
+# http://blog.lastlog.de/posts/running_the_nix_package_manager_in_a_prefix_as_the_home_directory/#motivation
+
+# TODO: find download utility, curl or wget
+
+# TODO: support multiple arch's
+
+# TODO: use explicit paths
+
+# Install proot binary
+dir_exist "$HOME/opt/bin"
+cd "$HOME/opt/bin"
+wget "http://static.proot.me/proot-x86_64"
+chmod u+x "proot-x86_64"
+
+# Install nix binary
+dir_exist "$HOME/opt/nix-mnt"
+cd "$HOME/opt/nix-mnt"
+wget "http://hydra.nixos.org/build/10272842/download/1/nix-1.7-x86_64-linux.tar.bz2"
+tar xvjf nix-*.tar.bz2
+
+# Mount nix directory with proot
+"$HOME/opt/bin/proot-x86_64" -b "$HOME/opt/nix-mnt/nix-1.7-x86_64-linux/:/nix" bash
+ls "/nix"
+
+# Run and install nix
+cd "/nix"
+./install
+
+# Source nix
+. "$HOME/.nix-profile/etc/profile.d/nix.sh"

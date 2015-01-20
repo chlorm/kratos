@@ -1,0 +1,82 @@
+#!/usr/bin/env sh
+
+# http://sandervanderburg.blogspot.com/2013/06/setting-up-multi-user-nix-installation.html
+
+# TODO: create daemons for different init systems
+
+# Install nix
+# download and unpack nix sources (support building on all platforms)
+./configure --prefix=/usr --sysconfdir=/etc
+make
+sudo make install
+
+# Create nix builder user group
+sudo groupadd -g 20000 nixbld
+
+for i in `seq 1 10` ; do
+    sudo useradd -u `expr 20000 + $i` -g nixbld \
+      -c "Nix build user $i" -d /var/empty -s /noshell
+done
+
+sudo echo "build-users-group = nixbld" >> /etc/nix/nix.conf
+
+sudo chgrp nixbld /nix/store
+sudo chmod 1775 /nix/store
+
+sudo mkdir -p -m 1777 /nix/var/nix/profiles/per-user
+sudo mkdir -p -m 1777 /nix/var/nix/gcroots/per-user
+
+# Nix daemon 
+cat <<EOF
+DAEMON=/usr/bin/nix-daemon
+NAME=nix-daemon
+
+if test -f /etc/default/nix-daemon; then
+    . /etc/default/nix-daemon
+fi
+
+...
+
+case "$1" in
+
+start)
+    if test "$NIX_DISTRIBUTED_BUILDS" = "1"; then
+        NIX_BUILD_HOOK=$(dirname $DAEMON)/../libexec/nix/build-remote.pl
+                
+        if test "$NIX_REMOTE_SYSTEMS" = "" ; then
+            NIX_REMOTE_SYSTEMS=/etc/nix/remote-systems.conf
+        fi
+                
+        # Set the current load facilities
+        NIX_CURRENT_LOAD=/var/run/nix/current-load
+                
+        if test ! -d $NIX_CURRENT_LOAD; then
+            mkdir -p $NIX_CURRENT_LOAD
+        fi
+    fi
+                
+    start-stop-daemon -b --start --quiet \
+        --exec /usr/bin/env \
+        NIX_REMOTE_SYSTEMS=$NIX_REMOTE_SYSTEMS \
+        NIX_BUILD_HOOK=$NIX_BUILD_HOOK \
+        NIX_CURRENT_LOAD=$NIX_CURRENT_LOAD \
+        $DAEMON -- $DAEMON_OPTS
+    echo "$NAME."
+    ;;
+
+...
+
+esac
+EOF
+
+
+$ sudo -i
+cd "/etc/rc2.d"
+symlink "../init.d/nix-daemon" "S60nix-daemon"
+cd "../rc3.d"
+symlink "../init.d/nix-daemon" "S60nix-daemon"
+cd "../rc4.d"
+symlink "../init.d/nix-daemon" "S60nix-daemon"
+cd "../rc5.d"
+symlink "../init.d/nix-daemon" "S60nix-daemon"
+exit
