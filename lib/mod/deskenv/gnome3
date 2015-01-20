@@ -4,4 +4,6 @@ gnome3_deskenv () {
 
   path_hasbin gnome-session || return 1
 
+  # TODO: gnome theme
+
 }

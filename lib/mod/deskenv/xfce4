@@ -6,4 +6,8 @@ xfce4_deskenv () {
 
   symlink "$HOME/.config/Terminal" "$HOME/.config/xfce4/terminal"
 
+  # TODO: xfce theme
+
+  # TODO: whisker menu
+
 }
