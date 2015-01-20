@@ -1,0 +1,49 @@
+#!/usr/bin/env sh
+
+# https://www.gentoo.org/proj/en/gentoo-alt/prefix/
+# http://wiki.gentoo.org/wiki/Prefix/libc
+# http://wiki.gentoo.org/wiki/OpenRC/Prefix
+# http://en.wikipedia.org/wiki/Gentoo/Alt
+# http://www.funtoo.org/Gentoo_Prefix_On_Mac_OS_X
+# https://gist.github.com/ypresto/2145498
+# https://github.com/npinto/gentoo-prefix-bootstrap
+# https://blog.jolexa.net/category/linux/gentoo/gentoo-prefix/
+
+gentoo () {
+
+cat <<EOF
+                                             .
+       .vir.                                d$b
+    .d$$$$$$b.    .cd$$b.     .d$$b.   d$$$$$$$$$$$b  .d$$b.      .d$$b.
+    $$$$( )$$$b d$$$()$$$.   d$$$$$$$b Q$$$$$$$P$$$P.$$$$$$$b.  .$$$$$$$b.
+    Q$$$$$$$$$$B$$$$$$$$P"  d$$$PQ$$$$b.   $$$$.   .$$$P' `$$$ .$$$P' `$$$
+      "$$$$$$$P Q$$$$$$$b  d$$$P   Q$$$$b  $$$$b   $$$$b..d$$$ $$$$b..d$$$
+     d$$$$$$P"   "$$$$$$$$ Q$$$     Q$$$$  $$$$$   `Q$$$$$$$P  `Q$$$$$$$P
+    $$$$$$$P       `"""""   ""        ""   Q$$$P     "Q$$$P"     "Q$$$P"
+    `Q$$P"                                  """
+
+EOF
+
+}
+
+bootstrap_bash () {
+
+[ -z "$1" ] && exit -1
+
+mkdir -p "$1"
+cd "$1"
+mkdir bash-build
+cd bash-build
+
+GENTOO_MIRRORS=${GENTOO_MIRRORS:="http://gentoo.mirrors.pair.com/distfiles"}
+
+ftp "${GENTOO_MIRRORS}/bash-4.1.tar.gz"
+gzip -d bash-4.1.tar.gz
+tar -xf bash-4.1.tar
+cd bash-4.1
+
+./configure --prefix="${1}"/usr --disable-nls
+make
+make install
+
+}
