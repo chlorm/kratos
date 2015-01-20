@@ -197,8 +197,8 @@ pkgs : {
         mkvtoolnix
         vobsub2srt
         x264
-        x265
-        #x265-hg
+        #x265
+        x265-hg
       ];
     };
     virtualization-chlorm = self.buildEnv {
