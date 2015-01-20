@@ -219,7 +219,6 @@ shell_best () {
 shell_auto () {
 
   config_ln "bash_profile" "bashrc" "bash_logout" "zshrc" \
-            "zprofile" "zlogout" "config/fish" "tmux.conf" \
-            "config/sakura"
+            "zprofile" "zlogout" "config/fish"
 
 }

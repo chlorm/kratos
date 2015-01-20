@@ -4,6 +4,8 @@ awesome_deskenv () {
 
   path_hasbin awesome || return 1
 
+  TILING=1
+
   config_ln "config/awesome"
 
 }

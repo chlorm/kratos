@@ -4,4 +4,6 @@ i3_deskenv () {
 
   path_hasbin i3 || return 1
 
+  TILING=1
+
 }

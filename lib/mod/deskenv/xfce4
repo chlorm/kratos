@@ -4,4 +4,6 @@ xfce4_deskenv () {
 
   path_hasbin startxfce4 || return 1
 
+  symlink "$HOME/.config/Terminal" "$HOME/.config/xfce4/terminal"
+
 }

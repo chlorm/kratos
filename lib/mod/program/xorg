@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+xorg_program () {
+
+  path_hasbin Xorg || return 1
+
+  config_ln "xinitrc" "xprofile" "xsession" "Xresources"
+
+}

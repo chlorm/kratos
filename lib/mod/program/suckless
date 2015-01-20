@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+suckless_program () {
+
+  path_hasbin st || return 1
+
+  if [ -d "$(dir_conf)/dotfiles/nixpkgs/st/" ] ; then
+    cd "$(dir_conf)/dotfiles/nixpkgs/st/"
+    if [ -f "config.$(hostname).h" ] ; then
+      symlink "config.$(hostname).h" "config.mach.h"
+    else
+      symlink "config.other.h" "config.mach.h"
+    fi
+  fi
+
+}

@@ -4,4 +4,11 @@ xmonad_deskenv () {
 
   path_hasbin xmonad || return 1
 
+  TILING=1
+
+  #dir_exist "$HOME/.xmonad" || return 1
+
+  #config_ln "xmonad/xmonad.hs"
+  config_ln "xmonad"
+
 }

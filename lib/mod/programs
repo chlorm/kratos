@@ -13,7 +13,11 @@ programs_auto () {
   nixpkgs_program
   pulseaudio_program
   rtorrent_program
+  sakura_program
   sublime_text_program
+  suckless_program
+  tmux_program
   vim_program
+  #xorg_program
 
 }
