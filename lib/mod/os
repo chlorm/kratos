@@ -25,6 +25,8 @@ os_linux_distro_uname () {
 
 os_linux_distro () {
 
+  [ "$(os_base)" = "linux" ] || return 1
+
   # Take first result of distro name match
   echo "$(tolower $(os_linux_distro_release) $(os_linux_distro_uname))" | \
   grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)' | \
