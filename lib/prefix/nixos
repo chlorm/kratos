@@ -15,7 +15,7 @@ cd "$HOME/opt/bin"
 wget "http://static.proot.me/proot-x86_64"
 chmod u+x "proot-x86_64"
 
-# Install nix binary
+# Install nix binary (this could probably be compiled from source and fall back to binary only if not possible)
 dir_exist "$HOME/opt/nix-mnt"
 cd "$HOME/opt/nix-mnt"
 wget "http://hydra.nixos.org/build/10272842/download/1/nix-1.7-x86_64-linux.tar.bz2"
