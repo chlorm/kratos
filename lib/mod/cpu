@@ -1,0 +1,120 @@
+#!/usr/bin/env sh
+
+cpu_architecture () {
+
+  # http://en.wikipedia.org/wiki/Uname
+
+  local ARCHITECTURE
+
+  ARCHITECTURE=$(uname -m | grep -m 1 -w -o "\(\
+    arm\|armeb\|armel\|armv5te\|armv6\|armv6l\|armv6t2\|armv7l\|armv8\|\
+    i386\|i486\|i686\|i686-AT386\|i86pc\|x86\|x86_32\|i686-64\|x86pc\|x86_64\|amd64\|k1om\|\
+    mips\|mips64\|\
+    Power Macintosh\|powerpc\|ppc\|ppc64\|\
+    sun4u\|sparc\|sparc64\)")
+
+  [ -z "$ARCHITECTURE" ] && { echo "ERROR: failed to detect cpu architecture" ; return 1 ; }
+
+  case "$ARCHITECTURE" in
+
+    'arm'|'armeb'|'armel'|'armv5te'|'armv6'|'armv6l'|'armv6t2'|'armv7l'|'armv8')
+      echo "arm"
+      ;;
+
+    'mips'|'mips64')
+      echo "mips"
+      ;;
+
+    'powerpc'|'ppc'|'ppc64')
+      echo "ppc"
+      ;;
+
+    'sun4u'|'sparc'|'sparc64')
+      echo "sparc"
+      ;;
+
+    'i386'|'i486'|'i586'|'i686'|'x86'|'x86_32'|'amd64'|'x86_64'|'i686-AT386'|'i86pc'|'i686-64'|'x86pc'|'k1om')
+      echo "x86"
+      ;;
+
+    *)
+      echo "ERROR: invalid cpu architecture '$ARCHITECTURE'"
+      return 1
+      ;;
+
+  esac
+
+  return 0
+
+}
+
+cpu_endianness () {
+
+  local ENDIANNESS
+	
+  ENDIANNESS=$(getconf LONG_BIT | grep -m 1 -w -o "\(8\|16\|24\|32\|64\)" | grep -o '[0-9]*')
+
+  [ -z "$ENDIANNESS" ] && \
+  { echo "ERROR: could not determine cpu endianness" ; return 1 ; }
+
+  echo "$ENDIANNESS"
+
+  return 0
+
+}
+
+cpu_cores () {
+
+  local CPUCORES
+
+  case $(os_base) in
+
+    'linux'|'freebsd')
+      CPUCORES=$(awk '/^cpu\ cores/ { print $4 ; exit }' /proc/cpuinfo | grep -o '[0-9]*')
+      ;;
+
+    'darwin')
+      CPUCORES=$(sysctl hw | grep -m 1 "hw.physicalcpu:" | grep -o '[0-9]*')
+      ;;
+
+    'cygwin')
+      CPUCORES=$(NUMBER_OF_PROCESSORS | grep -o '[0-9]*')
+      ;;
+
+  esac
+
+  [ -z "$CPUCORES" ] && { CPUCORES="1" ; }
+
+  echo "$CPUCORES"
+
+  return 0
+
+}
+
+cpu_threads () {
+
+  local CPUTHREADS
+
+  case $(os_base) in
+
+    'linux'|'freebsd')
+      CPUTHREADS=$(grep -c ^processor /proc/cpuinfo | grep -o '[0-9]*')
+      ;;
+
+    'darwin')
+      CPUTHREADS=$(sysctl hw | grep -m 1 "hw.logicalcpu:" | grep -o '[0-9]*')
+      ;;
+
+    'cygwin')
+      CPUTHREADS=""
+      ;;
+
+  esac
+
+  [ -z "$CPUTHREADS" ] && { CPUTHREADS="$(cpu_cores)" ; }
+
+  echo "$CPUTHREADS"
+
+  return 0
+
+}
