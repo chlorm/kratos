@@ -1,11 +1,17 @@
 #!/usr/bin/env sh
 
+# Supported platforms: x86-linux, x64-linux, arm-linux, arm64-linux, x64-osx
+# Possible platforms: x64-freebdsm, x64-netbdsm, x64-dragonflybdsm
+
+#   uname -m + $(os_base)
+
 # http://sandervanderburg.blogspot.com/2013/06/setting-up-multi-user-nix-installation.html
 
 # TODO: create daemons for different init systems
 
 # Install nix
 # download and unpack nix sources (support building on all platforms)
+# Prefix may differ on some platforms
 ./configure --prefix=/usr --sysconfdir=/etc
 make
 sudo make install
