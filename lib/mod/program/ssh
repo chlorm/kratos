@@ -54,7 +54,7 @@ ssh_repo_keys () {
   LPFX="$HOME/.ssh/id_"
   
   array_from_str KEYS "rsa rsa.pub ed25519 ed25519.pub"
-  array_forall KEYS ssh_defkey_one
+  array_forall KEYS ssh_repo_key_one
 
 }
 
