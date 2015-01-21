@@ -14,6 +14,7 @@ programs_auto () {
   pulseaudio_program
   rtorrent_program
   sakura_program
+  ssh_program
   sublime_text_program
   suckless_program
   tmux_program

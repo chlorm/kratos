@@ -1,0 +1,85 @@
+#!/usr/bin/env sh
+
+
+ssh_auth_one () {
+
+  cat "$1" >> "$HOME/.ssh/authorized_keys"
+
+}
+
+# Populates the authorized_keys file
+ssh_auth_keys () {
+
+  [ -f "$HOME/.ssh/authorized_keys" ] && { rm -f "$HOME/.ssh/authorized_keys" ; }
+
+  local KEYS
+
+  array_from_str KEYS "$(find $(dir_conf)/dotfiles/ssh -type f | grep -v 'config$' | grep '.pub$')"
+  array_forall KEYS ssh_auth_one
+
+}
+
+# Creates new ssh keys with the provided password
+# Passing no parameter prompts the user for a password
+ssh_gen_keys () {
+
+  local PASS
+
+  PASS=$(password_confirmation)
+
+# THIS IS VERY BAD, FIX THIS
+  rm -f "$HOME/.ssh/"id_* 2>/dev/null
+
+  ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_rsa" -t rsa -b 4096
+  ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_ed25519" -t ed25519
+
+}
+
+ssh_repo_key_one () {
+
+  [ -f "$CPFX$1" ] && { symlink "$CPFX$1" "$LPFX$1" ; return $? ; }
+
+  return 0
+
+}
+
+# Create the keys from the git repo
+ssh_repo_keys () {
+
+  local CPFX
+  local LPFX
+  local KEYS
+
+  CPFX="$(dir_conf)/dotfiles/ssh/default_"
+  LPFX="$HOME/.ssh/id_"
+  
+  array_from_str KEYS "rsa rsa.pub ed25519 ed25519.pub"
+  array_forall KEYS ssh_defkey_one
+
+}
+
+ssh_program () {
+
+  path_hasbin ssh || return 1
+  path_hasbin ssh-keygen || return 1
+  path_hasbin openssl || return 1
+
+  dir_exist "$HOME/.ssh" || return 1
+
+  config_ln "ssh/config" || return 1
+
+  # ??? remove old known hosts or something
+  ssh-keygen -H >/dev/null 2>&1
+  rm -f "$HOME/.ssh/known_hosts.old"
+
+  ssh_auth_keys || { echo "Failed to update authorized_keys" >&2 ; return 1 ; }
+
+  if [ ! -f "$HOME/.ssh/id_rsa.pub" ] && [ ! -f "$HOME/.ssh/id_ed25519.pub" ] ; then
+    if info_ws ; then
+      ssh_repo_keys || { echo "Failed to populate client keys" >&2 ; return 1 ; }
+    else
+      ssh_gen_keys "" || { echo "Failed to generate client keys" >&2 ; return 1 ; }
+    fi
+  fi
+
+}
