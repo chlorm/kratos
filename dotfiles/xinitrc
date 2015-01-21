@@ -6,7 +6,7 @@
 # Import the modules automatically
 . "$(readlink -f $(dirname $(readlink -f $HOME/.xinitrc))/../)/lib/loader"
 path_add "$HOME/.bin"
-agent_auto
+#agent_auto
 graphical_autorun $@
 
 # Gnome 3.xx

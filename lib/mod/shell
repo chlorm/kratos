@@ -141,9 +141,7 @@ shell_tmp () {
 shell_init () {
 
   shell_tmp
-  path_add "$HOME/.bin"
-  path_add "$HOME/.cabal/bin"
-  agent_auto
+  #agent_auto
 
   alias root="sudo_wrap su -"
   alias sprunge="curl -F 'sprunge=<-' http://sprunge.us" 
