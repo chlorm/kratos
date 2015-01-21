@@ -86,7 +86,7 @@ deskenv_run () {
   [ -z "$(deskenv_preference)" ] && { return 1 ; }
 
   deskenvs_configure
-  programs_graphical
+  programs_graphical_configure
 
   # Run background applications
   run_quiet xbacklight -set 30
