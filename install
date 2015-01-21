@@ -15,7 +15,7 @@ fi
 
 . lib/loader || exit 128
 
-[ "$dotfilesRepo" == "" ] && { echo "ERROR: dotfiles remote repo origin is not set" ; exit 1 ; }
+[ -z "$dotfilesRepo" ] && { echo "ERROR: dotfiles remote repo origin is not set" ; exit 1 ; }
 
 git remote set-url origin "$dotfilesRepo"
 git remote set-url --push origin "$dotfilesRepo"
