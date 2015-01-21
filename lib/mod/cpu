@@ -65,27 +65,27 @@ cpu_endianness () {
 
 cpu_cores () {
 
-  local CPUCORES
+  local cpuCORES
 
   case $(os_base) in
 
     'linux'|'freebsd')
-      CPUCORES=$(awk '/^cpu\ cores/ { print $4 ; exit }' /proc/cpuinfo | grep -o '[0-9]*')
+      cpuCORES=$(awk '/^cpu\ cores/ { print $4 ; exit }' /proc/cpuinfo | grep -o '[0-9]*')
       ;;
 
     'darwin')
-      CPUCORES=$(sysctl hw | grep -m 1 "hw.physicalcpu:" | grep -o '[0-9]*')
+      cpuCORES=$(sysctl hw | grep -m 1 "hw.physicalcpu:" | grep -o '[0-9]*')
       ;;
 
     'cygwin')
-      CPUCORES=$(NUMBER_OF_PROCESSORS | grep -o '[0-9]*')
+      cpuCORES=$(NUMBER_OF_PROCESSORS | grep -o '[0-9]*')
       ;;
 
   esac
 
-  [ -z "$CPUCORES" ] && { CPUCORES="1" ; }
+  [ -z "$cpuCORES" ] && { cpuCORES="1" ; }
 
-  echo "$CPUCORES"
+  echo "$cpuCORES"
 
   return 0
 
@@ -93,27 +93,27 @@ cpu_cores () {
 
 cpu_threads () {
 
-  local CPUTHREADS
+  local cpuTHREADS
 
   case $(os_base) in
 
     'linux'|'freebsd')
-      CPUTHREADS=$(grep -c ^processor /proc/cpuinfo | grep -o '[0-9]*')
+      cpuTHREADS=$(grep -c ^processor /proc/cpuinfo | grep -o '[0-9]*')
       ;;
 
     'darwin')
-      CPUTHREADS=$(sysctl hw | grep -m 1 "hw.logicalcpu:" | grep -o '[0-9]*')
+      cpuTHREADS=$(sysctl hw | grep -m 1 "hw.logicalcpu:" | grep -o '[0-9]*')
       ;;
 
     'cygwin')
-      CPUTHREADS=""
+      cpuTHREADS=""
       ;;
 
   esac
 
-  [ -z "$CPUTHREADS" ] && { CPUTHREADS="$(cpu_cores)" ; }
+  [ -z "$cpuTHREADS" ] && { cpuTHREADS="$(cpu_cores)" ; }
 
-  echo "$CPUTHREADS"
+  echo "$cpuTHREADS"
 
   return 0
 
