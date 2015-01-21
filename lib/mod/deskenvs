@@ -74,6 +74,7 @@ deskenv_preference () {
 deskenv_run () {
 
   local HCFG
+  local PID
   local TERMRC
   local TILING
   local WM
@@ -130,7 +131,8 @@ deskenv_run () {
   fi
 
   # Start the window manager
-  exec "$WM_EXE"
+  PID=$(pgrep $WM_EXE)
+  [ -z "$PID" ] && exec "$WM_EXE"
 
   # Kill the rest of the processes
   [ -f "$HOME/.xinitrc.end" ] && . "$HOME/.xinitrc.end"
