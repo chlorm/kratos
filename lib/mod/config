@@ -163,7 +163,6 @@ config_install () {
   symlink "$(dir_conf)/bin" "$HOME/.bin"
 
   shell_auto
-  ssh_auto
   graphical_auto
   programs_auto
 
