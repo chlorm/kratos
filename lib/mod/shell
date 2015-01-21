@@ -40,7 +40,7 @@ prompt_color () {
       ;;
 
     'underline')
-      echo -n '\033[0;4m'
+      echo -n '\e[4m'
       ;;
 
     'reset')
@@ -166,10 +166,6 @@ shell_init () {
   export PAGER="less"
   export BLOCKSIZE="K"
 
-  export GOPATH="$HOME/.go"
-  export PATH="$PATH:$HOME/.go/bin"
-  #export PATH="${PATH}:/usr/bin"
-  #export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib64:/usr/lib32"
 
 }
 
