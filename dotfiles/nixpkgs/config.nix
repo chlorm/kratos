@@ -111,7 +111,7 @@ pkgs : {
       paths = with self; [
         atom
         emacs
-        libreoffice
+        #libreoffice
         sublime3
         texstudio
         vim
