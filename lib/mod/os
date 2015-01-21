@@ -2,10 +2,18 @@
 
 os_base () {
 
+  local baseOS
+
   # Find base os i.e. linux,freebsd,darwin,cygwin
-  tolower $(uname -s) | \
-  grep -m 1 -w -o '\(cygwin\|dragonfly\|darwin\|freebsd\|linux\|netbsd\|openbsd\)' | \
-  head -n 1
+  baseOS=$(tolower $(uname -s) | \
+  grep -m 1 -w -o '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)' | \
+  head -n 1)
+
+  [ -z "$baseOS" ] && { echo "ERROR: unsupported base operating system" ; return 1 ; }
+
+  echo "$baseOS"
+
+  return 0
 
 }
 
@@ -27,9 +35,17 @@ os_linux_distro () {
 
   [ "$(os_base)" = "linux" ] || return 1
 
+  local linuxDISTRO
+
   # Take first result of distro name match
-  echo "$(tolower $(os_linux_distro_release) $(os_linux_distro_uname))" | \
+  linuxDISTRO=$(tolower "$(os_linux_distro_release) $(os_linux_distro_uname)" | \
   grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)' | \
-  head -n 1
+  head -n 1)
+
+  [ -z "$linuxDISTRO" ] && { echo "ERROR: not a supported linux distro" ; return 1 ; }
+
+  echo "$linuxDISTRO"
+
+  return 0
 
 }
