@@ -5,6 +5,7 @@
 programs_auto () {
 
   beets_program
+  cabal_program
   emacs_program
   git_program
   golang_program

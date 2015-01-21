@@ -161,6 +161,7 @@ config_ln () {
 config_install () {
 
   symlink "$(dir_conf)/bin" "$HOME/.bin"
+  path_add "$HOME/.bin"
 
   shell_auto
   graphical_auto

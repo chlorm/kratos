@@ -9,4 +9,6 @@ golang_program () {
   dir_exist "$GOPATH/bin" || return 1 
   dir_exist "$GOPATH/src" || return 1 
 
+  path_add "$PATH:$GOPATH/bin"
+
 }
