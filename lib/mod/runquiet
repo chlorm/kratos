@@ -12,6 +12,6 @@ run_quiet () {
   PID=$(pgrep $1)
 
   # If application is already running, no need to run it
-  [ -z "$PID" ] && { $1 >/dev/null 2>&1 ; }
+  [ -z "$PID" ] && { $@ >/dev/null 2>&1 ; }
 
 }
