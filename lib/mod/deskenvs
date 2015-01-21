@@ -1,0 +1,139 @@
+#!/usr/bin/env sh
+
+# Install DE configs
+deskenvs_configure () {
+
+  awesome_deskenv
+  cinnamon2_deskenv
+  gnome3_deskenv
+  i3_deskenv
+  kde_deskenv
+  xfce4_deskenv
+  xmonad_deskenv
+
+  # clean this up later
+  install -d $HOME/.config
+  config_ln "config/Terminal" "config/wallpaper" "config/uzbl"
+  symlink "$HOME/.config/Terminal" "$HOME/.config/xfce4/terminal"
+
+}
+
+deskenv_executable () {
+
+  case "$1" in
+
+    'awesome')
+      echo "awesome" && return 0
+      ;;
+
+    'cinnamon2')
+      echo "cinnamon-session" && return 0
+      ;;
+
+    'gnome3')
+      echo "gnome-session" && return 0
+      ;;
+
+    'i3')
+      echo "i3" && return 0
+      ;;
+
+    'kde4'|'kde5')
+      echo "startkde" && return 0
+      ;;
+
+    'xfce4')
+      echo "startxfce4" && return 0
+      ;;
+
+    'xmonad')
+      echo "xmonad" && return 0
+      ;;
+
+  esac
+
+  return 1
+
+}
+
+deskenv_preference () {
+
+  local DE
+
+  for DE in ${dePreference[@]}; do
+
+    path_hasbin "$(deskenv_executable)" >/dev/null 2>&1 && { echo "$DE" ; return 0 ; }
+
+  done
+
+  return 1
+
+}
+
+# Run the prefered window manager with the best side apps
+deskenv_run () {
+
+  local HCFG
+  local TERMRC
+  local TILING
+  local WM
+  local WM_EXE
+
+  WM="$(deskenv_preference)"
+  WM_EXE="$(deskenv_executable "$WM")"
+  TILING=0
+
+  [ -z "$(deskenv_preference)" ] && { return 1 ; }
+
+  deskenvs_configure
+  programs_graphical
+
+  # Run background applications
+  run_quiet xbacklight -set 30
+  run_quiet autocutsel -fork
+  run_quiet pulseaudio --start
+  run_quiet xscreensaver -no-splash &
+  run_quiet notbit -p 8445 -d
+  run_quiet VBoxClient-all
+  run_quiet xcompmgr
+  run_quiet setxkbmap -option ctrl:nocaps
+  [ -f "$HOME/.xinitrc.start" ] && . "$HOME/.xinitrc.start"
+
+  # Tiling WM
+  case ${WM} in
+
+    'awesome'|'i3'|'xmonad')
+      TILING=1
+      ;;
+
+  esac
+
+  # Configure applications
+  local TERMRC
+
+  TERMRC="$(dir_conf)/dotfiles/config/Terminal/terminalrc"
+
+  if [ "${TILING}" -eq "1" ] ; then
+    HCFG="${TERMRC}.tiling.$(hostname)"
+    if [ -f "${HCFG}" ] ; then
+      symlink "${HCFG}" "${TERMRC}"
+    else
+      symlink "${TERMRC}.tiling" "${TERMRC}"
+    fi
+  else
+    HCFG="${TERMRC}.window.$(hostname)"
+    if [ -f "${HCFG}" ] ; then
+      symlink "${HCFG}" "${TERMRC}"
+    else
+      symlink "${TERMRC}.window" "${TERMRC}"
+    fi
+  fi
+
+  # Start the window manager
+  exec "$WM_EXE"
+
+  # Kill the rest of the processes
+  [ -f "$HOME/.xinitrc.end" ] && . "$HOME/.xinitrc.end"
+  run_quiet pulseaudio --kill
+
+}

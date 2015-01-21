@@ -163,9 +163,9 @@ config_install () {
   symlink "$(dir_conf)/bin" "$HOME/.bin"
   path_add "$HOME/.bin"
 
+  deskenv_run
+  programs_headless_configure
   shell_auto
-  graphical_auto
-  programs_auto
 
 }
 

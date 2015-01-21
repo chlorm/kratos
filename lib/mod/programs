@@ -2,7 +2,7 @@
 
 # Program specific configs
 
-programs_auto () {
+programs_graphical_configure () {
 
   beets_program
   cabal_program
@@ -14,12 +14,17 @@ programs_auto () {
   nixpkgs_program
   pulseaudio_program
   rtorrent_program
-  sakura_program
   ssh_program
-  sublime_text_program
-  suckless_program
   tmux_program
   vim_program
-  #xorg_program
+
+}
+
+programs_headless_configure () {
+
+  sakura_program
+  sublime_text_program
+  suckless_program
+  xorg_program
 
 }

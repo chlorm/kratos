@@ -11,10 +11,8 @@ workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'
 shellPreference=(bash dash fish zsh sh)
 
 # Desktop environments in order of preference
-# Options: awesome, cinnamon, gnome3, i3, kde4, kde5, xfce4, xmonad
-dePreference=(xmonad cinnamon gnome3 i3 awesome xfce kde5 kde4)
-
-# XDG directories
+# Options: awesome, cinnamon2, gnome3, i3, kde4, kde5, xfce4, xmonad
+dePreference=(xmonad cinnamon2 gnome3 i3 awesome xfce4 kde4)
 
 # Trash directories
 DIR_TRASH_INFO="$HOME/.local/share/Trash/info"
