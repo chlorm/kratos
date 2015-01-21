@@ -33,10 +33,7 @@ localMusicDirectory="$HOME/Music/"
 # Pass input to variable to work around bash errors
 inputArtist="$@"
 
-if [ -z "${inputArtist}" ]; then
-  echo "ERROR: no input provided"
-  exit 1
-fi
+[ -z "${inputArtist}" ] && { echo "ERROR: no input provided" ; exit 1 ; }
 
 # Sanitize input to prevent spaces from causing errors
 artistAddPath="$remoteMusicDirectory/\"${@}\""
@@ -56,7 +53,7 @@ while read curWorkFile; do
       fileName=$(basename "$curWorkFile")
       # Filename w/o ext
       fileName=$(echo "$fileName" | sed -r 's/\.[[:alnum:]]+$//')
-      ffmpeg -y -i "$curWorkFile" -c:a libvorbis -qscale:a 5 "$curWorkDir/$fileName.ogg" & \
+      ffmpeg -y -i "$curWorkFile" -c:a libvorbis -qscale:a 5 "$curWorkDir/$fileName.ogg" &
       ffmpegPid=$!
       # Don't delete before encoding completes
       wait "$ffmpegPid"
