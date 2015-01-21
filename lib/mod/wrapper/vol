@@ -21,20 +21,26 @@ EOF
 
 active_sound_card () {
 
+  local activeSoundCard
+
   activeSoundCard=$(\
     pactl list sinks | \
     grep --before-context=1 "State: RUNNING" | \
     awk -F'[^0-9]*' '/Sink\ \#/ { print $2 ; exit }')
 
   # If no active sound card is found fallback to the default
-  if [ -z "$activeSoundCard" ] ; then
+  [ -z "$activeSoundCard" ] && {
     activeSoundCard=$(\
       pacmd list-sinks | \
       grep -m 1 "* index: " | \
       grep -o '[0-9]*')
-  fi
+  }
+
+  [ -z "$activeSoundCard" ] && { echo "ERROR: failed to obtain sound card" ; return 1 ; }
 
   echo "$activeSoundCard"
+
+  return 0
 
 }
 
