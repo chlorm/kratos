@@ -14,7 +14,6 @@ deskenvs_configure () {
   # clean this up later
   install -d $HOME/.config
   config_ln "config/Terminal" "config/wallpaper" "config/uzbl"
-  symlink "$HOME/.config/Terminal" "$HOME/.config/xfce4/terminal"
 
 }
 
