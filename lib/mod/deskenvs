@@ -7,7 +7,7 @@ deskenvs_configure () {
   cinnamon2_deskenv
   gnome3_deskenv
   i3_deskenv
-  kde_deskenv
+  kde4_deskenv
   xfce4_deskenv
   xmonad_deskenv
 
@@ -96,7 +96,7 @@ deskenv_run () {
   run_quiet notbit -p 8445 -d
   run_quiet VBoxClient-all
   run_quiet xcompmgr
-  run_quiet setxkbmap -option ctrl:nocaps
+  #run_quiet setxkbmap -option ctrl:nocaps
   [ -f "$HOME/.xinitrc.start" ] && . "$HOME/.xinitrc.start"
 
   # Tiling WM
