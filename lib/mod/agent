@@ -17,14 +17,6 @@ agent_file () {
 
 }
 
-# Print cmd if agent exists
-agent_cmd () {
-
-  [ "$#" -lt "1" ] && return 1
-  path_hasbin $1 && echo "$@ ;"
-
-}
-
 # Find a specific pcsc driver
 agent_find_pcsc_lib () {
 
@@ -75,6 +67,8 @@ agent_pin_program () {
 # Prints the command for running the gpg-agent
 agent_gpg () {
 
+  path_hasbin gpg-agent || return 1
+
   dir_exist "$HOME/.gnupg" || return 1
   echo "pcsc-driver $(agent_find_pcsc)" > "$HOME/.gnupg/scdaemon.conf"
   echo "card-timeout 5" >> "$HOME/.gnupg/scdaemon.conf"
@@ -83,10 +77,11 @@ agent_gpg () {
   local PIN_PROG
 
   PIN_PROG="$(agent_pin_program)"
+
   if [ "$?" -ne "0" ] ; then
     echo "Couldn't select gpg-agent: no pinentry program" >&2
   else
-    agent_cmd gpg-agent --pinentry-program "\"$PIN_PROG\"" --daemon --enable-ssh-support && return 0
+    gpg-agent --pinentry-program "\"$PIN_PROG\"" --daemon --enable-ssh-support && return 0
   fi
 
   return 1
@@ -96,7 +91,9 @@ agent_gpg () {
 # Prints the command for running the ssh-agent
 agent_ssh () {
 
-  agent_cmd ssh-agent
+  path_hasbin ssh-agent || return 1
+
+  ssh-agent
 
 }
 
