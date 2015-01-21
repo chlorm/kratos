@@ -4,6 +4,9 @@ golang_program () {
 
   path_hasbin go || return 1
 
-  dir_exist "$HOME/.go/src" || return 1 
+  export GOPATH="$HOME/.go"
+
+  dir_exist "$GOPATH/bin" || return 1 
+  dir_exist "$GOPATH/src" || return 1 
 
 }
