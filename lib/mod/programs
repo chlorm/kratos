@@ -2,7 +2,7 @@
 
 # Program specific configs
 
-programs_graphical_configure () {
+programs_headless_configure () {
 
   beets_program
   cabal_program
@@ -20,7 +20,7 @@ programs_graphical_configure () {
 
 }
 
-programs_headless_configure () {
+programs_graphical_configure () {
 
   sakura_program
   sublime_text_program
