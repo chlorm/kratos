@@ -23,6 +23,12 @@ xdg_dirs () {
 
 }
 
+custom_dirs () {
+
+  dir_exist "$HOME/dev"
+
+}
+
 configure_dirs () {
 
   xdg_dirs
