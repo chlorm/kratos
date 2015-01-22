@@ -1,21 +1,33 @@
 #!/usr/bin/env sh
 
 test_os_issue_none () {
+
   return $TEST_SKIP
+
 }
+
 test_register test_os_issue_none
 
 test_os_issue_valid () {
+
   return $TEST_SKIP
+
 }
+
 test_register test_os_issue_valid
 
 test_os_matches () {
+
   return $TEST_SKIP
+
 }
+
 test_register test_os_matches
 
 test_os_nomatches () {
+
   return $TEST_SKIP
+
 }
+
 test_register test_os_nomatches
