@@ -12,24 +12,21 @@
 ## E-mail: codyopel(at)gmail.com
 ## Copyright (c) 2014 All Rights Reserved, http://www.chlorm.net
 ## License: The MIT License - http://opensource.org/licenses/MIT
-## Comments:
-##    Assumed Directory & File Structure:
-##      ~/.bashrc
-##    Legend:
-##      () - option
-##      [] - description
-##      ## - comments [not to be uncommented]
-##      # -- commented variables
+## Assumed Directory & File Structure:
+##   ~/.bashrc
 
 ## [http://en.wikipedia.org/wiki/Unicode_symbols]
 
-# Test for an interactive shell.
+# Test for an interactive shell
 [[ $- != *i* ]] && return
+
+# Resolve issure of terminals defaulting to /nix/store instead on $HOME
+cd "$HOME"
 
 # Load shell configuration options
 . "$(readlink -f $(dirname $(readlink -f ~/.bashrc))/../)/lib/loader"
 #agent_auto
-shell_best $@
+shell_best
 shell_init
 shell_theme
 run_quiet mpd
@@ -39,8 +36,8 @@ run_quiet mpd
 
 ## [list all packages from overlays with corresponding overlay name]
 fromover () {
-    for i in /var/db/pkg/*/*; do
-        if ! grep gentoo $i/repository >/dev/null; then
+    for i in /var/db/pkg/*/* ; do
+        if ! grep gentoo $i/repository >/dev/null ; then
             echo -e "`basename $i`\t`cat $i/repository`"
         fi
     done
