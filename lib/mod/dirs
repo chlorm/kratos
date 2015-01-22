@@ -5,17 +5,17 @@ xdg_dirs () {
   [ -f "$HOME/.config/user-dirs.dirs" ] && {
     . "$HOME/.config/user-dirs.dirs"
 
-	  dir_exist "$XDG_CACHE_HOME" && { export XDG_CACHE_HOME ; }
-	  dir_exist "$XDG_CONFIG_HOME" && { export XDG_CONFIG_HOME ; }
-	  dir_exist "$XDG_DATA_HOME" && { export XDG_DATA_HOME ; }
-	  dir_exist "$XDG_DESKTOP_DIR" && { export XDG_DESKTOP_DIR ; }
-	  dir_exist "$XDG_DOCUMENTS_DIR" && { export XDG_DOCUMENTS_DIR ; }
-	  dir_exist "$XDG_DOWNLOAD_DIR" && { export XDG_DOWNLOAD_DIR ; }
-	  dir_exist "$XDG_MUSIC_DIR" && { export XDG_MUSIC_DIR ; }
-	  dir_exist "$XDG_PICTURES_DIR" && { export XDG_PICTURES_DIR ; }
-	  dir_exist "$XDG_PUBLICSHARE_DIR" && { export XDG_PUBLICSHARE_DIR ; }
-	  dir_exist "$XDG_TEMPLATES_DIR" && { export XDG_TEMPLATES_DIR ; }
-	  dir_exist "$XDG_VIDEOS_DIR" && { export XDG_VIDEOS_DIR ; }
+    dir_exist "$XDG_CACHE_HOME" && { export XDG_CACHE_HOME ; }
+    dir_exist "$XDG_CONFIG_HOME" && { export XDG_CONFIG_HOME ; }
+    dir_exist "$XDG_DATA_HOME" && { export XDG_DATA_HOME ; }
+    dir_exist "$XDG_DESKTOP_DIR" && { export XDG_DESKTOP_DIR ; }
+    dir_exist "$XDG_DOCUMENTS_DIR" && { export XDG_DOCUMENTS_DIR ; }
+    dir_exist "$XDG_DOWNLOAD_DIR" && { export XDG_DOWNLOAD_DIR ; }
+    dir_exist "$XDG_MUSIC_DIR" && { export XDG_MUSIC_DIR ; }
+    dir_exist "$XDG_PICTURES_DIR" && { export XDG_PICTURES_DIR ; }
+    dir_exist "$XDG_PUBLICSHARE_DIR" && { export XDG_PUBLICSHARE_DIR ; }
+    dir_exist "$XDG_TEMPLATES_DIR" && { export XDG_TEMPLATES_DIR ; }
+    dir_exist "$XDG_VIDEOS_DIR" && { export XDG_VIDEOS_DIR ; }
 
   }
 
