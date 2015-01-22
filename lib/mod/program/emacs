@@ -2,7 +2,7 @@
 
 emacs_program () {
 
-  path_hasbin emacs || return 1
+  path_hasbin "emacs" || return 1
 
   [ -d "$HOME/.emacs" ] && { rm -rf "$HOME/.emacs" ; return $? ; }
 

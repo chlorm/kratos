@@ -2,8 +2,7 @@
 
 pulseaudio_program () {
 
-  # If pulseaudio isn't installed, be done now
-  path_hasbin pacmd || return 1
+  path_hasbin "pacmd" || return 1
 
   dir_exist "$HOME/.config/pulse" || return 1
 

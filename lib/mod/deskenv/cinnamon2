@@ -2,7 +2,7 @@
 
 cinnamon2_deskenv () {
 
-  path_hasbin cinnamon-session || return 1
+  path_hasbin "cinnamon-session" || return 1
 
   # TODO: cinnamon theme
 

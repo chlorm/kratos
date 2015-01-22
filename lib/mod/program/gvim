@@ -2,7 +2,7 @@
 
 gvim_program () {
 
-  path_hasbin gvim || return 1
+  path_hasbin "gvim" || return 1
 
   config_ln "gvimrc"
 

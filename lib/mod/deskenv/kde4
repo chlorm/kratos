@@ -2,7 +2,7 @@
 
 kde4_deskenv () {
 
-  path_hasbin startkde || return 1
+  path_hasbin "startkde" || return 1
 
   # TODO: kde theme
 

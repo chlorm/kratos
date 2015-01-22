@@ -60,9 +60,9 @@ ssh_repo_keys () {
 
 ssh_program () {
 
-  path_hasbin ssh || return 1
-  path_hasbin ssh-keygen || return 1
-  path_hasbin openssl || return 1
+  path_hasbin "ssh" || return 1
+  path_hasbin "ssh-keygen" || return 1
+  path_hasbin "openssl" || return 1
 
   dir_exist "$HOME/.ssh" || return 1
 

@@ -22,3 +22,9 @@ xdg_dirs () {
   return 0
 
 }
+
+configure_dirs () {
+
+  xdg_dirs
+
+}

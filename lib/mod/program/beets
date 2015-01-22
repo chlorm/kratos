@@ -2,7 +2,7 @@
 
 beets_program () {
 
-  path_hasbin beet || return 1
+  path_hasbin "beet" || return 1
 
   config_ln "config/beets"
 

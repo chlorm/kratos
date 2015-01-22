@@ -2,17 +2,13 @@
 
 rtorrent_program () {
 
-  # if rTorrent isn't installed, be done now
-  path_hasbin rtorrent || return 1
+  path_hasbin "rtorrent" || return 1
 
-  # Download directories
 	dir_exist "$HOME/Torrents/Complete" || return 1
   dir_exist "$HOME/Torrents/Incomplete" || return 1
 	dir_exist "$HOME/Torrents/Watch" || return 1
-  # Session Directory
   dir_exist "$HOME/.local/share/rtorrent" || return 1
 
-  # Symlink rTorrent config
   config_ln "rtorrent.rc"
 
 }

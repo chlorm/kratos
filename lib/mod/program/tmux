@@ -2,7 +2,7 @@
 
 tmux_program () {
 
-  path_hasbin tmux || return 1
+  path_hasbin "tmux" || return 1
 
   config_ln "tmux.conf"
 

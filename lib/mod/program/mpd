@@ -2,24 +2,18 @@
 
 mpd_program () {
 
-  # If both 'MPD' and 'ncmpcpp' aren't installed, be done now
-  path_hasbin mpd || return 1
-  path_hasbin ncmpcpp || return 1
+  path_hasbin "mpd" || return 1
+  path_hasbin "ncmpcpp" || return 1
 
-  # Check for and create missing 'MPD' directories
   dir_exist "$HOME/.config/mpd/playlists" || return 1
-
-  # Check for and create missing 'ncmpcpp' directories
   dir_exist "$HOME/.ncmpcpp" || return 1
 
-  # Check for and create missing 'MPD' session files
   file_exist "$HOME/.config/mpd/database" || return 1
   file_exist "$HOME/.config/mpd/pid" || return 1
   file_exist "$HOME/.config/mpd/state" || return 1
   file_exist "$HOME/.config/mpd/sticker.sql" || return 1
   file_exist "$HOME/.config/mpd/log" || return 1
 
-  # Symlink MPD & ncmpcpp config files
   config_ln "config/mpd/mpd.conf" "ncmpcpp/config"
 
 }

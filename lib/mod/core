@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-# Make sure the symbolic link points to the correct location $2 -> $1
-symlink () {
+
+symlink () { # Make sure the symbolic link points to the correct location $2 -> $1
 
   mkdir -p "$(dirname "$2")"
   if [ "$(readlink -f "$2")" != "$1" ] ; then
@@ -26,8 +26,8 @@ p_and_q () {
 
 }
 
-# Validate the answer to a yes or no question
-y_or_n_validate () {
+
+y_or_n_validate () { # Validate the answer to a yes or no question
 
   local ANS
 
@@ -42,8 +42,8 @@ y_or_n_validate () {
 
 }
 
-# Ask a yes or no question
-y_or_n () {
+
+y_or_n () { # Ask a yes or no question
 
   local ANS
   local RET
@@ -91,8 +91,8 @@ password_confirmation () {
 
 }
 
-# Get the path to the temporary directory
-dir_tmp () {
+
+dir_tmp () { # Get the path to the temporary directory
 
   local DIR_TMP
 
@@ -124,19 +124,19 @@ dir_tmp_one () {
 
 }
 
-# Finds the path to the binary
-path_bin () {
+
+path_bin () { # Finds the path to the binary
 
   [ "$#" -ne "1" ] && return 2
 
-  path_hasbin $1 && type $1 | awk '{print $3}' && return 0
+  path_hasbin "$1" && type "$1" | awk '{print $3}' && return 0
 
   return 1
 
 }
 
-# Checks to see if the process is running
-proc_exists () {
+
+proc_exists () { # Checks to see if the process is running
 
   [ "$#" -ne "1" ] && return 1
 
@@ -144,15 +144,15 @@ proc_exists () {
 
 }
 
-# Checks the pidfile to see if the process is running
-check_pidfile () {
+
+check_pidfile () { # Checks the pidfile to see if the process is running
 
   [ -f "$1" ] && proc_exists "$(cat $1 2>/dev/null)"
 
 }
 
-# Add to the path if the DIR doesn't exist
-path_add () {
+
+path_add () { # Add to the path if the DIR doesn't exist
 
   if [ "$(echo "$PATH" | grep "$1" 2>/dev/null)" = "" ] ; then
     export PATH="${PATH}:$1"
@@ -160,10 +160,10 @@ path_add () {
 
 }
 
-# Wraps the command in sudo if sudo exists and runs it
-sudo_wrap () {
 
-  if path_hasbin sudo ; then
+sudo_wrap () { # Wraps the command in sudo if sudo exists and runs it
+
+  if path_hasbin "sudo" ; then
     sudo $@
   else
     $@

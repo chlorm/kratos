@@ -2,7 +2,7 @@
 
 golang_program () {
 
-  path_hasbin go || return 1
+  path_hasbin "go" || return 1
 
   export GOPATH="$HOME/.go"
 

@@ -2,7 +2,7 @@
 
 vim_program () {
 
-  path_hasbin vim || return 1
+  path_hasbin "vim" || return 1
 
   [ -d "$HOME/.viminfo" ] && { rm -rf "$HOME/.viminfo" ; return $? ; }
 

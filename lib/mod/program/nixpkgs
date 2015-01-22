@@ -2,7 +2,7 @@
 
 nixpkgs_program () {
 
-  path_hasbin nix-env || return 1
+  path_hasbin "nix-env" || return 1
 
   config_ln "nixpkgs"
 

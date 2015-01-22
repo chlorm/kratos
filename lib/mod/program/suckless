@@ -2,7 +2,7 @@
 
 suckless_program () {
 
-  path_hasbin st || return 1
+  path_hasbin "st" || return 1
 
   local OLD
 

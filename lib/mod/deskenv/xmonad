@@ -2,7 +2,7 @@
 
 xmonad_deskenv () {
 
-  path_hasbin xmonad || return 1
+  path_hasbin "xmonad" || return 1
 
   TILING=1
 
