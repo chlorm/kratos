@@ -137,4 +137,6 @@ deskenv_run () {
   [ -f "$HOME/.xinitrc.end" ] && . "$HOME/.xinitrc.end"
   run_quiet pulseaudio --kill
 
+  return 0
+
 }
