@@ -97,6 +97,7 @@ git_sub_pull () {(
 config_latest () {
 
   local ACUM
+
   ACUM=0
 
   git_pull
@@ -159,6 +160,8 @@ config_ln () {
 
 # Installs the configuration files
 config_install () {
+
+  xdg_dirs
 
   symlink "$(dir_conf)/bin" "$HOME/.bin"
   path_add "$HOME/.bin"
