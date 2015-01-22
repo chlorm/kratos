@@ -1,14 +1,12 @@
 #!/usr/bin/env sh
 
-# Use acpi if possible
-laptop_bat () {
+laptop_bat () { # Use acpi if possible
 
   acpi -b 2>/dev/null || laptop_bat_old
 
 }
 
-# Gets the string representing the state of the batteries
-laptop_bat_old () {
+laptop_bat_old () { # Gets the string representing the state of the batteries
 
   local BATS
   local BAT_DIR

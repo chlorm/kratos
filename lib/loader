@@ -2,8 +2,7 @@
 
 [ -z "$RUNNER" ] && RUNNER=0
 
-# Resolves the name of the binary
-path_abs () {
+path_abs () { # Resolves the name of the binary
 
   BIN="$(whereis -b $1 2>/dev/null | awk '{print $2}')"
   [ -z "$BIN" ] && return 1
@@ -13,8 +12,7 @@ path_abs () {
 
 }
 
-# Stores the output of the command into a variable without a subshell
-svar () {
+svar () { # Stores the output of the command into a variable without a subshell
 
   local VAR
   local TMP
@@ -32,8 +30,7 @@ svar () {
 
 }
 
-# Returns the shell executing the current script
-shell () {
+shell () { # Returns the shell executing the current script
 
   local LSHELL
   local LPROC
@@ -52,15 +49,13 @@ shell () {
 
 }
 
-# Returns the shell executing the current script without appended major version
-shell_nov () {
+shell_nov () { # Returns the shell executing the current script without appended major version
 
   shell | sed 's/^\([a-z]*\).*/\1/'
 
 }
 
-# Determines the top level configuration directory
-dir_try () {
+dir_try () { # Determines the top level configuration directory
 
   local DIR_BIN
   local OLD
@@ -100,8 +95,7 @@ svar DIRCONF dir_conf "$0" || return 1
 . "$DIRCONF/settings"
 . "$DIRCONF/settings.local"
 
-# Extra array functions for accessor simplicity
-array_empty () {
+array_empty () { # Extra array functions for accessor simplicity
 
   [ "$(array_size $1)" -eq "0" ]
 
@@ -117,15 +111,13 @@ array_forall () {
 
 }
 
-# Allows the functions to be reloaded at any time
-reload_all () {
+reload_all () { # Allows the functions to be reloaded at any time
 
   . "$(dir_conf)/lib/loader"
 
 }
 
-# Source Modules
-load_one () {
+load_one () { # Source Modules
 
   [ "$(echo "$1" | grep '\(~$\|^#\)')" != "" ] && return 0
   . "$1" || { echo "Failed to load module $1" ; return 1 ; }

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 ##       ________   ___       ___
 ##      /  _____/  /  /      /  /
 ##     /  /       /  /      /  /
@@ -34,8 +35,7 @@ run_quiet mpd
 # Load the local config
 [ -f "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"
 
-## [list all packages from overlays with corresponding overlay name]
-fromover () {
+fromover () { # List all packages from overlays with corresponding overlay name
     for i in /var/db/pkg/*/* ; do
         if ! grep gentoo $i/repository >/dev/null ; then
             echo -e "`basename $i`\t`cat $i/repository`"

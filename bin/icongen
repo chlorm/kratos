@@ -1,15 +1,20 @@
 #!/usr/bin/env sh
+
 # TODO: add flag for image format, default to png
 # TODO: make sure imagick is installed
-case $@ in
+
+case "$@" in
+
     -f|--format)
         # Default
         FORMAT="png"
         ;;
+
     -s|--size)
         # Default
         SIZE="96"
         ;;
+
 esac
 
 convert \

@@ -2,8 +2,7 @@
 
 ## TODO: Using a standard hostname format and parse to determine machines features
 
-# Determine if this is a workstation
-info_ws () {
+info_ws () { # Determine if this is a workstation
 
   [ "$WS" = "0" ] && return 0
 
@@ -11,8 +10,7 @@ info_ws () {
 
 }
 
-# Determine if the user is root
-info_root () {
+info_root () { # Determine if the user is root
 
   [ "$(id -u)" -eq 0 ]
 

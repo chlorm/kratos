@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
-# Creates an array from the name of the variable and values
-array_from_str () {
+array_from_str () { # Creates an array from the name of the variable and values
 
   {[ "$#" -lt "1" ] || [ "$#" -gt "2" ]} && return 1
 
@@ -19,8 +18,7 @@ array_from_str () {
 
 }
 
-# Unique array functions with indicies starting at 0
-array_new () {
+array_new () { # Unique array functions with indicies starting at 0
 
   unset "$1"
   declare -a "$1"
@@ -45,8 +43,7 @@ array_size () {
 
 }
 
-# Tests to see if a binary exists in the path
-path_hasbin () {
+path_hasbin () { # Tests to see if a binary exists in the path
 
   [ "$#" -ne "1" ] && return 2
   whence -p $1 >/dev/null 2>&1 || \

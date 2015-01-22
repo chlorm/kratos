@@ -12,6 +12,6 @@ echo $BRCHS | grep 'master' >/dev/null 2>&1 && git checkout master
 
 # Pick branches into merged
 git checkout -b merged
-for i in $BRCHS; do
+for i in "$BRCHS" ; do
   git cherry-pick $(echo "$i" | awk -F . '{print $1}')..$i
 done

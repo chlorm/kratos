@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+
 ##       ________   ___       ___
 ##      /  _____/  /  /      /  /
 ##     /  /       /  /      /  /
@@ -30,7 +31,7 @@ remoteAddress="192.168.1.5"
 remotePort="22"
 remoteMusicDirectory="/home/cwopel/Music" # Should be an absolute path
 localMusicDirectory="$HOME/Music/"
-# Pass input to variable to work around bash errors
+
 inputArtist="$@"
 
 [ -z "${inputArtist}" ] && { echo "ERROR: no input provided" ; exit 1 ; }
@@ -43,10 +44,10 @@ scp -r -P "${remotePort}" "${remoteUser}"@"${remoteAddress}":"${artistAddPath}" 
 
 # Check for specified formats and convert to ogg
 find $HOME/Music/"${inputArtist}" -depth -name '*' | \
-while read curWorkFile; do
-  curWorkFileExt=${curWorkFile##*.}
-  case $curWorkFileExt in
-    ape|flac|mp3|m4a|wav|wma)
+while read curWorkFile ; do
+  curWorkFileExt="${curWorkFile##*.}"
+  case "$curWorkFileExt" in
+    'ape'|'flac'|'mp3'|'m4a'|'wav'|'wma')
       # Path to current file
       curWorkDir=$(dirname "$curWorkFile")
       # Filename w/ ext

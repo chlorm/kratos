@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
-# Install DE configs
-deskenvs_configure () {
+deskenvs_configure () { # Install DE configs
 
   awesome_deskenv
   cinnamon2_deskenv
@@ -69,8 +68,7 @@ deskenv_preference () {
 
 }
 
-# Run the prefered window manager with the best side apps
-deskenv_run () {
+deskenv_run () { # Run the prefered window manager with the best side apps
 
   local HCFG
   local PID

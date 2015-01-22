@@ -1,14 +1,12 @@
 #!/usr/bin/env sh
 
-
 ssh_auth_one () {
 
   cat "$1" >> "$HOME/.ssh/authorized_keys"
 
 }
 
-# Populates the authorized_keys file
-ssh_auth_keys () {
+ssh_auth_keys () { # Populates the authorized_keys file
 
   [ -f "$HOME/.ssh/authorized_keys" ] && { rm -f "$HOME/.ssh/authorized_keys" ; }
 
@@ -19,9 +17,7 @@ ssh_auth_keys () {
 
 }
 
-# Creates new ssh keys with the provided password
-# Passing no parameter prompts the user for a password
-ssh_gen_keys () {
+ssh_gen_keys () { # Creates new ssh keys with the provided password
 
   local PASS
 
@@ -43,8 +39,7 @@ ssh_repo_key_one () {
 
 }
 
-# Create the keys from the git repo
-ssh_repo_keys () {
+ssh_repo_keys () { # Create the keys from the git repo
 
   local CPFX
   local LPFX

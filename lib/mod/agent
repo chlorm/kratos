@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
-# Exports extra params
-agent_export () {
+agent_export () { # Exports extra params
 
   export SSH_AUTH_SOCK
   export GPG_AGENT_INFO
@@ -10,15 +9,13 @@ agent_export () {
 
 }
 
-# Retrieve the agent environment
-agent_file () {
+agent_file () { # Retrieve the agent environment
 
   echo "$(dir_tmp)/agent-environment"
 
 }
 
-# Find a specific pcsc driver
-agent_find_pcsc_lib () {
+agent_find_pcsc_lib () { # Find a specific pcsc driver
 
   VAL="$(find "$1" -name libpcsclite.so\* 2>/dev/null | head -n 1)"
   [ -z "$VAL" ] && return 1
@@ -28,8 +25,7 @@ agent_find_pcsc_lib () {
 
 }
 
-# Find the path to the pcsc driver
-agent_find_pcsc () {
+agent_find_pcsc () { # Find the path to the pcsc driver
 
   agent_find_pcsc_lib "/run/current-system/sw/lib/"
   agent_find_pcsc_lib "$HOME/.nix-profile/lib/"
@@ -54,8 +50,7 @@ agent_pin_program_check () {
 
 }
 
-# Find the path to the pinentry application
-agent_pin_program () {
+agent_pin_program () { # Find the path to the pinentry application
 
   agent_pin_program_check pinentry && return 0
   agent_pin_program_check pinentry-curses && return 0
@@ -64,8 +59,7 @@ agent_pin_program () {
 
 }
 
-# Prints the command for running the gpg-agent
-agent_gpg () {
+agent_gpg () { # Prints the command for running the gpg-agent
 
   path_hasbin gpg-agent || return 1
 
@@ -88,8 +82,7 @@ agent_gpg () {
 
 }
 
-# Prints the command for running the ssh-agent
-agent_ssh () {
+agent_ssh () { # Prints the command for running the ssh-agent
 
   path_hasbin ssh-agent || return 1
 
@@ -97,8 +90,7 @@ agent_ssh () {
 
 }
 
-# Determine which agent to use
-agent_which () {
+agent_which () { # Determine which agent to use
 
   [ "$1" = "ssh" ] && agent_ssh && return 0
   [ "$1" = "gpg" ] && agent_gpg && return 0
@@ -111,16 +103,14 @@ agent_which () {
 
 }
 
-# Tests to see if the agent is already running
-agent_running () {
+agent_running () { # Tests to see if the agent is already running
 
   run_quiet ssh-add -L
   [ "$?" -ne "2" ]
 
 }
 
-# Make sure that the running agent is the proper one
-agent_proper () {
+agent_proper () { # Make sure that the running agent is the proper one
 
   if agent_running ; then
     if [ -n "$SSH_AGENT_PID" ] ; then
@@ -147,8 +137,7 @@ agent_proper () {
 
 }
 
-# Import already running agent data
-agent_env () {
+agent_env () { # Import already running agent data
 
   [ -f "$(agent_file)" ] && . "$(agent_file)"
   agent_export
@@ -156,8 +145,7 @@ agent_env () {
 
 }
 
-# Spawn agent if it doesn't exist
-agent_spawn () {
+agent_spawn () { # Spawn agent if it doesn't exist
 
   echo "Spawning $@"
   (eval "$@") | grep -v echo > "$(agent_file)"
@@ -166,8 +154,7 @@ agent_spawn () {
 
 }
 
-# Automatically determines which agent to use and starts it if necessary
-agent_auto () {
+agent_auto () { # Automatically determines which agent to use and starts it if necessary
 
   local AGENT_CMD
 

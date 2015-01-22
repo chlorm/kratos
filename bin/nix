@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
+
 # Nix is a wrapper for all nix utilities
 
 # Current directory
-work_dir=${0%/*}
+work_dir="$(pwd)"
 
 # Load libraries
 . "$work_dir/nixlib/usage"
@@ -20,95 +21,95 @@ clY="\033[0;33m"  # Yellow
 clU="\033[0;4m"   # Underline
 clD="\033[0;0m"   # default
 
-if [ -z "$1" ] ; then
+[ -z "$1" ] && {
   echo -e "ERROR: \"nix\" requires an argument"
   usage_nix
   exit 1
-else
-  case "$1" in
+}
 
-    build)
-      shift
-      nix-build $@
-      ;;
+case "$1" in
 
-    channel)
-      shift
-      nix-channel $@
-      ;;
+  build)
+    shift
+    nix-build $@
+    ;;
 
-    collect-garbage)
-      shift
-      nix-collect-garbage $@
-      ;;
+  channel)
+    shift
+    nix-channel $@
+    ;;
 
-    copy-closure)
-      shift
-      nix-copy-closure $@
-      ;;
+  collect-garbage)
+    shift
+    nix-collect-garbage $@
+    ;;
 
-    daemon)
-      shift
-      nix-daemon $@
-      ;;
+  copy-closure)
+    shift
+    nix-copy-closure $@
+    ;;
 
-    env)
-      shift
-      nix-env $@
-      ;;
+  daemon)
+    shift
+    nix-daemon $@
+    ;;
 
-    hash)
-      shift
-      nix-hash $@
-      ;;
+  env)
+    shift
+    nix-env $@
+    ;;
 
-    install-package)
-      shift
-      nix-install-package $@
-      ;;
+  hash)
+    shift
+    nix-hash $@
+    ;;
 
-    instantiate)
-      shift
-      nix-instantiate $@
-      ;;
+  install-package)
+    shift
+    nix-install-package $@
+    ;;
 
-    prefetch-url)
-      shift
-      nix-prefetch-url $@
-      ;;
+  instantiate)
+    shift
+    nix-instantiate $@
+    ;;
 
-    pull)
-      shift
-      nix-pull $@
-      ;;
+  prefetch-url)
+    shift
+    nix-prefetch-url $@
+    ;;
 
-    push)
-      shift
-      nix-push $@
-      ;;
+  pull)
+    shift
+    nix-pull $@
+    ;;
 
-    shell)
-      shift
-      nix-shell $@
-      ;;
+  push)
+    shift
+    nix-push $@
+    ;;
 
-    store)
-      shift
-      nix-store $@
-      ;;
+  shell)
+    shift
+    nix-shell $@
+    ;;
 
-    -h|--help)
-      usage_nix
-      ;;
+  store)
+    shift
+    nix-store $@
+    ;;
 
-    -v|--version)
-      echo "Nix version: $VERSION"
-      ;;
+  -h|--help)
+    usage_nix
+    ;;
 
-    *)
-      printf "ERROR: Unknown option $1\n"
-      usage_nix
-      ;;
+  -v|--version)
+    echo "Nix version: $VERSION"
+    ;;
 
-  esac
-fi
+  *)
+    printf "ERROR: Unknown option $1\n"
+    usage_nix
+    ;;
+
+esac

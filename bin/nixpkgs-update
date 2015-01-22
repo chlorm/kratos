@@ -3,7 +3,7 @@ set -o nounset
 set -o errexit
 
 # Ensure we have a nix channel
-if ! nix-channel --list | grep '^nixos' >/dev/null 2>&1; then
+if ! nix-channel --list | grep '^nixos' >/dev/null 2>&1 ; then
   nix-channel --add https://nixos.org/channels/nixos-unstable nixos
 fi
 
@@ -20,12 +20,18 @@ git checkout -b cache
 git branch -D master 2>/dev/null >&2 || true
 git checkout -b master upstream/master
 
-# Update all dependent branches
-update () {
+
+update () { # Update all dependent branches
+
+  local BRCHS
+
   BRCHS="$(git branch | sed -n -e "s,^\\*\\? *\\($1\\..*\\),\\1,p")"
-  for i in $BRCHS; do
-    git rebase $1 $i
+
+  for i in "$BRCHS" ; do
+    git rebase "$1" "$i"
   done
+
 }
+
 update cache
 update master

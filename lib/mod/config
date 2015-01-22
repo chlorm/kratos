@@ -11,8 +11,7 @@ git_cd () {
 
 }
 
-# Gets the current git branch
-git_cbr () {(
+git_cbr () {( # Gets the current git branch
 
     git_cd $1 || return 1
 
@@ -20,9 +19,9 @@ git_cbr () {(
 
 )}
 
-# Updates the root git tree
-# Returns 2 if failed, 1 if updated, 0 if up-to-date
-git_pull () {(
+git_pull () {( # Updates the root git tree
+
+    # Returns 2 if failed, 1 if updated, 0 if up-to-date
 
     git_cd $1 || return 2
 
@@ -34,9 +33,7 @@ git_pull () {(
 
 )}
 
-# Updates the root git tree and only returns >0 on error
-# Echos updated if the tree was updated
-git_pull_nostat () {
+git_pull_nostat () { # Updates the root git tree and only returns >0 on error
 
   git_pull $@
   case "$?" in
@@ -53,9 +50,9 @@ git_pull_nostat () {
 
 }
 
-# Initialize git submodules
-# Returns 2 if failed, 1 if initialized, 0 if up-to-date
-git_sub_init () {(
+git_sub_init () {( # Initialize git submodules
+
+    # Returns 2 if failed, 1 if initialized, 0 if up-to-date
 
     local ACUM
     ACUM=0
@@ -78,9 +75,10 @@ git_sub_init_one () {
 
 }
 
-# Update the submodules
-# Returns 2 if failed, 1 if updated, 0 if up-to-date
-git_sub_pull () {(
+
+git_sub_pull () {( # Update the submodules
+
+    # Returns 2 if failed, 1 if updated, 0 if up-to-date
 
     git_cd $1 || return 2
 
@@ -92,9 +90,9 @@ git_sub_pull () {(
 
 )}
 
-# Gets the latest version of the git config
-# Returns 2 if failed, 1 if updated, 0 if up-to-date
-config_latest () {
+config_latest () { # Gets the latest version of the git config
+
+  # Returns 2 if failed, 1 if updated, 0 if up-to-date
 
   local ACUM
 
@@ -146,8 +144,7 @@ config_latest () {
 
 }
 
-# Links the configuration file to its proper dotfile
-config_ln () {
+config_ln () { # Links the configuration file to its proper dotfile
 
   [ "$#" -eq "0" ] && return 1
 
@@ -158,8 +155,7 @@ config_ln () {
 
 }
 
-# Installs the configuration files
-config_install () {
+config_install () { # Installs the configuration files
 
   echo "Configuring directories"
   xdg_dirs
@@ -180,8 +176,7 @@ config_install () {
 
 }
 
-# Updates the configuration files and all of the submodules
-config_update () {
+config_update () { # Updates the configuration files and all of the submodules
 
   config_latest
   case "$?" in

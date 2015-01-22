@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
-# Get colors for the current shell
-prompt_color () {
+prompt_color () { # Get colors for the current shell
 
   [ "$(shell_nov)" = "zsh" ] && echo -n '%{' || echo -n '\['
 
@@ -57,23 +56,21 @@ prompt_color () {
 
 }
 
-# Append '*' if git branch is dirty
-git_dirty () {
+git_dirty () { # Append '*' if git branch is dirty
 
   [[ $(git status 2> /dev/null | \
       tail -n1) != *"working directory clean"* ]] && echo "*"
 
 }
-# Find current git branch
-git_branch () {
+
+git_branch () { # Find current git branch
 
   git branch --no-color 2> /dev/null | \
   sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(git_dirty)/"
 
 }
 
-# Setup the theme for the shell
-shell_theme () {
+shell_theme () { # Setup the theme for the shell
 
   [ "$(shell_nov)" = "fish" ] && return 0
 
@@ -122,8 +119,7 @@ shell_theme () {
 
 }
 
-# Create the temporary directory for the shell
-shell_tmp () {
+shell_tmp () { # Create the temporary directory for the shell
 
   local TMP
 
@@ -137,8 +133,7 @@ shell_tmp () {
 
 }
 
-# Initializes useful functions if the caller is a shell
-shell_init () {
+shell_init () { # Initializes useful functions if the caller is a shell
 
   shell_tmp
   #agent_auto
@@ -169,8 +164,7 @@ shell_init () {
 
 }
 
-# Returns the name of the preferred shell
-shell_get_best () {
+shell_get_best () { # Returns the name of the preferred shell
 
   # Bash
   if path_hasbin bash ; then
@@ -194,8 +188,7 @@ shell_get_best () {
 
 }
 
-# Automatically executes the preferred shell
-shell_best () {
+shell_best () { # Automatically executes the preferred shell
 
   if [ "$(shell_nov)" != "$(shell_get_best)" ] ; then
     exec $(shell_get_best) $@
@@ -204,8 +197,7 @@ shell_best () {
 
 }
 
-# Automatically configures the shell configuration files
-shell_auto () {
+shell_auto () { # Automatically configures the shell configuration files
 
   config_ln "bash_profile" "bashrc" "bash_logout" "zshrc" \
             "zprofile" "zlogout" "config/fish"

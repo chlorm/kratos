@@ -1,9 +1,7 @@
 #!/bin/sh -e
 DIR="$(readlink -f "$(dirname $0)")"
 OUTDIR="$1"
-if [ -z "$OUTDIR" ]; then
-  OUTDIR="nixpkgs"
-fi
+[ -z "$OUTDIR" ] && { OUTDIR="nixpkgs" ; }
 git init "$OUTDIR"
 cd "$OUTDIR"
 git remote add origin https://github.com/wkennington/nixpkgs
