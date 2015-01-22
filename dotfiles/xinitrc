@@ -7,7 +7,7 @@
 . "$(readlink -f $(dirname $(readlink -f $HOME/.xinitrc))/../)/lib/loader"
 path_add "$HOME/.bin"
 #agent_auto
-graphical_autorun $@
+deskenv_run
 
 # Gnome 3.xx
 #exec gnome-session
