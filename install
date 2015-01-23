@@ -4,10 +4,10 @@ export DIR_CONF="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
 
 cd "$DIR_CONF"
 
-if [ ! -f "settings.local" ] ; then
+[ -f "settings.local" ] || {
   touch "settings.local"
   echo '#!/usr/bin/env sh' >> "settings.local"
-fi
+}
 
 # Load configuration settings
 . "$DIR_CONF/settings"

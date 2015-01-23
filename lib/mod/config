@@ -175,6 +175,7 @@ config_install () { # Installs the configuration files
   }
   [ "$?" -ne "0" ] && { echo "Configuring Programs" ; }
   programs_headless_configure
+
   echo "Configuring Shell"
   shell_auto
 
