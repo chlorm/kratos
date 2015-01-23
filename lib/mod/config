@@ -50,22 +50,23 @@ git_pull_nostat () { # Updates the root git tree and only returns >0 on error
 
 }
 
-git_sub_init () {( # Initialize git submodules
+git_sub_init () { # Initialize git submodules
 
-    # Returns 2 if failed, 1 if initialized, 0 if up-to-date
+  # Returns 2 if failed, 1 if initialized, 0 if up-to-date
 
-    local ACUM
-    ACUM=0
+  local ACUM
 
-    git_cd $1 || return 2
+  ACUM=0
 
-    array_from_str SUBS "$(git submodule status --recursive | grep -ve "([^)]*)" | awk '{print $2}')"
+  git_cd $1 || return 2
 
-    array_forall SUBS git_sub_init_one || return 2
+  array_from_str SUBS "$(git submodule status --recursive | grep -ve "([^)]*)" | awk '{print $2}')"
 
-    return $ACUM
+  array_forall SUBS git_sub_init_one || return 2
 
-)}
+  return $ACUM
+
+}
 
 git_sub_init_one () {
 
@@ -76,19 +77,19 @@ git_sub_init_one () {
 }
 
 
-git_sub_pull () {( # Update the submodules
+git_sub_pull () { # Update the submodules
 
-    # Returns 2 if failed, 1 if updated, 0 if up-to-date
+  # Returns 2 if failed, 1 if updated, 0 if up-to-date
 
-    git_cd $1 || return 2
+  git_cd $1 || return 2
 
-    svar DIRCONF dir_conf || return 2
+  svar DIRCONF dir_conf || return 2
 
-    STR="$(git submodule -q foreach --recursive "\"$DIRCONF/bin/run\" git_pull_nostat .")" || return 2
+  STR="$(git submodule -q foreach --recursive "\"$DIRCONF/bin/run\" git_pull_nostat .")" || return 2
 
-    [ "$(echo "$STR" | grep 'Updated')" = "" ]
+  [ "$(echo "$STR" | grep 'Updated')" = "" ]
 
-)}
+}
 
 config_latest () { # Gets the latest version of the git config
 

@@ -45,8 +45,8 @@ agent_pin_program_check () {
 
   PIN="$(path_bin "$1")"
 
-  $PIN </dev/null >/dev/null 2>&1 || return 1
-  echo $PIN
+  "$PIN" </dev/null >/dev/null 2>&1 || return 1
+  echo "$PIN"
 
 }
 
@@ -112,7 +112,7 @@ agent_running () { # Tests to see if the agent is already running
 
 agent_proper () { # Make sure that the running agent is the proper one
 
-  if agent_running ; then
+  [ agent_running ] && {
     if [ -n "$SSH_AGENT_PID" ] ; then
 
       local OLD
@@ -133,7 +133,7 @@ agent_proper () { # Make sure that the running agent is the proper one
     elif [ -z "$SSH_TTY" ] ; then
       unset SSH_AUTH_SOCK
     fi
-  fi
+  }
 
 }
 

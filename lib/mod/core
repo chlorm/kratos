@@ -105,7 +105,9 @@ dir_tmp () { # Get the path to the temporary directory
   local DIR_TMP
 
   dir_tmp_tryall
+
   [ "$DIR_TMP" = "" ] && { echo "Failed to find a temporary folder" >&2 ; return 1 ; }
+
   [ ! -d "$DIR_TMP" ] && mkdir "$DIR_TMP" && chmod 0700 "$DIR_TMP"
   symlink "$DIR_TMP" "$HOME/.tmp"
   mkdir "$DIR_TMP/cache" >/dev/null 2>&1

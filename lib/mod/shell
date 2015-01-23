@@ -58,15 +58,25 @@ prompt_color () { # Get colors for the current shell
 
 git_dirty () { # Append '*' if git branch is dirty
 
-  [[ $(git status 2> /dev/null | \
-      tail -n1) != *"working directory clean"* ]] && echo "*"
+  local GITSTATUS
+
+  GITSTATUS="$(git status 2> /dev/null | tail -n 1 | grep -m 1 -w -o 'working directory clean')"
+
+  [ "$GITSTATUS" != "working directory clean" ] && { echo "*" ; }
+
+  return 0
 
 }
 
 git_branch () { # Find current git branch
 
-  git branch --no-color 2> /dev/null | \
-  sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(git_dirty)/"
+  local GITBRANCH
+
+  GITBRANCH=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(git_dirty)/")
+
+  [ -n "$GITBRANCH" ] && { echo "$GITBRANCH" ; }
+
+  return 0
 
 }
 
@@ -78,29 +88,31 @@ shell_theme () { # Setup the theme for the shell
   case "$(os_base)" in
 
     'linux'|'cygwin')
-      eval "$(dircolors -b)"; alias ls='ls --color=auto'
+      eval "$(dircolors -b)"
+      alias ls='ls --color=auto'
       ;;
 
     'freebsd')
-      export CLICOLOR=1; export LSCOLORS="ExGxFxdxCxDhDxaBadaCeC"
+      export CLICOLOR=1
+      export LSCOLORS="ExGxFxdxCxDhDxaBadaCeC"
       ;;
 
   esac
 
   # 256 Colors in the Terminal
-  if [ "$TERM" = "xterm" ] || [ "$TERM" = "rxvt-unicode-256color" ]; then
+  if [ "$TERM" = "xterm" ] || [ "$TERM" = "rxvt-unicode-256color" ] ; then
     export TERM="xterm-256color"
     unset COLORTERM
   fi
 
   # Setup Special Colors
-  if info_root; then
+  if info_root ; then
     NCOLOR="$(prompt_color cyan 0)"
   else
     NCOLOR="$(prompt_color white 1)"
   fi
 
-  if info_ws; then
+  if info_ws ; then
     HCOLOR="$(prompt_color green 0)"
   else
     HCOLOR="$(prompt_color red 0)"
@@ -109,7 +121,7 @@ shell_theme () { # Setup the theme for the shell
   DCOLOR="$(prompt_color yellow 1)"
 
   # Create Prompt
-  if [ "$(shell_nov)" = "zsh" ];then
+  if [ "$(shell_nov)" = "zsh" ] ; then
     PROMPT="[$NCOLOR%n$(prompt_color reset 0)@"
     PROMPT="$PROMPT$HCOLOR%m$(prompt_color reset 0):"
     PROMPT="$PROMPT$DCOLOR%30<...<%~%<<$(prompt_color reset 0)]%(!.#.$) "
@@ -123,7 +135,7 @@ shell_tmp () { # Create the temporary directory for the shell
 
   local TMP
 
-  if TMP="$(dir_tmp)"; then
+  if TMP="$(dir_tmp)" ; then
     export HISTFILE="$TMP/history_$(shell_nov)"
     export SAVEHIST="9999"
   else
@@ -191,7 +203,7 @@ shell_get_best () { # Returns the name of the preferred shell
 shell_best () { # Automatically executes the preferred shell
 
   if [ "$(shell_nov)" != "$(shell_get_best)" ] ; then
-    exec $(shell_get_best) $@
+    exec $(shell_get_best) "$@"
     exit $?
   fi
 

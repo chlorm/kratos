@@ -4,8 +4,12 @@
 
 path_abs () { # Resolves the name of the binary
 
+  local BIN
+
   BIN="$(whereis -b $1 2>/dev/null | awk '{print $2}')"
+
   [ -z "$BIN" ] && return 1
+
   echo "$BIN"
 
   return 0
@@ -38,7 +42,7 @@ shell () { # Returns the shell executing the current script
   LPROC="$(ps hp $$ | grep "$$")"
 
   # Workaround for su spawned shells
-  if [ -n "$(echo "$LPROC" | grep '\-su')" ];then
+  if [ -n "$(echo "$LPROC" | grep '\-su')" ] ; then
     LSHELL="$(basename "$(echo "$LPROC" | sed 's/^.*(\([^)]*\)).*$/\1/')")"
   else
     LSHELL="$(basename "$(echo "$LPROC" | sed 's/-//' | awk '{print $5}')")"
@@ -62,10 +66,14 @@ dir_try () { # Determines the top level configuration directory
 
   OLD="$(pwd)"
   DIR_BIN="$(readlink -f "$1" 2>/dev/null)" || return 1
+
   cd "$(dirname "$DIR_BIN")" 2>/dev/null || return 1
+
   DIR_CONF="$(git rev-parse --show-toplevel 2>/dev/null)" || return 1
+
   export DIR_CONF
   echo "$DIR_CONF"
+
   cd "$OLD"
 
 }
