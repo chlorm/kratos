@@ -4,7 +4,7 @@ pulseaudio_program () {
 
   path_hasbin "pacmd" || return 1
 
-  dir_exist "$HOME/.config/pulse" || return 1
+  dir_exist "$XDG_CONFIG_HOME/pulse" || return 1
 
   config_ln "config/pulse/daemon.conf"
 

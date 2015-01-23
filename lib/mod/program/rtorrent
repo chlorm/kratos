@@ -7,7 +7,7 @@ rtorrent_program () {
 	dir_exist "$HOME/Torrents/Complete" || return 1
   dir_exist "$HOME/Torrents/Incomplete" || return 1
 	dir_exist "$HOME/Torrents/Watch" || return 1
-  dir_exist "$HOME/.local/share/rtorrent" || return 1
+  dir_exist "$XDG_DATA_HOME/rtorrent" || return 1
 
   config_ln "rtorrent.rc"
 

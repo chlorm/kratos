@@ -5,7 +5,7 @@ xfce4_deskenv () {
   path_hasbin "startxfce4" || return 1
 
   # Should be move to program specific
-  symlink "$HOME/.config/Terminal" "$HOME/.config/xfce4/terminal"
+  symlink "$XDG_CONFIG_HOME/Terminal" "$XDG_CONFIG_HOME/xfce4/terminal"
 
   # TODO: xfce theme
 

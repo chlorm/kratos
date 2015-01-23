@@ -5,14 +5,14 @@ mpd_program () {
   path_hasbin "mpd" || return 1
   path_hasbin "ncmpcpp" || return 1
 
-  dir_exist "$HOME/.config/mpd/playlists" || return 1
+  dir_exist "$XDG_CONFIG_HOME/mpd/playlists" || return 1
   dir_exist "$HOME/.ncmpcpp" || return 1
 
-  file_exist "$HOME/.config/mpd/database" || return 1
-  file_exist "$HOME/.config/mpd/pid" || return 1
-  file_exist "$HOME/.config/mpd/state" || return 1
-  file_exist "$HOME/.config/mpd/sticker.sql" || return 1
-  file_exist "$HOME/.config/mpd/log" || return 1
+  file_exist "$XDG_CONFIG_HOME/mpd/database" || return 1
+  file_exist "$XDG_CONFIG_HOME/mpd/pid" || return 1
+  file_exist "$XDG_CONFIG_HOME/mpd/state" || return 1
+  file_exist "$XDG_CONFIG_HOME/mpd/sticker.sql" || return 1
+  file_exist "$XDG_CONFIG_HOME/mpd/log" || return 1
 
   config_ln "config/mpd/mpd.conf" "ncmpcpp/config"
 

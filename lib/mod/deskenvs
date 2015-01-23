@@ -11,7 +11,7 @@ deskenvs_configure () { # Install DE configs
   xmonad_deskenv
 
   # clean this up later
-  install -d $HOME/.config
+  install -d $XDG_CONFIG_HOME
   config_ln "config/Terminal" "config/wallpaper" "config/uzbl"
 
 }

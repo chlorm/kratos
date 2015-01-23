@@ -7,11 +7,11 @@ awesome_deskenv () {
   TILING=1
 
 
-  [ -d "$HOME/.config/wallpaper" ] && {
-    [ "$(ls "$HOME/.config/wallpaper" | wc -l)" -gt "1" ] && {
+  [ -d "$XDG_CONFIG_HOME/wallpaper" ] && {
+    [ "$(ls "$XDG_CONFIG_HOME/wallpaper" | wc -l)" -gt "1" ] && {
       sleep 2
       while true ; do
-        awsetbg -r "$HOME/.config/wallpaper"
+        awsetbg -r "$XDG_CONFIG_HOME/wallpaper"
         sleep 300
       done &
     }
