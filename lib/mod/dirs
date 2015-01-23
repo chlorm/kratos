@@ -2,8 +2,9 @@
 
 xdg_dirs () {
 
-  [ -f "$HOME/.config/user-dirs.dirs" ] && {
-    . "$HOME/.config/user-dirs.dirs"
+  [ -f "$XDG_CONFIG_HOME/user-dirs.dirs" ] && {
+
+    . "$XDG_CONFIG_HOME/user-dirs.dirs"
 
     dir_exist "$XDG_CACHE_HOME" && { export XDG_CACHE_HOME ; }
     dir_exist "$XDG_CONFIG_HOME" && { export XDG_CONFIG_HOME ; }

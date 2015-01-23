@@ -190,7 +190,7 @@ toupper () {
 
 dir_check () {
 
-  [ -d "$1" ] || { echo "Creating directory: $1" ; mkdir -p "$1" ; return $? ; }
+  [ -d "$1" ] || { echo "Creating directory: $1" ; mkdir -p "$1" >/dev/null 2>&1 ; return $? ; }
 
   return 0
 
@@ -198,7 +198,7 @@ dir_check () {
 
 dir_exist () {
 
-  dir_check "$1" || { echo "ERROR: failed to create directory: $1" ; }
+  dir_check "$1" || { echo "ERROR: failed to create directory: $1" ; return 1 ; }
 
   return 0
 
@@ -206,7 +206,7 @@ dir_exist () {
 
 file_check () {
 
-  [ -f "$1" ] || { echo "Creating file: $1" ; touch "$1" ; return $? ; }
+  [ -f "$1" ] || { echo "Creating file: $1" ; touch "$1" >/dev/null 2>&1 ; return $? ; }
 
   return 0
 
@@ -214,7 +214,7 @@ file_check () {
 
 file_exist () {
 
-  file_check "$1" || { echo "ERROR: failed to create file: $1" ; }
+  file_check "$1" || { echo "ERROR: failed to create file: $1" ; return 1 ; }
 
   return 0
 

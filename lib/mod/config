@@ -158,6 +158,9 @@ config_ln () { # Links the configuration file to its proper dotfile
 
 config_install () { # Installs the configuration files
 
+
+  . "$(dir_conf)/dotfiles/config/user-dirs.dirs"
+  config_ln "config/user-dir.dirs"
   echo "Configuring directories"
   xdg_dirs
 
