@@ -158,9 +158,9 @@ config_ln () { # Links the configuration file to its proper dotfile
 
 config_install () { # Installs the configuration files
 
-
+  # Bootstrap directory setup by sourcing
   . "$(dir_conf)/dotfiles/config/user-dirs.dirs"
-  config_ln "config/user-dir.dirs"
+  config_ln "config/user-dirs.dirs"
   echo "Configuring directories"
   xdg_dirs
 
