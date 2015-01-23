@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+htop_program () {
+	
+  path_hasbin "htop"  || return 1
+
+  dir_exist "$XDG_CONFIG_HOME/htop" || return 1
+
+  config_ln "config/htop/htoprc"
+
+}

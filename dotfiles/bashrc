@@ -36,9 +36,13 @@ run_quiet mpd
 [ -f "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"
 
 fromover () { # List all packages from overlays with corresponding overlay name
-    for i in /var/db/pkg/*/* ; do
-        if ! grep gentoo $i/repository >/dev/null ; then
-            echo -e "`basename $i`\t`cat $i/repository`"
-        fi
-    done
+
+  local i
+
+  for i in /var/db/pkg/*/* ; do
+    if ! grep gentoo $i/repository >/dev/null ; then
+      echo -e "`basename $i`\t`cat $i/repository`"
+    fi
+  done
+
 }
