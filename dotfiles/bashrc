@@ -22,7 +22,7 @@
 [[ $- != *i* ]] && return
 
 # Resolve issure of terminals defaulting to /nix/store instead on $HOME
-[[ $_ = $0 ]] && { cd "$HOME" ; }
+cd "$HOME"
 
 # Load shell configuration options
 . "$(readlink -f $(dirname $(readlink -f ~/.bashrc))/../)/lib/loader"
