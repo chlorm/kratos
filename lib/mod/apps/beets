@@ -18,7 +18,23 @@ app_beets_dirs () {
 
 app_beets_dotfiles () {
 
-  config_ln "config/beets/config.yaml" || return 1
+(
+cat <<BEETSDOTFILE
+color: yes
+original_year: yes
+per_disc_numbering: no
+write: yes
+import:
+    move: yes
+    resume: yes
+paths:
+    default: ${artist}/${original_year} - $album%aunique{}/${artist}_${original_year}_${artist}_${track}_${title}_${channels}.${bitdepth}.${samplerate}
+    singleton: ${artist}/${original_year} - $album%aunique{} [single]/${artist}_${original_year}_${artist}_${track}_${title}_${channels}.${bitdepth}.${samplerate}
+    comp: COMPILATIONS/$album%aunique{}/$album_$track_$title_${channels}.${bitdepth}.${samplerate}
+    soundtrack: SOUNDTRACKS/$album/$album_$track_$title_${channels}.${bitdepth}.${samplerate}
+
+BEETSDOTFILE
+) > "$XDG_CONFIG_HOME/beets/config.yaml" || return 1
 
   return 0
 
