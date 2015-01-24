@@ -30,7 +30,7 @@ app_nixpkgs_cleanup () {
 
 }
 
-app_nixpkgs () {
+app_nixpkgs_configure () {
 
   app_nixenv_installed || return 1
 
