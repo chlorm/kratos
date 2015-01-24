@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-program_pulseaudio_installed () {
+app_pulseaudio_installed () {
 
   path_hasbin "pacmd" || return 1
 
@@ -8,9 +8,9 @@ program_pulseaudio_installed () {
 
 }
 
-pulseaudio_program () {
+app_pulseaudio () {
 
-  program_pulseaudio_installed || return 1
+  app_pulseaudio_installed || return 1
 
   dir_exist "$XDG_CONFIG_HOME/pulse" || return 1
 

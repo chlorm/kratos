@@ -169,12 +169,10 @@ config_install () { # Installs the configuration files
   path_add "$HOME/.bin"
 
   echo "Configuring Desktop Environment"
-  deskenv_run && {
-    echo "Configuring Programs"
-    programs_graphical_configure
-  }
-  [ "$?" -ne "0" ] && { echo "Configuring Programs" ; }
-  programs_headless_configure
+  deskenv_run
+
+  echo "Configuring Programs"
+  apps_configure
 
   echo "Configuring Shell"
   shell_auto

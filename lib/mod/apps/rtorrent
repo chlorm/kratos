@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-program_rtorrent_installed () {
+app_rtorrent_installed () {
 
   path_hasbin "rtorrent" || return 1
 
@@ -8,9 +8,9 @@ program_rtorrent_installed () {
 
 }
 
-rtorrent_program () {
+app_rtorrent () {
 
-  program_rtorrent_installed || return 1
+  app_rtorrent_installed || return 1
 
   dir_exist "$HOME/Torrents/Complete" || return 1
   dir_exist "$HOME/Torrents/Incomplete" || return 1

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-program_suckless_installed () {
+app_suckless_installed () {
 
   path_hasbin "st" || return 1
 
@@ -8,9 +8,9 @@ program_suckless_installed () {
 
 }
 
-suckless_program () {
+app_suckless () {
 
-  program_suckless_installed || return 1
+  app_suckless_installed || return 1
 
   local OLD
 

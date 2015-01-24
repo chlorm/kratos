@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-program_nixenv_installed () {
+app_nixenv_installed () {
 
   path_hasbin "nix-env" || return 1
 
@@ -8,9 +8,9 @@ program_nixenv_installed () {
 
 }
 
-nixpkgs_program () {
+app_nixpkgs () {
 
-  program_nixenv_installed || return 1
+  app_nixenv_installed || return 1
 
   config_ln "nixpkgs" || return 1
 

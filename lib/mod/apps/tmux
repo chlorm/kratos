@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-program_tmux_installed () {
+app_tmux_installed () {
 
   path_hasbin "tmux" || return 1
 
@@ -8,9 +8,9 @@ program_tmux_installed () {
 
 }
 
-tmux_program () {
+app_tmux () {
 
-  program_tmux_installed || return 1
+  app_tmux_installed || return 1
 
   config_ln "tmux.conf"
 

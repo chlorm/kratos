@@ -1,31 +1,41 @@
 #!/usr/bin/env sh
 
-# Program specific configs
+# Application specific configuration
 
-apps_headless_configure () {
+apps_headless () {
 
-  program_beets
-  program_cabal
-  program_emacs
-  program_git
-  program_golang
-  gvim_program
-  htop_program
-  mpd_program
-  nixpkgs_program
-  pulseaudio_program
-  rtorrent_program
-  ssh_program
-  tmux_program
-  vim_program
+  app_beets
+  app_cabal
+  app_emacs
+  app_git
+  app_golang
+  app_gvim
+  app_htop
+  app_mpd
+  app_nixpkgs
+  app_pulseaudio
+  app_rtorrent
+  app_ssh
+  app_tmux
+  app_vim
 
 }
 
-apps_graphical_configure () {
+apps_graphical () {
 
-  sakura_program
-  sublime_text_program
-  suckless_program
-  program_xorg
+  app_sakura
+  app_sublimetext
+  app_suckless
+  app_xorg
+
+}
+
+apps_configure () {
+
+  apps_headless
+
+  [ app_xorg_installed ] && {
+    apps_graphical
+  }
 
 }

@@ -10,7 +10,9 @@ app_git_installed () {
 
 app_git_dotfiles () {
 
-  config_ln "gitconfig"
+  config_ln "gitconfig" || return 1
+
+  return 0
 
 }
 

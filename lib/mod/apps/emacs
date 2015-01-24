@@ -10,7 +10,9 @@ app_emacs_installed () {
 
 app_emacs_dotfiles () {
 
-  config_ln "emacs.d"
+  config_ln "emacs.d" || return 1
+
+  return 0
 
 }
 

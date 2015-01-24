@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-program_mpd_installed () {
+app_mpd_installed () {
 
   path_hasbin "mpd" || return 1
 
@@ -8,11 +8,33 @@ program_mpd_installed () {
 
 }
 
-mpd_program () {
-
-  program_mpd_installed || return 1
+app_mpd_dirs () {
 
   dir_exist "$XDG_CONFIG_HOME/mpd/playlists" || return 1
+
+  return 0
+
+}
+
+app_mpd_dotfiles () {
+
+  config_ln "config/mpd/mpd.conf" || return 1
+
+  return 0
+
+}
+
+app_mpd_cleanup () {
+
+  rm -rf "$XDG_CONFIG_HOME/mpd"
+
+}
+
+app_mpd_configure () {
+
+  app_mpd_installed || return 1
+
+  app_mpd_dirs || return 1
 
   file_exist "$XDG_CONFIG_HOME/mpd/database" || return 1
   file_exist "$XDG_CONFIG_HOME/mpd/pid" || return 1
@@ -20,7 +42,15 @@ mpd_program () {
   file_exist "$XDG_CONFIG_HOME/mpd/sticker.sql" || return 1
   file_exist "$XDG_CONFIG_HOME/mpd/log" || return 1
 
-  config_ln "config/mpd/mpd.conf" || return 1
+  app_mpd_dotfiles || return 1
+
+  return 0
+
+}
+
+app_mpd () {
+
+  app_mpd_configure || { app_mpd_cleanup ; return 1 ; }
 
   return 0
 
