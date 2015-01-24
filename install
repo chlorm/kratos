@@ -1,8 +1,11 @@
 #!/usr/bin/env sh
 
 export DIR_CONF="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
+export DOTFILES_DIR="$DIR_CONF"
 
-cd "$DIR_CONF"
+echo "$DOTFILES_DIR" > "$HOME/.dotfiles.dir"
+
+cd "$DOTFILES_DIR"
 
 [ -f "settings.local" ] || {
   touch "settings.local"
@@ -10,8 +13,8 @@ cd "$DIR_CONF"
 }
 
 # Load configuration settings
-. "$DIR_CONF/settings"
-. "$DIR_CONF/settings.local"
+. "$DOTFILES_DIR/settings"
+. "$DOTFILES_DIR/settings.local"
 
 . lib/loader || exit 128
 

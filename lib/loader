@@ -89,7 +89,13 @@ dir_conf () {
   #echo "Failed to find the configuration directory" >&2
   #return 1
 
-  echo "$DOTFILES_DIR"
+  local DOTFILES_DIR
+
+  DOTFILES_DIR=$(cat "$HOME/.dotfiles.dir")
+
+  [ -z "$DOTFILES_DIR" ] && { echo "Failed to find the configuration directory" ; return 1 ; }
+
+  return 0
 
 }
 

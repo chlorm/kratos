@@ -5,8 +5,6 @@ emailGlobal="codyopel@gmail.com"
 # Set dotfiles git repo remote origin
 dotfilesRepo="https://github.com/codyopel/dotfiles.git"
 
-DOTFILES_DIR="$HOME/.dotfiles"
-
 usernameGit="codyopel"
 emailGit="$emailGlobal"
 
