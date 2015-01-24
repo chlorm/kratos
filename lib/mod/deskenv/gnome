@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+deskenv_gnome_installed () {
+
+  path_hasbin "gnome-session" || return 1
+
+  return 0
+
+}
+
+gnome3_deskenv () {
+
+  deskenv_gnome_installed || return 1
+
+  # TODO: gnome theme
+
+}

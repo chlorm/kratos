@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+program_nixenv_installed () {
+
+  path_hasbin "nix-env" || return 1
+
+  return 0
+
+}
+
+nixpkgs_program () {
+
+  program_nixenv_installed || return 1
+
+  config_ln "nixpkgs" || return 1
+
+  return 0
+
+}

@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-
-git_program () {
-
-  path_hasbin "git" || return 1
-
-  config_ln "gitconfig"
-
-}

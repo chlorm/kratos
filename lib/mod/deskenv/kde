@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+deskenv_kde_installed () {
+
+  path_hasbin "startkde" || return 1
+
+  return 0
+
+}
+
+kde4_deskenv () {
+
+  deskenv_kde_installed || return 1
+
+  # TODO: kde theme
+
+}

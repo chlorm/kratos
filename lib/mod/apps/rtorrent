@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+program_rtorrent_installed () {
+
+  path_hasbin "rtorrent" || return 1
+
+  return 0
+
+}
+
+rtorrent_program () {
+
+  program_rtorrent_installed || return 1
+
+  dir_exist "$HOME/Torrents/Complete" || return 1
+  dir_exist "$HOME/Torrents/Incomplete" || return 1
+  dir_exist "$HOME/Torrents/Watch" || return 1
+  dir_exist "$XDG_DATA_HOME/rtorrent" || return 1
+
+  config_ln "rtorrent.rc"
+
+}

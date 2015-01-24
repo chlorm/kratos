@@ -1,8 +1,16 @@
 #!/usr/bin/env sh
 
-xmonad_deskenv () {
+deskenv_xmonad_installed () {
 
   path_hasbin "xmonad" || return 1
+
+  return 0
+
+}
+
+xmonad_deskenv () {
+
+  deskenv_xmonad_installed || return 1
 
   TILING=1
 

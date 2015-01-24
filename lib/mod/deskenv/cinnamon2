@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-
-cinnamon2_deskenv () {
-
-  path_hasbin "cinnamon-session" || return 1
-
-  # TODO: cinnamon theme
-
-}

@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-
-tmux_program () {
-
-  path_hasbin "tmux" || return 1
-
-  config_ln "tmux.conf"
-
-}

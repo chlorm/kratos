@@ -1,0 +1,51 @@
+#!/usr/bin/env sh
+
+app_cabal_installed () {
+
+  path_hasbin "cabal" || return 1
+
+  return 0
+
+}
+
+app_cabal_dirs () {
+
+  dir_exist "$HOME/.cabal/bin" || return 1
+
+  return 0
+
+}
+
+app_cabal_paths () {
+
+  path_add "$HOME/.cabal/bin" || return 1
+
+  return 0
+
+}
+
+app_cabal_configure () {
+
+  app_cabal_installed || return 1
+
+  app_cabal_dirs || return 1
+
+  app_cabal_paths || return 1
+
+  return 0
+
+}
+
+app_cabal_cleanup () {
+
+  rm -rf "$HOME/.cabal"
+
+}
+
+app_cabal () {
+
+  app_cabal_configure || { app_cabal_cleanup ; return 1 ; }
+
+  return 0
+
+}

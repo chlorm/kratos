@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+program_sakura_installed () {
+
+  path_hasbin "sakura" || return 1
+
+  return 0
+
+}
+
+sakura_program () {
+
+  program_sakura_installed || return 1
+
+  config_ln "config/sakura"
+
+}

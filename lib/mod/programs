@@ -2,14 +2,15 @@
 
 # Program specific configs
 
-programs_headless_configure () {
+apps_headless_configure () {
 
-  beets_program
-  cabal_program
-  emacs_program
-  git_program
-  golang_program
+  program_beets
+  program_cabal
+  program_emacs
+  program_git
+  program_golang
   gvim_program
+  htop_program
   mpd_program
   nixpkgs_program
   pulseaudio_program
@@ -20,11 +21,11 @@ programs_headless_configure () {
 
 }
 
-programs_graphical_configure () {
+apps_graphical_configure () {
 
   sakura_program
   sublime_text_program
   suckless_program
-  xorg_program
+  program_xorg
 
 }

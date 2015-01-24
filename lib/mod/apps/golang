@@ -1,0 +1,53 @@
+#!/usr/bin/env sh
+
+app_golang_installed () {
+
+  path_hasbin "go" || return 1
+
+  return 0
+
+}
+
+app_golang_dirs () {
+
+
+  dir_exist "$HOME/.go/bin" || return 1
+  dir_exist "$HOME/.go/src" || return 1
+
+  return 0
+
+}
+
+app_golang_paths () {
+
+  export GOPATH="$HOME/.go" || return 1
+
+  path_add "$PATH:$HOME/.go/bin" || return 1
+
+}
+
+app_golang_cleanup () {
+
+  rm -rf "$HOME/.go"
+
+}
+
+app_golang_configure () {
+
+  app_golang_installed || return 1
+
+  app_golang_dirs || return 1
+
+  app_golang_paths || return 1
+
+  return 0
+
+}
+
+app_golang () {
+
+  app_golang_configure || { app_golang_cleanup ; return 1 ; }
+
+  return 0
+
+}

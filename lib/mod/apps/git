@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+app_git_installed () {
+
+  path_hasbin "git" || return 1
+
+  return 0
+
+}
+
+app_git_dotfiles () {
+
+  config_ln "gitconfig"
+
+}
+
+app_git_configure () {
+
+  app_git_installed || return 1
+
+  app_git_dotfiles || return 1
+
+  return 0
+
+}
+
+app_git () {
+
+  app_git_configure || return 1
+
+  return 0
+
+}

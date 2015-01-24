@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+program_ncmpcpp_installed () {
+
+  path_hasbin "ncmpcpp" || return 1
+
+}
+
+program_ncmpcpp () {
+
+  program_mpd_installed || return 1
+  program_ncmpcpp_installed || return 1
+
+  dir_exist "$HOME/.ncmpcpp" || return 1
+
+  config_ln "ncmpcpp/config"
+
+}

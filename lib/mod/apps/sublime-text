@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+program_sublime_installed () {
+
+  path_hasbin "sublime" || return 1
+
+  return 0
+
+}
+
+sublime_text_program () {
+
+  program_sublime_installed || return 1
+
+  config_ln "config/sublime-text-3"
+
+}

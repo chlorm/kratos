@@ -1,8 +1,16 @@
 #!/usr/bin/env sh
 
-awesome_deskenv () {
+deskenv_awesome_installed () {
 
   path_hasbin "awesome" || return 1
+
+  return 0
+
+}
+
+awesome_deskenv () {
+
+  deskenv_awesome_installed || return 1
 
   TILING=1
 

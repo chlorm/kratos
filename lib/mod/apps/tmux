@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+program_tmux_installed () {
+
+  path_hasbin "tmux" || return 1
+
+  return 0
+
+}
+
+tmux_program () {
+
+  program_tmux_installed || return 1
+
+  config_ln "tmux.conf"
+
+}

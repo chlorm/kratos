@@ -1,8 +1,16 @@
 #!/usr/bin/env sh
 
-xfce4_deskenv () {
+deskenv_xfce_installed () {
 
   path_hasbin "startxfce4" || return 1
+
+  return 0
+
+}
+
+xfce4_deskenv () {
+
+  deskenv_xfce_installed || return 1
 
   # Should be move to program specific
   symlink "$XDG_CONFIG_HOME/Terminal" "$XDG_CONFIG_HOME/xfce4/terminal"

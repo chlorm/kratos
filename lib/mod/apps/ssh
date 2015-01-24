@@ -53,11 +53,19 @@ ssh_repo_keys () { # Create the keys from the git repo
 
 }
 
-ssh_program () {
+program_ssh_installed () {
 
   path_hasbin "ssh" || return 1
   path_hasbin "ssh-keygen" || return 1
   path_hasbin "openssl" || return 1
+
+  return 0
+
+}
+
+ssh_program () {
+
+  program_ssh_installed || return 1
 
   dir_exist "$HOME/.ssh" || return 1
 

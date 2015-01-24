@@ -1,8 +1,16 @@
 #!/usr/bin/env sh
 
-vim_program () {
+program_vim_installed () {
 
   path_hasbin "vim" || return 1
+
+  return 0
+
+}
+
+vim_program () {
+
+  program_vim_installed || return 1
 
   [ -d "$HOME/.viminfo" ] && { rm -rf "$HOME/.viminfo" ; return $? ; }
 

@@ -1,8 +1,16 @@
 #!/usr/bin/env sh
 
-i3_deskenv () {
+deskenv_i3_installed () {
 
   path_hasbin "i3" || return 1
+
+  return 0
+
+}
+
+i3_deskenv () {
+
+  deskenv_i3_installed || return 1
 
   TILING=1
 

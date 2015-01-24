@@ -1,0 +1,41 @@
+#!/usr/bin/env sh
+
+app_gvim_installed () {
+
+  path_hasbin "gvim" || return 1
+
+  return 0
+
+}
+
+app_gvim_dotfiles () {
+
+  config_ln "gvimrc" || return 1
+
+  return 0
+
+}
+
+app_gvim_cleanup () {
+
+  rm -f "$HOME/.gvimrc"
+
+}
+
+app_gvim_configure () {
+
+  app_gvim_installed || return 1
+
+  app_gvim_dotfiles || return 1
+
+  return 0
+
+}
+
+app_gvim () {
+
+  app_gvim_configure || { app_gvim_cleanup ; return 1 ; }
+
+  return 0
+
+}

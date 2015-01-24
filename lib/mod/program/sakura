@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-
-sakura_program () {
-
-  path_hasbin "sakura" || return 1
-
-  config_ln "config/sakura"
-
-}
