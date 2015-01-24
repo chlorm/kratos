@@ -30,7 +30,7 @@ app_htop_cleanup () {
 
 }
 
-app_htop () {
+app_htop_configure () {
 
   app_htop_installed  || return 1
 
