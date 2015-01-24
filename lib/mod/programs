@@ -11,6 +11,7 @@ apps_headless () {
   app_golang
   app_gvim
   app_htop
+  app_minidlna
   app_mpd
   app_nixpkgs
   app_pulseaudio
