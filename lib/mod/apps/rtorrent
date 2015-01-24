@@ -8,15 +8,138 @@ app_rtorrent_installed () {
 
 }
 
-app_rtorrent () {
-
-  app_rtorrent_installed || return 1
+app_rtorrent_dirs () {
 
   dir_exist "$HOME/Torrents/Complete" || return 1
   dir_exist "$HOME/Torrents/Incomplete" || return 1
   dir_exist "$HOME/Torrents/Watch" || return 1
   dir_exist "$XDG_DATA_HOME/rtorrent" || return 1
 
-  config_ln "rtorrent.rc"
+  return 0
+
+}
+
+app_rtorrent_dotfiles () {
+
+  [ -f "$HOME/.rtorrent.rc" ] && { rm -f "$HOME/.rtorrent.rc" ; }
+
+(
+cat <<RTORRENTRC
+# $DOTFILES_AUTOGEN_WARN
+
+##       ________   ___       ___
+##      /  _____/  /  /      /  /
+##     /  /       /  /      /  /
+##    /  /       /  /____  /  / _______  _______  ____  ____
+##   /  /       /  ___  / /  / /  __  / /  ____/ /    \\/    \\
+##  /  /_____  /  /  / / /  / /  /_/ / /  /     /  /\\    /\\  \\
+## /________/ /__/  /_/ /__/ /______/ /__/     /__/  \\__/  \\__\\ TM
+##
+## Title: rTorrent Configuration File
+## Author: Cody Opel
+## E-mail: codyopel(at)gmail.com
+## Copyright (c) 2014 All Rights Reserved, http://www.chlorm.net
+## License: The MIT License - http://opensource.org/licenses/MIT
+## Assumed Directory & File Structure:
+##   $HOME/Torrents/Complete/ ----- Torrents are moved here when complete
+##   $HOME/Torrents/Incomplete/ --- Temporaray location for torrents while downloading
+##   $HOME/Torrents/Watch/ -------- The 'autoload' directory for rtorrent to use
+##   $XDG_DATA_HOME/rtorrent/ - For storing rtorrent session information
+
+#
+# Directories
+#
+directory.default.set = $HOME/Torrents/Incomplete/
+method.set_key = event.download.finished,move_complete,"d.directory.set=$HOME/Torrents/Complete;execute2=mv,-u,\$d.base_path=,$HOME/Torrents/Complete"
+session.path.set = $XDG_DATA_HOME/rtorrent
+schedule2 = watch.directory.added,5,5,load.start=$HOME/Torrents/Watch/*.torrent
+#
+# Re-hash complete torrents
+#
+pieces.hash.on_completion.set = yes
+#
+# Throttle
+#
+throttle.min_peers.normal.set = 40
+throttle.max_peers.normal.set = 100
+throttle.min_peers.seed.set = -1
+throttle.max_peers.seed.set = -1
+throttle.max_uploads.set = 50
+throttle.global_down.max_rate.set_kb = 0
+throttle.global_up.max_rate.set_kb = 0
+#
+# Network
+#
+#network.local_address.set = 127.0.0.1
+#network.local_address.set = example.com
+#network.bind_address.set = 127.0.0.1
+#network.bind_address.set = rakshasa.no
+network.port_range.set = 6890-6999
+port_random = yes
+#
+# XML-RPC
+#
+scgi_port = 127.0.0.1:5000
+#
+# Trackers
+#
+trackers.use_udp.set = no
+#
+# Encryption
+#
+protocol.encryption.set = require,require_RC4,allow_incoming,try_outgoing,enable_retry
+#
+# DHT
+#
+dht.mode.set = enable
+dht.port.set = 6881
+#
+# Peer exchange
+#
+protocol.pex.set = yes
+#
+# Custom Colors
+#
+color_bg_active = 8
+color_fg_active = 10
+color_bg_complete = 8
+color_fg_complete = 14
+color_bg_inactive = 8
+color_fg_inactive = 9
+color_bg_dead = 8
+color_fg_dead = 11
+
+RTORRENTRC
+) > "$HOME/.rtorrent.rc" || return 1
+
+  return 0
+
+}
+
+app_rtorrent_cleanup () {
+
+  # add test for contents on Torrents/ before removing
+
+  [ -d "$XDG_DATA_HOME/rtorrent" ] && { rm -rf "$XDG_DATA_HOME/rtorrent" ; }
+
+}
+
+app_rtorrent_configure () {
+
+  app_rtorrent_installed || return 1
+
+  app_rtorrent_dirs || return 1
+
+  app_rtorrent_dotfiles || return 1
+
+  return 0
+
+}
+
+app_rtorrent () {
+
+  app_rtorrent_configure || { app_rtorrent_cleanup ; return 1 ; }
+
+  return 0
 
 }
