@@ -10,8 +10,6 @@ app_xorg_installed () {
 
 app_xorg_dotfiles () {
 
-  config_ln "xinitrc" "xprofile" "xsession" || return 1 #"Xresources"
-
   [ -f "$HOME/.xinitrc" ] && { rm -f "$HOME/.xinitrc" ; }
   [ -f "$HOME/.xprofile" ] && { rm -f "$HOME/.xprofile" ; }
   [ -f "$HOME/.xsession" ] && { rm -f "$HOME/.xsession" ; }
