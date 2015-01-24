@@ -38,6 +38,8 @@ app_emacs () {
 
   app_emacs_configure || { app_emacs_cleanup ; return 1 ; }
 
+  echo "emacs"
+
   return 0
 
 }

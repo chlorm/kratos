@@ -24,6 +24,8 @@ shell_fish_dotfiles () {
 
 (
 cat <<FISH
+# $DOTFILES_AUTOGEN_WARN
+
 function add_to_path
 	set done 0
 	for path in \$PATH
@@ -113,6 +115,8 @@ shell_fish_configure () {
 shell_fish () {
 
   shell_fish_configure || { shell_fish_cleanup ; return 1 ; }
+
+  echo "fish"
 
   return 0
 

@@ -46,6 +46,8 @@ app_cabal () {
 
   app_cabal_configure || { app_cabal_cleanup ; return 1 ; }
 
+  echo "cabal"
+
   return 0
 
 }

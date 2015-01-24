@@ -18,6 +18,8 @@ shell_bash_dotfiles () {
 cat <<BASHRC
 #!/usr/bin/env bash
 
+# $DOTFILES_AUTOGEN_WARN
+
 ##       ________   ___       ___
 ##      /  _____/  /  /      /  /
 ##     /  /       /  /      /  /
@@ -96,6 +98,8 @@ shell_bash_configure () {
 shell_bash () {
 
   shell_bash_configure || { shell_bash_cleanup ; return 1 ; }
+
+  echo "bash"
 
   return 0
 

@@ -62,6 +62,8 @@ app_beets () {
 
   app_beets_configure || { app_beets_cleanup ; return 1 ; }
 
+  echo "beets"
+
   return 0
 
 }

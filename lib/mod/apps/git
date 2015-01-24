@@ -41,6 +41,8 @@ app_git () {
 
   app_git_configure || return 1
 
+  echo "git"
+
   return 0
 
 }

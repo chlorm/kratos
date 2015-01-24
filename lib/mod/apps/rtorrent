@@ -140,6 +140,8 @@ app_rtorrent () {
 
   app_rtorrent_configure || { app_rtorrent_cleanup ; return 1 ; }
 
+  echo "rtorrent"
+
   return 0
 
 }

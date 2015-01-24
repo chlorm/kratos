@@ -46,6 +46,8 @@ app_nixpkgs () {
 
   app_nixpkgs_configure || { app_nixpkgs_cleanup ; return 1 ; }
 
+  echo "nixpkgs"
+
   return 0
 
 }
