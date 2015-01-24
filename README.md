@@ -1,40 +1,68 @@
-dotfiles
-========
+.dotfiles
+=========
 
 To install:
 ```
-git clone https://github.com/codyopel/dotfiles.git "$HOME/.dotfiles" && cd "$HOME/.dotfiles" && ./install
+git clone "https://github.com/codyopel/dotfiles.git" "$HOME/.dotfiles" && ./$HOME/.dotfiles/install
 ```
 
-dotfiles
---------
+Applications
+------------
 
-* Bash
 * Beets
-* Fish
+* Cabal
+* Emacs
 * Git
-* htop
-* mpd
+* Golang
+* Gvim
+* Htop
+* Minidlna
+* MPD
 * mpDris2
-* Ncmpcpp <=0.5.10
+* Ncmpcpp >=0.6
 * Nixpkgs
-* rTorrent
+* Pulseaudio
+* rTorrent >0.9.4
 * Sakura
+* SSH
 * Sublime Text
+* Suckless Terminal
 * Tmux
 * Vim
-* xmonad
 * Xorg
+
+Desktop Environments
+--------------------
+
+* Awesome
+* Cinnamon
+* Gnome
+* i3
+* KDE
+* XFCE
+* Xmonad
+
+Shells
+------
+
+* Ash
+* Bash
+* Csh
+* Dash
+* Fish
+* Korn
+* Pdksh
+* sh
+* Tcsh
 * Zsh
 
-commands
---------
+Scripts
+-------
+
 * addartist
 	+ Add all albums by an artist to users local music library
 * arkhive *WORK IN PROGRESS*
 	+ Automates transcoding according to predetermined settings
-* extract
-	+ Wrapper for .tar.*, .zip, .rar, etc....
 * icongen
 	+ Automates generating alternate size icons
 * nix *WORK IN PROGRESS*
@@ -44,9 +72,17 @@ commands
 * nixpkgs-update
 * run
 * sign
-* trash *WORK IN PROGRESS*
-	+ Implements trash bin functionality and works as a drop-in replacement to 'rm'
 * verify
 * vfio-bind
+
+Wrappers
+--------
+
+* extract
+	+ Wrapper for .tar.*, .zip, .rar, etc....
+* trash *WORK IN PROGRESS*
+	+ Implements trash bin functionality and works as a drop-in replacement to 'rm'
 * vol
-	+ Volume control utility
+	+ Volume control wrapper for pacmd (pulseaudio)
+* wifi
+	+ Wifi connection wrapper for nmcli (network manger)
