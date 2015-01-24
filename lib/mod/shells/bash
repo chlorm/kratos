@@ -1,0 +1,81 @@
+#!/usr/bin/env sh
+
+shell_bash_installed () {
+
+  path_hasbin "bash" || return 1
+
+  return 0
+
+}
+
+shell_bash_dotfiles () {
+
+  [ -f "$HOME/.bashrc" ] && { rm -f "$HOME/.bashrc" ; }
+
+(
+cat <<BASHRC
+#!/usr/bin/env bash
+
+##       ________   ___       ___
+##      /  _____/  /  /      /  /
+##     /  /       /  /      /  /
+##    /  /       /  /____  /  / _______  _______  ____  ____
+##   /  /       /  ___  / /  / /  __  / /  ____/ /    \\/    \\
+##  /  /_____  /  /  / / /  / /  /_/ / /  /     /  /\\    /\\  \\
+## /________/ /__/  /_/ /__/ /______/ /__/     /__/  \\__/  \\__\\ TM
+##
+## Title: Local BashRC Configuration File
+## Author: Cody Opel
+## E-mail: codyopel(at)gmail.com
+## Copyright (c) 2014 All Rights Reserved, http://www.chlorm.net
+## License: The MIT License - http://opensource.org/licenses/MIT
+## Assumed Directory & File Structure:
+##   $HOME/.bashrc
+
+## [http://en.wikipedia.org/wiki/Unicode_symbols]
+
+# Test for an interactive shell
+[[ \$- != *i* ]] && return
+
+# Resolve issure of terminals defaulting to /nix/store instead on \$HOME
+cd "$HOME"
+
+# Load shell configuration options
+. "$DOTFILES_DIR/lib/loader"
+#agent_auto
+shell_best
+shell_init
+shell_theme
+run_quiet mpd
+
+# Load the local config
+[ -f "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"
+
+BASHRC
+) > "$HOME/.bashrc"
+
+  return 0
+
+}
+
+shell_bash_cleanup () {
+
+  [ -f "$HOME/.bashrc" ] && { rm -f "$HOME/.bashrc" ; }
+
+}
+
+shell_bash_configure () {
+
+  shell_bash_installed || return 1
+
+  shell_bash_dotfiles || return 1
+
+}
+
+shell_bash () {
+
+  shell_bash_configure || { shell_bash_cleanup ; return 1 ; }
+
+  return 0
+
+}
