@@ -11,6 +11,8 @@ shell_bash_installed () {
 shell_bash_dotfiles () {
 
   [ -f "$HOME/.bashrc" ] && { rm -f "$HOME/.bashrc" ; }
+  [ -f "$HOME/.bash_logout" ] && { rm -f "$HOME/.bash_logout" ; }
+  [ -f "$HOME/.bash_profile" ] && { rm -f "$HOME/.bash_profile" ; }
 
 (
 cat <<BASHRC
@@ -52,7 +54,24 @@ run_quiet mpd
 [ -f "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"
 
 BASHRC
-) > "$HOME/.bashrc"
+) > "$HOME/.bashrc" || return 1
+
+(
+cat <<BASHLOGOUT
+#!/usr/bin/env bash
+
+BASHLOGOUT
+) > "$HOME/.bash_logout" || return 1
+
+(
+cat <<BASHPROFILE
+#!/usr/bin/env bash
+
+[ -f "$HOME/.bash_profile.local" ] && . "$HOME/.bash_profile.local"
+[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+
+BASHPROFILE
+) > "$HOME/.bash_profile" || return 1
 
   return 0
 
@@ -61,6 +80,8 @@ BASHRC
 shell_bash_cleanup () {
 
   [ -f "$HOME/.bashrc" ] && { rm -f "$HOME/.bashrc" ; }
+  [ -f "$HOME/.bash_logout" ] && { rm -f "$HOME/.bash_logout" ; }
+  [ -f "$HOME/.bash_profile" ] && { rm -f "$HOME/.bash_profile" ; }
 
 }
 

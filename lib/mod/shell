@@ -1,5 +1,22 @@
 #!/usr/bin/env sh
 
+# http://en.wikipedia.org/wiki/Comparison_of_command_shells
+
+shells_configure () {
+
+  #shell_ash
+  shell_bash
+  #shell_csh
+  #shell_dash
+  shell_fish
+  #shell_korn
+  #shell_pdksh
+  #shell_sh
+  #shell_tcsh
+  #shell_zsh
+
+}
+
 prompt_color () { # Get colors for the current shell
 
   [ "$(shell_nov)" = "zsh" ] && echo -n '%{' || echo -n '\['
@@ -211,7 +228,8 @@ shell_best () { # Automatically executes the preferred shell
 
 shell_auto () { # Automatically configures the shell configuration files
 
-  config_ln "bash_profile" "bashrc" "bash_logout" "zshrc" \
-            "zprofile" "zlogout" "config/fish"
+  shells_configure
+
+  config_ln "zshrc" "zprofile" "zlogout"
 
 }
