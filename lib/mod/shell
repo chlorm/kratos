@@ -170,7 +170,7 @@ shell_init () { # Initializes useful functions if the caller is a shell
   # Defaults
   export LANGUAGE="en_US:en"
   export EDITOR="vim"
-  export PAGER="less"
+  export PAGER=""
   export BLOCKSIZE="K"
 
 

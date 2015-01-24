@@ -1,6 +1,11 @@
 dotfiles
 ========
 
+To install:
+```
+git clone https://github.com/codyopel/dotfiles.git "$HOME/.dotfiles" && cd "$HOME/.dotfiles" && ./install
+```
+
 dotfiles
 --------
 

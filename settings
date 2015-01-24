@@ -1,7 +1,14 @@
 #!/usr/bin/env sh
 
+emailGlobal="codyopel@gmail.com"
+
 # Set dotfiles git repo remote origin
 dotfilesRepo="https://github.com/codyopel/dotfiles.git"
+
+DOTFILES_DIR="$HOME/.dotfiles"
+
+usernameGit="codyopel"
+emailGit="$emailGlobal"
 
 # List hostname of all workstations
 workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'

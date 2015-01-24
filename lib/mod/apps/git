@@ -10,7 +10,18 @@ app_git_installed () {
 
 app_git_dotfiles () {
 
-  config_ln "gitconfig" || return 1
+  [ -f "$HOME/.gitconfig" ] && { rm -f "$HOME/.gitconfig" ; }
+
+(
+cat <<GITCONFIG
+[user]
+    email = $emailGit
+    name = $usernameGit
+[push]
+	default = simple
+
+GITCONFIG
+) > "$HOME/.gitconfig"
 
   return 0
 

@@ -25,7 +25,7 @@
 cd "$HOME"
 
 # Load shell configuration options
-. "$(readlink -f $(dirname $(readlink -f ~/.bashrc))/../)/lib/loader"
+. "$DOTFILES_DIR/lib/loader"
 #agent_auto
 shell_best
 shell_init

@@ -10,6 +10,12 @@ app_mpd_installed () {
 
 app_mpd_dirs () {
 
+  # Make sure the mpd directory is not a symlink
+  [ test -L "$XDG_CONFIG_HOME/mpd" ] && {
+    rm -f "$XDG_CONFIG_HOME/mpd"
+    [ "$?" != "0" ] && return 1
+  }
+
   dir_exist "$XDG_CONFIG_HOME/mpd/playlists" || return 1
 
   return 0
@@ -18,6 +24,7 @@ app_mpd_dirs () {
 
 app_mpd_dotfiles () {
 
+  # Force config file update
   [ -f "$XDG_CONFIG_HOME/mpd/mpd.conf" ] && { rm -f "$XDG_CONFIG_HOME/mpd/mpd.conf" ; }
 
 (
@@ -103,7 +110,6 @@ MPDDOTFILE
 app_mpd_files () {
 
   file_exist "$XDG_CONFIG_HOME/mpd/database" || return 1
-  file_exist "$XDG_CONFIG_HOME/mpd/pid" || return 1
   file_exist "$XDG_CONFIG_HOME/mpd/state" || return 1
   file_exist "$XDG_CONFIG_HOME/mpd/sticker.sql" || return 1
   file_exist "$XDG_CONFIG_HOME/mpd/log" || return 1

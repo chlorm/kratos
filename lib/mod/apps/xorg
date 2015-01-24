@@ -12,16 +12,64 @@ app_xorg_dotfiles () {
 
   config_ln "xinitrc" "xprofile" "xsession" || return 1 #"Xresources"
 
+  [ -f "$HOME/.xinitrc" ] && { rm -f "$HOME/.xinitrc" ; }
+  [ -f "$HOME/.xprofile" ] && { rm -f "$HOME/.xprofile" ; }
+  [ -f "$HOME/.xsession" ] && { rm -f "$HOME/.xsession" ; }
+  [ -f "$HOME/.Xresources" ] && { rm -f "$HOME/.Xresources" ; }
+
+(
+cat <<XINITRC
+#!/usr/bin/env sh
+
+# Run local commands first
+[ -f "$HOME/.xinitrc.local" ] && . "$HOME/.xinitrc.local"
+
+. "$DOTFILES_DIR/lib/loader"
+
+[ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile"
+
+path_add "$HOME/.bin"
+#agent_auto
+deskenv_run
+
+# Gnome 3.xx
+#exec gnome-session
+#systemd --user
+#dbus-launch nm-applet &
+#eval &(gnome-keyring-daemon --components=pkcs11,secrets,ssh,gpg)
+#export GNOME_KEYRING_PID
+#export GNOME_KEYRING_SOCKET
+#export SSH_AUTH_SOCK
+#export GPG_AGENT_INFO
+
+XINITRC
+) > "$HOME/.xinitrc"
+
+(
+cat <<XPROFILE
+#!/usr/bin/env sh
+
+# Run local commands first
+[ -f "$HOME/.xprofile.local" ] && . "$HOME/.xprofile.local"
+
+. "$DOTFILES_DIR/lib/loader"
+
+XPROFILE
+) > "$HOME/.xprofile"
+
+symlink "$HOME/.xinitrc" "$HOME/.xsession"
+
+
   return 0
 
 }
 
 app_xorg_cleanup () {
 
-  rm -f "$HOME/.xinitrc"
-  rm -f "$HOME/.xprofile"
-  rm -f "$HOME/.xsession"
-  rm -f "$HOME/.Xresources"
+  [ -f "$HOME/.xinitrc" ] && { rm -f "$HOME/.xinitrc" ; }
+  [ -f "$HOME/.xprofile" ] && { rm -f "$HOME/.xprofile" ; }
+  [ -f "$HOME/.xsession" ] && { rm -f "$HOME/.xsession" ; }
+  [ -f "$HOME/.Xresources" ] && { rm -f "$HOME/.Xresources" ; }
 
 }
 
