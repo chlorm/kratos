@@ -2,23 +2,38 @@
 
 xdg_dirs () {
 
-  [ -f "$XDG_CONFIG_HOME/user-dirs.dirs" ] && {
+  [ -d "$XDG_CONFIG_HOME" ] || { mkdir -p "$XDG_CONFIG_HOME" ; }
 
-    . "$XDG_CONFIG_HOME/user-dirs.dirs"
+  rm -f "$XDG_CONFIG_HOME/user-dirs.dirs"
 
-    dir_exist "$XDG_CACHE_HOME" && { export XDG_CACHE_HOME ; }
-    dir_exist "$XDG_CONFIG_HOME" && { export XDG_CONFIG_HOME ; }
-    dir_exist "$XDG_DATA_HOME" && { export XDG_DATA_HOME ; }
-    dir_exist "$XDG_DESKTOP_DIR" && { export XDG_DESKTOP_DIR ; }
-    dir_exist "$XDG_DOCUMENTS_DIR" && { export XDG_DOCUMENTS_DIR ; }
-    dir_exist "$XDG_DOWNLOAD_DIR" && { export XDG_DOWNLOAD_DIR ; }
-    dir_exist "$XDG_MUSIC_DIR" && { export XDG_MUSIC_DIR ; }
-    dir_exist "$XDG_PICTURES_DIR" && { export XDG_PICTURES_DIR ; }
-    dir_exist "$XDG_PUBLICSHARE_DIR" && { export XDG_PUBLICSHARE_DIR ; }
-    dir_exist "$XDG_TEMPLATES_DIR" && { export XDG_TEMPLATES_DIR ; }
-    dir_exist "$XDG_VIDEOS_DIR" && { export XDG_VIDEOS_DIR ; }
+(
+cat <<XDGUSERDIRS
+XDG_CACHE_HOME="$XDG_CACHE_HOME"
+XDG_CONFIG_HOME="$XDG_CONFIG_HOME"
+XDG_DATA_HOME="$XDG_DATA_HOME"
+XDG_DESKTOP_DIR="$XDG_DESKTOP_DIR"
+XDG_DOCUMENTS_DIR="$XDG_DOCUMENTS_DIR"
+XDG_DOWNLOAD_DIR="$XDG_DOWNLOAD_DIR"
+XDG_MUSIC_DIR="$XDG_MUSIC_DIR"
+XDG_PICTURES_DIR="$XDG_PICTURES_DIR"
+XDG_PUBLICSHARE_DIR="$XDG_PUBLICSHARE_DIR"
+XDG_TEMPLATES_DIR="$XDG_TEMPLATES_DIR"
+XDG_VIDEOS_DIR="$XDG_VIDEOS_DIR"
 
-  }
+XDGUSERDIRS
+) > "$XDG_CONFIG_HOME/user-dirs.dirs"
+
+  dir_exist "$XDG_CACHE_HOME" && { export XDG_CACHE_HOME ; }
+  dir_exist "$XDG_CONFIG_HOME" && { export XDG_CONFIG_HOME ; }
+  dir_exist "$XDG_DATA_HOME" && { export XDG_DATA_HOME ; }
+  dir_exist "$XDG_DESKTOP_DIR" && { export XDG_DESKTOP_DIR ; }
+  dir_exist "$XDG_DOCUMENTS_DIR" && { export XDG_DOCUMENTS_DIR ; }
+  dir_exist "$XDG_DOWNLOAD_DIR" && { export XDG_DOWNLOAD_DIR ; }
+  dir_exist "$XDG_MUSIC_DIR" && { export XDG_MUSIC_DIR ; }
+  dir_exist "$XDG_PICTURES_DIR" && { export XDG_PICTURES_DIR ; }
+  dir_exist "$XDG_PUBLICSHARE_DIR" && { export XDG_PUBLICSHARE_DIR ; }
+  dir_exist "$XDG_TEMPLATES_DIR" && { export XDG_TEMPLATES_DIR ; }
+  dir_exist "$XDG_VIDEOS_DIR" && { export XDG_VIDEOS_DIR ; }
 
   return 0
 
