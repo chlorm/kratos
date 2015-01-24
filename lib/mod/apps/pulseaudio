@@ -10,6 +10,8 @@ app_pulseaudio_installed () {
 
 app_pulseaudio_dirs () {
 
+  test -L "$XDG_CONFIG_HOME/pulse" && { rm -f "$XDG_CONFIG_HOME/pulse" ; }
+
   dir_exist "$XDG_CONFIG_HOME/pulse" || return 1
 
   return 0
@@ -18,7 +20,16 @@ app_pulseaudio_dirs () {
 
 app_pulseaudio_dotfiles () {
 
-  config_ln "config/pulse/daemon.conf" || return 1
+  test -L "$XDG_CONFIG_HOME/pulse/daemon.conf" && { rm -f "$XDG_CONFIG_HOME/pulse/daemon.conf" ; }
+
+(
+cat <<PULSEAUDIO
+default-sample-format = s24le
+default-sample-rate = 192000
+resample-method = speex-float-5
+
+PULSEAUDIO
+) > "$XDG_CONFIG_HOME/pulse/daemon.conf"
 
   return 0
 
