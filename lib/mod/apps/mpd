@@ -11,7 +11,7 @@ app_mpd_installed () {
 app_mpd_dirs () {
 
   # Make sure the mpd directory is not a symlink
-  [ test -L "$XDG_CONFIG_HOME/mpd" ] && {
+  test -L "$XDG_CONFIG_HOME/mpd" && {
     rm -f "$XDG_CONFIG_HOME/mpd"
     [ "$?" != "0" ] && return 1
   }
