@@ -109,8 +109,8 @@ dir_conf () {
 }
 
 # Load configuration settings
-. "$DIRCONF/settings"
-. "$DIRCONF/settings.local"
+. "$DOTFILES_DIR/settings"
+. "$DOTFILES_DIR/settings.local"
 
 array_empty () { # Extra array functions for accessor simplicity
 
