@@ -8,10 +8,87 @@ app_sakura_installed () {
 
 }
 
-app_sakura () {
+app_sakura_dirs () {
+
+  test -L "$XDG_CONFIG_HOME/sakura" && { rm -f "$XDG_CONFIG_HOME/sakura" ; }
+
+  dir_exist "$XDG_CONFIG_HOME/sakura" || return 1
+
+  return 0
+
+}
+
+app_sakura_dotfiles () {
+
+  test -L "$XDG_CONFIG_HOME/sakura/sakura.conf" && { rm -f "$XDG_CONFIG_HOME/sakura/sakura.conf" ; }
+
+(
+cat <<SAKURA
+[sakura]
+forecolor=#c0c0c0
+backcolor=#000000
+backalpha=65535
+opacity_level=80
+fake_transparency=No
+background=none
+font=monospace 11
+show_always_first_tab=No
+scrollbar=true
+closebutton=true
+audible_bell=No
+visible_bell=No
+blinking_cursor=Yes
+borderless=No
+maximized=No
+word_chars=-A-Za-z0-9,./?%&#_~
+palette=xterm
+add_tab_accelerator=5
+del_tab_accelerator=5
+switch_tab_accelerator=8
+copy_accelerator=5
+scrollbar_accelerator=5
+open_url_accelerator=5
+add_tab_key=T
+del_tab_key=W
+prev_tab_key=Left
+next_tab_key=Right
+new_window_key=N
+copy_key=C
+paste_key=V
+scrollbar_key=S
+fullscreen_key=F11
+
+SAKURA
+) > "$XDG_CONFIG_HOME/sakura/sakura.conf" || return 1
+
+  return 0
+
+}
+
+app_sakura_cleanup () {
+
+  [ -d "$XDG_CONFIG_HOME/sakura" ] && { rm -rf "$XDG_CONFIG_HOME/sakura" ; }
+
+}
+
+app_sakura_configure () {
 
   app_sakura_installed || return 1
 
-  config_ln "config/sakura"
+  app_sakura_dirs || return 1
+
+  app_sakura_dotfiles || return 1
+
+  return 0
+
+}
+
+app_sakura () {
+
+  app_sakura_configure || { app_sakura_cleanup ; return 1 ; }
+
+  echo "sakura"
+
+  return 0
 
 }
