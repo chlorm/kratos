@@ -190,7 +190,11 @@ toupper () {
 
 dir_check () {
 
-  [ -d "$1" ] || { echo "Creating directory: $1" ; mkdir -p "$1" >/dev/null 2>&1 ; return $? ; }
+  [ -d "$1" ] || { 
+    echo "Creating directory: $1"
+    mkdir -p "$1" >/dev/null 2>&1
+    [ "$?" != "0" ] && return 1
+  }
 
   return 0
 
@@ -206,7 +210,11 @@ dir_exist () {
 
 file_check () {
 
-  [ -f "$1" ] || { echo "Creating file: $1" ; touch "$1" >/dev/null 2>&1 ; return $? ; }
+  [ -f "$1" ] || {
+    echo "Creating file: $1"
+    touch "$1" >/dev/null 2>&1
+    [ "$?" != "0" ] && return 1
+  }
 
   return 0
 
