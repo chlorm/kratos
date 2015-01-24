@@ -1,5 +1,12 @@
 #!/usr/bin/env sh
 
+# Find and set dotfiles directory
+DOTFILES_DIR=$(cat "$HOME/.dotfiles.dir")
+
+[ -z "$DOTFILES_DIR" ] && { echo "Failed to find the configuration directory" ; exit 1 ; }
+
+export DOTFILES_DIR
+
 [ -z "$RUNNER" ] && RUNNER=0
 
 path_abs () { # Resolves the name of the binary
@@ -89,20 +96,14 @@ dir_conf () {
   #echo "Failed to find the configuration directory" >&2
   #return 1
 
-  local DOTFILES_DIR
-
-  DOTFILES_DIR=$(cat "$HOME/.dotfiles.dir")
-
-  [ -z "$DOTFILES_DIR" ] && { echo "Failed to find the configuration directory" ; return 1 ; }
+  echo "$DOTFILES_DIR"
 
   return 0
 
 }
 
 # Loads the shell specific fixes
-svar DIRCONF dir_conf "$0" || return 1
-
-. "$DIRCONF/lib/fixes.$(shell_nov)" 2>/dev/null || {
+. "$DOTFILES_DIR/lib/fixes.$(shell_nov)" 2>/dev/null || {
   echo "Failed to load the fixes for the current shell" >&2
   exit 1
 }
@@ -149,7 +150,7 @@ load_all () {
 
   svar DIRCONF dir_conf || return 1
 
-  array_from_str MODS "$(find "$DIRCONF/$1" -type f)"
+  array_from_str MODS "$(find "$DOTFILES_DIR/$1" -type f)"
   array_forall MODS load_one
 
 }

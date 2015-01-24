@@ -17,8 +17,8 @@ app_suckless () {
 
   OLD="$(pwd)"
 
-  [ -d "$(dir_conf)/dotfiles/nixpkgs/st/" ] && {
-    cd "$(dir_conf)/dotfiles/nixpkgs/st/"
+  [ -d "$DOTFILES_DIR/dotfiles/nixpkgs/st/" ] && {
+    cd "$DOTFILES_DIR/dotfiles/nixpkgs/st/"
     if [ -f "config.$(hostname).h" ] ; then
       symlink "config.$(hostname).h" "config.mach.h"
     else

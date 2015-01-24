@@ -108,7 +108,7 @@ deskenv_run () { # Run the prefered window manager with the best side apps
   # Configure applications
   local TERMRC
 
-  TERMRC="$(dir_conf)/dotfiles/config/Terminal/terminalrc"
+  TERMRC="$DOTFILES_DIR/dotfiles/config/Terminal/terminalrc"
 
   if [ "${TILING}" -eq "1" ] ; then
     HCFG="${TERMRC}.tiling.$(hostname)"

@@ -3,8 +3,7 @@
 git_cd () {
 
   if [ -z "$1" ] ; then
-    svar DIRCONF dir_conf || return 1
-    cd "$DIRCONF"
+    cd "$DOTFILES_DIR"
   else
     cd "$1"
   fi
@@ -83,9 +82,7 @@ git_sub_pull () { # Update the submodules
 
   git_cd $1 || return 2
 
-  svar DIRCONF dir_conf || return 2
-
-  STR="$(git submodule -q foreach --recursive "\"$DIRCONF/bin/run\" git_pull_nostat .")" || return 2
+  STR="$(git submodule -q foreach --recursive "\"$DOTFILES_DIR/bin/run\" git_pull_nostat .")" || return 2
 
   [ "$(echo "$STR" | grep 'Updated')" = "" ]
 
@@ -150,7 +147,7 @@ config_ln () { # Links the configuration file to its proper dotfile
   [ "$#" -eq "0" ] && return 1
 
   for LN in $@ ; do
-    symlink "$(dir_conf)/dotfiles/$LN" "$HOME/.$LN" || { echo "ERROR: failed to symlink $LN" 2> /dev/null ; }
+    symlink "$DOTFILES_DIR/dotfiles/$LN" "$HOME/.$LN" || { echo "ERROR: failed to symlink $LN" 2> /dev/null ; }
     [ "$?" -eq "0" ] && echo "  Symlinked $LN"
   done
 
@@ -160,12 +157,12 @@ config_install () { # Installs the configuration files
 
   echo "Configuring directories"
   # Bootstrap by sourcing file to find directory to install config
-  . "$(dir_conf)/dotfiles/config/user-dirs.dirs"
+  . "$DOTFILES_DIR/dotfiles/config/user-dirs.dirs"
   config_ln "config/user-dirs.dirs"
   xdg_dirs
 
   echo "Configuring PATH"
-  symlink "$(dir_conf)/bin" "$HOME/.bin"
+  symlink "$DOTFILES_DIR/bin" "$HOME/.bin"
   path_add "$HOME/.bin"
 
   echo "Configuring Desktop Environment"
