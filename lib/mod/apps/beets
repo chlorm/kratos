@@ -19,7 +19,7 @@ app_beets_dirs () {
 app_beets_dotfiles () {
 
 (
-cat <<BEETSDOTFILE
+cat <<'BEETSDOTFILE'
 color: yes
 original_year: yes
 per_disc_numbering: no
