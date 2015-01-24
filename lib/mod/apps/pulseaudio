@@ -8,12 +8,44 @@ app_pulseaudio_installed () {
 
 }
 
-app_pulseaudio () {
-
-  app_pulseaudio_installed || return 1
+app_pulseaudio_dirs () {
 
   dir_exist "$XDG_CONFIG_HOME/pulse" || return 1
 
-  config_ln "config/pulse/daemon.conf"
+  return 0
+
+}
+
+app_pulseaudio_dotfiles () {
+
+  config_ln "config/pulse/daemon.conf" || return 1
+
+  return 0
+
+}
+
+app_pulseaudio_cleanup () {
+
+  rm -rf "$XDG_CONFIG_HOME/pulse"
+
+}
+
+app_pulseaudio_configure () {
+
+  app_pulseaudio_installed || return 1
+
+  app_pulseaudio_dirs || return 1
+
+  app_pulseaudio_dotfiles || return 1
+
+  return 0
+
+}
+
+app_pulseaudio () {
+
+  app_pulseaudio_configure || { app_pulseaudio_cleanup ; return 1 ; }
+
+  return 0
 
 }

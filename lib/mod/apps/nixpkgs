@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-app_nixenv_installed () {
+app_nixpkgs_installed () {
 
   path_hasbin "nix-env" || return 1
 
@@ -8,11 +8,43 @@ app_nixenv_installed () {
 
 }
 
+app_nixpkgs_dirs () {
+
+  dir_exist "$HOME/.nixpkgs" || return 1
+
+  return 0
+
+}
+
+app_nixpkgs_dotfiles () {
+
+  config_ln "nixpkgs/config.nix" || return 1
+
+  return 0
+
+}
+
+app_nixpkgs_cleanup () {
+
+  rm -rf "$HOME/.nixpkgs"
+
+}
+
 app_nixpkgs () {
 
   app_nixenv_installed || return 1
 
-  config_ln "nixpkgs" || return 1
+  app_nixpkgs_dirs || return 1
+
+  app_nixpkgs_dotfiles || return 1
+
+  return 0
+
+}
+
+app_nixpkgs () {
+
+  app_nixpkgs_configure || { app_nixpkgs_cleanup ; return 1 ; }
 
   return 0
 
