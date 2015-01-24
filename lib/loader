@@ -7,6 +7,8 @@ DOTFILES_DIR=$(cat "$HOME/.dotfiles.dir")
 
 export DOTFILES_DIR
 
+export DOTFILES_AUTOGEN_WARN="This is a auto-generated dotfile, do NOT edit!"
+
 [ -z "$RUNNER" ] && RUNNER=0
 
 path_abs () { # Resolves the name of the binary
