@@ -5,6 +5,10 @@ export DOTFILES_DIR="$DIR_CONF"
 
 echo "$DOTFILES_DIR" > "$HOME/.dotfiles.dir"
 
+local CUR_DIR
+
+CUR_DIR="$(pwd)"
+
 cd "$DOTFILES_DIR"
 
 [ -f "settings.local" ] || {
@@ -27,3 +31,5 @@ echo "Updating Config Files"
 config_latest || { echo "Failed to update Configs" ; exit 1 ; }
 
 config_install || { echo "ERROR: configuration install failed" ; exit 1 ; }
+
+cd "$CUR_DIR"
