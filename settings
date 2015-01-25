@@ -12,12 +12,10 @@ emailGit="$emailGlobal"
 workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'
 
 # Shells in order of preference
-# Options: bash, dash, fish, sh, zsh (sh = system default)
-shellPreference=(bash dash fish zsh sh)
+shellPreference=(bash zsh dash fish sh korn tcsh csh ash pdksh)
 
 # Desktop environments in order of preference
-# Options: awesome, cinnamon2, gnome3, i3, kde4, kde5, xfce4, xmonad
-dePreference=(xmonad cinnamon2 gnome3 i3 awesome xfce4 kde4)
+dePreference=(xmonad cinnamon gnome i3 awesome xfce kde)
 
 # XDG directories
 XDG_CACHE_HOME="$HOME/.cache"

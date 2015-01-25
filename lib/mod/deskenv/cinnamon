@@ -8,7 +8,7 @@ deskenv_cinnamon_installed () {
 
 }
 
-cinnamon2_deskenv () {
+cinnamon_deskenv () {
 
   deskenv_cinnamon_installed || return 1
 

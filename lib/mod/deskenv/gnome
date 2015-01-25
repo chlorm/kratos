@@ -8,7 +8,7 @@ deskenv_gnome_installed () {
 
 }
 
-gnome3_deskenv () {
+gnome_deskenv () {
 
   deskenv_gnome_installed || return 1
 

@@ -3,11 +3,11 @@
 deskenvs_configure () { # Install DE configs
 
   awesome_deskenv
-  cinnamon2_deskenv
-  gnome3_deskenv
+  cinnamon_deskenv
+  gnome_deskenv
   i3_deskenv
-  kde4_deskenv
-  xfce4_deskenv
+  kde_deskenv
+  xfce_deskenv
   xmonad_deskenv
 
   # clean this up later
@@ -24,11 +24,11 @@ deskenv_executable () {
       echo "awesome" && return 0
       ;;
 
-    'cinnamon2')
+    'cinnamon')
       echo "cinnamon-session" && return 0
       ;;
 
-    'gnome3')
+    'gnome')
       echo "gnome-session" && return 0
       ;;
 
@@ -36,11 +36,11 @@ deskenv_executable () {
       echo "i3" && return 0
       ;;
 
-    'kde4'|'kde5')
+    'kde')
       echo "startkde" && return 0
       ;;
 
-    'xfce4')
+    'xfce')
       echo "startxfce4" && return 0
       ;;
 
