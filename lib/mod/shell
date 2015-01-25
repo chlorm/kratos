@@ -13,7 +13,7 @@ shells_configure () {
   #shell_pdksh
   #shell_sh
   #shell_tcsh
-  #shell_zsh
+  shell_zsh
 
 }
 
@@ -229,7 +229,5 @@ shell_best () { # Automatically executes the preferred shell
 shell_auto () { # Automatically configures the shell configuration files
 
   shells_configure
-
-  config_ln "zshrc" "zprofile" "zlogout"
 
 }
