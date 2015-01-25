@@ -13,6 +13,7 @@ apps_headless () {
   app_htop
   app_minidlna
   app_mpd
+  app_ncmpcpp
   app_nixpkgs
   app_pulseaudio
   app_rtorrent
