@@ -48,5 +48,6 @@ custom_dirs () {
 configure_dirs () {
 
   xdg_dirs
+  custom_dirs
 
 }
