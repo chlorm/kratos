@@ -8,7 +8,7 @@ deskenvs_configure () { # Install DE configs
   i3_deskenv
   kde_deskenv
   xfce_deskenv
-  xmonad_deskenv
+  deskenv_xmonad
 
   # clean this up later
   install -d $XDG_CONFIG_HOME
