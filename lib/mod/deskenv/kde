@@ -12,6 +12,6 @@ deskenv_kde () {
 
   deskenv_kde_installed || return 1
 
-  # TODO: kde theme
+  return 0
 
 }

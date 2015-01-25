@@ -15,8 +15,6 @@ deskenv_xfce () {
   # Should be move to program specific
   symlink "$XDG_CONFIG_HOME/Terminal" "$XDG_CONFIG_HOME/xfce4/terminal"
 
-  # TODO: xfce theme
-
-  # TODO: whisker menu
+  return 0
 
 }

@@ -12,6 +12,6 @@ deskenv_cinnamon () {
 
   deskenv_cinnamon_installed || return 1
 
-  # TODO: cinnamon theme
+  return 0
 
 }
