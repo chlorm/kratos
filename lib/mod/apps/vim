@@ -13,7 +13,7 @@ app_vim_dotfiles () {
   [ -f "$HOME/.vimrc" ] && { rm -f "$HOME/.vimrc" ; }
 
 (
-cat <<VIM
+cat <<VIMRC
 " An example for a vimrc file.
 "
 " Maintainer:	Bram Moolenaar <Bram@vim.org>
@@ -138,13 +138,13 @@ endif
 
 set nomodeline
 
-if isdirectory($HOME . "/.tmp/")
+if isdirectory(\$HOME . "/.tmp/")
   let &viminfo = &viminfo . ",n" . $HOME . "/.tmp/viminfo"
 else
   let &viminfo = ""
 endif
 
-VIM
+VIMRC
 ) > "$HOME/.vimrc" || return 1
 
   return 0
