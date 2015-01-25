@@ -1,1 +1,104 @@
 #!/usr/bin/env sh
+
+shell_zsh_installed () {
+
+  path_hasbin "zsh" || return 1
+
+  return 0
+
+}
+
+shell_zsh_dotfiles () {
+
+  [ -f "$HOME/.zshrc" ] && { rm -f "$HOME/.zshrc" ; }
+  [ -f "$HOME/.zlogout" ] && { rm -f "$HOME/.zlogout" ; }
+  [ -f "$HOME/.zprofile" ] && { rm -f "$HOME/.zprofile" ; }
+
+(
+cat <<ZSHRC
+#!/usr/bin/env zsh
+
+# $DOTFILES_AUTOGEN_WARN
+
+. "$DOTFILES_DIR/lib/loader"
+shell_best
+shell_init
+
+# Path to your oh-my-zsh configuration.
+ZSH="$DOTFILES_DIR/lib/oh-my-zsh"
+
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it'll load a random theme each
+# time that oh-my-zsh is loaded.
+#ZSH_THEME="takashiyoshida"
+#ZSH_THEME="mh"
+
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# Set to this to use case-sensitive completion
+CASE_SENSITIVE="false"
+
+DISABLE_AUTO_UPDATE="true"
+DISABLE_LS_COLORS="false"
+DISABLE_AUTO_TITLE="false"
+COMPLETION_WAITING_DOTS="true"
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+plugins=(battery svn git screen extract encode64 task urltools pass)
+
+source \$ZSH/oh-my-zsh.sh
+
+# Customize to your needs...
+shell_theme
+alias sudo="nocorrect sudo"
+[ -f "$HOME/.zshrc.local" ] && source $HOME/.zshrc.local
+
+ZSHRC
+) > "$HOME/.zshrc" || return 1
+
+(
+cat <<ZLOGOUT
+#!/usr/bin/env zsh
+
+ZLOGOUT
+) > "$HOME/.zlogout" || return 1
+
+(
+cat <<ZPROFILE
+#!/usr/bin/env zsh
+
+ZPROFILE
+) > "$HOME/.zprofile" || return 1
+
+}
+
+shell_zsh_cleanup () {
+
+  [ -f "$HOME/.zshrc" ] && { rm -f "$HOME/.zshrc" ; }
+  [ -f "$HOME/.zlogout" ] && { rm -f "$HOME/.zlogout" ; }
+  [ -f "$HOME/.zprofile" ] && { rm -f "$HOME/.zprofile" ; }
+
+}
+
+shell_zsh_configure () {
+
+  shell_zsh_installed || return 1
+
+  shell_zsh_dotfiles || return 1
+
+  return 0
+
+}
+
+shell_zsh () {
+
+  shell_zsh_configure || { shell_zsh_cleanup ; return 1 ; }
+
+  return 0
+
+}
