@@ -8,7 +8,7 @@ deskenv_i3_installed () {
 
 }
 
-i3_deskenv () {
+deskenv_i3 () {
 
   deskenv_i3_installed || return 1
 

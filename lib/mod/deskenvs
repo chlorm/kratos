@@ -2,7 +2,7 @@
 
 deskenvs_configure () { # Install DE configs
 
-  awesome_deskenv
+  deskenv_awesome
   cinnamon_deskenv
   gnome_deskenv
   i3_deskenv

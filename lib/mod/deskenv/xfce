@@ -8,7 +8,7 @@ deskenv_xfce_installed () {
 
 }
 
-xfce_deskenv () {
+deskenv_xfce () {
 
   deskenv_xfce_installed || return 1
 

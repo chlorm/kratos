@@ -8,7 +8,7 @@ deskenv_kde_installed () {
 
 }
 
-kde_deskenv () {
+deskenv_kde () {
 
   deskenv_kde_installed || return 1
 
