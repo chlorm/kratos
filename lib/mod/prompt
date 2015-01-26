@@ -58,19 +58,17 @@ prompt_color () { # Get colors for the current shell
 
 prompt_vcs () { # Determine if the current directory is a vcs repo
 
-  prompt_git && return 0
-
   prompt_bzr && return 0
 
   prompt_cvs && return 0
 
   prompt_drc && return 0
 
+  prompt_git && return 0
+
   prompt_mhg && return 0
 
   prompt_svn && return 0
-
-  echo ""
 
   return 0
 
@@ -78,27 +76,50 @@ prompt_vcs () { # Determine if the current directory is a vcs repo
 
 prompt_bzr () {
 
-  path_hasbin bzr >/dev/null 2>&1 || return 1
+  path_hasbin bzr > /dev/null 2>&1 || return 1
 
-  echo -ne "$(prompt_color green 1)bzr$(prompt_color black 1)∫$(prompt_color white 1)"
+  local BZR
+
+  if BZR=$(bzr root 2> /dev/null) ; then
+
+    echo -ne "$(prompt_color green 1)bzr$(prompt_color black 1)∫$(prompt_color white 1)"
+
+  else
+
+    return 1
+
+  fi
 
   return 0
 
 }
 
-prompt_cvs () {
+prompt_cvs () { # Concurrent Versions System
 
-  path_hasbin cvs >/dev/null 2>&1 || return 1
+  path_hasbin cvs > /dev/null 2>&1 || return 1
 
-  echo -ne "$(prompt_color green 1)cvs$(prompt_color black 1)∫$(prompt_color white 1)"
+  local CVS
+
+  if CVS=$(cvs status 2> /dev/null) ;  then
+
+    echo -ne "$(prompt_color green 1)cvs$(prompt_color black 1)∫$(prompt_color white 1)"
+
+  else
+
+    return 1
+
+  fi
 
   return 0
 
 }
 
-prompt_drc () {
+prompt_drc () { # Darcs
 
-  path_hasbin darcs >/dev/null 2>&1 || return 1
+  # Does not work yet, force failure
+  return 1
+
+  path_hasbin darcs > /dev/null 2>&1 || return 1
 
   echo -ne "$(prompt_color green 1)darcs$(prompt_color black 1)∫$(prompt_color white 1)"
 
@@ -106,9 +127,9 @@ prompt_drc () {
 
 }
 
-prompt_git () {
+prompt_git () { # Git
 
-  path_hasbin git >/dev/null 2>&1 || return 1
+  path_hasbin git > /dev/null 2>&1 || return 1
 
   local GIT
 
@@ -150,19 +171,29 @@ prompt_git () {
 
 }
 
-prompt_mhg () {
+prompt_mhg () { # Mercurial
 
-  path_hasbin hg >/dev/null 2>&1 || return 1
+  path_hasbin hg > /dev/null 2>&1 || return 1
 
-  echo -ne "$(prompt_color green 1)hg$(prompt_color black 1)∫$(prompt_color white 1)"
+  local MHG
+
+  if MHG=$(hg status --no-color 2> /dev/null) ; then
+
+    echo -ne "$(prompt_color green 1)hg$(prompt_color black 1)∫$(prompt_color white 1)"
+
+  else
+
+    return 1
+
+  fi
 
   return 0
 
 }
 
-prompt_svn () {
+prompt_svn () { # Subversion
 
-  path_hasbin svn >/dev/null 2>&1 || return 1
+  path_hasbin svn > /dev/null 2>&1 || return 1
 
   local SVN
 

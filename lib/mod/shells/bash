@@ -47,9 +47,7 @@ cd "$HOME"
 # Load shell configuration options
 . "$DOTFILES_DIR/lib/loader"
 #agent_auto
-shell_best
-shell_init
-shell_theme
+shells_auto
 run_quiet mpd
 
 # Load the local config

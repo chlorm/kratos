@@ -21,11 +21,10 @@ cat <<ZSHRC
 # $DOTFILES_AUTOGEN_WARN
 
 . "$DOTFILES_DIR/lib/loader"
-shell_best
-shell_init
+shells_auto
 
 # Path to your oh-my-zsh configuration.
-ZSH="$DOTFILES_DIR/lib/oh-my-zsh"
+#ZSH="$DOTFILES_DIR/lib/oh-my-zsh"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -54,7 +53,6 @@ plugins=(battery svn git screen extract encode64 task urltools pass)
 source \$ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-shell_theme
 alias sudo="nocorrect sudo"
 [ -f "$HOME/.zshrc.local" ] && source $HOME/.zshrc.local
 

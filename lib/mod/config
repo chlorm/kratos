@@ -169,7 +169,7 @@ config_install () { # Installs the configuration files
   apps_configure || { echo "ERROR: failed to configure programs" ; return 1 ; }
 
   echo "Configuring Shells"
-  shell_auto || { echo "ERROR: failed to configure shells" ; return 1 ; }
+  shells_configure || { echo "ERROR: failed to configure shells" ; return 1 ; }
 
   return 0
 
