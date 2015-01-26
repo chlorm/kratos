@@ -50,10 +50,12 @@ app_htop () {
 
   eval app_${APP}_configure || {
 
-    eval app_${APP}_cleanup 2> /dev/null
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; }
 
-    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+    eval app_${APP}_cleanup
+
+    return 1
 
   }
 

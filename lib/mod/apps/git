@@ -45,8 +45,10 @@ app_git () {
 
   eval app_${APP}_configure || {
 
-    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; }
+
+    return 1
 
   }
 
