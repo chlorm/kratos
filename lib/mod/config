@@ -163,7 +163,7 @@ config_install () { # Installs the configuration files
   path_add "$HOME/.bin" || { echo "ERROR: failed to add ~/.bin to PATH" ; return 1 ; }
 
   echo "Configuring Desktop Environments"
-  deskenv_run || { echo "ERROR: failed to configure desktop environments" ; return 1 ; }
+  deskenvs_configure || { echo "ERROR: failed to configure desktop environments" ; return 1 ; }
 
   echo "Configuring Programs"
   apps_configure || { echo "ERROR: failed to configure programs" ; return 1 ; }

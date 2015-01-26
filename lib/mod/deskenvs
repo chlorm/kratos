@@ -16,7 +16,7 @@ deskenvs_configure () { # Install DE configs
 
 }
 
-deskenv_executable () {
+deskenvs_executable () {
 
   case "$1" in
 
@@ -54,13 +54,13 @@ deskenv_executable () {
 
 }
 
-deskenv_preference () {
+deskenvs_preference () {
 
   local DE
 
-  for DE in ${dePreference[@]}; do
+  for DE in ${dePreference[@]} ; do
 
-    path_hasbin "$(deskenv_executable)" >/dev/null 2>&1 && { echo "$DE" ; return 0 ; }
+    path_hasbin "$(deskenvs_executable)" >/dev/null 2>&1 && { echo "$DE" ; return 0 ; }
 
   done
 
@@ -68,33 +68,33 @@ deskenv_preference () {
 
 }
 
-deskenv_run () { # Run the prefered window manager with the best side apps
+deskenvs_startapps () { # Run background applications
+
+  #run_quiet xbacklight -set 30 > /dev/null
+  #run_quiet autocutsel -fork > /dev/null
+  #run_quiet pulseaudio --start > /dev/null
+  #run_quiet xscreensaver -no-splash & > /dev/null
+  #run_quiet notbit -p 8445 -d > /dev/null
+  #run_quiet VBoxClient-all > /dev/null
+  #run_quiet xcompmgr > /dev/null
+  #run_quiet setxkbmap -option ctrl:nocaps
+  #[ -f "$HOME/.xinitrc.start" ] && . "$HOME/.xinitrc.start"
+  #[ -f "$HOME/.xinitrc.end" ] && . "$HOME/.xinitrc.end"
+
+}
+
+deskenvs_terminal () {
 
   local HCFG
-  local PID
   local TERMRC
   local TILING
   local WM
   local WM_EXE
 
-  WM="$(deskenv_preference)"
-  WM_EXE="$(deskenv_executable "$WM")"
+  WM="$(deskenvs_preference)"
+  WM_EXE="$(deskenvs_executable "$WM")"
   TILING=0
 
-  [ -z "$(deskenv_preference)" ] && { return 1 ; }
-
-  deskenvs_configure
-
-  # Run background applications
-  run_quiet xbacklight -set 30
-  run_quiet autocutsel -fork
-  run_quiet pulseaudio --start
-  run_quiet xscreensaver -no-splash &
-  run_quiet notbit -p 8445 -d
-  run_quiet VBoxClient-all
-  run_quiet xcompmgr
-  #run_quiet setxkbmap -option ctrl:nocaps
-  [ -f "$HOME/.xinitrc.start" ] && . "$HOME/.xinitrc.start"
 
   # Tiling WM
   case ${WM} in
@@ -104,9 +104,6 @@ deskenv_run () { # Run the prefered window manager with the best side apps
       ;;
 
   esac
-
-  # Configure applications
-  local TERMRC
 
   TERMRC="$DOTFILES_DIR/dotfiles/config/Terminal/terminalrc"
 
@@ -126,14 +123,30 @@ deskenv_run () { # Run the prefered window manager with the best side apps
     fi
   fi
 
-  # Start the window manager
+}
+
+deskenvs_run () { # Run the prefered window manager
+
+  [ -z "$(deskenvs_preference)" ] && { return 1 ; }
+
+  local PID
+  local WM
+  local WM_EXE
+
+  WM="$(deskenvs_preference)"
+  WM_EXE="$(deskenvs_executable "$WM")"
   PID=$(pgrep $WM_EXE)
+
   [ -z "$PID" ] && exec "$WM_EXE"
 
-  # Kill the rest of the processes
-  [ -f "$HOME/.xinitrc.end" ] && . "$HOME/.xinitrc.end"
-  run_quiet pulseaudio --kill
-
   return 0
+
+}
+
+deskenvs_auto () {
+
+  deskenv_run
+  deskenvs_terminal
+  deskenvs_startapps
 
 }

@@ -28,7 +28,7 @@ cat <<XINITRC
 
 path_add "$HOME/.bin"
 #agent_auto
-deskenv_run
+deskenvs_auto
 
 # Gnome 3.xx
 #exec gnome-session
