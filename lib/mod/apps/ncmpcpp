@@ -189,7 +189,7 @@ default_find_mode = wrapped
 #block_search_constraints_change_if_items_found = "yes"
 
 NCMPCPP
-) > "$HOME/.ncmpcpp/config"
+) > "$HOME/.ncmpcpp/config" || return 1
 
   return 0
 

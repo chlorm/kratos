@@ -21,7 +21,7 @@ cat <<GITCONFIG
     default = simple
 
 GITCONFIG
-) > "$HOME/.gitconfig"
+) > "$HOME/.gitconfig" || return 1
 
   return 0
 

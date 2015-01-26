@@ -60,7 +60,7 @@ serial=12345678
 model_number=1
 
 MINIDLNA
-) > "$HOME/.minidlna/minidlna.conf"
+) > "$HOME/.minidlna/minidlna.conf" || return 1
 
   return 0
 

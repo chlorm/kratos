@@ -41,7 +41,7 @@ deskenv_run
 #export GPG_AGENT_INFO
 
 XINITRC
-) > "$HOME/.xinitrc"
+) > "$HOME/.xinitrc" || return 1
 
 (
 cat <<XPROFILE
@@ -53,9 +53,9 @@ cat <<XPROFILE
 . "$DOTFILES_DIR/lib/loader"
 
 XPROFILE
-) > "$HOME/.xprofile"
+) > "$HOME/.xprofile" || return 1
 
-symlink "$HOME/.xinitrc" "$HOME/.xsession"
+symlink "$HOME/.xinitrc" "$HOME/.xsession" || return 1
 
 
   return 0
