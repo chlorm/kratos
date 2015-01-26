@@ -2,7 +2,7 @@
 
 deskenv_awesome_installed () {
 
-  path_hasbin "awesome" || return 1
+  path_hasbin "awesome" > /dev/null || return 1
 
   return 0
 
@@ -1028,18 +1028,22 @@ deskenv_awesome_configure () {
 
 deskenv_awesome () {
 
-  local APP
+  local DESKENV
 
-  APP="awesome"
+  DESKENV="awesome"
 
-  eval app_${APP}_configure || {
+  eval deskenv_${DESKENV}_configure || {
 
-    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+    [ "$?" -eq "2" ] && { echo "  ☐ $DESKENV" ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $DESKENV" ; }
+
+    eval deskenv_${DESKENV}_cleanup
+
+    return 1
 
   }
 
-  echo "  ☑ $APP"
+  echo "  ☑ $DESKENV"
 
   return 0
 

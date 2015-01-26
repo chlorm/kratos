@@ -2,7 +2,7 @@
 
 deskenv_cinnamon_installed () {
 
-  path_hasbin "cinnamon-session" || return 1
+  path_hasbin "cinnamon-session" > /dev/null || return 1
 
   return 0
 

@@ -2,7 +2,7 @@
 
 deskenv_xmonad_installed () {
 
-  path_hasbin "xmonad" || return 1
+  path_hasbin "xmonad" > /dev/null || return 1
 
   return 0
 
@@ -289,10 +289,12 @@ deskenv_xmonad () {
 
   eval deskenv_${DESKENV}_configure || {
 
+    [ "$?" -eq "2" ] && { echo "  ☐ $DESKENV" ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $DESKENV" ; }
+
     eval deskenv_${DESKENV}_cleanup
 
-    [ "$?" -eq "2" ] && { echo "  ☐ $DESKENV" ; return 1 ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $DESKENV" ; return 1 ; }
+    return 1
 
   }
 

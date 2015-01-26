@@ -2,7 +2,7 @@
 
 deskenv_kde_installed () {
 
-  path_hasbin "startkde" || return 1
+  path_hasbin "startkde" > /dev/null || return 1
 
   return 0
 
