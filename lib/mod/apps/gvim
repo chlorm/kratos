@@ -24,7 +24,7 @@ app_gvim_cleanup () {
 
 app_gvim_configure () {
 
-  app_gvim_installed || return 1
+  app_gvim_installed || return 2
 
   app_gvim_dotfiles || return 1
 

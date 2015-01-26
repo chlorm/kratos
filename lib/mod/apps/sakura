@@ -73,7 +73,7 @@ app_sakura_cleanup () {
 
 app_sakura_configure () {
 
-  app_sakura_installed || return 1
+  app_sakura_installed || return 2
 
   app_sakura_dirs || return 1
 

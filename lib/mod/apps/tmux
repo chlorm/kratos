@@ -24,7 +24,7 @@ app_tmux_cleanup () {
 
 app_tmux_configure () {
 
-  app_tmux_installed || return 1
+  app_tmux_installed || return 2
 
   app_tmux_dotfiles || return 1
 

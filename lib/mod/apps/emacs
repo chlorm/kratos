@@ -24,7 +24,7 @@ app_emacs_cleanup () {
 
 app_emacs_configure () {
 
-  app_emacs_installed || return 1
+  app_emacs_installed || return 2
 
   [ -d "$HOME/.emacs" ] && { rm -rf "$HOME/.emacs" ; }
 

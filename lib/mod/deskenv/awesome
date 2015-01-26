@@ -1016,7 +1016,7 @@ RC35
 
 deskenv_awesome_configure () {
 
-  deskenv_awesome_installed || return 1
+  deskenv_awesome_installed || return 2
 
   deskenv_awesome_dirs || return 1
 

@@ -271,7 +271,7 @@ deskenv_xmonad_cleanup () {
 
 deskenv_xmonad_configure () {
 
-  deskenv_xmonad_installed || return 1
+  deskenv_xmonad_installed || return 2
 
   deskenv_xmonad_dirs || return 1
 

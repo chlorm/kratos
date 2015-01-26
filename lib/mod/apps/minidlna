@@ -75,7 +75,7 @@ app_minidlna_cleanup () {
 
 app_minidlna_configure () {
 
-  app_minidlna_installed || return 1
+  app_minidlna_installed || return 2
 
   app_minidlna_dirs || return 1
 

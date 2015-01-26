@@ -126,7 +126,7 @@ app_mpd_cleanup () {
 
 app_mpd_configure () {
 
-  app_mpd_installed || return 1
+  app_mpd_installed || return 2
 
   app_mpd_dirs || return 1
 

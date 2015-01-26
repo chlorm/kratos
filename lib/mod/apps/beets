@@ -48,7 +48,7 @@ app_beets_cleanup () {
 
 app_beets_configure () {
 
-  app_beets_installed || return 1
+  app_beets_installed || return 2
 
   app_beets_dirs || return 1
 

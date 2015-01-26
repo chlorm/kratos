@@ -97,20 +97,20 @@ shell_bash_configure () {
 
 shell_bash () {
 
-  local APP
+  local SHELL
 
-  APP="bash"
+  SHELL="bash"
 
-  eval app_${APP}_configure || {
+  eval shell_${SHELL}_configure || {
 
-    eval app_${APP}_cleanup
+    eval shell_${SHELL}_cleanup
 
-    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+    [ "$?" -eq "2" ] && { echo "  ☐ $SHELL" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $SHELL" ; return 1 ; }
 
   }
 
-  echo "  ☑ $APP"
+  echo "  ☑ $SHELL"
 
   return 0
 

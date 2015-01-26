@@ -26,7 +26,7 @@ app_cabal_paths () {
 
 app_cabal_configure () {
 
-  app_cabal_installed || return 1
+  app_cabal_installed || return 2
 
   app_cabal_dirs || return 1
 

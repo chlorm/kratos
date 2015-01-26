@@ -32,7 +32,7 @@ app_htop_cleanup () {
 
 app_htop_configure () {
 
-  app_htop_installed  || return 1
+  app_htop_installed  || return 2
 
   app_htop_dirs || return 1
 

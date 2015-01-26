@@ -29,7 +29,7 @@ GITCONFIG
 
 app_git_configure () {
 
-  app_git_installed || return 1
+  app_git_installed || return 2
 
   app_git_dotfiles || return 1
 

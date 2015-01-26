@@ -258,7 +258,7 @@ app_nixpkgs_cleanup () {
 
 app_nixpkgs_configure () {
 
-  app_nixpkgs_installed || return 1
+  app_nixpkgs_installed || return 2
 
   app_nixpkgs_dirs || return 1
 

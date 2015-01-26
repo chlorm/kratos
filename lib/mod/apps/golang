@@ -36,7 +36,7 @@ app_golang_cleanup () {
 
 app_golang_configure () {
 
-  app_golang_installed || return 1
+  app_golang_installed || return 2
 
   app_golang_dirs || return 1
 

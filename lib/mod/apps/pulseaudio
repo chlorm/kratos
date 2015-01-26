@@ -43,7 +43,7 @@ app_pulseaudio_cleanup () {
 
 app_pulseaudio_configure () {
 
-  app_pulseaudio_installed || return 1
+  app_pulseaudio_installed || return 2
 
   app_pulseaudio_dirs || return 1
 

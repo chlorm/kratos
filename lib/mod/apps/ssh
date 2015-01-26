@@ -65,7 +65,7 @@ app_ssh_installed () {
 
 app_ssh () {
 
-  app_ssh_installed || return 1
+  app_ssh_installed || return 2
 
   dir_exist "$HOME/.ssh" || return 1
 

@@ -87,7 +87,7 @@ shell_zsh_cleanup () {
 
 shell_zsh_configure () {
 
-  shell_zsh_installed || return 1
+  shell_zsh_installed || return 2
 
   shell_zsh_dotfiles || return 1
 
@@ -97,20 +97,20 @@ shell_zsh_configure () {
 
 shell_zsh () {
 
-  local APP
+  local SHELL
 
-  APP="zsh"
+  SHELL="zsh"
 
-  eval app_${APP}_configure || {
+  eval shell_${SHELL}_configure || {
 
-    eval app_${APP}_cleanup
+    eval shell_${SHELL}_cleanup
 
-    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+    [ "$?" -eq "2" ] && { echo "  ☐ $SHELL" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $SHELL" ; return 1 ; }
 
   }
 
-  echo "  ☑ $APP"
+  echo "  ☑ $SHELL"
 
   return 0
 

@@ -73,7 +73,7 @@ app_xorg_cleanup () {
 
 app_xorg_configure () {
 
-  app_xorg_installed || return 1
+  app_xorg_installed || return 2
 
   app_xorg_dotfiles || return 1
 

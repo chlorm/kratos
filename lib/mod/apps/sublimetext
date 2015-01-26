@@ -10,7 +10,7 @@ app_sublime_installed () {
 
 app_sublimetext () {
 
-  app_sublime_installed || return 1
+  app_sublime_installed || return 2
 
   config_ln "config/sublime-text-3"
 
