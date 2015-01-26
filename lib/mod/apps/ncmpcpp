@@ -203,8 +203,8 @@ app_ncmpcpp_cleanup () {
 
 app_ncmpcpp_configure () {
 
-  app_mpd_installed || return 1
   app_ncmpcpp_installed || return 2
+  app_mpd_installed || return 1
 
   app_ncmpcpp_dirs || return 1
 

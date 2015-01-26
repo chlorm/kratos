@@ -10,8 +10,8 @@ app_suckless_installed () {
 
 app_suckless () {
 
-  app_nixpkgs || return 1
   app_suckless_installed || return 2
+  app_nixpkgs || return 1
 
   local OLD
 
