@@ -157,22 +157,23 @@ config_install () { # Installs the configuration files
 
   echo "Configuring directories"
   # Bootstrap by sourcing file to find directory to install config
-  . "$DOTFILES_DIR/dotfiles/config/user-dirs.dirs"
-  config_ln "config/user-dirs.dirs"
-  xdg_dirs
+  . "$DOTFILES_DIR/dotfiles/config/user-dirs.dirs" || { echo "ERROR: failed to bootstrap user-dirs.dirs" ; return 1 ; }
+  xdg_dirs || { echo "ERROR: failed to configure xdg directories" ; return 1 ; }
 
   echo "Configuring PATH"
   symlink "$DOTFILES_DIR/bin" "$HOME/.bin"
-  path_add "$HOME/.bin"
+  path_add "$HOME/.bin" || { echo "ERROR: failed to add ~/.bin to PATH" ; return 1 ; }
 
-  echo "Configuring Desktop Environment"
-  deskenv_run
+  echo "Configuring Desktop Environments"
+  deskenv_run || { echo "ERROR: failed to configure desktop environments" ; return 1 ; }
 
   echo "Configuring Programs"
-  apps_configure
+  apps_configure || { echo "ERROR: failed to configure programs" ; return 1 ; }
 
-  echo "Configuring Shell"
-  shell_auto
+  echo "Configuring Shells"
+  shell_auto || { echo "ERROR: failed to configure shells" ; return 1 ; }
+
+  return 0
 
 }
 
