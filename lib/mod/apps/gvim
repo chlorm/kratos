@@ -34,9 +34,20 @@ app_gvim_configure () {
 
 app_gvim () {
 
-  app_gvim_configure || { app_gvim_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ gvim"
+  APP="gvim"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

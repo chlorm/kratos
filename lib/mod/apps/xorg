@@ -83,9 +83,20 @@ app_xorg_configure () {
 
 app_xorg () {
 
-  app_xorg_configure || { app_xorg_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ xorg"
+  APP="xorg"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

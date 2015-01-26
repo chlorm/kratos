@@ -97,9 +97,20 @@ shell_zsh_configure () {
 
 shell_zsh () {
 
-  shell_zsh_configure || { shell_zsh_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ zsh"
+  APP="zsh"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

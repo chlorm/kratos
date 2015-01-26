@@ -97,9 +97,20 @@ shell_bash_configure () {
 
 shell_bash () {
 
-  shell_bash_configure || { shell_bash_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ bash"
+  APP="bash"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

@@ -48,9 +48,20 @@ app_golang_configure () {
 
 app_golang () {
 
-  app_golang_configure || { app_golang_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ golang"
+  APP="golang"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

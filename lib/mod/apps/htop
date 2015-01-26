@@ -44,9 +44,20 @@ app_htop_configure () {
 
 app_htop () {
 
-  app_htop_configure || { app_htop_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ htop"
+  APP="htop"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

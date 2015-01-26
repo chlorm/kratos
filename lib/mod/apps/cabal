@@ -44,9 +44,20 @@ app_cabal_cleanup () {
 
 app_cabal () {
 
-  app_cabal_configure || { app_cabal_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ cabal"
+  APP="cabal"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

@@ -270,9 +270,20 @@ app_nixpkgs_configure () {
 
 app_nixpkgs () {
 
-  app_nixpkgs_configure || { app_nixpkgs_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ nixpkgs"
+  APP="nixpkgs"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

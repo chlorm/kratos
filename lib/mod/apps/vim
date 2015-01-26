@@ -159,7 +159,7 @@ app_vim_cleanup () {
 
 app_vim_configure () {
 
-  app_vim_installed || return 1
+  app_vim_installed || return 2
 
   [ -d "$HOME/.viminfo" ] && { rm -rf "$HOME/.viminfo" ; return $? ; }
 
@@ -171,9 +171,20 @@ app_vim_configure () {
 
 app_vim () {
 
-  app_vim_configure || { app_vim_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ vim"
+  APP="vim"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

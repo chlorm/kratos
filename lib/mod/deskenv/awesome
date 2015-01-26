@@ -1028,9 +1028,18 @@ deskenv_awesome_configure () {
 
 deskenv_awesome () {
 
-  deskenv_awesome_configure || return 1
+  local APP
 
-  echo "  ✓ awesome"
+  APP="awesome"
+
+  eval app_${APP}_configure || {
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

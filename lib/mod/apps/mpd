@@ -140,9 +140,20 @@ app_mpd_configure () {
 
 app_mpd () {
 
-  app_mpd_configure || { app_mpd_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ mpd"
+  APP="mpd"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

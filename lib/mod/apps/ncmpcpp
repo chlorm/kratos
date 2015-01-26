@@ -216,9 +216,20 @@ app_ncmpcpp_configure () {
 
 app_ncmpcpp () {
 
-  app_ncmpcpp_configure || { app_ncmpcpp_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ ncmpcpp"
+  APP="ncmpcpp"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

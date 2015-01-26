@@ -60,9 +60,20 @@ app_beets_configure () {
 
 app_beets () {
 
-  app_beets_configure || { app_beets_cleanup ; return 1 ; }
+  local APP
 
-  echo "beets"
+  APP="beets"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

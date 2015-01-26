@@ -34,9 +34,20 @@ app_tmux_configure () {
 
 app_tmux () {
 
-  app_tmux_configure || { app_tmux_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ tmux"
+  APP="tmux"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

@@ -39,9 +39,18 @@ app_git_configure () {
 
 app_git () {
 
-  app_git_configure || return 1
+  local APP
 
-  echo "  ✓ git"
+  APP="git"
+
+  eval app_${APP}_configure || {
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

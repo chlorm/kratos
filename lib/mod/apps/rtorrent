@@ -138,9 +138,20 @@ app_rtorrent_configure () {
 
 app_rtorrent () {
 
-  app_rtorrent_configure || { app_rtorrent_cleanup ; return 1 ; }
+  local APP
 
-  echo "  ✓ rtorrent"
+  APP="rtorrent"
+
+  eval app_${APP}_configure || {
+
+    eval app_${APP}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $APP"
 
   return 0
 

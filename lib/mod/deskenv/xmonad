@@ -283,9 +283,20 @@ deskenv_xmonad_configure () {
 
 deskenv_xmonad () {
 
-  deskenv_xmonad_configure || { deskenv_xmonad_cleanup ; return 1 ; }
+  local DESKENV
 
-  echo "  ✓ xmonad"
+  DESKENV="xmonad"
+
+  eval deskenv_${DESKENV}_configure || {
+
+    eval deskenv_${DESKENV}_cleanup
+
+    [ "$?" -eq "2" ] && { echo "  ☐ $DESKENV" ; return 1 ; }
+    [ "$?" -eq "1" ] && { echo "  ☒ $DESKENV" ; return 1 ; }
+
+  }
+
+  echo "  ☑ $DESKENV"
 
   return 0
 
