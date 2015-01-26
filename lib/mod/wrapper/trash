@@ -59,7 +59,7 @@ trash () {
         totalTrashSize="0"
         totalTrashFiles="0"
 
-        for *.trashinfo in "$DIR_TRASH_INFO"; do
+        for trashinfo in "$DIR_TRASH_INFO"; do
           # Get filename INCOMPLETE
           findFileName=$(ls -al .trashinfo | awk -F " " '{ print $5 }')
           # remove trashinfo extension
@@ -86,7 +86,7 @@ trash () {
             Y|y)
               #delete files
 
-              for FILE.trashinfo in "$DIR_TRASH_INFO"; do
+              for trashinfo in "$DIR_TRASH_INFO"; do
                 # Read trashinfo file
                 findFileName=$(ls -al .trashinfo | awk -F " " '{ print $5 }')
                 
@@ -224,7 +224,7 @@ trash () {
         totalTrashSize="0"
         totalTrashFiles="0"
 
-        for *.trashinfo in "$DIR_TRASH_INFO"; do
+        for trashinfo in "$DIR_TRASH_INFO"; do
           # Get filename INCOMPLETE
           findFileName=$(ls -al .trashinfo | awk -F " " '{ print $5 }')
           # remove trashinfo extension
@@ -251,7 +251,7 @@ trash () {
             Y|y)
               #delete files
 
-              for FILE.trashinfo in "$DIR_TRASH_INFO"; do
+              for trashinfo in "$DIR_TRASH_INFO"; do
                 # Read trashinfo file
                 findFileName=$(ls -al .trashinfo | awk -F " " '{ print $5 }')
                 
