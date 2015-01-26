@@ -116,7 +116,7 @@ shell_fish () {
 
   shell_fish_configure || { shell_fish_cleanup ; return 1 ; }
 
-  echo "fish"
+  echo "  ✓ fish"
 
   return 0
 

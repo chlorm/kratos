@@ -46,7 +46,7 @@ app_htop () {
 
   app_htop_configure || { app_htop_cleanup ; return 1 ; }
 
-  echo "htop"
+  echo "  ✓ htop"
 
   return 0
 

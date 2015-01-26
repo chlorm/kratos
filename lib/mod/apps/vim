@@ -173,6 +173,8 @@ app_vim () {
 
   app_vim_configure || { app_vim_cleanup ; return 1 ; }
 
+  echo "  ✓ vim"
+
   return 0
 
 }

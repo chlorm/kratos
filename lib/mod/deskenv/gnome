@@ -12,6 +12,8 @@ deskenv_gnome () {
 
   deskenv_gnome_installed || return 1
 
+  echo "  ✓ gnome"
+
   return 0
 
 }

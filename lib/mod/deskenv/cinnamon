@@ -12,6 +12,8 @@ deskenv_cinnamon () {
 
   deskenv_cinnamon_installed || return 1
 
+  echo "  ✓ cinnamon"
+
   return 0
 
 }

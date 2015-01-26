@@ -50,7 +50,7 @@ app_golang () {
 
   app_golang_configure || { app_golang_cleanup ; return 1 ; }
 
-  echo "golang"
+  echo "  ✓ golang"
 
   return 0
 

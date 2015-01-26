@@ -85,4 +85,8 @@ app_ssh () {
     fi
   fi
 
+  echo "  ✓ ssh"
+
+  return 0
+
 }

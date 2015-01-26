@@ -99,6 +99,8 @@ shell_zsh () {
 
   shell_zsh_configure || { shell_zsh_cleanup ; return 1 ; }
 
+  echo "  ✓ zsh"
+
   return 0
 
 }

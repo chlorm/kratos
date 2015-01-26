@@ -285,6 +285,8 @@ deskenv_xmonad () {
 
   deskenv_xmonad_configure || { deskenv_xmonad_cleanup ; return 1 ; }
 
+  echo "  ✓ xmonad"
+
   return 0
 
 }

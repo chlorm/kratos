@@ -142,7 +142,7 @@ app_mpd () {
 
   app_mpd_configure || { app_mpd_cleanup ; return 1 ; }
 
-  echo "mpd"
+  echo "  ✓ mpd"
 
   return 0
 

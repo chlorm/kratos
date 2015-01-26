@@ -218,7 +218,7 @@ app_ncmpcpp () {
 
   app_ncmpcpp_configure || { app_ncmpcpp_cleanup ; return 1 ; }
 
-  echo "ncmpcpp"
+  echo "  ✓ ncmpcpp"
 
   return 0
 

@@ -1030,5 +1030,8 @@ deskenv_awesome () {
 
   deskenv_awesome_configure || return 1
 
+  echo "  ✓ awesome"
+
+  return 0
 
 }

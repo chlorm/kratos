@@ -87,7 +87,7 @@ app_sakura () {
 
   app_sakura_configure || { app_sakura_cleanup ; return 1 ; }
 
-  echo "sakura"
+  echo "  ✓ sakura"
 
   return 0
 

@@ -89,7 +89,7 @@ app_minidlna () {
 
   app_minidlna_configure || { app_minidlna_cleanup ; return 1 ; }
 
-  echo "minidlna"
+  echo "  ✓ minidlna"
 
   return 0
 

@@ -57,7 +57,7 @@ app_pulseaudio () {
 
   app_pulseaudio_configure || { app_pulseaudio_cleanup ; return 1 ; }
 
-  echo "pulseaudio"
+  echo "  ✓ pulseaudio"
 
   return 0
 

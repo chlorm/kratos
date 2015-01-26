@@ -99,7 +99,7 @@ shell_bash () {
 
   shell_bash_configure || { shell_bash_cleanup ; return 1 ; }
 
-  echo "bash"
+  echo "  ✓ bash"
 
   return 0
 

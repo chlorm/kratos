@@ -85,7 +85,7 @@ app_xorg () {
 
   app_xorg_configure || { app_xorg_cleanup ; return 1 ; }
 
-  echo "xorg"
+  echo "  ✓ xorg"
 
   return 0
 

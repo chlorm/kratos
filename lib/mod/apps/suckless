@@ -27,4 +27,8 @@ app_suckless () {
     cd "$OLD"
   }
 
+  echo "  ✓ suckless"
+
+  return 0
+
 }

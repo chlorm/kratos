@@ -36,7 +36,7 @@ app_gvim () {
 
   app_gvim_configure || { app_gvim_cleanup ; return 1 ; }
 
-  echo "gvim"
+  echo "  ✓ gvim"
 
   return 0
 

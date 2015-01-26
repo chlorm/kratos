@@ -36,7 +36,7 @@ app_tmux () {
 
   app_tmux_configure || { app_tmux_cleanup ; return 1 ; }
 
-  echo "tmux"
+  echo "  ✓ tmux"
 
   return 0
 
