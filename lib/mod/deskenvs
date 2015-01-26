@@ -3,11 +3,11 @@
 deskenvs_configure () { # Install DE configs
 
   deskenv_awesome
-  cinnamon_deskenv
-  gnome_deskenv
-  i3_deskenv
-  kde_deskenv
-  xfce_deskenv
+  deskenv_cinnamon
+  deskenv_gnome
+  deskenv_i3
+  deskenv_kde
+  deskenv_xfce
   deskenv_xmonad
 
   # clean this up later
