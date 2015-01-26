@@ -1037,7 +1037,7 @@ deskenv_awesome () {
     [ "$?" -eq "2" ] && { echo "  ☐ $DESKENV" ; }
     [ "$?" -eq "1" ] && { echo "  ☒ $DESKENV" ; }
 
-    eval deskenv_${DESKENV}_cleanup
+    #eval deskenv_${DESKENV}_cleanup
 
     return 1
 
