@@ -81,6 +81,8 @@ deskenvs_startapps () { # Run background applications
   #[ -f "$HOME/.xinitrc.start" ] && . "$HOME/.xinitrc.start"
   #[ -f "$HOME/.xinitrc.end" ] && . "$HOME/.xinitrc.end"
 
+  return 0
+
 }
 
 deskenvs_terminal () {
