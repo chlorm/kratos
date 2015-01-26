@@ -47,7 +47,9 @@ pkgs : {
 
   packageOverrides = self : rec {
     rtorrent-git = self.rtorrent-git.override { colorSupport = true; };
+    emacs = self.emacs.override { withX = $(app_xorg_installed && printf "true" || printf "false"); };
     desktop-chlorm = self.haskellPackages.ghcWithPackages (self : with self; [
+      haskellPackages.xdgBasedir
       xmonad
       #yi
     ]);
@@ -55,189 +57,100 @@ pkgs : {
     chlorm = self.buildEnv {
       name = "myChlorm";
       paths = with self; [
-        # Required
         base-chlorm
-        # Optional
-        audio-chlorm
-        communication-chlorm
-        desktop-chlorm
-        development-chlorm
-        download-chlorm
         editors-chlorm
         haskell-chlorm
         headless-chlorm
-        image-chlorm
-        monitoring-chlorm
-        networking-chlorm
-        shells-chlorm
-        terminals-chlorm
-        video-chlorm
+        $(app_xorg_installed && printf "graphical-chlorm")
         virtualization-chlorm
-        www-chlorm
+        $([ -n "$(ls $XDG_MUSIC_DIR)" ] && printf "beets\n\tmpd\n\tncmpcpp")
       ];
     };
     # Environments
     base-chlorm = self.buildEnv {
       name = "myBase";
       paths = with self; [
+        bc
+        emacs
         git
         htop
-        #openssh_hpn
-        openssh
+        openssh #_hpn
         openssl
         slock
         tmux
-        wget
-      ];
-    };
-    audio-chlorm = self.buildEnv {
-      name = "myAudio";
-      paths = with self; [
-        beets
-        flac
-        lame
-        mpd
-        ncmpcpp
-        pavucontrol
-        pulseaudio
-      ];
-    };
-    communication-chlorm = self.buildEnv {
-      name = "myCommunication";
-      paths = with self; [
-        mumble
-        pidgin
-        kde4.quasselClient
-      ];
-    };
-    development-chlorm = self.buildEnv {
-      name = "myDevelopment";
-      paths = with self; [
-        go
-        #icedtea7_web
-        #nix-repl
-        #nixops
-        subversion
-        texLive
-      ];
-    };
-    download-chlorm = self.buildEnv {
-      name = "myDownload";
-      paths = with self; [
-        filezilla
-        ncdc
-        #qbittorrent
-        rtorrent-git
-        #transmission
-        youtubeDL
-      ];
-    };
-    editors-chlorm = self.buildEnv {
-      name = "myEditors";
-      paths = with self; [
-        atom
-        emacs
-        #libreoffice
-        sublime3
-        texstudio
         vim
+        wget
       ];
     };
     graphical-chlorm = self.buildEnv {
       name = "myGraphical";
       paths = with self; [
+        chromium
+        conky
+        $(deskenv_xmonad_installed && printf "dmenu")
+        dzen2
+        filezilla
+        firefoxWrapper
+        geeqie
+        gimp
+        #libreoffice
+        mumble
+        networkmanagerapplet
+        pavucontrol
+        pidgin
+        #qbittorrent
+        kde4.quasselClient
+        sakura
+        sublime3
+        texLive
+        texstudio
+        #transmission
+        virtmanager
         vlc
         xfe
-      ];
-    };
-    haskell-chlorm = self.buildEnv {
-      name = "myHaskell";
-      paths = with self; [
-        haskellPackages.xdgBasedir
       ];
     };
     headless-chlorm = self.buildEnv {
       name = "myHeadless";
       paths = with self; [
         acpi
-        bc
-        conky
-        dmenu
-        dzen2
+        ffmpeg
+        fish
+        flac
         #gnupg1compat
+        go
+        #icedtea7_web
+        imagemagick
+        lame
+        libpng
+        mediainfo
+        mkvtoolnix
         mosh
         most
+        ncdc
+        ncdu
+        networkmanager
+        #nix-repl
+        #nixops
         #notbit
         p7zip
         pcsclite
         pinentry
         psmisc
+        pulseaudio
+        rtorrent-git
         scrot
-        unzip
-        #xlibs.xbacklight
-        xz
-        #zathura
-      ];
-    };
-    image-chlorm = self.buildEnv {
-      name = "myImage";
-      paths = with self; [
-        geeqie
-        gimp
-        imagemagick
-        libpng
-      ];
-    };
-    monitoring-chlorm = self.buildEnv {
-      name = "myMonitoring";
-      paths = with self; [
-        ncdu
         speedtest_cli
-      ];
-    };
-    networking-chlorm = self.buildEnv {
-      name = "myNetworking";
-      paths = with self; [
-        networkmanager
-        networkmanagerapplet
-      ];
-    };
-    shells-chlorm = self.buildEnv {
-      name = "myShells";
-      paths = with self; [
-        fish
-        #zsh
-      ];
-    };
-    terminals-chlorm = self.buildEnv {
-      name = "myTerminals";
-      paths = with self; [
-        sakura
-      ];
-    };
-    video-chlorm = self.buildEnv {
-      name = "myVideo";
-      paths = with self; [
-        ffmpeg
-        mediainfo
-        mkvtoolnix
+        subversion
+        unzip
         vobsub2srt
         x264
-        #x265
         x265-hg
-      ];
-    };
-    virtualization-chlorm = self.buildEnv {
-      name = "myVirtualization";
-      paths = with self; [
-        virtmanager
-      ];
-    };
-    www-chlorm = self.buildEnv {
-      name = "myWww";
-      paths = with self; [
-        chromium
-        firefoxWrapper
+        #xlibs.xbacklight
+        xz
+        youtubeDL
+        #zathura
+        #zsh
       ];
     };
   };
