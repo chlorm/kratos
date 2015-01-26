@@ -40,7 +40,7 @@ app_gvim () {
 
   eval app_${APP}_configure || {
 
-    eval app_${APP}_cleanup
+    eval app_${APP}_cleanup 2> /dev/null
 
     [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; return 1 ; }
     [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; return 1 ; }
