@@ -82,7 +82,7 @@ prompt_bzr () {
 
   if BZR=$(bzr root 2> /dev/null) ; then
 
-    echo -ne "$(prompt_color green 1)bzr$(prompt_color black 1)∫$(prompt_color white 1)"
+    echo -ne "$(termclr green 1)bzr$(termclr black 1)∫$(termclr white 1)"
 
   else
 
@@ -102,7 +102,7 @@ prompt_cvs () { # Concurrent Versions System
 
   if CVS=$(cvs status 2> /dev/null) ;  then
 
-    echo -ne "$(prompt_color green 1)cvs$(prompt_color black 1)∫$(prompt_color white 1)"
+    echo -ne "$(termclr green 1)cvs$(termclr black 1)∫$(termclr white 1)"
 
   else
 
@@ -121,7 +121,7 @@ prompt_drc () { # Darcs
 
   path_hasbin darcs > /dev/null 2>&1 || return 1
 
-  echo -ne "$(prompt_color green 1)darcs$(prompt_color black 1)∫$(prompt_color white 1)"
+  echo -ne "$(termclr green 1)darcs$(termclr black 1)∫$(termclr white 1)"
 
   return 0
 
@@ -159,7 +159,7 @@ prompt_git () { # Git
 
     }
 
-    echo -ne "$(prompt_color green 1)git$(prompt_color black 1)∫$(prompt_color white 1)$(prompt_git_branch)"
+    echo -ne "$(termclr green 1)git$(termclr black 1)∫$(termclr white 1)$(prompt_git_branch)"
 
   else
 
@@ -179,7 +179,7 @@ prompt_mhg () { # Mercurial
 
   if MHG=$(hg status --no-color 2> /dev/null) ; then
 
-    echo -ne "$(prompt_color green 1)hg$(prompt_color black 1)∫$(prompt_color white 1)"
+    echo -ne "$(termclr green 1)hg$(termclr black 1)∫$(termclr white 1)"
 
   else
 
@@ -223,7 +223,7 @@ prompt_configure () {
       ;;
 
     'bash'|'dash')
-      export PS1="$(prompt_color green 1)\u$(prompt_color black 1)@$(prompt_color white 1)\h$(prompt_color black 1)[$(prompt_color magenta 1)\w$(prompt_color black 1)]$(prompt_vcs)$(prompt_color cyan 0)〉$(prompt_color reset)"
+      export PS1="$(prompt_color green 1)\u$(prompt_color black 1)@$(prompt_color white 1)\h$(prompt_color black 1)[$(prompt_color magenta 1)\w$(prompt_color black 1)]\$(prompt_vcs)$(prompt_color cyan 0)〉$(prompt_color reset)"
       ;;
 
   esac
