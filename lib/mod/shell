@@ -122,7 +122,7 @@ shells_preference () {
 
 shells_run () { # Automatically executes the preferred shell
 
-  [ "$(shell_nov)" != "$(shell_preference)" ] && { exec "$(shell_preference)" ; exit $? ; }
+  [ "$(shell_nov)" != "$(shells_preference)" ] && { exec "$(shells_preference)" ; exit $? ; }
 
 }
 
