@@ -156,8 +156,6 @@ config_ln () { # Links the configuration file to its proper dotfile
 config_install () { # Installs the configuration files
 
   echo "Configuring directories"
-  # Bootstrap by sourcing file to find directory to install config
-  . "$DOTFILES_DIR/dotfiles/config/user-dirs.dirs" || { echo "ERROR: failed to bootstrap user-dirs.dirs" ; return 1 ; }
   xdg_dirs || { echo "ERROR: failed to configure xdg directories" ; return 1 ; }
 
   echo "Configuring PATH"
