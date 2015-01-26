@@ -2,7 +2,7 @@
 
 app_git_installed () {
 
-  path_hasbin "git" || return 1
+  path_hasbin "git" > /dev/null || return 1
 
   return 0
 

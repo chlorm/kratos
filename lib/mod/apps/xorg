@@ -2,7 +2,7 @@
 
 app_xorg_installed () {
 
-  path_hasbin "Xorg" || return 1
+  path_hasbin "Xorg" > /dev/null || return 1
 
   return 0
 

@@ -2,7 +2,7 @@
 
 app_golang_installed () {
 
-  path_hasbin "go" || return 1
+  path_hasbin "go" > /dev/null || return 1
 
   return 0
 
