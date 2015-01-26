@@ -151,7 +151,7 @@ prompt_git () { # Git
 
       local GITBRANCH
 
-      GITBRANCH=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(git_dirty)/")
+      GITBRANCH=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(prompt_git_dirty)/")
 
       [ -n "$GITBRANCH" ] && { echo "$GITBRANCH" ; }
 
@@ -159,7 +159,7 @@ prompt_git () { # Git
 
     }
 
-    echo -ne "$(prompt_color green 1)git$(prompt_color black 1)∫$(prompt_color white 1)$(git_branch)"
+    echo -ne "$(prompt_color green 1)git$(prompt_color black 1)∫$(prompt_color white 1)$(prompt_git_branch)"
 
   else
 
