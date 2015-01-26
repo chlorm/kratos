@@ -77,7 +77,7 @@ shells_tmp () { # Create the temporary directory for the shell
 
 shells_init () { # Initializes useful functions if the caller is a shell
 
-  shell_tmp
+  shells_tmp
   #agent_auto
 
   alias root="sudo_wrap su -"
@@ -122,7 +122,7 @@ shells_preference () {
 
 shells_run () { # Automatically executes the preferred shell
 
-  [ "$(shell_nov)" != "$(shells_preference)" ] && { exec "$(shells_preference)" ; exit $? ; }
+  [ "$(shell_nov)" != "$(shells_preference)" ] && { exec "$(shells`_preference)" ; exit $? ; }
 
 }
 
