@@ -58,11 +58,8 @@ pkgs : {
       name = "myChlorm";
       paths = with self; [
         base-chlorm
-        editors-chlorm
-        haskell-chlorm
         headless-chlorm
         $(app_xorg_installed || printf "#")graphical-chlorm
-        virtualization-chlorm
         $([ -n "$(ls $XDG_MUSIC_DIR)" ] && printf "# Music apps\n\tbeets\n\tmpd\n\tncmpcpp")
       ];
     };
