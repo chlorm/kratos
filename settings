@@ -23,7 +23,7 @@ deskenvsPreference=(xmonad kde)
 
 # Shells in order of preference [ash,bash,csh,dash,fish,korn,pdksh,tcsh,zsh]
 # Only list those with which you want configured (fallsback to sh if none are found)
-shellsPreference=(bash zsh fish)
+shellsPreference=(zsh bash fish)
 
 # XDG directories
 XDG_CACHE_HOME="$HOME/.cache"
