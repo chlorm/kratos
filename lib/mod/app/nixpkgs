@@ -75,6 +75,7 @@ pkgs : {
         tmux
         vim
         wget
+        zsh
       ];
     };
     graphical-chlorm = self.buildEnv {
