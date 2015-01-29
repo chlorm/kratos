@@ -16,7 +16,7 @@ appsHeadless=(beets cabal emacs git golang gvim htop minidlna mpd ncmpcpp nixpkg
               pulseaudio rtorrent ssh tmux vim)
 
 # Graphical apps to configure
-appsGraphical=(sakura sublimetextsuckless xorg)
+appsGraphical=(sakura sublimetext suckless xorg)
 
 # Desktop environments in order of preference [awesome,cinnamon,gnome,i3,kde,xfce,xmonad]
 deskenvsPreference=(xmonad kde)
