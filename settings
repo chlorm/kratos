@@ -11,11 +11,19 @@ emailGit="$emailGlobal"
 # List hostname of all workstations
 workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'
 
-# Shells in order of preference
-shellPreference=(bash zsh dash fish sh korn tcsh csh ash pdksh)
+# Headless apss to configure
+appsHeadless=(beets cabal emacs git golang gvim htop minidlna mpd ncmpcpp nixpkgs\
+              pulseaudio rtorrent ssh tmux vim)
+
+# Graphical apps to configure
+appsGraphical=(sakura sublimetextsuckless xorg)
 
 # Desktop environments in order of preference
-dePreference=(xmonad cinnamon gnome i3 awesome xfce kde)
+deskenvsPreference=(xmonad cinnamon gnome i3 awesome xfce kde)
+
+# Shells in order of preference [ash,bash,csh,dash,fish,korn,pdksh,tcsh,zsh]
+# Only list those with which you want configured (fallsback to sh if none are found)
+shellPreference=(bash zsh dash fish)
 
 # XDG directories
 XDG_CACHE_HOME="$HOME/.cache"
