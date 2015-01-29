@@ -10,13 +10,15 @@ app_htop_installed () {
 
 app_htop_dirs () {
 
-  dir_exist "$XDG_CONFIG_HOME/htop" || return 1
+  exist -dc "$XDG_CONFIG_HOME/htop" || return 1
 
   return 0
 
 }
 
 app_htop_dotfiles () {
+
+  exist -fx "$XDG_CONFIG_HOME/htop/htoprc"
 
   config_ln "config/htop/htoprc" || return 1
 
@@ -26,7 +28,7 @@ app_htop_dotfiles () {
 
 app_htop_cleanup () {
 
-  rm -rf "$XDG_CONFIG_HOME/htop"
+  exist -dx "$XDG_CONFIG_HOME/htop"
 
 }
 
@@ -37,29 +39,6 @@ app_htop_configure () {
   app_htop_dirs || return 1
 
   app_htop_dotfiles || return 1
-
-  return 0
-
-}
-
-app_htop () {
-
-  local APP
-
-  APP="htop"
-
-  eval app_${APP}_configure || {
-
-    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; }
-
-    eval app_${APP}_cleanup
-
-    return 1
-
-  }
-
-  echo "  ☑ $APP"
 
   return 0
 

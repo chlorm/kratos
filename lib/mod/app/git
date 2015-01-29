@@ -10,7 +10,7 @@ app_git_installed () {
 
 app_git_dotfiles () {
 
-  [ -f "$HOME/.gitconfig" ] && { rm -f "$HOME/.gitconfig" ; }
+  exist -fx "$HOME/.gitconfig"
 
 (
 cat <<GITCONFIG
@@ -32,27 +32,6 @@ app_git_configure () {
   app_git_installed || return 2
 
   app_git_dotfiles || return 1
-
-  return 0
-
-}
-
-app_git () {
-
-  local APP
-
-  APP="git"
-
-  eval app_${APP}_configure || {
-
-    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; }
-
-    return 1
-
-  }
-
-  echo "  ☑ $APP"
 
   return 0
 

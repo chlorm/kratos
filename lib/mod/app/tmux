@@ -10,6 +10,8 @@ app_tmux_installed () {
 
 app_tmux_dotfiles () {
 
+  exist -fx "$HOME/tmux.conf"
+
   config_ln "tmux.conf" || return 1
 
   return 0
@@ -18,7 +20,7 @@ app_tmux_dotfiles () {
 
 app_tmux_cleanup () {
 
-  rm -f "$HOME/tmux.conf"
+  exist -fx "$HOME/tmux.conf"
 
 }
 
@@ -27,29 +29,6 @@ app_tmux_configure () {
   app_tmux_installed || return 2
 
   app_tmux_dotfiles || return 1
-
-  return 0
-
-}
-
-app_tmux () {
-
-  local APP
-
-  APP="tmux"
-
-  eval app_${APP}_configure || {
-
-    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; }
-
-    eval app_${APP}_cleanup
-
-    return 1
-
-  }
-
-  echo "  ☑ $APP"
 
   return 0
 

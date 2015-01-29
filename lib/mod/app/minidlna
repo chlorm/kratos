@@ -10,13 +10,7 @@ app_minidlna_installed () {
 
 app_minidlna_dirs () {
 
-  test -L "$HOME/.minidlna" && {
-  	rm -f "#HOME/.minidlna"
-  }
-
-  dir_exist "$HOME/.minidlna" || return 1
-
-  dir_exist "$XDG_DATA_HOME/minidlna" || return 1
+  exist -dc "$HOME/.minidlna" "$XDG_DATA_HOME/minidlna" || return 1
 
   return 0
 
@@ -24,7 +18,7 @@ app_minidlna_dirs () {
 
 app_minidlna_dotfiles () {
 
-  [ -f "$HOME/.minidlna/minidlna.conf" ] && { rm -f "$HOME/.minidlna/minidlna.conf" ; }
+  exist -fx "$HOME/.minidlna/minidlna.conf"
 
 (
 cat <<MINIDLNA
@@ -68,8 +62,7 @@ MINIDLNA
 
 app_minidlna_cleanup () {
 
-  [ -d "$HOME/.minidlna" ] && { rm -rf "$HOME/.minidlna" ; }
-  [ -d "$XDG_DATA_HOME/minidlna" ] && { rm -rf "$XDG_DATA_HOME/minidlna" ; }
+  exist -dx "$HOME/.minidlna" "$XDG_DATA_HOME/minidlna"
 
 }
 
@@ -80,29 +73,6 @@ app_minidlna_configure () {
   app_minidlna_dirs || return 1
 
   app_minidlna_dotfiles || return 1
-
-  return 0
-
-}
-
-app_minidlna () {
-
-  local APP
-
-  APP="minidlna"
-
-  eval app_${APP}_configure || {
-
-    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; }
-
-    eval app_${APP}_cleanup
-
-    return 1
-
-  }
-
-  echo "  ☑ $APP"
 
   return 0
 

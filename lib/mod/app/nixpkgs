@@ -10,9 +10,7 @@ app_nixpkgs_installed () {
 
 app_nixpkgs_dirs () {
 
-  test -L "$HOME/.nixpkgs" && { rm -f "$HOME/.nixpkgs" ; }
-
-  dir_exist "$HOME/.nixpkgs" || return 1
+  exist -dc "$HOME/.nixpkgs" || return 1
 
   return 0
 
@@ -20,7 +18,7 @@ app_nixpkgs_dirs () {
 
 app_nixpkgs_dotfiles () {
 
-  [ -f "$HOME/.nixpkgs/config.nix" ] && { rm -f "$HOME/.nixpkgs/config.nix" ; }
+  exist -fx "$HOME/.nixpkgs/config.nix"
 
 (
 cat <<NIXPKGS
@@ -162,7 +160,7 @@ NIXPKGS
 
 app_nixpkgs_cleanup () {
 
-  rm -rf "$HOME/.nixpkgs"
+  exist -dx "$HOME/.nixpkgs"
 
 }
 
@@ -173,29 +171,6 @@ app_nixpkgs_configure () {
   app_nixpkgs_dirs || return 1
 
   app_nixpkgs_dotfiles || return 1
-
-  return 0
-
-}
-
-app_nixpkgs () {
-
-  local APP
-
-  APP="nixpkgs"
-
-  eval app_${APP}_configure || {
-
-    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; }
-
-    eval app_${APP}_cleanup
-
-    return 1
-
-  }
-
-  echo "  ☑ $APP"
 
   return 0
 

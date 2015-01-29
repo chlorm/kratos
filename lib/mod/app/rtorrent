@@ -10,10 +10,8 @@ app_rtorrent_installed () {
 
 app_rtorrent_dirs () {
 
-  dir_exist "$HOME/Torrents/Complete" || return 1
-  dir_exist "$HOME/Torrents/Incomplete" || return 1
-  dir_exist "$HOME/Torrents/Watch" || return 1
-  dir_exist "$XDG_DATA_HOME/rtorrent" || return 1
+  exist -dc "$HOME/Torrents/Complete" "$HOME/Torrents/Incomplete" \
+            "$HOME/Torrents/Watch" "$XDG_DATA_HOME/rtorrent" || return 1
 
   return 0
 
@@ -21,7 +19,7 @@ app_rtorrent_dirs () {
 
 app_rtorrent_dotfiles () {
 
-  [ -f "$HOME/.rtorrent.rc" ] && { rm -f "$HOME/.rtorrent.rc" ; }
+  exist -fx "$HOME/.rtorrent.rc"
 
 (
 cat <<RTORRENTRC
@@ -120,7 +118,7 @@ app_rtorrent_cleanup () {
 
   # add test for contents on Torrents/ before removing
 
-  [ -d "$XDG_DATA_HOME/rtorrent" ] && { rm -rf "$XDG_DATA_HOME/rtorrent" ; }
+  exist -dx "$XDG_DATA_HOME/rtorrent"
 
 }
 
@@ -131,29 +129,6 @@ app_rtorrent_configure () {
   app_rtorrent_dirs || return 1
 
   app_rtorrent_dotfiles || return 1
-
-  return 0
-
-}
-
-app_rtorrent () {
-
-  local APP
-
-  APP="rtorrent"
-
-  eval app_${APP}_configure || {
-
-    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; }
-
-    eval app_${APP}_cleanup
-
-    return 1
-
-  }
-
-  echo "  ☑ $APP"
 
   return 0
 

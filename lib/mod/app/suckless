@@ -8,7 +8,13 @@ app_suckless_installed () {
 
 }
 
-app_suckless () {
+app_suckless_cleanup () {
+
+  return 0
+
+}
+
+app_suckless_configure () {
 
   app_suckless_installed || return 2
   app_nixpkgs || return 1

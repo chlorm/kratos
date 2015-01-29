@@ -11,8 +11,7 @@ app_golang_installed () {
 app_golang_dirs () {
 
 
-  dir_exist "$HOME/.go/bin" || return 1
-  dir_exist "$HOME/.go/src" || return 1
+  exist -dc "$HOME/.go/bin" "$HOME/.go/src" || return 1
 
   return 0
 
@@ -30,7 +29,7 @@ app_golang_paths () {
 
 app_golang_cleanup () {
 
-  rm -rf "$HOME/.go"
+  exist -dx "$HOME/.go"
 
 }
 
@@ -41,29 +40,6 @@ app_golang_configure () {
   app_golang_dirs || return 1
 
   app_golang_paths || return 1
-
-  return 0
-
-}
-
-app_golang () {
-
-  local APP
-
-  APP="golang"
-
-  eval app_${APP}_configure || {
-
-    [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; }
-
-    eval app_${APP}_cleanup
-
-    return 1
-
-  }
-
-  echo "  ☑ $APP"
 
   return 0
 

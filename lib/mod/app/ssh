@@ -63,7 +63,13 @@ app_ssh_installed () {
 
 }
 
-app_ssh () {
+app_ssh_cleanup () {
+
+  return 0
+
+}
+
+app_ssh_configure () {
 
   app_ssh_installed || return 2
 

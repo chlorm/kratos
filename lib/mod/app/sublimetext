@@ -8,7 +8,13 @@ app_sublime_installed () {
 
 }
 
-app_sublimetext () {
+app_sublimetext_cleanup () {
+
+  return 0
+
+}
+
+app_sublimetext_configure () {
 
   app_sublime_installed || return 2
 
