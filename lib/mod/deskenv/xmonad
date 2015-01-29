@@ -10,9 +10,7 @@ deskenv_xmonad_installed () {
 
 deskenv_xmonad_dirs () {
 
-  test -L "$HOME/.xmonad" && { rm -f "$HOME/.xmonad" ; }
-
-  dir_exist "$HOME/.xmonad" || return 1
+  exist -dc "$HOME/.xmonad" || return 1
 
   return 0
 
@@ -20,7 +18,7 @@ deskenv_xmonad_dirs () {
 
 deskenv_xmonad_dotfiles () {
 
-  [ -f "$HOME/.xmonad/xmonad.hs" ] && { rm -f "$HOME/.xmonad/xmonad.hs" ; }
+  exist -fx "$HOME/.xmonad/xmonad.hs"
 
 (
 cat <<XMONAD
@@ -265,7 +263,7 @@ XMONAD
 
 deskenv_xmonad_cleanup () {
 
-  [ -d "$HOME/.xmonad" ] && { rm -rf "$HOME/.xmonad" ; }
+  exist -dx "$HOME/.xmonad"
 
 }
 
@@ -276,29 +274,6 @@ deskenv_xmonad_configure () {
   deskenv_xmonad_dirs || return 1
 
   deskenv_xmonad_dotfiles || return 1
-
-  return 0
-
-}
-
-deskenv_xmonad () {
-
-  local DESKENV
-
-  DESKENV="xmonad"
-
-  eval deskenv_${DESKENV}_configure || {
-
-    [ "$?" -eq "2" ] && { echo "  ☐ $DESKENV" ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $DESKENV" ; }
-
-    eval deskenv_${DESKENV}_cleanup
-
-    return 1
-
-  }
-
-  echo "  ☑ $DESKENV"
 
   return 0
 

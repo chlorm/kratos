@@ -8,7 +8,13 @@ deskenv_kde_installed () {
 
 }
 
-deskenv_kde () {
+deskenv_kde_cleanup () {
+
+  return 0
+
+}
+
+deskenv_kde_configure () {
 
   deskenv_kde_installed || return 1
 

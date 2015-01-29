@@ -10,11 +10,7 @@ deskenv_awesome_installed () {
 
 deskenv_awesome_dirs () {
 
-  test -L "$XDG_CONFIG_HOME/awesome" && { rm -rf "$XDG_CONFIG_HOME/awesome" ; }
-
-  dir_exist "$XDG_CONFIG_HOME/awesome" || return 1
-
-  dir_exist "$XDG_CONFIG_HOME/wallpaper" || return 1
+  exist -dc "$XDG_CONFIG_HOME/awesome" "$XDG_CONFIG_HOME/wallpaper" || return 1
 
   return 0
 
@@ -22,10 +18,8 @@ deskenv_awesome_dirs () {
 
 deskenv_awesome_dotfiles () {
 
-  [ -f "$XDG_CONFIG_HOME/awesome/theme.lua" ] && { rm -f "$XDG_CONFIG_HOME/awesome/theme.lua" ; }
-  [ -f "$XDG_CONFIG_HOME/awesome/battery.lua" ] && { rm -f "$XDG_CONFIG_HOME/awesome/battery.lua" ; }
-  [ -f "$XDG_CONFIG_HOME/awesome/rc.34.lua" ] && { rm -f "$XDG_CONFIG_HOME/awesome/rc.34.lua" ; }
-  [ -f "$XDG_CONFIG_HOME/awesome/rc.35.lua" ] && { rm -f "$XDG_CONFIG_HOME/awesome/rc.35.lua" ; }
+  exist -fx "$XDG_CONFIG_HOME/awesome/theme.lua" "$XDG_CONFIG_HOME/awesome/battery.lua" \
+            "$XDG_CONFIG_HOME/awesome/rc.34.lua" "$XDG_CONFIG_HOME/awesome/rc.35.lua"
 
 (
 cat <<THEME
@@ -1014,6 +1008,12 @@ RC35
 
 }
 
+deskenv_awesome_cleanup () {
+
+  return 0
+
+}
+
 deskenv_awesome_configure () {
 
   deskenv_awesome_installed || return 2
@@ -1021,29 +1021,6 @@ deskenv_awesome_configure () {
   deskenv_awesome_dirs || return 1
 
   deskenv_awesome_dotfiles || return 1
-
-  return 0
-
-}
-
-deskenv_awesome () {
-
-  local DESKENV
-
-  DESKENV="awesome"
-
-  eval deskenv_${DESKENV}_configure || {
-
-    [ "$?" -eq "2" ] && { echo "  ☐ $DESKENV" ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $DESKENV" ; }
-
-    #eval deskenv_${DESKENV}_cleanup
-
-    return 1
-
-  }
-
-  echo "  ☑ $DESKENV"
 
   return 0
 

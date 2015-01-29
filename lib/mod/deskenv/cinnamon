@@ -8,7 +8,13 @@ deskenv_cinnamon_installed () {
 
 }
 
-deskenv_cinnamon () {
+deskenv_cinnamon_cleanup () {
+
+  return 0
+
+}
+
+deskenv_cinnamon_configure () {
 
   deskenv_cinnamon_installed || return 1
 
