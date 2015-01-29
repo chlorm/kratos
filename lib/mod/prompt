@@ -178,9 +178,8 @@ prompt_vcs_dirty () { # Append '*' if vcs branch is dirty
 
 }
 
-prompt_configure () {
+prompt_configure () { # Create prompt
 
-  # Create Prompt
   case "$(shell_nov)" in
 
     'zsh')
