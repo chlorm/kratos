@@ -10,9 +10,7 @@ shell_zsh_installed () {
 
 shell_zsh_dotfiles () {
 
-  [ -f "$HOME/.zshrc" ] && { rm -f "$HOME/.zshrc" ; }
-  [ -f "$HOME/.zlogout" ] && { rm -f "$HOME/.zlogout" ; }
-  [ -f "$HOME/.zprofile" ] && { rm -f "$HOME/.zprofile" ; }
+  exist -fx "$HOME/.zshrc" "$HOME/.zlogout" "$HOME/.zprofile"
 
 (
 cat <<ZSHRC
@@ -77,9 +75,7 @@ ZPROFILE
 
 shell_zsh_cleanup () {
 
-  [ -f "$HOME/.zshrc" ] && { rm -f "$HOME/.zshrc" ; }
-  [ -f "$HOME/.zlogout" ] && { rm -f "$HOME/.zlogout" ; }
-  [ -f "$HOME/.zprofile" ] && { rm -f "$HOME/.zprofile" ; }
+  exist -fx "$HOME/.zshrc" "$HOME/.zlogout" "$HOME/.zprofile"
 
 }
 
@@ -88,27 +84,6 @@ shell_zsh_configure () {
   shell_zsh_installed || return 2
 
   shell_zsh_dotfiles || return 1
-
-  return 0
-
-}
-
-shell_zsh () {
-
-  local SHELL
-
-  SHELL="zsh"
-
-  eval shell_${SHELL}_configure || {
-
-    eval shell_${SHELL}_cleanup
-
-    [ "$?" -eq "2" ] && { echo "  ☐ $SHELL" ; return 1 ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $SHELL" ; return 1 ; }
-
-  }
-
-  echo "  ☑ $SHELL"
 
   return 0
 

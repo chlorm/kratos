@@ -10,9 +10,7 @@ shell_bash_installed () {
 
 shell_bash_dotfiles () {
 
-  [ -f "$HOME/.bashrc" ] && { rm -f "$HOME/.bashrc" ; }
-  [ -f "$HOME/.bash_logout" ] && { rm -f "$HOME/.bash_logout" ; }
-  [ -f "$HOME/.bash_profile" ] && { rm -f "$HOME/.bash_profile" ; }
+  exist -fx "$HOME/.bashrc" "$HOME/.bash_logout" "$HOME/.bash_profile"
 
 (
 cat <<BASHRC
@@ -79,9 +77,7 @@ BASHPROFILE
 
 shell_bash_cleanup () {
 
-  [ -f "$HOME/.bashrc" ] && { rm -f "$HOME/.bashrc" ; }
-  [ -f "$HOME/.bash_logout" ] && { rm -f "$HOME/.bash_logout" ; }
-  [ -f "$HOME/.bash_profile" ] && { rm -f "$HOME/.bash_profile" ; }
+  exist -fx "$HOME/.bashrc" "$HOME/.bash_logout" "$HOME/.bash_profile"
 
 }
 
@@ -90,26 +86,5 @@ shell_bash_configure () {
   shell_bash_installed || return 1
 
   shell_bash_dotfiles || return 1
-
-}
-
-shell_bash () {
-
-  local SHELL
-
-  SHELL="bash"
-
-  eval shell_${SHELL}_configure || {
-
-    eval shell_${SHELL}_cleanup
-
-    [ "$?" -eq "2" ] && { echo "  ☐ $SHELL" ; return 1 ; }
-    [ "$?" -eq "1" ] && { echo "  ☒ $SHELL" ; return 1 ; }
-
-  }
-
-  echo "  ☑ $SHELL"
-
-  return 0
 
 }
