@@ -21,6 +21,9 @@ cat <<ZSHRC
 . "$DOTFILES_DIR/lib/loader"
 shells_auto
 
+# Allow for functions in the prompt.
+setopt PROMPT_SUBST
+
 # Path to your oh-my-zsh configuration.
 #ZSH="$DOTFILES_DIR/lib/oh-my-zsh"
 
