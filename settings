@@ -18,12 +18,12 @@ appsHeadless=(beets cabal emacs git golang gvim htop minidlna mpd ncmpcpp nixpkg
 # Graphical apps to configure
 appsGraphical=(sakura sublimetextsuckless xorg)
 
-# Desktop environments in order of preference
-deskenvsPreference=(xmonad cinnamon gnome i3 awesome xfce kde)
+# Desktop environments in order of preference [awesome,cinnamon,gnome,i3,kde,xfce,xmonad]
+deskenvsPreference=(xmonad kde)
 
 # Shells in order of preference [ash,bash,csh,dash,fish,korn,pdksh,tcsh,zsh]
 # Only list those with which you want configured (fallsback to sh if none are found)
-shellPreference=(bash zsh dash fish)
+shellsPreference=(bash zsh fish)
 
 # XDG directories
 XDG_CACHE_HOME="$HOME/.cache"

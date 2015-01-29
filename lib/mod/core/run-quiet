@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+run_quiet () { # Start an application in the background
+
+  path_hasbin "$1" || return 1
+
+  local PID
+
+  PID="$(pgrep $1)"
+
+  [ -z "$PID" ] && { "$@" >/dev/null 2>&1 ; }
+
+}

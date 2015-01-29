@@ -2,17 +2,30 @@
 
 deskenvs_configure () { # Install DE configs
 
-  deskenv_awesome
-  deskenv_cinnamon
-  deskenv_gnome
-  deskenv_i3
-  deskenv_kde
-  deskenv_xfce
-  deskenv_xmonad
+  local DESKENV
+
+  for DESKENV in ${deskenvsPreference[@]} ; do
+
+    eval deskenv_${DESKENV}_configure || {
+
+      [ "$?" -eq "2" ] && { echo "  ☐ $DESKENV" ; }
+      [ "$?" -eq "1" ] && { echo "  ☒ $DESKENV" ; }
+
+      eval deskenv_${DESKENV}_cleanup
+
+      continue
+
+    }
+
+    echo "  ☑ $DESKENV"
+
+  done
 
   # clean this up later
   install -d $XDG_CONFIG_HOME
   config_ln "config/Terminal" "config/wallpaper" "config/uzbl"
+
+  return 0
 
 }
 
@@ -58,7 +71,7 @@ deskenvs_preference () {
 
   local DE
 
-  for DE in ${dePreference[@]} ; do
+  for DE in ${deskenvsPreference[@]} ; do
 
     path_hasbin "$(deskenvs_executable)" >/dev/null 2>&1 && { echo "$DE" ; return 0 ; }
 

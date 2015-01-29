@@ -4,16 +4,24 @@
 
 shells_configure () {
 
-  #shell_ash
-  shell_bash
-  #shell_csh
-  #shell_dash
-  shell_fish
-  #shell_korn
-  #shell_pdksh
-  #shell_sh
-  #shell_tcsh
-  shell_zsh
+  local SHELL
+
+  for SHELL in ${shellsPreference[@]} ; do
+
+    eval shell_${SHELL}_configure || {
+
+      [ "$?" -eq "2" ] && { echo "  ☐ $SHELL" ; }
+      [ "$?" -eq "1" ] && { echo "  ☒ $SHELL" ; }
+
+      eval shell_${SHELL}_cleanup
+
+      continue
+
+    }
+
+    echo "  ☑ $SHELL"
+
+  done
 
   return 0
 
@@ -110,7 +118,7 @@ shells_preference () {
 
   local SHELL
 
-  for SHELL in ${shellPreference[@]} ; do
+  for SHELL in ${shellsPreference[@]} ; do
 
     path_hasbin "$(tolower $SHELL)" > /dev/null 2>&1 && { echo "$(tolower $SHELL)" ; return 0 ; }
 

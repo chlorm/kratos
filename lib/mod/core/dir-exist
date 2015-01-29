@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+dir_check () {
+
+  [ -d "$1" ] || { 
+    echo "Creating directory: $1"
+    mkdir -p "$1" >/dev/null 2>&1
+    [ "$?" != "0" ] && return 1
+  }
+
+  return 0
+
+}
+
+dir_exist () {
+
+  dir_check "$1" || { echo "ERROR: failed to create directory: $1" ; return 1 ; }
+
+  return 0
+
+}

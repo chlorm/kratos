@@ -89,15 +89,6 @@ dir_try () { # Determines the top level configuration directory
 
 dir_conf () {
 
-  #[ -z "$DIR_CONF" ] || { echo "$DIR_CONF" ; return 0 ; }
-  #dir_try "$1" && return 0
-  #dir_try "$HOME/.zshrc" && return 0
-  #dir_try "$HOME/.bashrc" && return 0
-  #dir_try "$HOME/.xinitrc" && return 0
-
-  #echo "Failed to find the configuration directory" >&2
-  #return 1
-
   echo "$DOTFILES_DIR"
 
   return 0

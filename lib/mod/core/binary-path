@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+path_bin () { # Finds the path to the binary
+
+  [ "$#" -ne "1" ] && return 2
+
+  path_hasbin "$1" && type "$1" | awk '{print $3}' && return 0
+
+  return 1
+
+}

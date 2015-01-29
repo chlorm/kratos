@@ -1,0 +1,44 @@
+#!/usr/bin/env sh
+
+y_or_n_validate () { # Validate the answer to a yes or no question
+
+  local ANS
+
+  ANS="$(tolower $1)"
+
+  [ "$ANS" = "yes" ] && return 0
+  [ "$ANS" = "y" ] && return 0
+  [ "$ANS" = "no" ] && return 1
+  [ "$ANS" = "n" ] && return 1
+
+  return 2
+
+}
+
+y_or_n () { # Ask a yes or no question
+
+  local ANS
+  local RET
+
+  while true ; do
+    echo -n "$1 "
+    y_or_n_validate "$2"
+    RET="$?"
+    if [ "$RET" -eq "0" ] ; then
+      echo -n "(Y/n) "
+      read ANS
+      [ -z "$ANS" ] && return 0
+    elif [ "$RET" -eq "1" ] ; then
+      echo -n "(y/N)" 
+      read ANS
+      [ -z "$ANS" ] && return 1
+    else
+      echo -n "(y/n) "
+      read ANS
+    fi
+    y_or_n_validate "$ANS"
+    RET="$?"
+    [ "$RET" -lt "2" ] && return $RET
+  done
+
+}
