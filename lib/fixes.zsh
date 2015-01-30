@@ -46,6 +46,6 @@ array_size () {
 path_hasbin () { # Tests to see if a binary exists in the path
 
   [ "$#" -ne "1" ] && return 2
-  whence -p $1 >/dev/null 2>&1 || { echo "  '$1' not installed" ; return 1 ; }
+  whence -p $1 > /dev/null 2>&1 || { echo "  '$1' not installed" ; return 1 ; }
 
 }
