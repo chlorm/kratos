@@ -2,7 +2,7 @@
 
 # http://en.wikipedia.org/wiki/Comparison_of_command_shells
 
-shells_configure () {
+shells_configure () { # Run shell configurations
 
   local SHELL
 
@@ -10,8 +10,8 @@ shells_configure () {
 
     eval shell_${SHELL}_configure || {
 
-      [ "$?" -eq "2" ] && { echo "  ☐ $SHELL" ; }
-      [ "$?" -eq "1" ] && { echo "  ☒ $SHELL" ; }
+      [ "$?" -eq "2" ] && echo "  ☐ $SHELL"
+      [ "$?" -eq "1" ] && echo "  ☒ $SHELL"
 
       eval shell_${SHELL}_cleanup
 
@@ -83,7 +83,7 @@ shells_tmp () { # Create the temporary directory for the shell
 
 }
 
-shells_init () { # Initializes useful functions if the caller is a shell
+shells_init () { # Initializes useful functions
 
   shells_tmp
   #agent_auto

@@ -54,8 +54,7 @@ cpu_endianness () { # Find CPU endianness (ie. 32bit/64bit)
 	
   ENDIANNESS=$(getconf LONG_BIT | grep -m 1 -w -o "\(8\|16\|24\|32\|64\)" | grep -o '[0-9]*')
 
-  [ -z "$ENDIANNESS" ] && \
-  { echo "ERROR: could not determine cpu endianness" ; return 1 ; }
+  [ -z "$ENDIANNESS" ] && { echo "ERROR: could not determine cpu endianness" ; return 1 ; }
 
   echo "$ENDIANNESS"
 
@@ -83,7 +82,7 @@ cpu_cores () { # Find number of physical cpu cores
 
   esac
 
-  [ -z "$cpuCORES" ] && { cpuCORES="1" ; }
+  [ -z "$cpuCORES" ] && cpuCORES="1"
 
   echo "$cpuCORES"
 
@@ -111,7 +110,7 @@ cpu_threads () { # Find number of logical cpu cores
 
   esac
 
-  [ -z "$cpuTHREADS" ] && { cpuTHREADS="$(cpu_cores)" ; }
+  [ -z "$cpuTHREADS" ] && cpuTHREADS="$(cpu_cores)"
 
   echo "$cpuTHREADS"
 

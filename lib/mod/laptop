@@ -2,7 +2,7 @@
 
 laptop_bat () { # Use acpi if possible
 
-  acpi -b 2>/dev/null || laptop_bat_old
+  acpi -b 2> /dev/null || laptop_bat_old
 
 }
 
@@ -27,7 +27,7 @@ laptop_bat_one () {
 
   echo -n "$1: "
   BAT_DIR="$ROOT/sys/class/power_supply/$1"
-  B="$(cat "$BAT_DIR/status" 2>/dev/null)" || return 1
+  B="$(cat "$BAT_DIR/status" 2> /dev/null)" || return 1
 
   case "$B" in
 
@@ -45,8 +45,8 @@ laptop_bat_one () {
 
   esac
 
-  NOW="$(cat "$BAT_DIR"/charge_now 2>/dev/null || cat "$BAT_DIR"/energy_now 2>/dev/null || echo -1)"
-  FULL="$(cat "$BAT_DIR"/charge_full 2>/dev/null || cat "$BAT_DIR"/energy_full 2>/dev/null || echo 1)"
+  NOW="$(cat "$BAT_DIR"/charge_now 2> /dev/null || cat "$BAT_DIR"/energy_now 2> /dev/null || echo -1)"
+  FULL="$(cat "$BAT_DIR"/charge_full 2> /dev/null || cat "$BAT_DIR"/energy_full 2> /dev/null || echo 1)"
   echo "$(expr $NOW \* 100 / $FULL)%"
 
 }

@@ -1,0 +1,139 @@
+#app-admin/eselect-php fpm
+#app-admin/sudo ldap
+
+#app-arch/p7zip rar
+
+#app-editors/vim lua
+#app-editors/vim perl
+#app-editors/vim python
+
+#app-emulation/libvirt numa
+#app-emulation/libvirt rdb
+#app-emulation/libvirt virt-network
+#app-emulation/libvirt-glib python
+#app-emulation/qemu spice
+
+#app-portage/layman bazaar
+#app-portage/layman cvs
+#app-portage/layman darcs
+#app-portage/layman mercurial
+#app-portage/layman subversion
+
+#app-text/poppler qt4
+
+#dev-lang/php fpm
+#dev-lang/php gd
+#dev-lang/php postgres
+#dev-lang/php threads
+
+#dev-python/PyQt4 webkit
+
+#dev-qt/qtgui xinerama
+
+#gnome-base/gvfs aftp
+#gnome-base/gvfs archive
+#gnome-base/gvfs avahi
+#gnome-base/gvfs bluray
+#gnome-base/gvfs fuse
+#gnome-base/gvfs gphoto2
+#gnome-base/gvfs ios
+#gnome-base/gvfs mtp
+#gnome-base/gvfs samba
+
+#media-gfx/imagemagick opencl
+#media-gfx/imagemagick raw
+
+#media-libs/libmp4v2 utils
+#media-libs/libtxc_dxtn abi_x86_32
+#media-libs/mesa gbm
+#media-libs/mesa xa
+#media-libs/x265 -10bit
+#media-libs/xine-lib bluray
+#media-libs/xine-lib v4l
+#media-libs/xine-lib vpx
+#media-libs/xine-lib xinerama
+#media-libs/xine-lib xvmc
+
+#media-plugins/grilo-plugins tracker
+#media-plugins/gst-plugins-meta ffmpeg
+
+#media-sound/mpd faad
+#media-sound/mpd inotify
+#media-sound/mpd lame
+#media-sound/mpd libsamplerate
+#media-sound/mpd openal
+#media-sound/mpd opus
+#media-sound/mpd sqlite
+#media-sound/mpd zeroconf
+#media-sound/mpdris2 python_single_target_python2_7
+#media-sound/ncmpcpp curl
+#media-sound/ncmpcpp fftw
+#media-sound/ncmpcpp taglib
+#media-sound/ncmpcpp visualizer
+#media-sound/noise ipod
+#media-sound/noise lastfm
+#media-sound/noise mpris
+#media-sound/noise plugins
+#media-sound/noise upnp
+#media-sound/pulseaudio libsamplerate
+
+#media-video/ffmpeg fdk
+#media-video/ffmpeg threads
+#media-video/ffmpeg vaapi
+#media-video/ffmpeg x265
+#media-video/ffmpeg -faac
+#media-video/vlc avahi
+#media-video/vlc bluray
+#media-video/vlc faad
+#media-video/vlc fdk
+#media-video/vlc libspa
+#media-video/vlc libass
+#media-video/vlc libsamplerate
+#media-video/vlc libsoxr
+#media-video/vlc lua
+#media-video/vlc matroska
+#media-video/vlc qt4
+#media-video/vlc -qt5
+#media-video/vlc rtsp
+#media-video/vlc samba
+#media-video/vlc skins
+#media-video/vlc v4l
+#media-video/vlc vaapi
+#media-video/vlc vdpau
+#media-video/vlc vpx
+#media-video/vlc x265
+#media-video/vlc zvbi
+#media-video/xine-lib xinerama
+
+#net-im/pidgin networkmanager
+#net-im/pidgin zeroconf
+
+#net-irc/quassel webkit
+
+#net-libs/gtk-vnc python
+
+#net-misc/spice-gtk python
+#net-misc/spice-gtk vala
+#net-misc/youtube-dl offensive
+
+#net-p2p/eiskaltdcpp -dbus
+#net-p2p/eiskaltdcpp gtk
+#net-p2p/eiskaltdcpp json
+#net-p2p/eiskaltdcpp -qt4
+#net-p2p/eiskaltdcpp -spell
+#net-p2p/eiskaltdcpp -sqlite
+#net-p2p/rtorrent daemon
+#net-p2p/rtorrent xmlrpc
+
+#sys-libs/zlib minizip
+
+#virtual/ffmpeg threads
+#virtual/ffmpeg vaapi
+#virtual/notification-daemon -gnome
+#virtual/udev gudev
+
+#x11-apps/intel-gpu-tools python_single_target_python3_3
+
+#x11-drivers/xf86-video-intel glamor
+#x11-drivers/xf86-video-intel uxa
+#x11-drivers/xf86-video-intel xvmc

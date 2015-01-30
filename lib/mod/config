@@ -14,7 +14,7 @@ git_cbr () {( # Gets the current git branch
 
     git_cd $1 || return 1
 
-    git rev-parse --abbrev-ref HEAD 2>/dev/null
+    git rev-parse --abbrev-ref HEAD 2> /dev/null
 
 )}
 
@@ -24,7 +24,7 @@ git_pull () {( # Updates the root git tree
 
     git_cd $1 || return 2
 
-    git reset --hard >/dev/null 2>&1
+    git reset --hard > /dev/null 2>&1
 
     STR="$(git pull origin "$(git_cbr $1)" 2>&1)" || return 2
 
@@ -147,7 +147,7 @@ config_ln () { # Links the configuration file to its proper dotfile
   [ "$#" -eq "0" ] && return 1
 
   for LN in $@ ; do
-    symlink "$DOTFILES_DIR/dotfiles/$LN" "$HOME/.$LN" || { echo "ERROR: failed to symlink $LN" 2> /dev/null ; }
+    symlink "$DOTFILES_DIR/dotfiles/$LN" "$HOME/.$LN" || echo "ERROR: failed to symlink $LN" 2> /dev/null
     [ "$?" -eq "0" ] && echo "  Symlinked $LN"
   done
 

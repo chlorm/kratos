@@ -15,7 +15,7 @@ path_abs () { # Resolves the name of the binary
 
   local BIN
 
-  BIN="$(whereis -b $1 2>/dev/null | awk '{print $2}')"
+  BIN="$(whereis -b $1 2> /dev/null | awk '{print $2}')"
 
   [ -z "$BIN" ] && return 1
 
@@ -33,7 +33,7 @@ svar () { # Stores the output of the command into a variable without a subshell
 
   VAR="$1"
   shift 1
-  TMP="$(mktemp 2>/dev/null)" || TMP="$(mktemp -t tmp 2>/dev/null)" || return 128
+  TMP="$(mktemp 2> /dev/null)" || TMP="$(mktemp -t tmp 2> /dev/null)" || return 128
   $@ >"$TMP"
   RET="$?"
   read "$VAR" <"$TMP"
@@ -74,11 +74,11 @@ dir_try () { # Determines the top level configuration directory
   local OLD
 
   OLD="$(pwd)"
-  DIR_BIN="$(readlink -f "$1" 2>/dev/null)" || return 1
+  DIR_BIN="$(readlink -f "$1" 2> /dev/null)" || return 1
 
-  cd "$(dirname "$DIR_BIN")" 2>/dev/null || return 1
+  cd "$(dirname "$DIR_BIN")" 2> /dev/null || return 1
 
-  DIR_CONF="$(git rev-parse --show-toplevel 2>/dev/null)" || return 1
+  DIR_CONF="$(git rev-parse --show-toplevel 2> /dev/null)" || return 1
 
   export DIR_CONF
   echo "$DIR_CONF"
@@ -96,7 +96,7 @@ dir_conf () {
 }
 
 # Loads the shell specific fixes
-. "$DOTFILES_DIR/lib/fixes.$(shell_nov)" 2>/dev/null || {
+. "$DOTFILES_DIR/lib/fixes.$(shell_nov)" 2> /dev/null || {
   echo "Failed to load the fixes for the current shell" >&2
   exit 1
 }

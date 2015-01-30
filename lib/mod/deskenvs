@@ -8,8 +8,8 @@ deskenvs_configure () { # Install DE configs
 
     eval deskenv_${DESKENV}_configure || {
 
-      [ "$?" -eq "2" ] && { echo "  ☐ $DESKENV" ; }
-      [ "$?" -eq "1" ] && { echo "  ☒ $DESKENV" ; }
+      [ "$?" -eq "2" ] && echo "  ☐ $DESKENV"
+      [ "$?" -eq "1" ] && echo "  ☒ $DESKENV"
 
       eval deskenv_${DESKENV}_cleanup
 
@@ -73,7 +73,7 @@ deskenvs_preference () {
 
   for DE in ${deskenvsPreference[@]} ; do
 
-    path_hasbin "$(deskenvs_executable)" >/dev/null 2>&1 && { echo "$DE" ; return 0 ; }
+    path_hasbin "$(deskenvs_executable)" > /dev/null 2>&1 && { echo "$DE" ; return 0 ; }
 
   done
 
@@ -142,7 +142,7 @@ deskenvs_terminal () {
 
 deskenvs_run () { # Run the prefered window manager
 
-  [ -z "$(deskenvs_preference)" ] && { return 1 ; }
+  [ -z "$(deskenvs_preference)" ] && return 1
 
   local PID
   local WM

@@ -2,7 +2,7 @@
 
 require_app () { # Enforces that an application is installed
 
-  which "$1" >/dev/null 2>&1
+  which "$1" > /dev/null 2>&1
   if [ "$?" -ne "0" ] ; then
     echo "ERROR: required dependency '$1' is not installed" >&2
     exit 2

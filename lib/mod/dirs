@@ -23,17 +23,17 @@ XDG_VIDEOS_DIR="$XDG_VIDEOS_DIR"
 XDGUSERDIRS
 ) > "$XDG_CONFIG_HOME/user-dirs.dirs"
 
-  exist -dc "$XDG_CACHE_HOME" && { export XDG_CACHE_HOME ; }
-  exist -dc "$XDG_CONFIG_HOME" && { export XDG_CONFIG_HOME ; }
-  exist -dc "$XDG_DATA_HOME" && { export XDG_DATA_HOME ; }
-  exist -dc "$XDG_DESKTOP_DIR" && { export XDG_DESKTOP_DIR ; }
-  exist -dc "$XDG_DOCUMENTS_DIR" && { export XDG_DOCUMENTS_DIR ; }
-  exist -dc "$XDG_DOWNLOAD_DIR" && { export XDG_DOWNLOAD_DIR ; }
-  exist -dc "$XDG_MUSIC_DIR" && { export XDG_MUSIC_DIR ; }
-  exist -dc "$XDG_PICTURES_DIR" && { export XDG_PICTURES_DIR ; }
-  exist -dc "$XDG_PUBLICSHARE_DIR" && { export XDG_PUBLICSHARE_DIR ; }
-  exist -dc "$XDG_TEMPLATES_DIR" && { export XDG_TEMPLATES_DIR ; }
-  exist -dc "$XDG_VIDEOS_DIR" && { export XDG_VIDEOS_DIR ; }
+  exist -dc "$XDG_CACHE_HOME" && export XDG_CACHE_HOME
+  exist -dc "$XDG_CONFIG_HOME" && export XDG_CONFIG_HOME
+  exist -dc "$XDG_DATA_HOME" && export XDG_DATA_HOME
+  exist -dc "$XDG_DESKTOP_DIR" && export XDG_DESKTOP_DIR
+  exist -dc "$XDG_DOCUMENTS_DIR" && export XDG_DOCUMENTS_DIR
+  exist -dc "$XDG_DOWNLOAD_DIR" && export XDG_DOWNLOAD_DIR
+  exist -dc "$XDG_MUSIC_DIR" && export XDG_MUSIC_DIR
+  exist -dc "$XDG_PICTURES_DIR" && export XDG_PICTURES_DIR
+  exist -dc "$XDG_PUBLICSHARE_DIR" && export XDG_PUBLICSHARE_DIR
+  exist -dc "$XDG_TEMPLATES_DIR" && export XDG_TEMPLATES_DIR
+  exist -dc "$XDG_VIDEOS_DIR" && export XDG_VIDEOS_DIR
 
   return 0
 
@@ -55,7 +55,7 @@ dir_tmp () { # Get the path to the temporary directory
 
   [ ! -d "$DIR_TMP" ] && mkdir "$DIR_TMP" && chmod 0700 "$DIR_TMP"
   symlink "$DIR_TMP" "$HOME/.tmp"
-  mkdir "$DIR_TMP/cache" >/dev/null 2>&1
+  mkdir "$DIR_TMP/cache" > /dev/null 2>&1
   symlink "$DIR_TMP/cache" "$HOME/.cache"
   echo "$DIR_TMP"
 
@@ -74,7 +74,7 @@ dir_tmp_one () {
 
   [ -w "$1" ] || return 1
 
-  mount | grep '\(tmpfs\|ramfs\)' | grep $1 >/dev/null || return 1
+  mount | grep '\(tmpfs\|ramfs\)' | grep $1 > /dev/null || return 1
   DIR_TMP="$1/$USER"
 
 }

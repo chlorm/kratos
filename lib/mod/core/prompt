@@ -58,40 +58,28 @@ prompt_color () { # Get colors for the current shell
 
 prompt_vcs () { # Determine if the current directory is a vcs repo
 
+  path_hasbin git > /dev/null 2>&1 && {
+    git status > /dev/null 2>&1 && { echo "git" ; return 0 ; }
+  }
+
   path_hasbin bzr > /dev/null 2>&1 && {
-    bzr root > /dev/null 2>&1 && {
-      echo "bzr" ; return 0
-    }
+    bzr root > /dev/null 2>&1 && { echo "bzr" ; return 0 ; }
   }
 
   path_hasbin cvs > /dev/null 2>&1 && {
-    cvs status > /dev/null 2>&1 && {
-      echo "cvs" ; return 0
-    }
+    cvs status > /dev/null 2>&1 && { echo "cvs" ; return 0 ; }
   }
 
   path_hasbin darcs > /dev/null 2>&1 && {
-    darcs ??? > /dev/null 2>&1 && {
-      echo "darcs" ; return 0
-    }
-  }
-
-  path_hasbin git > /dev/null 2>&1 && {
-    git status > /dev/null 2>&1 && {
-      echo "git" ; return 0
-    }
+    darcs ??? > /dev/null 2>&1 && { echo "darcs" ; return 0 ; }
   }
 
   path_hasbin hg > /dev/null 2>&1 && {
-    hg status > /dev/null 2>&1 && {
-      echo "hg" ; return 0
-    }
+    hg status > /dev/null 2>&1 && { echo "hg" ; return 0 ; }
   }
 
   path_hasbin svn > /dev/null 2>&1 && {
-    svn info > /dev/null 2>&1 && {
-      echo "svn" ; return 0
-    }
+    svn info > /dev/null 2>&1 && { echo "svn" ; return 0 ; }
   }
 
   return 0
@@ -119,7 +107,7 @@ prompt_vcs_branch () { # Return current vcs branch
 
       GITBRANCH=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(prompt_vcs_dirty)/")
 
-      [ -n "$GITBRANCH" ] && { echo "$GITBRANCH" ; }
+      [ -n "$GITBRANCH" ] && echo "$GITBRANCH"
 
       return 0
       ;;
@@ -159,7 +147,7 @@ prompt_vcs_dirty () { # Append '*' if vcs branch is dirty
 
       GITSTATUS="$(git status 2> /dev/null | grep -m 1 -w -o 'working directory clean')"
 
-      [ "$GITSTATUS" != "working directory clean" ] && { echo "*" ; }
+      [ "$GITSTATUS" != "working directory clean" ] && echo "*"
 
       return 0
       ;;

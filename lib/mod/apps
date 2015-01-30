@@ -10,8 +10,8 @@ apps_headless () {
 
     eval app_${APP}_configure || {
 
-      [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; }
-      [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; }
+      [ "$?" -eq "2" ] && echo "  ☐ $APP"
+      [ "$?" -eq "1" ] && echo "  ☒ $APP"
 
       eval app_${APP}_cleanup
 
@@ -35,8 +35,8 @@ apps_graphical () {
 
     eval app_${APP}_configure || {
 
-      [ "$?" -eq "2" ] && { echo "  ☐ $APP" ; }
-      [ "$?" -eq "1" ] && { echo "  ☒ $APP" ; }
+      [ "$?" -eq "2" ] && echo "  ☐ $APP"
+      [ "$?" -eq "1" ] && echo "  ☒ $APP"
 
       eval app_${APP}_cleanup
 
@@ -56,8 +56,6 @@ apps_configure () {
 
   apps_headless
 
-  [ app_xorg_installed ] && {
-    apps_graphical
-  }
+  app_xorg_installed && apps_graphical
 
 }
