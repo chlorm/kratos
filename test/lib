@@ -44,7 +44,7 @@ test_run_ () { # Run a single test
 
   if [ "$(shell_nov)" = "dash" ] || [ "$(shell_nov)" = "sh" ] ; then
     printf "%${1}s  [Running]" "$2"
-    (eval "$2") >"$TFILE" 2>&1
+    (eval "$2") > "$TFILE" 2>&1
     case "$?" in
 
       $TEST_PASS)
@@ -57,14 +57,14 @@ test_run_ () { # Run a single test
 
       *)
         printf "\r%${1}s  [Failed] \n" "$2"
-        cat "$TFILE" 2>/dev/null
+        cat "$TFILE" 2> /dev/null
         echo ""
         ;;
 
     esac
   else
     printf "%${1}s  [$(shell_color yellow 0)Running$(shell_color reset 0)]" "$2"
-    (eval "$2") >"$TFILE" 2>&1
+    (eval "$2") > "$TFILE" 2>&1
     case "$?" in
 
       $TEST_PASS)
@@ -78,7 +78,7 @@ test_run_ () { # Run a single test
       *)
         printf "\r\e[K%${1}s  [$(shell_color red 0)Failed$(shell_color reset 0)]\n" "$2"
         echo "Error output:"
-        cat "$TFILE" 2>/dev/null
+        cat "$TFILE" 2> /dev/null
         echo ""
         ;;
 

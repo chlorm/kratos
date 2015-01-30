@@ -4,7 +4,7 @@
 
 run_test () {
 
-  export RUNNING_SHELL="$(basename "$(readlink -f "$(which "$1" 2>/dev/null)")")"
+  export RUNNING_SHELL="$(basename "$(readlink -f "$(which "$1" 2> /dev/null)")")"
 
   if path_hasbin "$1" ; then
     "$1" $(dirname "$0")/test
