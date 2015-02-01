@@ -4,6 +4,7 @@ download () { # Find download utility on system
 
   path_hasbin "curl" && { curl -O "$@" ; return 0 ; }
   path_hasbin "wget" && { wget "$@" ; return 0 ; }
+  path_hasbin "fetch" && { fetch "$@" ; return 0 ; }
 
   echo "ERROR: no download utility found"
   return 1
