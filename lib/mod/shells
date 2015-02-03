@@ -97,6 +97,7 @@ shells_init () { # Initializes useful functions
   alias youtube="youtube-dl --max-quality --no-check-certificate --prefer-insecure --console-title"
   alias music="ncmpcpp"
   alias tarxz="tar cjvf"
+  alias emacs="emacs -nw"
   # Btrfs
   alias defragmentroot="sudo btrfs filesystem defragment -r -v -clzo /"
   alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
