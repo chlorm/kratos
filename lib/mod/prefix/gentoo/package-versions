@@ -1,0 +1,107 @@
+#!/usr/bin/env sh
+
+gentoo_prefix_package_version() {
+
+  case "$1" in
+
+    'bash')
+      echo "4.2_p33"
+      return 0
+      ;;
+
+    'binutils')
+      echo "2.24.90"
+      return 0
+      ;;
+
+    'bison')
+      echo "3.0.4"
+      return 0
+      ;;
+
+    'bzip2')
+      echo "1.0.6"
+      return 0
+      ;;
+
+    'coreutils')
+      echo "8.23"
+      return 0
+      ;;
+
+    'findutils')
+      echo "4.5.12"
+      return 0
+      ;;
+
+    'gawk')
+      echo "4.1.1"
+      return 0
+      ;;
+
+    'grep')
+      echo "2.21"
+      return 0
+      ;;
+
+    'gzip')
+      echo "1.6"
+      return 0
+      ;;
+
+    'm4')
+      echo "1.4.17"
+      return 0
+      ;;
+
+    'make')
+      echo "4.1"
+      return 0
+      ;;
+
+    'portage')
+      echo "2.2.15"
+      return 0
+      ;;
+
+    'python2')
+      echo "2.7.9"
+      return 0
+      ;;
+
+    'python3')
+      echo "3.4.2"
+      return 0
+      ;;
+
+    'sed')
+      echo "4.2.2"
+      return 0
+      ;;
+
+    'tar')
+      echo "1.28"
+      return 0
+      ;;
+
+    'texinfo')
+      echo "5.2"
+      return 0
+      ;;
+
+    'wget')
+      echo "1.16.1"
+      return 0
+      ;;
+
+    'zlib')
+      echo "1.2.8"
+      return 0
+      ;;
+
+
+  esac
+
+  return 1
+
+}

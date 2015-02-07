@@ -1,0 +1,71 @@
+#!/usr/bin/env sh
+
+bootstrap_portage() {
+	# Set TESTING_PV in env if you want to test a new portage before bumping the
+	# STABLE_PV that is known to work. Intended for power users only.
+	## It is critical that STABLE_PV is the lastest (non-masked) version that is
+	## included in the snapshot for bootstrap_tree.
+	STABLE_PV="2.2.14"
+	[[ ${TESTING_PV} == latest ]] && TESTING_PV="2.2.14"
+	PV="${TESTING_PV:-${STABLE_PV}}"
+	A=prefix-portage-${PV}.tar.bz2
+	einfo "Bootstrapping ${A%-*}"
+		
+	efetch ${DISTFILES_URL}/${A} || return 1
+
+	einfo "Unpacking ${A%-*}"
+	export S="${PORTAGE_TMPDIR}"/portage-${PV}
+	ptmp=${S}
+	rm -rf "${S}" >& /dev/null
+	mkdir -p "${S}" >& /dev/null
+	cd "${S}"
+	bzip2 -dc "${DISTDIR}/${A}" | $TAR -xf - || return 1
+	S="${S}/prefix-portage-${PV}"
+	cd "${S}"
+
+	# disable ipc
+	sed -e "s:_enable_ipc_daemon = True:_enable_ipc_daemon = False:" \
+		-i pym/_emerge/AbstractEbuildProcess.py || \
+		return 1
+
+	# Portage checks for valid shebangs. These may (xz-utils) originate
+	# in CONFIG_SHELL (AIX), which originates in PORTAGE_BASH then.
+	# So we need to ensure portage's bash is valid as shebang too.
+	mkdir -p "${ROOT}"/tmp/bin "${ROOT}"/bin || return 1
+	[[ -x ${ROOT}/tmp/bin/bash ]] || [[ ! -x ${ROOT}/tmp/usr/bin/bash ]] || ln -s ../usr/bin/bash "${ROOT}"/tmp/bin/bash || return 1
+	[[ -x ${ROOT}/tmp/bin/bash ]] || ln -s "${BASH}" "${ROOT}"/tmp/bin/bash || return 1
+	[[ -x ${ROOT}/tmp/bin/sh ]] || ln -s bash "${ROOT}"/tmp/bin/sh || return 1
+	[[ -x ${ROOT}/bin/sh ]] || ln -s ../tmp/bin/sh "${ROOT}"/bin/sh || return 1
+	export PORTAGE_BASH="${ROOT}"/tmp/bin/bash
+
+	einfo "Compiling ${A%-*}"
+	econf \
+		--with-offset-prefix="${ROOT}"/tmp \
+		--with-portage-user="`id -un`" \
+		--with-portage-group="`id -gn`" \
+		--with-extra-path="${PATH}" \
+		|| return 1
+	$MAKE ${MAKEOPTS} || return 1
+
+ 	einfo "Installing ${A%-*}"
+	$MAKE install || return 1
+
+	cd "${ROOT}"
+	rm -Rf ${ptmp} >& /dev/null
+
+	# Some people will skip the tree() step and hence var/log is not created 
+	# As such, portage complains..
+	mkdir -p "${ROOT}"/var/log "${ROOT}"/tmp/var/log
+
+	# in Prefix the sed wrapper is deadly, so kill it
+	rm -f "${ROOT}"/tmp/usr/lib/portage/bin/ebuild-helpers/sed
+
+	[[ -e "${ROOT}"/tmp/usr/portage ]] || ln -s "${PORTDIR}" "${ROOT}"/tmp/usr/portage
+
+	if [[ -s ${PORTDIR}/profiles/repo_name ]]; then
+		# sync portage's repos.conf with the tree being used
+		sed -i -e "s,gentoo_prefix,$(<"${PORTDIR}"/profiles/repo_name)," "${ROOT}"/tmp/usr/share/portage/config/repos.conf || return 1
+	fi
+
+	einfo "${A%-*} successfully bootstrapped"
+}

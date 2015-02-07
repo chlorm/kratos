@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+efetch() {
+	if [ ! -e ${DISTDIR}/${1##*/} ] ; then
+
+		[ ${OFFLINE_MODE} ] && {
+			echo "ERROR: unable to download in offline mode"
+			return 1
+		}
+
+		exist -dc "${DISTDIR}"
+		einfo "Fetching ${1##*/}"
+		pushd "${DISTDIR}" > /dev/null
+		download "${GENTOO_MIRRORS}/distfiles/${1##*/}" < /dev/null
+		if [ ! -f ${1##*/} ] ; then
+			eerror "downloading ${1} failed!"
+			return 1
+		fi
+		popd > /dev/null
+
+	fi
+
+	return 0
+}

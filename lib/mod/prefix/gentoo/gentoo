@@ -24,35 +24,11 @@ $(termclr magenta)    'Q&&P"                                  """
 
 $(termclr white 1)                           Gentoo prefix installer
 
-$(termclr white 1)                   Author: Cody Opel <codyopel@gmail.com>
-
 
 Options:
   [1] Install
   [2] Re-Install
 $(termclr reset)
 EOF
-
-}
-
-bootstrap_bash () {
-
-[ -z "$1" ] && exit -1
-
-mkdir -p "$1"
-cd "$1"
-mkdir bash-build
-cd bash-build
-
-GENTOO_MIRRORS=${GENTOO_MIRRORS:="http://gentoo.mirrors.pair.com/distfiles"}
-
-ftp "${GENTOO_MIRRORS}/bash-4.1.tar.gz"
-gzip -d bash-4.1.tar.gz
-tar -xf bash-4.1.tar
-cd bash-4.1
-
-./configure --prefix="${1}"/usr --disable-nls
-make
-make install
 
 }
