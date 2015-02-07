@@ -23,7 +23,7 @@ deskenvsPreference=(xmonad kde)
 
 # Shells in order of preference [ash,bash,csh,dash,fish,korn,pdksh,tcsh,zsh]
 # Only list those with which you want configured (fallsback to sh if none are found)
-shellsPreference=(zsh bash fish)
+shellsPreference=(bash zsh fish)
 
 # XDG directories
 XDG_CACHE_HOME="$HOME/.cache"
@@ -41,7 +41,5 @@ XDG_VIDEOS_DIR="$HOME/Videos"
 # Trash directories
 DIR_TRASH_INFO="$HOME/.local/share/Trash/info"
 DIR_TRASH_FILES="$HOME/.local/share/Trash/files"
-
-# TODO: Shell priority list
 
 # TODO: Editor list
