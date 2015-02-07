@@ -73,7 +73,7 @@ app_ssh_configure () {
 
   app_ssh_installed || return 2
 
-  dir_exist "$HOME/.ssh" || return 1
+  exist -dc "$HOME/.ssh" || return 1
 
   config_ln "ssh/config" || return 1
 
