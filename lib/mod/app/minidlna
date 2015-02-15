@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-app_minidlna_installed () {
+app_minidlna_installed() {
 	
   path_hasbin "minidlna" > /dev/null || return 1
 
@@ -8,7 +8,7 @@ app_minidlna_installed () {
 
 }
 
-app_minidlna_dirs () {
+app_minidlna_dirs() {
 
   exist -dc "$HOME/.minidlna" "$XDG_DATA_HOME/minidlna" || return 1
 
@@ -16,7 +16,7 @@ app_minidlna_dirs () {
 
 }
 
-app_minidlna_dotfiles () {
+app_minidlna_dotfiles() {
 
   exist -fx "$HOME/.minidlna/minidlna.conf"
 
@@ -60,13 +60,13 @@ MINIDLNA
 
 }
 
-app_minidlna_cleanup () {
+app_minidlna_cleanup() {
 
   exist -dx "$HOME/.minidlna" "$XDG_DATA_HOME/minidlna"
 
 }
 
-app_minidlna_configure () {
+app_minidlna_configure() {
 
   app_minidlna_installed || return 2
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-pkg_usage () {
+pkg_usage() {
 
 cat <<EOF
 Pkg is an abstraction layer for system package managers.
@@ -17,7 +17,7 @@ EOF
 
 }
 
-pkg_mgr () {
+pkg_mgr() {
 
   case $(os_base) in
 
@@ -97,7 +97,7 @@ pkg_mgr () {
 
 }
 
-pkg () {
+pkg() {
 
   case "$1" in
 

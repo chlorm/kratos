@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-app_emacs_installed () {
+app_emacs_installed() {
 
   path_hasbin "emacs" > /dev/null  || return 1
 
@@ -8,13 +8,13 @@ app_emacs_installed () {
 
 }
 
-app_emacs_dirs () {
+app_emacs_dirs() {
 
   exist -dc "$HOME/.emacs.d/themes"
 
 }
 
-app_emacs_dotfiles () {
+app_emacs_dotfiles() {
 
   # Monokai theme
   [ -f "$HOME/.emacs.d/themes/monokai-theme.el" ] || {
@@ -37,13 +37,13 @@ EMACSINIT
 
 }
 
-app_emacs_cleanup () {
+app_emacs_cleanup() {
 
   exist -dx "$HOME/.emacs.d"
 
 }
 
-app_emacs_configure () {
+app_emacs_configure() {
 
   app_emacs_installed || return 2
 

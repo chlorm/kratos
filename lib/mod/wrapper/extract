@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-extract () {
+extract() {
 
   if [ -z $1 ] ; then
     echo "ERROR: no input provided"

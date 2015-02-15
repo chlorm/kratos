@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-xdg_dirs () {
+xdg_dirs() {
 
   exist -dc "$XDG_CONFIG_HOME"
 
@@ -39,13 +39,13 @@ XDGUSERDIRS
 
 }
 
-custom_dirs () {
+custom_dirs() {
 
   exist -dx "$HOME/dev"
 
 }
 
-dir_tmp () { # Get the path to the temporary directory
+dir_tmp() { # Get the path to the temporary directory
 
   local DIR_TMP
 
@@ -70,7 +70,7 @@ dir_tmp_tryall() {
 
 }
 
-dir_tmp_one () {
+dir_tmp_one() {
 
   [ -w "$1" ] || return 1
 
@@ -79,7 +79,7 @@ dir_tmp_one () {
 
 }
 
-configure_dirs () {
+configure_dirs() {
 
   xdg_dirs
   custom_dirs

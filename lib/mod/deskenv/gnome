@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-deskenv_gnome_installed () {
+deskenv_gnome_installed() {
 
   path_hasbin "gnome-session" > /dev/null || return 1
 
@@ -8,13 +8,13 @@ deskenv_gnome_installed () {
 
 }
 
-deskenv_gnome_cleanup () {
+deskenv_gnome_cleanup() {
 
   return 0
 
 }
 
-deskenv_gnome_configure () {
+deskenv_gnome_configure() {
 
   deskenv_gnome_installed || return 1
 

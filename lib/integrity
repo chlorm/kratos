@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-require_app () { # Enforces that an application is installed
+require_app() { # Enforces that an application is installed
 
   which "$1" > /dev/null 2>&1
   if [ "$?" -ne "0" ] ; then
@@ -10,7 +10,7 @@ require_app () { # Enforces that an application is installed
 
 }
 
-require_all () {
+require_all() {
 
   require_app git
   require_app gpg
@@ -18,7 +18,7 @@ require_all () {
 
 }
 
-hash_commit () { # Hash the given Commit
+hash_commit() { # Hash the given Commit
 
   git archive "$1" | openssl dgst -sha512 -binary
 

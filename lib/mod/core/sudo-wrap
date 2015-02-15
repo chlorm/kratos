@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-sudo_wrap () { # Wraps the command in sudo if sudo exists and runs it
+sudo_wrap() { # Wraps the command in sudo if sudo exists and runs it
 
   if path_hasbin "sudo" ; then
     sudo $@

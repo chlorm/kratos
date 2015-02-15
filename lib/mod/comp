@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-comp_sleep () { # Sleeps the computer
+comp_sleep() { # Sleeps the computer
 
   comp_lock || return 1
   systemctl suspend >&2 && return 0
@@ -9,13 +9,13 @@ comp_sleep () { # Sleeps the computer
 
 }
 
-comp_off () { # Powers off the computer
+comp_off() { # Powers off the computer
 
   sudo_wrap poweroff
 
 }
 
-comp_lock () { # Locks the screen
+comp_lock() { # Locks the screen
 
   path_hasbin slock && {
     run_quiet slock &

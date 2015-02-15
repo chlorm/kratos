@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-path_add () { # Add to the path if the DIR doesn't exist
+path_add() { # Add to the path if the DIR doesn't exist
 
   if [ "$(echo "$PATH" | grep "$1" 2> /dev/null)" = "" ] ; then
     export PATH="${PATH}:$1"

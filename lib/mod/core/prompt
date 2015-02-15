@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-prompt_color () { # Get colors for the current shell
+prompt_color() { # Get colors for the current shell
 
   [ "$(shell_nov)" = "zsh" ] && echo -n '%{' || echo -n '\['
 

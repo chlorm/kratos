@@ -2,7 +2,7 @@
 
 # http://en.wikipedia.org/wiki/Comparison_of_command_shells
 
-shells_configure () { # Run shell configurations
+shells_configure() { # Run shell configurations
 
   local SHELL
 
@@ -27,7 +27,7 @@ shells_configure () { # Run shell configurations
 
 }
 
-shells_theme () { # Setup the theme for the shell
+shells_theme() { # Setup the theme for the shell
 
   [ "$(shell_nov)" = "fish" ] && return 0
 
@@ -69,7 +69,7 @@ shells_theme () { # Setup the theme for the shell
 
 }
 
-shells_tmp () { # Create the temporary directory for the shell
+shells_tmp() { # Create the temporary directory for the shell
 
   local TMP
 
@@ -83,7 +83,7 @@ shells_tmp () { # Create the temporary directory for the shell
 
 }
 
-shells_init () { # Initializes useful functions
+shells_init() { # Initializes useful functions
 
   shells_tmp
   #agent_auto
@@ -115,7 +115,7 @@ shells_init () { # Initializes useful functions
 
 }
 
-shells_preference () {
+shells_preference() {
 
   local SHELL
 
@@ -129,13 +129,13 @@ shells_preference () {
 
 }
 
-shells_run () { # Automatically executes the preferred shell
+shells_run() { # Automatically executes the preferred shell
 
   [ "$(shell_nov)" != "$(shells_preference)" ] && { exec "$(shells_preference)" ; exit $? ; }
 
 }
 
-shells_auto () {
+shells_auto() {
 
   shells_run
   shells_init

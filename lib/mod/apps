@@ -2,7 +2,7 @@
 
 # Application specific configuration
 
-apps_headless () {
+apps_headless() {
 
   local APP
 
@@ -27,7 +27,7 @@ apps_headless () {
 
 }
 
-apps_graphical () {
+apps_graphical() {
 
   local APP
 
@@ -52,7 +52,7 @@ apps_graphical () {
 
 }
 
-apps_configure () {
+apps_configure() {
 
   apps_headless
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-cpu_architecture () { # Find CPU architecture without endianness
+cpu_architecture() { # Find CPU architecture without endianness
 
   # http://en.wikipedia.org/wiki/Uname
 
@@ -48,7 +48,7 @@ cpu_architecture () { # Find CPU architecture without endianness
 
 }
 
-cpu_endianness () { # Find CPU endianness (ie. 32bit/64bit)
+cpu_endianness() { # Find CPU endianness (ie. 32bit/64bit)
 
   local ENDIANNESS
 	
@@ -62,7 +62,7 @@ cpu_endianness () { # Find CPU endianness (ie. 32bit/64bit)
 
 }
 
-cpu_cores () { # Find number of physical cpu cores
+cpu_cores() { # Find number of physical cpu cores
 
   local cpuCORES
 
@@ -90,7 +90,7 @@ cpu_cores () { # Find number of physical cpu cores
 
 }
 
-cpu_threads () { # Find number of logical cpu cores
+cpu_threads() { # Find number of logical cpu cores
 
   local cpuTHREADS
 

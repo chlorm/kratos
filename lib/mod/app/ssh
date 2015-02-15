@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 
-ssh_auth_one () {
+ssh_auth_one() {
 
   cat "$1" >> "$HOME/.ssh/authorized_keys"
 
 }
 
-ssh_auth_keys () { # Populates the authorized_keys file
+ssh_auth_keys() { # Populates the authorized_keys file
 
   [ -f "$HOME/.ssh/authorized_keys" ] && { rm -f "$HOME/.ssh/authorized_keys" ; }
 
@@ -17,7 +17,7 @@ ssh_auth_keys () { # Populates the authorized_keys file
 
 }
 
-ssh_gen_keys () { # Creates new ssh keys with the provided password
+ssh_gen_keys() { # Creates new ssh keys with the provided password
 
   local PASS
 
@@ -31,7 +31,7 @@ ssh_gen_keys () { # Creates new ssh keys with the provided password
 
 }
 
-ssh_repo_key_one () {
+ssh_repo_key_one() {
 
   [ -f "$CPFX$1" ] && { symlink "$CPFX$1" "$LPFX$1" ; return $? ; }
 
@@ -39,7 +39,7 @@ ssh_repo_key_one () {
 
 }
 
-ssh_repo_keys () { # Create the keys from the git repo
+ssh_repo_keys() { # Create the keys from the git repo
 
   local CPFX
   local LPFX
@@ -53,7 +53,7 @@ ssh_repo_keys () { # Create the keys from the git repo
 
 }
 
-app_ssh_installed () {
+app_ssh_installed() {
 
   path_hasbin "ssh" || return 1
   path_hasbin "ssh-keygen" || return 1
@@ -63,13 +63,13 @@ app_ssh_installed () {
 
 }
 
-app_ssh_cleanup () {
+app_ssh_cleanup() {
 
   return 0
 
 }
 
-app_ssh_configure () {
+app_ssh_configure() {
 
   app_ssh_installed || return 2
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-app_beets_installed () {
+app_beets_installed() {
 
   path_hasbin "beet" > /dev/null || return 1
 
@@ -8,7 +8,7 @@ app_beets_installed () {
 
 }
 
-app_beets_dirs () {
+app_beets_dirs() {
 
   exist -dc "$XDG_CONFIG_HOME/beets" || return 1
 
@@ -42,13 +42,13 @@ BEETSDOTFILE
 
 }
 
-app_beets_cleanup () {
+app_beets_cleanup() {
 
   exist -dx "$XDG_CONFIG_HOME/beets"
 
 }
 
-app_beets_configure () {
+app_beets_configure() {
 
   app_beets_installed || return 2
 

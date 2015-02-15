@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-shell_bash_installed () {
+shell_bash_installed() {
 
   path_hasbin "bash" || return 1
 
@@ -8,7 +8,7 @@ shell_bash_installed () {
 
 }
 
-shell_bash_dotfiles () {
+shell_bash_dotfiles() {
 
   exist -fx "$HOME/.bashrc" "$HOME/.bash_logout" "$HOME/.bash_profile"
 
@@ -75,13 +75,13 @@ BASHPROFILE
 
 }
 
-shell_bash_cleanup () {
+shell_bash_cleanup() {
 
   exist -fx "$HOME/.bashrc" "$HOME/.bash_logout" "$HOME/.bash_profile"
 
 }
 
-shell_bash_configure () {
+shell_bash_configure() {
 
   shell_bash_installed || return 1
 

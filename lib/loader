@@ -11,7 +11,7 @@ export DOTFILES_AUTOGEN_WARN="This is a auto-generated dotfile, do NOT edit!"
 
 [ -z "$RUNNER" ] && RUNNER=0
 
-path_abs () { # Resolves the name of the binary
+path_abs() { # Resolves the name of the binary
 
   local BIN
 
@@ -25,7 +25,7 @@ path_abs () { # Resolves the name of the binary
 
 }
 
-svar () { # Stores the output of the command into a variable without a subshell
+svar() { # Stores the output of the command into a variable without a subshell
 
   local VAR
   local TMP
@@ -43,7 +43,7 @@ svar () { # Stores the output of the command into a variable without a subshell
 
 }
 
-shell () { # Returns the shell executing the current script
+shell() { # Returns the shell executing the current script
 
   local LSHELL
   local LPROC
@@ -62,13 +62,13 @@ shell () { # Returns the shell executing the current script
 
 }
 
-shell_nov () { # Returns the shell executing the current script without appended major version
+shell_nov() { # Returns the shell executing the current script without appended major version
 
   shell | sed 's/^\([a-z]*\).*/\1/'
 
 }
 
-dir_try () { # Determines the top level configuration directory
+dir_try() { # Determines the top level configuration directory
 
   local DIR_BIN
   local OLD
@@ -87,7 +87,7 @@ dir_try () { # Determines the top level configuration directory
 
 }
 
-dir_conf () {
+dir_conf() {
 
   echo "$DOTFILES_DIR"
 
@@ -105,13 +105,13 @@ dir_conf () {
 . "$DOTFILES_DIR/settings"
 . "$DOTFILES_DIR/settings.local"
 
-array_empty () { # Extra array functions for accessor simplicity
+array_empty() { # Extra array functions for accessor simplicity
 
   [ "$(array_size $1)" -eq "0" ]
 
 }
 
-array_forall () {
+array_forall() {
 
   [ "$(array_size $1)" -gt "0" ] || return 0
 
@@ -121,20 +121,20 @@ array_forall () {
 
 }
 
-reload_all () { # Allows the functions to be reloaded at any time
+reload_all() { # Allows the functions to be reloaded at any time
 
   . "$DOTFILES_DIR/lib/loader"
 
 }
 
-load_one () { # Source Modules
+load_one() { # Source Modules
 
   [ "$(echo "$1" | grep '\(~$\|^#\)')" != "" ] && return 0
   . "$1" || { echo "Failed to load module $1" ; return 1 ; }
 
 }
 
-load_all () {
+load_all() {
 
   [ "$#" -ge "1" ] || return 1
 

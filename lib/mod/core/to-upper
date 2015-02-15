@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-toupper () {
+toupper() {
 
   echo "$@" | tr '[a-z]' '[A-Z]'
 

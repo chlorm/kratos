@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-deskenv_xfce_installed () {
+deskenv_xfce_installed() {
 
   path_hasbin "startxfce4" > /dev/null || return 1
 
@@ -8,13 +8,13 @@ deskenv_xfce_installed () {
 
 }
 
-deskenv_xfce_cleanup () {
+deskenv_xfce_cleanup() {
 
   return 0
 
 }
 
-deskenv_xfce_configure () {
+deskenv_xfce_configure() {
 
   deskenv_xfce_installed || return 1
 

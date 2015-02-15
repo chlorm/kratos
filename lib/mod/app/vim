@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-app_vim_installed () {
+app_vim_installed() {
 
   path_hasbin "vim" > /dev/null || return 1
 
@@ -8,7 +8,7 @@ app_vim_installed () {
 
 }
 
-app_vim_dotfiles () {
+app_vim_dotfiles() {
 
   exist -fx "$HOME/.vimrc"
 
@@ -151,13 +151,13 @@ VIMRC
 
 }
 
-app_vim_cleanup () {
+app_vim_cleanup() {
 
   exist -fx "$HOME/.vimrc"
 
 }
 
-app_vim_configure () {
+app_vim_configure() {
 
   app_vim_installed || return 2
 

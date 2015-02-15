@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-p_and_q () {
+p_and_q() {
 
   local STAT
 
@@ -11,7 +11,7 @@ p_and_q () {
 
 }
 
-dir_tmp () { # Get the path to the temporary directory
+dir_tmp() { # Get the path to the temporary directory
 
   local DIR_TMP
 
@@ -36,7 +36,7 @@ dir_tmp_tryall() {
 
 }
 
-dir_tmp_one () {
+dir_tmp_one() {
 
   [ -w "$1" ] || return 1
 
@@ -45,7 +45,7 @@ dir_tmp_one () {
 
 }
 
-path_bin () { # Finds the path to the binary
+path_bin() { # Finds the path to the binary
 
   [ "$#" -ne "1" ] && return 2
 
@@ -55,7 +55,7 @@ path_bin () { # Finds the path to the binary
 
 }
 
-proc_exists () { # Checks to see if the process is running
+proc_exists() { # Checks to see if the process is running
 
   [ "$#" -ne "1" ] && return 1
 
@@ -63,7 +63,7 @@ proc_exists () { # Checks to see if the process is running
 
 }
 
-check_pidfile () { # Checks the pidfile to see if the process is running
+check_pidfile() { # Checks the pidfile to see if the process is running
 
   [ -f "$1" ] && proc_exists "$(cat $1 2>/dev/null)"
 

@@ -5,13 +5,13 @@
 # TODO: support multiple wireless cards
 # TODO: support platforms without network manager
 
-wireless_interface () { # Find wireless interface name
+wireless_interface() { # Find wireless interface name
 
   nmcli d | awk '/802-11-wireless/ {print $1}'
 
 }
 
-wifi_usage () {
+wifi_usage() {
 
 cat <<EOF
 Wifi is a wrapper for nmcli.
@@ -34,7 +34,7 @@ EOF
 
 }
 
-wifi () {
+wifi() {
 
   path_hasbin nmcli || return 1
 

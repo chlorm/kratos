@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-proc_exists () { # Checks to see if the process is running
+proc_exists() { # Checks to see if the process is running
 
   [ "$#" -ne "1" ] && return 1
 
@@ -8,7 +8,7 @@ proc_exists () { # Checks to see if the process is running
 
 }
 
-check_pidfile () { # Checks the pidfile to see if the process is running
+check_pidfile() { # Checks the pidfile to see if the process is running
 
   [ -f "$1" ] && proc_exists "$(cat $1 2> /dev/null)"
 

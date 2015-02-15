@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-app_xorg_installed () {
+app_xorg_installed() {
 
   path_hasbin "Xorg" > /dev/null || return 1
 
@@ -8,7 +8,7 @@ app_xorg_installed () {
 
 }
 
-app_xorg_dotfiles () {
+app_xorg_dotfiles() {
 
   exist -fx "$HOME/.xinitrc" "$HOME/.xprofile" "$HOME/.xsession" "$HOME/.Xresources"
 
@@ -58,13 +58,13 @@ XPROFILE
 
 }
 
-app_xorg_cleanup () {
+app_xorg_cleanup() {
 
   exist -fx "$HOME/.xinitrc" "$HOME/.xprofile" "$HOME/.xsession" "$HOME/.Xresources"
 
 }
 
-app_xorg_configure () {
+app_xorg_configure() {
 
   app_xorg_installed || return 2
 

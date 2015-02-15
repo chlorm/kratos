@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-app_rtorrent_installed () {
+app_rtorrent_installed() {
 
   path_hasbin "rtorrent" > /dev/null || return 1
 
@@ -8,7 +8,7 @@ app_rtorrent_installed () {
 
 }
 
-app_rtorrent_dirs () {
+app_rtorrent_dirs() {
 
   exist -dc "$HOME/Torrents/Complete" "$HOME/Torrents/Incomplete" \
             "$HOME/Torrents/Watch" "$XDG_DATA_HOME/rtorrent" || return 1
@@ -17,7 +17,7 @@ app_rtorrent_dirs () {
 
 }
 
-app_rtorrent_dotfiles () {
+app_rtorrent_dotfiles() {
 
   exist -fx "$HOME/.rtorrent.rc"
 
@@ -114,7 +114,7 @@ RTORRENTRC
 
 }
 
-app_rtorrent_cleanup () {
+app_rtorrent_cleanup() {
 
   # add test for contents on Torrents/ before removing
 
@@ -122,7 +122,7 @@ app_rtorrent_cleanup () {
 
 }
 
-app_rtorrent_configure () {
+app_rtorrent_configure() {
 
   app_rtorrent_installed || return 2
 

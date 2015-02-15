@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-os_base () { # Find base os i.e. linux,freebsd,darwin,cygwin
+os_base() { # Find base os i.e. linux,freebsd,darwin,cygwin
 
   local baseOS
 
@@ -16,19 +16,19 @@ os_base () { # Find base os i.e. linux,freebsd,darwin,cygwin
 
 }
 
-os_linux_distro_release () { # Finds linux distro via /etc/*-release
+os_linux_distro_release() { # Finds linux distro via /etc/*-release
 
   cat $ROOT/etc/*-release 2>/dev/null
 
 }
 
-os_linux_distro_uname () { # Finds linux distro via uname -a
+os_linux_distro_uname() { # Finds linux distro via uname -a
 
   uname -a 2>/dev/null
 
 }
 
-os_linux_distro () { # Take first result of distro name match
+os_linux_distro() { # Take first result of distro name match
 
   [ "$(os_base)" = "linux" ] || return 1
 

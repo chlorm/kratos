@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-run_quiet () { # Start an application in the background
+run_quiet() { # Start an application in the background
 
   path_hasbin "$1" || return 1
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-y_or_n_validate () { # Validate the answer to a yes or no question
+y_or_n_validate() { # Validate the answer to a yes or no question
 
   local ANS
 
@@ -15,7 +15,7 @@ y_or_n_validate () { # Validate the answer to a yes or no question
 
 }
 
-y_or_n () { # Ask a yes or no question
+y_or_n() { # Ask a yes or no question
 
   local ANS
   local RET

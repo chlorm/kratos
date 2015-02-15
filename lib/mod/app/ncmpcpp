@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-app_ncmpcpp_installed () {
+app_ncmpcpp_installed() {
 
   path_hasbin "ncmpcpp" > /dev/null || return 1
 
@@ -8,7 +8,7 @@ app_ncmpcpp_installed () {
 
 }
 
-app_ncmpcpp_dirs () {
+app_ncmpcpp_dirs() {
 
   exist -dc "$HOME/.ncmpcpp" || return 1
 
@@ -16,7 +16,7 @@ app_ncmpcpp_dirs () {
 
 }
 
-app_ncmpcpp_dotfiles () {
+app_ncmpcpp_dotfiles() {
 
   exist -fx "$HOME/.ncmpcpp/config"
 
@@ -193,13 +193,13 @@ NCMPCPP
 
 }
 
-app_ncmpcpp_cleanup () {
+app_ncmpcpp_cleanup() {
 
   exist -dx "$HOME/.ncmpcpp"
 
 }
 
-app_ncmpcpp_configure () {
+app_ncmpcpp_configure() {
 
   app_ncmpcpp_installed || return 2
   app_mpd_installed || return 1

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-exist () { # Check for existence of file or directory
+exist() { # Check for existence of file or directory
 
   [ -z "$1" ] && return 1
 

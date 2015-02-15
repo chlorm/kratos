@@ -19,7 +19,7 @@
 #Path=[orginal path including the orginal filename]
 #DeletionDate=[ISO 8601 compliant date and time]
 
-trash_usage () {
+trash_usage() {
 
 cat <<EOF
 usage info will go here
@@ -27,7 +27,7 @@ EOF
 
 }
 
-trash () {
+trash() {
 
   # Check for input
   [ -z "$1" ] && { echo "ERROR: no input provided" ; return 1 ; }

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-app_git_installed () {
+app_git_installed() {
 
   path_hasbin "git" > /dev/null || return 1
 
@@ -8,7 +8,7 @@ app_git_installed () {
 
 }
 
-app_git_dotfiles () {
+app_git_dotfiles() {
 
   exist -fx "$HOME/.gitconfig"
 
@@ -27,7 +27,7 @@ GITCONFIG
 
 }
 
-app_git_configure () {
+app_git_configure() {
 
   app_git_installed || return 2
 

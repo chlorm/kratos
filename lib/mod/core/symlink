@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-symlink () { # Make sure the symbolic link points to the correct location $2 -> $1
+symlink() { # Make sure the symbolic link points to the correct location $2 -> $1
 
   mkdir -p "$(dirname "$2")"
   if [ "$(readlink -f "$2")" != "$1" ] ; then

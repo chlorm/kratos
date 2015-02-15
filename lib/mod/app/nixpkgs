@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-app_nixpkgs_installed () {
+app_nixpkgs_installed() {
 
   path_hasbin "nix-env" > /dev/null || return 1
 
@@ -8,7 +8,7 @@ app_nixpkgs_installed () {
 
 }
 
-app_nixpkgs_dirs () {
+app_nixpkgs_dirs() {
 
   exist -dc "$HOME/.nixpkgs" || return 1
 
@@ -16,7 +16,7 @@ app_nixpkgs_dirs () {
 
 }
 
-app_nixpkgs_dotfiles () {
+app_nixpkgs_dotfiles() {
 
   exist -fx "$HOME/.nixpkgs/config.nix"
 
@@ -160,13 +160,13 @@ NIXPKGS
 
 }
 
-app_nixpkgs_cleanup () {
+app_nixpkgs_cleanup() {
 
   exist -dx "$HOME/.nixpkgs"
 
 }
 
-app_nixpkgs_configure () {
+app_nixpkgs_configure() {
 
   app_nixpkgs_installed || return 2
 

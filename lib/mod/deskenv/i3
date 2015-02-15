@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-deskenv_i3_installed () {
+deskenv_i3_installed() {
 
   path_hasbin "i3" > /dev/null || return 1
 
@@ -8,13 +8,13 @@ deskenv_i3_installed () {
 
 }
 
-deskenv_i3_cleanup () {
+deskenv_i3_cleanup() {
 
   return 0
 
 }
 
-deskenv_i3_configure () {
+deskenv_i3_configure() {
 
   deskenv_i3_installed || return 1
 

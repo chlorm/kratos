@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-app_mpd_installed () {
+app_mpd_installed() {
 
   path_hasbin "mpd" > /dev/null || return 1
 
@@ -8,7 +8,7 @@ app_mpd_installed () {
 
 }
 
-app_mpd_dirs () {
+app_mpd_dirs() {
 
   exist -dc "$XDG_CONFIG_HOME/mpd/playlists" || return 1
 
@@ -16,7 +16,7 @@ app_mpd_dirs () {
 
 }
 
-app_mpd_dotfiles () {
+app_mpd_dotfiles() {
 
   exist -fx "$XDG_CONFIG_HOME/mpd/mpd.conf"
 
@@ -100,7 +100,7 @@ MPDDOTFILE
 
 }
 
-app_mpd_files () {
+app_mpd_files() {
 
   exist -fc "$XDG_CONFIG_HOME/mpd/database" "$XDG_CONFIG_HOME/mpd/state" \
             "$XDG_CONFIG_HOME/mpd/sticker.sql" "$XDG_CONFIG_HOME/mpd/log" || return 1
@@ -109,13 +109,13 @@ app_mpd_files () {
 
 }
 
-app_mpd_cleanup () {
+app_mpd_cleanup() {
 
   exist -dx "$XDG_CONFIG_HOME/mpd"
 
 }
 
-app_mpd_configure () {
+app_mpd_configure() {
 
   app_mpd_installed || return 2
 

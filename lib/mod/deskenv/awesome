@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-deskenv_awesome_installed () {
+deskenv_awesome_installed() {
 
   path_hasbin "awesome" > /dev/null || return 1
 
@@ -8,7 +8,7 @@ deskenv_awesome_installed () {
 
 }
 
-deskenv_awesome_dirs () {
+deskenv_awesome_dirs() {
 
   exist -dc "$XDG_CONFIG_HOME/awesome" "$XDG_CONFIG_HOME/wallpaper" || return 1
 
@@ -16,7 +16,7 @@ deskenv_awesome_dirs () {
 
 }
 
-deskenv_awesome_dotfiles () {
+deskenv_awesome_dotfiles() {
 
   exist -fx "$XDG_CONFIG_HOME/awesome/theme.lua" "$XDG_CONFIG_HOME/awesome/battery.lua" \
             "$XDG_CONFIG_HOME/awesome/rc.34.lua" "$XDG_CONFIG_HOME/awesome/rc.35.lua"
@@ -1008,13 +1008,13 @@ RC35
 
 }
 
-deskenv_awesome_cleanup () {
+deskenv_awesome_cleanup() {
 
   return 0
 
 }
 
-deskenv_awesome_configure () {
+deskenv_awesome_configure() {
 
   deskenv_awesome_installed || return 2
 

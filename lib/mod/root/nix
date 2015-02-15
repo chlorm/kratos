@@ -13,7 +13,7 @@
 # download and unpack nix sources (support building on all platforms)
 # Prefix may differ on some platforms
 
-root_nix_install () {
+root_nix_install() {
 ./configure --prefix=/usr --sysconfdir=/etc
 make
 sudo make install

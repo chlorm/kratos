@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-deskenv_kde_installed () {
+deskenv_kde_installed() {
 
   path_hasbin "startkde" > /dev/null || return 1
 
@@ -8,13 +8,13 @@ deskenv_kde_installed () {
 
 }
 
-deskenv_kde_cleanup () {
+deskenv_kde_cleanup() {
 
   return 0
 
 }
 
-deskenv_kde_configure () {
+deskenv_kde_configure() {
 
   deskenv_kde_installed || return 1
 

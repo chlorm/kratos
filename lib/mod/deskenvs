@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-deskenvs_configure () { # Install DE configs
+deskenvs_configure() { # Install DE configs
 
   local DESKENV
 
@@ -29,7 +29,7 @@ deskenvs_configure () { # Install DE configs
 
 }
 
-deskenvs_executable () {
+deskenvs_executable() {
 
   case "$1" in
 
@@ -67,7 +67,7 @@ deskenvs_executable () {
 
 }
 
-deskenvs_preference () {
+deskenvs_preference() {
 
   local DE
 
@@ -81,7 +81,7 @@ deskenvs_preference () {
 
 }
 
-deskenvs_startapps () { # Run background applications
+deskenvs_startapps() { # Run background applications
 
   #run_quiet xbacklight -set 30 > /dev/null
   #run_quiet autocutsel -fork > /dev/null
@@ -98,7 +98,7 @@ deskenvs_startapps () { # Run background applications
 
 }
 
-deskenvs_terminal () {
+deskenvs_terminal() {
 
   local HCFG
   local TERMRC
@@ -140,7 +140,7 @@ deskenvs_terminal () {
 
 }
 
-deskenvs_run () { # Run the prefered window manager
+deskenvs_run() { # Run the prefered window manager
 
   [ -z "$(deskenvs_preference)" ] && return 1
 
@@ -158,7 +158,7 @@ deskenvs_run () { # Run the prefered window manager
 
 }
 
-deskenvs_auto () {
+deskenvs_auto() {
 
   deskenv_run
   deskenvs_terminal

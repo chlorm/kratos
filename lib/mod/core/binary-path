@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-path_bin () { # Finds the path to the binary
+path_bin() { # Finds the path to the binary
 
   [ "$#" -ne "1" ] && return 2
 

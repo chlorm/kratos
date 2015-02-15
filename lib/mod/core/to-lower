@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-tolower () {
+tolower() {
 
   echo "$@" | tr '[A-Z]' '[a-z]'
 

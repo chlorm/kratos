@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-shell_fish_installed () {
+shell_fish_installed() {
 
   path_hasbin "fish" || return 1
 
@@ -8,7 +8,7 @@ shell_fish_installed () {
 
 }
 
-shell_fish_dirs () {
+shell_fish_dirs() {
 
   exist -dc "$XDG_CONFIG_HOME/fish" || return 1
 
@@ -16,7 +16,7 @@ shell_fish_dirs () {
 
 }
 
-shell_fish_dotfiles () {
+shell_fish_dotfiles() {
 
   exist -fx "$XDG_CONFIG_HOME/fish/config.fish"
 
@@ -92,13 +92,13 @@ FISH
 
 }
 
-shell_fish_cleanup () {
+shell_fish_cleanup() {
 
   exist -dx "$XDG_CONFIG_HOME/fish"
 
 }
 
-shell_fish_configure () {
+shell_fish_configure() {
 
   shell_fish_installed || return 2
 

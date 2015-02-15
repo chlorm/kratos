@@ -2,7 +2,7 @@
 
 # TODO: Support platforms without pulseaudio
 
-vol_usage () {
+vol_usage() {
 
 cat <<EOF
 Vol is a wrapper for pacmd
@@ -19,7 +19,7 @@ EOF
 
 }
 
-active_sound_card () {
+active_sound_card() {
 
   local activeSoundCard
 
@@ -44,7 +44,7 @@ active_sound_card () {
 
 }
 
-volume_current () {
+volume_current() {
 
   pactl list sinks | \
     grep --after-context=9 "Sink #$(active_sound_card)" | \
@@ -53,7 +53,7 @@ volume_current () {
 
 }
 
-vol () {
+vol() {
 
   # If 'pactl' is not installed, be done now
   path_hasbin pactl || return 1
