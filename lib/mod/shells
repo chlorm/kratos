@@ -89,7 +89,8 @@ shells_init() { # Initializes useful functions
   #agent_auto
 
   alias root="sudo_wrap su -"
-  alias sprunge="curl -F 'sprunge=<-' http://sprunge.us" 
+  alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
+  alias nixpaste="curl -F 'nixpaste=<-' http://nixpaste.noip.me"
   alias t='laptop_bat ; date'
   alias sha1="openssl sha1"
   alias sha256="openssl sha256"
@@ -102,13 +103,15 @@ shells_init() { # Initializes useful functions
   alias defragmentroot="sudo btrfs filesystem defragment -r -v -clzo /"
   alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
   # Gentoo
-  alias inst="sudo emerge --ask"
-  alias search="emerge --search"
-  alias uses="equery uses"
-  alias layup="sudo layman -S"
+  [ "$(os_linux_distro)" == "gentoo" ] && {
+    alias inst="sudo emerge --ask"
+    alias search="emerge --search"
+    alias uses="equery uses"
+    alias layup="sudo layman -S"
+  }
   # Defaults
   export LANGUAGE="en_US:en"
-  export EDITOR="vim"
+  export EDITOR="emacs"
   export PAGER=""
   export BLOCKSIZE="K"
 

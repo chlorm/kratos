@@ -44,7 +44,7 @@ pkgs : {
     + (builtins.readFile ./st/config.inc.h);
 
   packageOverrides = self : rec {
-    emacs = self.emacs.override { withX = $(app_xorg_installed && printf "true" || printf "false"); };
+    emacs = self.emacs.override { withX = false; };
     rtorrent-git = self.rtorrent-git.override { colorSupport = true; };
     x265-hg = self.x265-hg.override { highBitDepth = true; };
     desktop-chlorm = self.haskellPackages.ghcWithPackages (self : with self; [
