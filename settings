@@ -11,7 +11,7 @@ emailGit="$emailGlobal"
 # List hostname of all workstations
 workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'
 
-# Headless apss to configure
+# Headless apps to configure
 appsHeadless=(beets cabal emacs git golang gvim htop minidlna mpd ncmpcpp nixpkgs\
               pulseaudio rtorrent ssh tmux vim)
 
