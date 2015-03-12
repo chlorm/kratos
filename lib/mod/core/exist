@@ -5,99 +5,78 @@ exist() { # Check for existence of file or directory
   [ -z "$1" ] && return 1
 
   case "$1" in
-
     '-fc') # Make sure the file exists
       shift
       while [ "$1" ] ; do
-
         # Make sure file is not a symlink
         test -L "$1" && {
           unlink "$1" > /dev/null 2>&1
           [ "$?" != "0" ] && return 1
         }
-
         # Create file
         [ -f "$1" ] || {
           touch "$1" > /dev/null 2>&1
           [ "$?" != "0" ] && return 1
         }
-
         shift
-
       done
 
       return 0
       ;;
-
     '-fx') # Make sure file doesn't exist
       shift
       while [ "$1" ] ; do
-
         # Make sure file is not a symlink
         test -L "$1" && {
           unlink "$1" > /dev/null 2>&1
           [ "$?" != "0" ] && return 1
         }
-
         # Remove file
         [ -f "$1" ] && {
           rm -f "$1" > /dev/null 2>&1
           [ "$?" != "0" ] && return 1
         }
-
         shift
-
       done
 
       return 0
       ;;
-
     '-dc') # Make sure directory exists
       shift
       while [ "$1" ] ; do
-
         # Make sure directory is not a symlink
         test -L "$1" && {
           unlink "$1" > /dev/null 2>&1
           [ "$?" != "0" ] && return 1
         }
-
         # Create directory
         [ -d "$1" ] || {
           mkdir -p "$1" > /dev/null 2>&1
           [ "$?" != "0" ] && return 1
         }
-
         shift
-
       done
 
       return 0
       ;;
-
     '-dx') # Make sure directory doesn't exists
       shift
       while [ "$1" ] ; do
-
         # Make sure directory is not a symlink
         test -L "$1" && {
           unlink "$1" > /dev/null 2>&1
           [ "$?" != "0" ] && return 1
         }
-
         # Remove directory
         [ -d "$1" ] && {
           rm -rf "$1" > /dev/null 2>&1
           [ "$?" != "0" ] && return 1
         }
-
         shift
-
       done
 
       return 0
       ;;
-
   esac
 
   return 1
