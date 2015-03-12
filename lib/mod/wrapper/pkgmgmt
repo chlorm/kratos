@@ -19,7 +19,7 @@ EOF
 
 pkg_mgr() {
 
-  case $(os_base) in
+  case $(os_kernel) in
 
     'cygwin')
       # ??? chloclatey
@@ -39,7 +39,7 @@ pkg_mgr() {
       ;;
 
     'linux')
-      case $(os_linux_distro) in
+      case $(os_linux) in
 
         'Debian'|'Ubuntu') # Apt
           path_hasbin apt-get || return 1

@@ -32,7 +32,7 @@ shells_theme() { # Setup the theme for the shell
   [ "$(shell_nov)" = "fish" ] && return 0
 
   # Colors for LS
-  case "$(os_base)" in
+  case "$(os_kernel)" in
 
     'linux'|'cygwin')
       eval "$(dircolors -b)"

@@ -1,44 +1,50 @@
 #!/usr/bin/env sh
 
-os_base() { # Find base os i.e. linux,freebsd,darwin,cygwin
+os_kernel() { # Find base os i.e. linux,freebsd,darwin,cygwin
 
-  local baseOS
+  local kernel
 
-  baseOS=$(tolower $(uname -s) | \
+  kernel=$(tolower $(uname -s) | \
   grep -m 1 -w -o '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)' | \
   head -n 1)
 
-  [ -z "$baseOS" ] && { echo "ERROR: unsupported base operating system" ; return 1 ; }
+  [ -z "$kernel" ] && { echo "ERROR: not a supported operating system" ; return 1 ; }
 
-  echo "$baseOS"
+  echo "$kernel"
 
   return 0
 
 }
 
-os_linux_distro_release() { # Finds linux distro via /etc/*-release
+os_linux() { # Take first result of distro name match
 
-  cat $ROOT/etc/*-release 2>/dev/null
+  os_linux_release() { # Finds linux distro via /etc/*-release
 
-}
+    cat $ROOT/etc/*-release 2> /dev/null
 
-os_linux_distro_uname() { # Finds linux distro via uname -a
+  }
 
-  uname -a 2>/dev/null
+  os_linux_uname() { # Finds linux distro via uname -a
 
-}
+    uname -a 2> /dev/null
 
-os_linux_distro() { # Take first result of distro name match
+  }
+
+  os_linux_lsb() { # Find linux distro vix linux standard base
+
+    lsb_release -a 2> /dev/null
+
+  }
 
   [ "$(os_base)" = "linux" ] || return 1
 
-  local linuxDISTRO
+  local linux
 
-  linuxDISTRO=$(tolower "$(os_linux_distro_release) $(os_linux_distro_uname)" | \
+  linux=$(tolower "$(os_linux_distro_release) $(os_linux_distro_uname) $(os_linux_distro_lsb)" | \
   grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)' | \
   head -n 1)
 
-  [ -z "$linuxDISTRO" ] && { echo "ERROR: not a supported linux distro" ; return 1 ; }
+  [ -z "$linuxDISTRO" ] && { echo "ERROR: not a supported linux operating system" ; return 1 ; }
 
   echo "$linuxDISTRO"
 

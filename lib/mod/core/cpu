@@ -66,7 +66,7 @@ cpu_cores() { # Find number of physical cpu cores
 
   local cpuCORES
 
-  case $(os_base) in
+  case $(os_kernel) in
 
     'linux'|'freebsd')
       cpuCORES=$(awk '/^cpu\ cores/ { print $4 ; exit }' /proc/cpuinfo | grep -o '[0-9]*')
@@ -94,7 +94,7 @@ cpu_threads() { # Find number of logical cpu cores
 
   local cpuTHREADS
 
-  case $(os_base) in
+  case $(os_kernel) in
 
     'linux'|'freebsd')
       cpuTHREADS=$(grep -c ^processor /proc/cpuinfo | grep -o '[0-9]*')
