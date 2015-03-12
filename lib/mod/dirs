@@ -47,35 +47,29 @@ custom_dirs() {
 
 dir_tmp() { # Get the path to the temporary directory
 
-  local DIR_TMP
+  local dir
+  local tmpdir
+  local tmpdirs
 
-  dir_tmp_tryall
+  tmpfolders=("$ROOT/dev/shm" "$ROOT/run/shm" "$ROOT/tmp" "$ROOT/var/tmp")
 
-  [ "$DIR_TMP" = "" ] && { echo "Failed to find a temporary folder" >&2 ; return 1 ; }
+  for dir in ${tmpdirs[@]} ; do
+    mount | grep '\(tmpfs\|ramfs\)' | grep $dir > /dev/null && {
+      tmpdir="$dir/$USER"
+      break
+    }
+  done
 
-  [ ! -d "$DIR_TMP" ] && mkdir "$DIR_TMP" && chmod 0700 "$DIR_TMP"
-  symlink "$DIR_TMP" "$HOME/.tmp"
-  mkdir "$DIR_TMP/cache" > /dev/null 2>&1
-  symlink "$DIR_TMP/cache" "$HOME/.cache"
-  echo "$DIR_TMP"
+  [ -z "$tmpdir" ] && { echo "Failed to find a temporary directory" >&2 ; return 1 ; }
 
-}
+  [ ! -d "$tmpdir" ] && mkdir "$tmpdir" && chmod 0700 "$tmpdir"
 
-dir_tmp_tryall() {
+  symlink "$tmpdir" "$HOME/.tmp"
 
-  dir_tmp_one "$ROOT/dev/shm" && return 0
-  dir_tmp_one "$ROOT/run/shm" && return 0
-  dir_tmp_one "$ROOT/tmp" && return 0
-  dir_tmp_one "$ROOT/var/tmp" && return 0
+  [ ! -d "#tmpdir/cache"] && mkdir "$tmpdir/cache" > /dev/null 2>&1
+  symlink "$tmpdir/cache" "$HOME/.cache"
 
-}
-
-dir_tmp_one() {
-
-  [ -w "$1" ] || return 1
-
-  mount | grep '\(tmpfs\|ramfs\)' | grep $1 > /dev/null || return 1
-  DIR_TMP="$1/$USER"
+  echo "$tmpdir"
 
 }
 
