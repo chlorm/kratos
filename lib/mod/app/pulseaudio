@@ -20,14 +20,7 @@ app_pulseaudio_dotfiles() {
 
   exist -fx "$XDG_CONFIG_HOME/pulse/daemon.conf"
 
-(
-cat <<PULSEAUDIO
-default-sample-format = s24le
-default-sample-rate = 192000
-resample-method = speex-float-5
-
-PULSEAUDIO
-) > "$XDG_CONFIG_HOME/pulse/daemon.conf" || return 1
+  dotfile_ln "config/pulse/daemon.conf" || return 1
 
   return 0
 
