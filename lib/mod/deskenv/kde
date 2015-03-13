@@ -18,8 +18,6 @@ deskenv_kde_configure() {
 
   deskenv_kde_installed || return 1
 
-  echo "  ✓ kde"
-
   return 0
 
 }

@@ -20,8 +20,6 @@ app_sublimetext_configure() {
 
   dotfile_ln "config/sublime-text-3"
 
-  echo "  ✓ sublimetext"
-
   return 0
 
 }
