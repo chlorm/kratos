@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+dotfile_gen() { # Parses the dotfile for variables before generating file
+
+  cat > $HOME/.$2 < $DOTFILES_DIR/$1
+
+}
+
+dotfile_ln() { # Links the configuration file to its proper dotfile
+
+  [ "$#" -eq "0" ] && return 1
+
+  local dotfile
+
+  for dotfile in $@ ; do
+    symlink "$DOTFILES_DIR/dotfiles/$dotfile" "$HOME/.$dotfile" || echo "ERROR: failed to symlink $dotfile" 2> /dev/null
+    [ "$?" -eq "0" ] && echo "  Symlinked $dotfile"
+  done
+
+}

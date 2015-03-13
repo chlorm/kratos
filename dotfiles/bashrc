@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Test for an interactive shell
+[[ \$- != *i* ]] && return
+
+# If not running as login don't do the rest
+shopt -q login_shell || return
+
+# Resolve issue of terminals defaulting to /nix/store instead of \$HOME
+#cd $HOME
+
+# Load shell configuration options
+. "$(readlink -f $(dirname $(readlink -f $HOME/.bashrc))/../)/lib/loader"
+#agent_auto
+shells_auto
+run_quiet mpd
+
+# Load the local config
+[ -f "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"

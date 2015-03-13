@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-
-toupper() {
-
-  echo "$@" | tr '[a-z]' '[A-Z]'
-
-}

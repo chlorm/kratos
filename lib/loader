@@ -1,11 +1,9 @@
 #!/usr/bin/env sh
 
 # Find and set dotfiles directory
-DOTFILES_DIR=$(cat "$HOME/.dotfiles.dir")
+export DOTFILES_DIR=$(cat "$HOME/.dotfiles.dir")
 
 [ -z "$DOTFILES_DIR" ] && { echo "Failed to find the configuration directory" ; exit 1 ; }
-
-export DOTFILES_DIR
 
 export DOTFILES_AUTOGEN_WARN="This is a auto-generated dotfile, do NOT edit!"
 
@@ -18,7 +16,6 @@ path_abs() { # Resolves the name of the binary
   BIN="$(whereis -b $1 2> /dev/null | awk '{print $2}')"
 
   [ -z "$BIN" ] && return 1
-
   echo "$BIN"
 
   return 0

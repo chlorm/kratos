@@ -44,7 +44,7 @@ cat <<MPDDOTFILE
 ##   $XDG_CONFIG_HOME/mpd/database --- MPD database file
 ##   $XDG_CONFIG_HOME/mpd/log -------- MPD log file
 ##   $XDG_CONFIG_HOME/mpd/state ------ MPD state file
-##   $HOME/.tmp/mpd-pid ----------- MPD pid file
+##   $HOME/.tmp/mpd.pid ----------- MPD pid file
 ##   $HOME/.tmp/mpd.fifo ---------- MPD FIFO output file
 
 # Directories and files
@@ -53,7 +53,7 @@ music_directory    "$XDG_MUSIC_DIR"
 playlist_directory "$XDG_CONFIG_HOME/mpd/playlists"
 db_file            "$XDG_CONFIG_HOME/mpd/database"
 log_file           "$XDG_CONFIG_HOME/mpd/log"
-pid_file           "$HOME/.tmp/mpd-pid"
+pid_file           "$HOME/.tmp/mpd.pid"
 state_file         "$XDG_CONFIG_HOME/mpd/state"
 
 # Network

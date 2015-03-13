@@ -12,64 +12,7 @@ shell_bash_dotfiles() {
 
   exist -fx "$HOME/.bashrc" "$HOME/.bash_logout" "$HOME/.bash_profile"
 
-(
-cat <<BASHRC
-#!/usr/bin/env bash
-
-# $DOTFILES_AUTOGEN_WARN
-
-##       ________   ___       ___
-##      /  _____/  /  /      /  /
-##     /  /       /  /      /  /
-##    /  /       /  /____  /  / _______  _______  ____  ____
-##   /  /       /  ___  / /  / /  __  / /  ____/ /    \\/    \\
-##  /  /_____  /  /  / / /  / /  /_/ / /  /     /  /\\    /\\  \\
-## /________/ /__/  /_/ /__/ /______/ /__/     /__/  \\__/  \\__\\ TM
-##
-## Title: Local BashRC Configuration File
-## Author: Cody Opel
-## E-mail: codyopel(at)gmail.com
-## Copyright (c) 2014 All Rights Reserved, http://www.chlorm.net
-## License: The MIT License - http://opensource.org/licenses/MIT
-## Assumed Directory & File Structure:
-##   $HOME/.bashrc
-
-## [http://en.wikipedia.org/wiki/Unicode_symbols]
-
-# Test for an interactive shell
-[[ \$- != *i* ]] && return
-
-# Resolve issure of terminals defaulting to /nix/store instead on \$HOME
-cd "$HOME"
-
-# Load shell configuration options
-. "$DOTFILES_DIR/lib/loader"
-#agent_auto
-shells_auto
-run_quiet mpd
-
-# Load the local config
-[ -f "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"
-
-BASHRC
-) > "$HOME/.bashrc" || return 1
-
-(
-cat <<BASHLOGOUT
-#!/usr/bin/env bash
-
-BASHLOGOUT
-) > "$HOME/.bash_logout" || return 1
-
-(
-cat <<BASHPROFILE
-#!/usr/bin/env bash
-
-[ -f "$HOME/.bash_profile.local" ] && . "$HOME/.bash_profile.local"
-[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
-
-BASHPROFILE
-) > "$HOME/.bash_profile" || return 1
+  dotfile_ln "bashrc"
 
   return 0
 

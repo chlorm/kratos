@@ -36,15 +36,12 @@ git_pull_nostat() { # Updates the root git tree and only returns >0 on error
 
   git_pull $@
   case "$?" in
-
     2)
       return 1
       ;;
-
     1)
       echo "Updated"
       ;;
-
   esac
 
 }
@@ -98,58 +95,38 @@ config_latest() { # Gets the latest version of the git config
 
   git_pull
   case "$?" in
-
     2)
       echo "Failed to update the configuration directory" >&2
       return 2
       ;;
-
     1)
       ACUM=1
       ;;
-
   esac
 
   git_sub_init
   case "$?" in
-
     2)
       echo "Failed to initialize configuration submodules" >&2
       return 2
       ;;
-
     1)
       ACUM=1
       ;;
-
   esac
 
   git_sub_pull
   case "$?" in
-
     2)
       echo "Failed to update configuration submodules" >&2
       return 2
       ;;
-
     1)
       ACUM=1
       ;;
-
   esac
 
   return $ACUM
-
-}
-
-config_ln() { # Links the configuration file to its proper dotfile
-
-  [ "$#" -eq "0" ] && return 1
-
-  for LN in $@ ; do
-    symlink "$DOTFILES_DIR/dotfiles/$LN" "$HOME/.$LN" || echo "ERROR: failed to symlink $LN" 2> /dev/null
-    [ "$?" -eq "0" ] && echo "  Symlinked $LN"
-  done
 
 }
 
@@ -179,16 +156,13 @@ config_update() { # Updates the configuration files and all of the submodules
 
   config_latest
   case "$?" in
-
     2)
       return 2
       ;;
-
     1)
       reload_all
       config_install
       ;;
-
   esac
 
 }

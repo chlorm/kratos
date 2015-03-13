@@ -30,19 +30,15 @@ laptop_bat_one() {
   B="$(cat "$BAT_DIR/status" 2> /dev/null)" || return 1
 
   case "$B" in
-
     Charging)
       echo -n "↑"
       ;;
-
     Discharging)
       echo -n "↓"
       ;;
-
     *)
       echo -n "⚡"
       ;;
-
   esac
 
   NOW="$(cat "$BAT_DIR"/charge_now 2> /dev/null || cat "$BAT_DIR"/energy_now 2> /dev/null || echo -1)"

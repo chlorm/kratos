@@ -7,20 +7,13 @@ shells_configure() { # Run shell configurations
   local SHELL
 
   for SHELL in ${shellsPreference[@]} ; do
-
     eval shell_${SHELL}_configure || {
-
       [ "$?" -eq "2" ] && echo "  ☐ $SHELL"
       [ "$?" -eq "1" ] && echo "  ☒ $SHELL"
-
       eval shell_${SHELL}_cleanup
-
       continue
-
     }
-
     echo "  ☑ $SHELL"
-
   done
 
   return 0
@@ -33,17 +26,14 @@ shells_theme() { # Setup the theme for the shell
 
   # Colors for LS
   case "$(os_kernel)" in
-
     'linux'|'cygwin')
       eval "$(dircolors -b)"
       alias ls='ls --color=auto'
       ;;
-
     'freebsd')
       export CLICOLOR=1
       export LSCOLORS="ExGxFxdxCxDhDxaBadaCeC"
       ;;
-
   esac
 
   # 256 Colors in the Terminal
@@ -69,12 +59,12 @@ shells_theme() { # Setup the theme for the shell
 
 }
 
-shells_tmp() { # Create the temporary directory for the shell
+shells_tmp() { # Create the temporary history file for the shell
 
-  local TMP
+  local tmp
 
-  if TMP="$(dir_tmp)" ; then
-    export HISTFILE="$TMP/history_$(shell_nov)"
+  if tmp="$(dir_tmp)" ; then
+    export HISTFILE="$TMP/history.$(shell_nov)"
     export SAVEHIST="9999"
   else
     export HISTFILE="/dev/null"
@@ -90,7 +80,7 @@ shells_init() { # Initializes useful functions
 
   alias root="sudo_wrap su -"
   alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
-  alias nixpaste="curl -F 'nixpaste=<-' http://nixpaste.noip.me"
+  alias nixpaste="curl -F 'text=<-' http://nixpaste.noip.me"
   alias t='laptop_bat ; date'
   alias sha1="openssl sha1"
   alias sha256="openssl sha256"
@@ -103,7 +93,7 @@ shells_init() { # Initializes useful functions
   alias defragmentroot="sudo btrfs filesystem defragment -r -v -clzo /"
   alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
   # Gentoo
-  [ "$(os_linux_distro)" == "gentoo" ] && {
+  [ "$(os_kernel)" == "linux" ] && [ "$(os_linux)" == "gentoo" ] && {
     alias inst="sudo emerge --ask"
     alias search="emerge --search"
     alias uses="equery uses"
@@ -123,9 +113,7 @@ shells_preference() {
   local SHELL
 
   for SHELL in ${shellsPreference[@]} ; do
-
     path_hasbin "$(tolower $SHELL)" > /dev/null 2>&1 && { echo "$(tolower $SHELL)" ; return 0 ; }
-
   done
 
   return 1

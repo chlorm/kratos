@@ -15,8 +15,8 @@ app_git_dotfiles() {
 (
 cat <<GITCONFIG
 [user]
-    email = $emailGit
-    name = $usernameGit
+    email = $GIT_EMAIL
+    name = $GIT_NAME
 [push]
     default = simple
 

@@ -7,20 +7,13 @@ apps_headless() {
   local APP
 
   for APP in ${appsHeadless[@]} ; do
-
     eval app_${APP}_configure || {
-
       [ "$?" -eq "2" ] && echo "  ☐ $APP"
       [ "$?" -eq "1" ] && echo "  ☒ $APP"
-
       eval app_${APP}_cleanup
-
       continue
-
     }
-
     echo "  ☑ $APP"
-
   done
 
   return 0
@@ -32,20 +25,13 @@ apps_graphical() {
   local APP
 
   for APP in ${appsGraphical[@]} ; do
-
     eval app_${APP}_configure || {
-
       [ "$?" -eq "2" ] && echo "  ☐ $APP"
       [ "$?" -eq "1" ] && echo "  ☒ $APP"
-
       eval app_${APP}_cleanup
-
       continue
-
     }
-
     echo "  ☑ $APP"
-
   done
 
   return 0
@@ -55,7 +41,7 @@ apps_graphical() {
 apps_configure() {
 
   apps_headless
-
+  # Find a better way to do this, not all graphical systems use xorg
   app_xorg_installed && apps_graphical
 
 }

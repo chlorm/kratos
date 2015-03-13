@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 
-app_golang_installed && {
-  export GOPATH="$HOME/.go"
-  path_add "$PATH:$HOME/.go/bin"
-}
+#app_golang_installed && {
+#  export GOPATH="$HOME/.go"
+#  path_add "$PATH:$HOME/.go/bin"
+#}
 
-app_cabal_installed && {
-  path_add "$HOME/.cabal/bin"
-}
+#app_cabal_installed && {
+#  path_add "$HOME/.cabal/bin"
+#}

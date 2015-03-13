@@ -16,27 +16,8 @@ shell_zsh_dotfiles() {
 cat <<ZSHRC
 #!/usr/bin/env zsh
 
-# $DOTFILES_AUTOGEN_WARN
-
-. "$DOTFILES_DIR/lib/loader"
-shells_auto
-
-# Allow for functions in the prompt.
+# Allow for functions in the prompt
 setopt PROMPT_SUBST
-
-# Path to your oh-my-zsh configuration.
-#ZSH="$DOTFILES_DIR/lib/oh-my-zsh"
-
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-#ZSH_THEME="takashiyoshida"
-#ZSH_THEME="mh"
-
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Set to this to use case-sensitive completion
 CASE_SENSITIVE="false"
@@ -46,15 +27,13 @@ DISABLE_LS_COLORS="false"
 DISABLE_AUTO_TITLE="false"
 COMPLETION_WAITING_DOTS="true"
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(battery svn git screen extract encode64 task urltools pass)
-
-#source \$ZSH/oh-my-zsh.sh
-
-# Customize to your needs...
 alias sudo="nocorrect sudo"
+
+# Load shell configuration options
+. "$DOTFILES_DIR/lib/loader"
+shells_auto
+
+# Load the local config
 [ -f "$HOME/.zshrc.local" ] && source $HOME/.zshrc.local
 
 ZSHRC

@@ -5,20 +5,13 @@ deskenvs_configure() { # Install DE configs
   local DESKENV
 
   for DESKENV in ${deskenvsPreference[@]} ; do
-
     eval deskenv_${DESKENV}_configure || {
-
       [ "$?" -eq "2" ] && echo "  ☐ $DESKENV"
       [ "$?" -eq "1" ] && echo "  ☒ $DESKENV"
-
       eval deskenv_${DESKENV}_cleanup
-
       continue
-
     }
-
     echo "  ☑ $DESKENV"
-
   done
 
   # clean this up later
@@ -32,35 +25,27 @@ deskenvs_configure() { # Install DE configs
 deskenvs_executable() {
 
   case "$1" in
-
     'awesome')
       echo "awesome" && return 0
       ;;
-
     'cinnamon')
       echo "cinnamon-session" && return 0
       ;;
-
     'gnome')
       echo "gnome-session" && return 0
       ;;
-
     'i3')
       echo "i3" && return 0
       ;;
-
     'kde')
       echo "startkde" && return 0
       ;;
-
     'xfce')
       echo "startxfce4" && return 0
       ;;
-
     'xmonad')
       echo "xmonad" && return 0
       ;;
-
   esac
 
   return 1
@@ -72,9 +57,7 @@ deskenvs_preference() {
   local DE
 
   for DE in ${deskenvsPreference[@]} ; do
-
     path_hasbin "$(deskenvs_executable)" > /dev/null 2>&1 && { echo "$DE" ; return 0 ; }
-
   done
 
   return 1
@@ -110,14 +93,11 @@ deskenvs_terminal() {
   WM_EXE="$(deskenvs_executable "$WM")"
   TILING=0
 
-
   # Tiling WM
   case ${WM} in
-
     'awesome'|'i3'|'xmonad')
       TILING=1
       ;;
-
   esac
 
   TERMRC="$DOTFILES_DIR/dotfiles/config/Terminal/terminalrc"

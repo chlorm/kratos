@@ -19,15 +19,15 @@ ssh_auth_keys() { # Populates the authorized_keys file
 
 ssh_gen_keys() { # Creates new ssh keys with the provided password
 
-  local PASS
+  local pass
 
-  PASS=$(password_confirmation)
+  pass=$(password_confirmation)
 
 # THIS IS VERY BAD, FIX THIS
   rm -f "$HOME/.ssh/"id_* 2>/dev/null
 
-  ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_rsa" -t rsa -b 4096
-  ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_ed25519" -t ed25519
+  ssh-keygen -N "$pass" -f "$HOME/.ssh/id_rsa" -t rsa -b 4096
+  ssh-keygen -N "$pass" -f "$HOME/.ssh/id_ed25519" -t ed25519
 
 }
 

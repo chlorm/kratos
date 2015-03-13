@@ -5,58 +5,46 @@ prompt_color() { # Get colors for the current shell
   [ "$(shell_nov)" = "zsh" ] && echo -n '%{' || echo -n '\['
 
   case "$1" in
-
     'black')
       [ "$2" -eq "0" ] && echo -n '\e[0;30m' || echo -n '\e[1;30m'
       ;;
-
     'blue')
       [ "$2" -eq "0" ] && echo -n '\e[0;34m' || echo -n '\e[1;34m'
       ;;
-
     'cyan')
       [ "$2" -eq "0" ] && echo -n '\e[0;36m' || echo -n '\e[1;36m'
       ;;
-
     'green')
       [ "$2" -eq "0" ] && echo -n '\e[0;32m' || echo -n '\e[1;32m'
       ;;
-
     'magenta')
       [ "$2" -eq "0" ] && echo -n '\e[0;35m' || echo -n '\e[1;35m'
       ;;
-
     'red')
       [ "$2" -eq "0" ] && echo -n '\e[0;31m' || echo -n '\e[1;31m'
       ;;
-
     'white')
       [ "$2" -eq "0" ] && echo -n '\e[0;37m' || echo -n '\e[1;37m'
       ;;
-
     'yellow')
       [ "$2" -eq "0" ] && echo -n '\e[0;33m' || echo -n '\e[1;33m'
       ;;
-
     'underline')
       echo -n '\e[4m'
       ;;
-
     'reset')
       echo -n '\e[0m'
       ;;
-
     *)
       echo -n '\e[0m'
       ;;
-
   esac
 
   [ "$(shell_nov)" = "zsh" ] && echo -n '%}' || echo -n '\]'
 
 }
 
-prompt_vcs () { # Determine if the current directory is a vcs repo
+prompt_vcs() { # Determine if the current directory is a vcs repo
 
   path_hasbin git > /dev/null 2>&1 && {
     git status > /dev/null 2>&1 && { echo "git" ; return 0 ; }
@@ -86,98 +74,77 @@ prompt_vcs () { # Determine if the current directory is a vcs repo
 
 }
 
-prompt_vcs_branch () { # Return current vcs branch
+prompt_vcs_branch() { # Return current vcs branch
+
+local branch
 
   case "$(prompt_vcs)" in
-
     'bzr')
       return 0
       ;;
-
     'cvs')
       return 0
       ;;
-
     'darcs')
       return 0
       ;;
-
     'git')
-      local GITBRANCH
-
-      GITBRANCH=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(prompt_vcs_dirty)/")
-
-      [ -n "$GITBRANCH" ] && echo "$GITBRANCH"
-
+      branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(prompt_vcs_dirty)/")
+      [ -n "$branch" ] && echo "$branch"
       return 0
       ;;
-
     'hg')
       return 0
       ;;
-
     'svn')
       return 0
       ;;
-
   esac
 
   return 0
 
 }
 
-prompt_vcs_dirty () { # Append '*' if vcs branch is dirty
+prompt_vcs_dirty() { # Append '*' if vcs branch is dirty
+
+local status
 
   case "$(prompt_vcs)" in
-
     'bzr')
       return 0
       ;;
-
     'cvs')
       return 0
       ;;
-
     'darcs')
       return 0
       ;;
-
     'git')
-      local GITSTATUS
-
-      GITSTATUS="$(git status 2> /dev/null | grep -m 1 -w -o 'working directory clean')"
-
-      [ "$GITSTATUS" != "working directory clean" ] && echo "*"
-
+      status="$(git status 2> /dev/null | grep -m 1 -w -o 'working directory clean')"
+      [ "$status" != "working directory clean" ] && echo "*"
       return 0
       ;;
-
     'hg')
       return 0
       ;;
-
     'svn')
       return 0
       ;;
-
   esac
 
   return 0
 
 }
 
-prompt_configure () { # Create prompt
+prompt_configure() { # Create prompt
 
   case "$(shell_nov)" in
-
     'zsh') # Must use single quotes to delay evaluation
       export PROMPT='$(prompt_color green 1)%n$(prompt_color black 1)@$(prompt_color white 1)%M$(prompt_color black 1)[$(prompt_color magenta 1)%~$(prompt_color black 1)]$(prompt_color green 1)$(prompt_vcs)$(prompt_color black 1)$([ -z $(prompt_vcs 2> /dev/null) ] || echo "∫")$(prompt_color white 1)$(prompt_vcs_branch)$(prompt_color cyan 0)〉$(prompt_color reset)'
       ;;
-
     'bash'|'dash')
       export PS1="$(prompt_color green 1)\u$(prompt_color black 1)@$(prompt_color white 1)\h$(prompt_color black 1)[$(prompt_color magenta 1)\w$(prompt_color black 1)]$(prompt_color green 1)\$(prompt_vcs)$(prompt_color black 1)\$([ -z \$(prompt_vcs 2> /dev/null) ] || echo "∫")$(prompt_color white 1)\$(prompt_vcs_branch)$(prompt_color cyan 0)〉$(prompt_color reset)"
       ;;
-
   esac
 
 }

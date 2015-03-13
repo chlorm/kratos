@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-os_kernel() { # Find base os i.e. linux,freebsd,darwin,cygwin
+os_kernel() { # Find host os kernel
 
   local kernel
 
@@ -16,7 +16,7 @@ os_kernel() { # Find base os i.e. linux,freebsd,darwin,cygwin
 
 }
 
-os_linux() { # Take first result of distro name match
+os_linux() { # Take first result of linux os name match
 
   os_linux_release() { # Finds linux distro via /etc/*-release
 
@@ -36,17 +36,17 @@ os_linux() { # Take first result of distro name match
 
   }
 
-  [ "$(os_base)" = "linux" ] || return 1
+  [ "$(os_kernel)" = "linux" ] || return 1
 
   local linux
 
-  linux=$(tolower "$(os_linux_distro_release) $(os_linux_distro_uname) $(os_linux_distro_lsb)" | \
+  linux=$(tolower "$(os_linux_release) $(os_linux_uname) $(os_linux_lsb)" | \
   grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)' | \
   head -n 1)
 
-  [ -z "$linuxDISTRO" ] && { echo "ERROR: not a supported linux operating system" ; return 1 ; }
+  [ -z "$linux" ] && { echo "ERROR: not a supported linux operating system" ; return 1 ; }
 
-  echo "$linuxDISTRO"
+  echo "$linux"
 
   return 0
 

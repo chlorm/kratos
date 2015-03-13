@@ -5,3 +5,9 @@ tolower() {
   echo "$@" | tr '[A-Z]' '[a-z]'
 
 }
+
+toupper() {
+
+  echo "$@" | tr '[a-z]' '[A-Z]'
+
+}

@@ -51,10 +51,11 @@ dir_tmp() { # Get the path to the temporary directory
   local tmpdir
   local tmpdirs
 
-  tmpfolders=("$ROOT/dev/shm" "$ROOT/run/shm" "$ROOT/tmp" "$ROOT/var/tmp")
+  tmpdirs=("$ROOT/dev/shm" "$ROOT/run/shm" "$ROOT/tmp" "$ROOT/var/tmp")
 
   for dir in ${tmpdirs[@]} ; do
-    mount | grep '\(tmpfs\|ramfs\)' | grep $dir > /dev/null && {
+
+    [ -n "$(mount | grep '\(tmpfs\|ramfs\)' | grep $dir 2> /dev/null)" ] && {
       tmpdir="$dir/$USER"
       break
     }
@@ -66,8 +67,8 @@ dir_tmp() { # Get the path to the temporary directory
 
   symlink "$tmpdir" "$HOME/.tmp"
 
-  [ ! -d "#tmpdir/cache"] && mkdir "$tmpdir/cache" > /dev/null 2>&1
-  symlink "$tmpdir/cache" "$HOME/.cache"
+  [ ! -d "#tmpdir/cache" ] && mkdir "$tmpdir/cache" > /dev/null 2>&1
+  symlink "$tmpdir/cache" "$XDG_CACHE_HOME"
 
   echo "$tmpdir"
 
