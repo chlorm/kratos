@@ -85,7 +85,7 @@ git_sub_pull() { # Update the submodules
 
 }
 
-config_latest() { # Gets the latest version of the git config
+dotfiles_latest() { # Gets the latest version of the dotfiles
 
   # Returns 2 if failed, 1 if updated, 0 if up-to-date
 
@@ -130,7 +130,7 @@ config_latest() { # Gets the latest version of the git config
 
 }
 
-config_install() { # Installs the configuration files
+dotfiles_install() { # Installs the dotfiles
 
   echo "Configuring directories"
   xdg_dirs || { echo "ERROR: failed to configure xdg directories" ; return 1 ; }
@@ -152,16 +152,16 @@ config_install() { # Installs the configuration files
 
 }
 
-config_update() { # Updates the configuration files and all of the submodules
+dotfiles_update() { # Updates dotfiles and submodules
 
-  config_latest
+  dotfiles_latest
   case "$?" in
     2)
       return 2
       ;;
     1)
       reload_all
-      config_install
+      dotfiles_install
       ;;
   esac
 
