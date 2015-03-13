@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+user_root() { # Determine if the user is root
+
+  [ "$(id -u)" -eq 0 ]
+
+}

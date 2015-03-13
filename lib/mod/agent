@@ -95,7 +95,7 @@ agent_which() { # Determine which agent to use
   [ "$1" = "ssh" ] && agent_ssh && return 0
   [ "$1" = "gpg" ] && agent_gpg && return 0
   [ "$(hostname)" = "fantom" ] && agent_ssh && return 0
-  (info_ws && ! info_root) && agent_gpg && return 0
+  (info_ws && ! user_root) && agent_gpg && return 0
   agent_ssh && return 0
 
   echo "Failed to find an agent" >&2

@@ -43,7 +43,7 @@ shells_theme() { # Setup the theme for the shell
   fi
 
   # Setup Special Colors
-  if info_root ; then
+  if user_root ; then
     NCOLOR="$(prompt_color cyan 0)"
   else
     NCOLOR="$(prompt_color white 1)"
