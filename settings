@@ -22,12 +22,14 @@ appsGraphical=(sakura sublimetext suckless xorg)
 deskenvsPreference=(xmonad gnome kde)
 
 # Shells in order of preference [ash,bash,csh,dash,fish,korn,pdksh,tcsh,zsh]
-# Only list those with which you want configured (fallsback to sh if none are found)
 shellsPreference=(bash zsh fish)
+
+# Text editors in order of preference [emacs,nano,vi,vim,yi]
+editorPreference=(emacs vim nano)
 
 # XDG directories
 XDG_CACHE_HOME="$HOME/.cache"
-XDG_CONFIG_HOME="$HOME/.config"
+XDG_CONFIG_HOME="$HOME/.config" # The config directory cannot be modified currently
 XDG_DATA_HOME="$HOME/.local/share"
 XDG_DESKTOP_DIR="$HOME/Desktop"
 XDG_DOCUMENTS_DIR="$HOME/Documents"
@@ -41,5 +43,3 @@ XDG_VIDEOS_DIR="$HOME/Videos"
 # Trash directories
 DIR_TRASH_INFO="$HOME/.local/share/Trash/info"
 DIR_TRASH_FILES="$HOME/.local/share/Trash/files"
-
-# TODO: Editor list
