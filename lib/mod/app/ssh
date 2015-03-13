@@ -75,7 +75,7 @@ app_ssh_configure() {
 
   exist -dc "$HOME/.ssh" || return 1
 
-  config_ln "ssh/config" || return 1
+  dotfile_ln "ssh/config" || return 1
 
   # ??? remove old known hosts or something
   ssh-keygen -H >/dev/null 2>&1

@@ -16,7 +16,7 @@ deskenvs_configure() { # Install DE configs
 
   # clean this up later
   install -d $XDG_CONFIG_HOME
-  config_ln "config/Terminal" "config/wallpaper" "config/uzbl"
+  dotfile_ln "config/Terminal" "config/wallpaper" "config/uzbl"
 
   return 0
 

@@ -18,7 +18,7 @@ app_sakura_dirs() {
 
 app_sakura_dotfiles() {
  
-  dotfiles_ln "config/sakura"
+  dotfile_ln "config/sakura"
 
 }
 

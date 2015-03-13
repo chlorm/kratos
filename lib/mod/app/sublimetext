@@ -18,7 +18,7 @@ app_sublimetext_configure() {
 
   app_sublime_installed || return 2
 
-  config_ln "config/sublime-text-3"
+  dotfile_ln "config/sublime-text-3"
 
   echo "  ✓ sublimetext"
 

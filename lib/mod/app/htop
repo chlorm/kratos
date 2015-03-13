@@ -20,7 +20,7 @@ app_htop_dotfiles() {
 
   exist -fx "$XDG_CONFIG_HOME/htop/htoprc"
 
-  config_ln "config/htop/htoprc" || return 1
+  dotfile_ln "config/htop/htoprc" || return 1
 
   return 0
 
