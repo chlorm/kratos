@@ -11,6 +11,9 @@ GIT_EMAIL="$EMAIL"
 # List hostname of all workstations
 workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'
 
+# High DPI
+HIGH_DPI=false
+
 # Headless apps to configure
 appsHeadless=(beets cabal emacs git golang gvim htop minidlna mpd ncmpcpp nixpkgs\
               pulseaudio rtorrent ssh tmux vim)
