@@ -15,10 +15,10 @@ prompt_color() { # Get colors for the current shell
       [ "$2" -eq "0" ] && echo -n '\e[0;36m' || echo -n '\e[1;36m'
       ;;
     'green')
-      [ "$2" -eq "0" ] && echo -n '\e[0;32m' || echo -n '\e[1;32m'
+      [ "$2" -eq "0" ] && echo -n '\e[0;38;5;154m' || echo -n '\e[1;38;5;154m'
       ;;
     'magenta')
-      [ "$2" -eq "0" ] && echo -n '\e[0;35m' || echo -n '\e[1;35m'
+      [ "$2" -eq "0" ] && echo -n '\e[0;38;5;161m' || echo -n '\e[1;38;5;161m'
       ;;
     'red')
       [ "$2" -eq "0" ] && echo -n '\e[0;31m' || echo -n '\e[1;31m'
@@ -140,10 +140,10 @@ prompt_configure() { # Create prompt
 
   case "$(shells_preference)" in
     'zsh') # Must use single quotes to delay evaluation
-      export PROMPT='$(prompt_color green 1)%n$(prompt_color black 1)@$(prompt_color white 1)%M$(prompt_color black 1)[$(prompt_color magenta 1)%~$(prompt_color black 1)]$(prompt_color green 1)$(prompt_vcs)$(prompt_color black 1)$([ -z $(prompt_vcs 2> /dev/null) ] || echo "∫")$(prompt_color white 1)$(prompt_vcs_branch)$(prompt_color cyan 0)〉$(prompt_color reset)'
+      export PROMPT='$(prompt_color green 0)%n$(prompt_color black 1)@$(prompt_color white 1)%M$(prompt_color black 1)[$(prompt_color magenta 0)%~$(prompt_color black 1)]$(prompt_color green 0)$(prompt_vcs)$(prompt_color black 1)$([ -z $(prompt_vcs 2> /dev/null) ] || echo "∫")$(prompt_color white 1)$(prompt_vcs_branch)$(prompt_color cyan 0)〉$(prompt_color reset)'
       ;;
     'bash'|'dash')
-      export PS1="$(prompt_color green 1)\u$(prompt_color black 1)@$(prompt_color white 1)\h$(prompt_color black 1)[$(prompt_color magenta 1)\w$(prompt_color black 1)]$(prompt_color green 1)\$(prompt_vcs)$(prompt_color black 1)\$([ -z \$(prompt_vcs 2> /dev/null) ] || echo "∫")$(prompt_color white 1)\$(prompt_vcs_branch)$(prompt_color cyan 0)〉$(prompt_color reset)"
+      export PS1="$(prompt_color green 0)\u$(prompt_color black 1)@$(prompt_color white 1)\h$(prompt_color black 1)[$(prompt_color magenta 0)\w$(prompt_color black 1)]$(prompt_color green 0)\$(prompt_vcs)$(prompt_color black 1)\$([ -z \$(prompt_vcs 2> /dev/null) ] || echo "∫")$(prompt_color white 1)\$(prompt_vcs_branch)$(prompt_color cyan 0)〉$(prompt_color reset)"
       ;;
   esac
 
