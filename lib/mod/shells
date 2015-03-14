@@ -93,7 +93,7 @@ shells_init() { # Initializes useful functions
   alias defragmentroot="sudo btrfs filesystem defragment -r -v -clzo /"
   alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
   # Gentoo
-  [ "$(os_kernel)" == "linux" ] && [ "$(os_linux)" == "gentoo" ] && {
+  [ "$(os_kernel)" = "linux" ] && [ "$(os_linux)" = "gentoo" ] && {
     alias inst="sudo emerge --ask"
     alias search="emerge --search"
     alias uses="equery uses"
@@ -104,7 +104,6 @@ shells_init() { # Initializes useful functions
   export EDITOR="emacs"
   export PAGER=""
   export BLOCKSIZE="K"
-
 
 }
 

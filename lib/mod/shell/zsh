@@ -12,32 +12,7 @@ shell_zsh_dotfiles() {
 
   exist -fx "$HOME/.zshrc" "$HOME/.zlogout" "$HOME/.zprofile"
 
-(
-cat <<ZSHRC
-#!/usr/bin/env zsh
-
-# Allow for functions in the prompt
-setopt PROMPT_SUBST
-
-# Set to this to use case-sensitive completion
-CASE_SENSITIVE="false"
-
-DISABLE_AUTO_UPDATE="true"
-DISABLE_LS_COLORS="false"
-DISABLE_AUTO_TITLE="false"
-COMPLETION_WAITING_DOTS="true"
-
-alias sudo="nocorrect sudo"
-
-# Load shell configuration options
-. "$DOTFILES_DIR/lib/loader"
-shells_auto
-
-# Load the local config
-[ -f "$HOME/.zshrc.local" ] && source $HOME/.zshrc.local
-
-ZSHRC
-) > "$HOME/.zshrc" || return 1
+  dotfile_ln "zshrc" || return 1
 
 (
 cat <<ZLOGOUT
@@ -52,6 +27,8 @@ cat <<ZPROFILE
 
 ZPROFILE
 ) > "$HOME/.zprofile" || return 1
+
+  return 0
 
 }
 
