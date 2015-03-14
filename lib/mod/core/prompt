@@ -107,7 +107,7 @@ local branch
 
 prompt_vcs_dirty() { # Append '*' if vcs branch is dirty
 
-local status
+local vcsstatus=
 
   case "$(prompt_vcs)" in
     'bzr')
@@ -120,8 +120,8 @@ local status
       return 0
       ;;
     'git')
-      status="$(git status 2> /dev/null | grep -m 1 -w -o 'working directory clean')"
-      [ "$status" != "working directory clean" ] && echo "*"
+      vcsstatus="$(git status 2> /dev/null | grep -m 1 -w -o 'working directory clean')"
+      [ "$vcsstatus" != "working directory clean" ] && echo "*"
       return 0
       ;;
     'hg')
@@ -138,7 +138,7 @@ local status
 
 prompt_configure() { # Create prompt
 
-  case "$(shell_nov)" in
+  case "$(shells_preference)" in
     'zsh') # Must use single quotes to delay evaluation
       export PROMPT='$(prompt_color green 1)%n$(prompt_color black 1)@$(prompt_color white 1)%M$(prompt_color black 1)[$(prompt_color magenta 1)%~$(prompt_color black 1)]$(prompt_color green 1)$(prompt_vcs)$(prompt_color black 1)$([ -z $(prompt_vcs 2> /dev/null) ] || echo "∫")$(prompt_color white 1)$(prompt_vcs_branch)$(prompt_color cyan 0)〉$(prompt_color reset)'
       ;;
