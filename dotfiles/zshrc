@@ -4,9 +4,6 @@
 source "$(readlink -f $(dirname $(readlink -f $HOME/.zshrc))/../)/lib/loader"
 shells_auto
 
-# Allow for functions in the prompt
-setopt PROMPT_SUBST
-
 alias sudo="nocorrect sudo"
 
 # Load the local config
