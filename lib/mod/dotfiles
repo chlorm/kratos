@@ -148,6 +148,9 @@ dotfiles_install() { # Installs the dotfiles
   echo "Configuring Shells"
   shells_configure || { echo "ERROR: failed to configure shells" ; return 1 ; }
 
+  echo "Configuring Fonts"
+  fonts_configure || { echo "ERROR: failed to configure fonts" ; return 1 ; }
+
   return 0
 
 }
