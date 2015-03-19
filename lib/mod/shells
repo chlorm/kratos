@@ -100,10 +100,14 @@ shells_init() { # Initializes useful functions
     alias layup="sudo layman -S"
   }
   # Defaults
-  export LANGUAGE="en_US:en"
   export EDITOR="emacs"
-  export PAGER=""
+  export PAGER="less -r"
   export BLOCKSIZE="K"
+  # Locale/UTF-8
+  export LANG=en_US.UTF-8
+  export LANGUAGE=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+  export LESSCHARSET=utf-8
 
 }
 
