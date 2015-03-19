@@ -18,7 +18,7 @@ app_emacs_dotfiles() {
 
 app_emacs_cleanup() {
 
-  exist -dx "$HOME/.emacs"
+  exist -dx "$HOME/.emacs.d"
 
 }
 
