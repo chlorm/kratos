@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+setopt PROMPT_SUBST
+
 # Load shell configuration options
 source "$(readlink -f $(dirname $(readlink -f $HOME/.zshrc))/../)/lib/loader"
 shells_auto
