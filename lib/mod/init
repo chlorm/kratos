@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-
-[ -f "$HOME/.tmp/dotfiles" ] || {
-  touch "$HOME/.tmp/dotfiles.init"
-}
-
