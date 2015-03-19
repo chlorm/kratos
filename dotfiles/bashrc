@@ -7,7 +7,6 @@
 . "$(readlink -f $(dirname $(readlink -f $HOME/.bashrc))/../)/lib/loader"
 #agent_auto
 shells_auto
-run_quiet mpd
 
 # Load the local config
 [ -f "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"

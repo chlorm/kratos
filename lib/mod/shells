@@ -111,6 +111,8 @@ shells_init() { # Initializes useful functions
   # Prevent GUI password dialog
   unset SSH_ASKPASS
 
+  run_quiet mpd
+
 }
 
 shells_preference() {
