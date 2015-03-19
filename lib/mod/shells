@@ -108,6 +108,8 @@ shells_init() { # Initializes useful functions
   export LANGUAGE=en_US.UTF-8
   export LC_ALL=en_US.UTF-8
   export LESSCHARSET=utf-8
+  # Prevent GUI password dialog
+  unset SSH_ASKPASS
 
 }
 
