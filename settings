@@ -25,7 +25,7 @@ appsGraphical=(sakura sublimetext suckless xorg)
 deskenvsPreference=(xmonad gnome kde)
 
 # Shells in order of preference [ash,bash,csh,dash,fish,korn,pdksh,tcsh,zsh]
-shellsPreference=(bash zsh fish)
+shellsPreference=(zsh bash fish)
 
 # Text editors in order of preference [emacs,nano,vi,vim,yi]
 editorPreference=(emacs vim nano)
