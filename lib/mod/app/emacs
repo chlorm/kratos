@@ -8,30 +8,9 @@ app_emacs_installed() {
 
 }
 
-app_emacs_dirs() {
-
-  exist -dc "$HOME/.emacs.d/themes"
-
-}
-
 app_emacs_dotfiles() {
 
-  # Monokai theme
-  [ -f "$HOME/.emacs.d/themes/monokai-theme.el" ] || {
-  	pushd "$HOME/.emacs.d/themes"
-  	download "https://raw.githubusercontent.com/oneKelvinSmith/monokai-emacs/master/monokai-theme.el"
-  	popd
-  }
-
-(
-cat <<EMACSINIT
-(add-to-list 'custom-theme-load-path "$HOME/.emacs.d/themes/")
-(load-theme 'monokai t)
-(global-linum-mode 1)
-(column-number-mode 1)
-
-EMACSINIT
-) > "$HOME/.emacs.d/init.el" || return 1
+  dotfile_ln "emacs" || return 1
 
   return 0
 
@@ -39,15 +18,13 @@ EMACSINIT
 
 app_emacs_cleanup() {
 
-  exist -dx "$HOME/.emacs.d"
+  exist -dx "$HOME/.emacs"
 
 }
 
 app_emacs_configure() {
 
   app_emacs_installed || return 2
-
-  app_emacs_dirs || return 1
 
   app_emacs_dotfiles || return 1
 
