@@ -16,7 +16,6 @@
 /dotfiles/config/sublime-text-3/Index/*
 /dotfiles/config/sublime-text-3/Local/*
 /dotfiles/config/Terminal/terminalrc
-/dotfiles/emacs.d/*
 /dotfiles/ncmpcpp/error.log
 /dotfiles/xmonad/xmonad.errors
 /dotfiles/xmonad/xmonad.hi
