@@ -3,7 +3,8 @@
 setopt PROMPT_SUBST
 
 # Load shell configuration options
-source "$(readlink -f $(dirname $(readlink -f $HOME/.zshrc))/../)/lib/loader"
+. "$(readlink -f $(dirname $(readlink -f $HOME/.zshrc))/../)/lib/loader"
+
 shells_auto
 
 alias sudo="nocorrect sudo"
