@@ -8,153 +8,9 @@ app_nixpkgs_installed() {
 
 }
 
-app_nixpkgs_dirs() {
-
-  exist -dc "$HOME/.nixpkgs" || return 1
-
-  return 0
-
-}
-
 app_nixpkgs_dotfiles() {
 
-  exist -fx "$HOME/.nixpkgs/config.nix"
-
-(
-cat <<NIXPKGS
-pkgs : {
-  allowUnfree = true;
-  cabal.libraryProfiling = true;
-  firefox = {
-    jre = false;
-    enableAdobeFlash = true;
-    enableGoogleTalkPlugin = true;
-    icedtea = true;
-  };
-  chromium = {
-    enablePepperFlash = true;
-    enablePepperPDF = true;
-  };
-  # FFmpeg - enable fdk-aac
-  ffmpeg = {
-    fdk = true;
-  };
-  # Suckless
-  st.conf = (builtins.readFile ./st/config.mach.h)
-    + (builtins.readFile ./st/config.inc.h);
-
-  packageOverrides = self : rec {
-    emacs = self.emacs.override { withX = false; };
-    rtorrent-git = self.rtorrent-git.override { colorSupport = true; };
-    x265-hg = self.x265-hg.override { highBitDepth = true; };
-    desktop-chlorm = self.haskellPackages.ghcWithPackages (self : with self; [
-      haskellPackages.xdgBasedir
-      xmonad
-      #yi
-    ]);
-    # Import Environments
-    chlorm = self.buildEnv {
-      name = "myChlorm";
-      paths = with self; [
-        base-chlorm
-        headless-chlorm
-        $(app_xorg_installed || printf "#")graphical-chlorm
-        $([ -n "$(ls $XDG_MUSIC_DIR)" ] && printf "# Music apps\n\tbeets\n\tmpd\n\tncmpcpp")
-      ];
-    };
-    # Environments
-    base-chlorm = self.buildEnv {
-      name = "myBase";
-      paths = with self; [
-        bc
-        emacs
-        git
-        htop
-        openssh #_hpn
-        openssl
-        slock
-        tmux
-        vim
-        wget
-        zsh
-      ];
-    };
-    graphical-chlorm = self.buildEnv {
-      name = "myGraphical";
-      paths = with self; [
-        chromium
-        conky
-        $(deskenv_xmonad_installed && printf "dmenu")
-        dzen2
-        filezilla
-        firefoxWrapper
-        geeqie
-        gimp
-        #libreoffice
-        mumble
-        networkmanagerapplet
-        pavucontrol
-        pidgin
-        #qbittorrent
-        kde4.quasselClient
-        sakura
-        sublime3
-        texLive
-        texstudio
-        #transmission
-        virtmanager
-        vlc
-        xfe
-      ];
-    };
-    headless-chlorm = self.buildEnv {
-      name = "myHeadless";
-      paths = with self; [
-        acpi
-        ffmpeg
-        fish
-        flac
-        #gnupg1compat
-        go
-        #icedtea7_web
-        imagemagick
-        lame
-        libpng
-        mediainfo
-        mkvtoolnix
-        mosh
-        most
-        ncdc
-        ncdu
-        networkmanager
-        #nix-repl
-        #nixops
-        #notbit
-        p7zip
-        pcsclite
-        pinentry
-        psmisc
-        pulseaudio
-        rtorrent-git
-        scrot
-        speedtest_cli
-        subversion
-        unzip
-        vobsub2srt
-        x264
-        x265-hg
-        #xlibs.xbacklight
-        xz
-        youtubeDL
-        #zathura
-        #zsh
-      ];
-    };
-  };
-}
-
-NIXPKGS
-) > "$HOME/.nixpkgs/config.nix" || return 1
+  dotfiles_ln "nixpkgs" || return 1
 
   return 0
 
@@ -169,8 +25,6 @@ app_nixpkgs_cleanup() {
 app_nixpkgs_configure() {
 
   app_nixpkgs_installed || return 2
-
-  app_nixpkgs_dirs || return 1
 
   app_nixpkgs_dotfiles || return 1
 
