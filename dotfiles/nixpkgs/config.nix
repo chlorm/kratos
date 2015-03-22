@@ -26,8 +26,8 @@ pkgs : {
 
       nonfreeLicensing = true;
 
-      gnutls = null;
-      opensslExtlib = true;
+      #gnutls = null;
+      #opensslExtlib = true;
 
       #decklinkExtlib = true;
       fdk-aacExtlib = true;
@@ -67,9 +67,11 @@ pkgs : {
       name = "myBase";
       paths = with self; [
         bc
+        dash
         emacs
         git
         htop
+        meslo-lg
         openssh #_hpn
         openssl
         slock
@@ -86,11 +88,16 @@ pkgs : {
         conky
         dmenu
         dzen2
+        eagle
         filezilla
         firefoxWrapper
         geeqie
         gimp
         #libreoffice
+        makemkv
+        mediainfo-gui
+        mixxx
+        mkvtoolnix
         mumble
         networkmanagerapplet
         pavucontrol
@@ -111,7 +118,7 @@ pkgs : {
       name = "myHeadless";
       paths = with self; [
         acpi
-        ffmpeg_2_6
+        ffmpeg
         fish
         flac
         #gnupg1compat
@@ -121,8 +128,7 @@ pkgs : {
         lame
         libpng
         libvpx-git
-        mediainfo
-        mkvtoolnix
+        #mediainfo
         mosh
         most
         ncdc
@@ -148,7 +154,6 @@ pkgs : {
         xz
         youtubeDL
         #zathura
-        zsh
       ];
     };
   };
