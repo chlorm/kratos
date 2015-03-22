@@ -22,8 +22,8 @@ set wildmenu
 set wildmode=list:longest
 set title
 set scrolloff=3
+set number
 colorscheme molokai
-let g:airline_theme='kalisi'
 
 
 " allow backspacing over everything in insert mode
