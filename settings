@@ -15,8 +15,8 @@ workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'
 HIGH_DPI=false
 
 # Headless apps to configure
-appsHeadless=(beets cabal emacs git golang gvim htop minidlna mpd ncmpcpp nixpkgs\
-              pulseaudio rtorrent ssh tmux vim)
+appsHeadless=(beets cabal emacs git golang gvim htop minidlna mpd ncmpcpp neovim\
+              nixpkgs pulseaudio rtorrent ssh tmux vim)
 
 # Graphical apps to configure
 appsGraphical=(sakura sublimetext suckless xorg)
