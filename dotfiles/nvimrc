@@ -23,7 +23,7 @@ set wildmode=list:longest
 set title
 set scrolloff=3
 set number
-colorscheme molokai
+colorscheme monokai
 
 
 " allow backspacing over everything in insert mode
