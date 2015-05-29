@@ -9,151 +9,160 @@ pkgs : {
   };
   chromium = {
     enablePepperFlash = true;
-    enablePepperPDF = true;
+    enableWideVine = true;
+    proprietaryCodecs = true;
   };
-
   # Suckless
   st.conf = (builtins.readFile ./st/config.mach.h)
     + (builtins.readFile ./st/config.inc.h);
 
   packageOverrides = self : rec {
 
-    emacs = self.emacs.override {
-      withX = false;
+    chromium = self.chromium.override {
+      enableNaCl = false;
+      useOpenSSL = false;
+      gnomeSupport = true;
+      gnomeKeyringSupport = false;
+      enablePepperFlash = true;
+      enableWideVine = true;
+      proprietaryCodecs = true;
+      cupsSupport = true;
+      pulseSupport = true;
+      hiDPISupport = false;
     };
-
-    ffmpeg = self.ffmpeg.override {
-
+    #emacs = self.emacs.override {
+    #  withX = false;
+    #};
+    ffmpeg-full = self.ffmpeg-full.override {
       nonfreeLicensing = true;
-
-      #gnutls = null;
-      #opensslExtlib = true;
-
+      gnutls = null;
+      opensslExtlib = true;
       #decklinkExtlib = true;
-      fdk-aacExtlib = true;
+      fdkaacExtlib = true;
       openglExtlib = true;
-      sambaExtlib = true;
-
     };
-
     rtorrent-git = self.rtorrent-git.override {
       colorSupport = true;
     };
-
-    x265-hg = self.x265-hg.override {
+    x265 = self.x265.override {
       highBitDepth = true;
     };
-
-    desktop-chlorm = self.haskellPackages.ghcWithPackages (self : with self; [
-      haskellPackages.xdgBasedir
-      xmonad
+    #desktop = self.haskellPackages.ghcWithPackages (self : with self; [
+    #  haskell-ngPackages.xdgBasedir
+     # xmonad
       #yi
-    ]);
+    #]);
 
     # Import Environments
-    chlorm = self.buildEnv {
-      name = "myChlorm";
+    user-env = self.buildEnv {
+      name = "userEnv";
       paths = with self; [
-        base-chlorm
-        headless-chlorm
-        graphical-chlorm
-        beets
-        mpd
-        ncmpcpp
+        steamEnv
+        # Default
+          acpi
+          atop
+          bc
+          dash
+          dnstop
+          emacs
+          git
+          gptfdisk
+          hdparm
+          htop
+          iftop
+          iotop
+          iperf
+          ipset
+          iptables
+          lm_sensors
+          meslo-lg
+          mtr
+          neovim
+          nftables
+          nmap
+          config.programs.ssh.package
+          openssh
+          openssl
+          psmisc
+          smartmontools
+          sysstat
+          tcpdump
+          tmux
+          vim
+          wget
+          zsh
+
+        # Headless
+          ffmpeg-full
+          flac
+          #gnupg1compat
+          go
+          #icedtea7_web
+          imagemagick
+          lame
+          libpng
+          libvpx
+          mediainfo
+          mkvtoolnix-cli
+          mosh
+          most
+          ncdc
+          ncdu
+          networkmanager
+          #nix-repl
+          #nixops
+          #notbit
+          p7zip
+          pcsclite
+          pinentry
+          psmisc
+          pulseaudio
+          rtorrent-git
+          scrot
+          speedtest_cli
+          subversion
+          unzip
+          vobsub2srt
+          x264
+          x265
+          #xlibs.xbacklight
+          xz
+          youtube-dl
+
+        # Graphical
+          chromium
+          dmenu
+          eagle
+          filezilla
+          firefoxWrapper
+          gimp
+          guitarix
+          #libreoffice
+          makemkv
+          mixxx
+          mkvtoolnix-cli
+          mpv
+          mumble
+          networkmanager
+          networkmanagerapplet
+          pavucontrol
+          kde4.quasselClient
+          #sakura
+          sublime3
+          teamspeak_client
+          texLive
+          texstudio
+          virtmanager
+          vlc
+          xfe
       ];
     };
-    # Environments
-    base-chlorm = self.buildEnv {
-      name = "myBase";
+
+    steamEnv = self.buildEnv {
+      name = "steam-env";
+      ignoreCollisions = true;
       paths = with self; [
-        bc
-        dash
-        emacs
-        git
-        htop
-        meslo-lg
-        openssh #_hpn
-        openssl
-        slock
-        tmux
-        vim
-        wget
-        zsh
-      ];
-    };
-    graphical-chlorm = self.buildEnv {
-      name = "myGraphical";
-      paths = with self; [
-        chromium
-        conky
-        dmenu
-        dzen2
-        eagle
-        filezilla
-        firefoxWrapper
-        geeqie
-        gimp
-        #libreoffice
-        makemkv
-        mediainfo-gui
-        mixxx
-        mkvtoolnix
-        mumble
-        networkmanagerapplet
-        pavucontrol
-        pidgin
-        #qbittorrent
-        kde4.quasselClient
-        sakura
-        sublime3
-        texLive
-        texstudio
-        #transmission
-        virtmanager
-        vlc
-        xfe
-      ];
-    };
-    headless-chlorm = self.buildEnv {
-      name = "myHeadless";
-      paths = with self; [
-        acpi
-        ffmpeg
-        fish
-        flac
-        #gnupg1compat
-        go
-        #icedtea7_web
-        imagemagick
-        lame
-        libpng
-        libvpx-git
-        #mediainfo
-        mosh
-        most
-        ncdc
-        ncdu
-        networkmanager
-        #nix-repl
-        #nixops
-        #notbit
-        p7zip
-        pcsclite
-        pinentry
-        psmisc
-        pulseaudio
-        rtorrent-git
-        scrot
-        speedtest_cli
-        subversion
-        unzip
-        vobsub2srt
-        x264
-        x265-hg
-        #xlibs.xbacklight
-        xz
-        youtubeDL
-        #zathura
+          steam
       ];
     };
   };
