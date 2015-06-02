@@ -7,45 +7,45 @@ pkgs : {
     enableGoogleTalkPlugin = true;
     icedtea = true;
   };
-  chromium = {
-    enablePepperFlash = true;
-    enableWideVine = true;
-    proprietaryCodecs = true;
-  };
+  #chromium = {
+  #  enablePepperFlash = true;
+  #  enableWideVine = true;
+  #  proprietaryCodecs = true;
+  #};
   # Suckless
   st.conf = (builtins.readFile ./st/config.mach.h)
     + (builtins.readFile ./st/config.inc.h);
 
   packageOverrides = self : rec {
 
-    chromium = self.chromium.override {
-      enableNaCl = false;
-      useOpenSSL = false;
-      gnomeSupport = true;
-      gnomeKeyringSupport = false;
-      enablePepperFlash = true;
-      enableWideVine = true;
-      proprietaryCodecs = true;
-      cupsSupport = true;
-      pulseSupport = true;
-      hiDPISupport = false;
-    };
+    #chromium = self.chromium.override {
+    #  enableNaCl = false;
+    #  useOpenSSL = false;
+    #  gnomeSupport = true;
+    #  gnomeKeyringSupport = false;
+    #  enablePepperFlash = true;
+    #  enableWideVine = true;
+    #  proprietaryCodecs = true;
+    #  cupsSupport = true;
+    #  pulseSupport = true;
+    #  hiDPISupport = false;
+    #};
     #emacs = self.emacs.override {
     #  withX = false;
     #};
-    ffmpeg-full = self.ffmpeg-full.override {
+    /*ffmpeg-full = self.ffmpeg-full.override {
       nonfreeLicensing = true;
       gnutls = null;
       opensslExtlib = true;
       #decklinkExtlib = true;
       fdkaacExtlib = true;
       openglExtlib = true;
-    };
+    };*/
     rtorrent-git = self.rtorrent-git.override {
       colorSupport = true;
     };
     x265 = self.x265.override {
-      highBitDepth = true;
+      highbitdepthSupport = true;
     };
     #desktop = self.haskellPackages.ghcWithPackages (self : with self; [
     #  haskell-ngPackages.xdgBasedir
@@ -80,7 +80,6 @@ pkgs : {
           neovim
           nftables
           nmap
-          config.programs.ssh.package
           openssh
           openssl
           psmisc
@@ -93,6 +92,7 @@ pkgs : {
           zsh
 
         # Headless
+          beets
           ffmpeg-full
           flac
           #gnupg1compat
@@ -106,8 +106,10 @@ pkgs : {
           mkvtoolnix-cli
           mosh
           most
+          mpd
           ncdc
           ncdu
+          ncmpcpp
           networkmanager
           #nix-repl
           #nixops
@@ -116,7 +118,7 @@ pkgs : {
           pcsclite
           pinentry
           psmisc
-          pulseaudio
+          pulseaudioFull
           rtorrent-git
           scrot
           speedtest_cli
@@ -132,7 +134,7 @@ pkgs : {
         # Graphical
           chromium
           dmenu
-          eagle
+          #eagle
           filezilla
           firefoxWrapper
           gimp
@@ -147,12 +149,12 @@ pkgs : {
           networkmanagerapplet
           pavucontrol
           kde4.quasselClient
-          #sakura
+          sakura
           sublime3
           teamspeak_client
           texLive
           texstudio
-          virtmanager
+          #virtmanager
           vlc
           xfe
       ];
