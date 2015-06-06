@@ -42,6 +42,8 @@ apps_configure() {
 
   apps_headless
   # Find a better way to do this, not all graphical systems use xorg
-  app_xorg_installed && apps_graphical
+  if app_xorg_installed ; then
+    apps_graphical
+  fi
 
 }
