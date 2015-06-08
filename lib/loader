@@ -92,11 +92,11 @@ dir_tmp() { # Get the path to the temporary directory
     chmod 0700 "$tmpdir" || return 1
   fi
 
-  symlink "$tmpdir" "$HOME/.tmp" || return 1
+  ln -sf "$tmpdir" "$HOME/.tmp" || return 1
 
   if [ ! -d "$tmpdir/cache" ] ; then
     mkdir "$tmpdir/cache" || return 1
-    ln -s "$tmpdir/cache" "$XDG_CACHE_HOME" || return 1
+    ln -sf "$tmpdir/cache" "$XDG_CACHE_HOME" || return 1
   fi
 
   # Create dotfiles session directory
