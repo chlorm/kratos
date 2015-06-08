@@ -1,16 +1,16 @@
 #!/usr/bin/env sh
 
-export DIR_CONF="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
-export DOTFILES_DIR="$DIR_CONF"
-
-echo "$DOTFILES_DIR" > "$HOME/.dotfiles.dir"
+export DOTFILES_DIR="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
 
 cd "$DOTFILES_DIR"
 
-[ -f "settings.local" ] || {
-  touch "settings.local"
-  echo '#!/usr/bin/env sh' >> "settings.local"
-}
+mkdir -p "$HOME/.local/share/dotfiles"
+echo "$DOTFILES_DIR" > "$HOME/.local/share/dotfiles/dotfiles.dir"
+
+if [ ! -f "$HOME/.local/share/dotfiles/settings.local" ] ; then
+  touch "$HOME/.local/share/dotfiles/settings.local"
+  echo '#!/usr/bin/env sh' >> "$HOME/.local/share/dotfiles/settings.local"
+fi
 
 # Load configuration settings
 . "$DOTFILES_DIR/settings"
@@ -18,7 +18,10 @@ cd "$DOTFILES_DIR"
 
 . lib/loader || exit 128
 
-[ -z "$dotfilesRepo" ] && { echo "ERROR: dotfiles remote repo origin is not set" ; exit 1 ; }
+if [ -z "$dotfilesRepo" ] ; then
+  echo "ERROR: dotfiles remote repo origin is not set"
+  exit 1
+fi
 
 git remote set-url origin "$dotfilesRepo"
 git remote set-url --push origin "$dotfilesRepo"

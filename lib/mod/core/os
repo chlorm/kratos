@@ -8,7 +8,10 @@ os_kernel() { # Find host os kernel
     grep -m 1 -w -o '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)' | \
     head -n 1)
 
-  [ -z "$kernel" ] && { echo "ERROR: not a supported operating system" ; return 1 ; }
+  if [ -z "$kernel" ] ; then
+    echo "ERROR: not a supported operating system"
+    return 1
+  fi
 
   echo "$kernel"
 
@@ -44,7 +47,10 @@ os_linux() { # Take first result of linux os name match
     grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)' | \
     head -n 1)
 
-  [ -z "$linux" ] && { echo "ERROR: not a supported linux operating system" ; return 1 ; }
+  if [ -z "$linux" ] ; then
+    echo "ERROR: not a supported linux operating system"
+    return 1
+  fi
 
   echo "$linux"
 

@@ -2,22 +2,22 @@
 
 exist() { # Check for existence of file or directory
 
-  [ -z "$1" ] && return 1
+  [ ! -z "$1" ]
 
   case "$1" in
     '-fc') # Make sure the file exists
       shift
       while [ "$1" ] ; do
         # Make sure file is not a symlink
-        test -L "$1" && {
+        if test -L "$1" ; then
           unlink "$1" > /dev/null 2>&1
-          [ "$?" != "0" ] && return 1
-        }
+          [ "$?" == "0" ]
+        fi
         # Create file
-        [ -f "$1" ] || {
+        if [ ! -f "$1" ] ; then
           touch "$1" > /dev/null 2>&1
-          [ "$?" != "0" ] && return 1
-        }
+          [ "$?" == "0" ]
+        fi
         shift
       done
 
@@ -27,15 +27,15 @@ exist() { # Check for existence of file or directory
       shift
       while [ "$1" ] ; do
         # Make sure file is not a symlink
-        test -L "$1" && {
+        if test -L "$1" ; then
           unlink "$1" > /dev/null 2>&1
-          [ "$?" != "0" ] && return 1
-        }
+          [ "$?" == "0" ]
+        fi
         # Remove file
-        [ -f "$1" ] && {
+        if [ -f "$1" ] ; then
           rm -f "$1" > /dev/null 2>&1
-          [ "$?" != "0" ] && return 1
-        }
+          [ "$?" == "0" ]
+        fi
         shift
       done
 
@@ -45,15 +45,15 @@ exist() { # Check for existence of file or directory
       shift
       while [ "$1" ] ; do
         # Make sure directory is not a symlink
-        test -L "$1" && {
+        if test -L "$1" ; then
           unlink "$1" > /dev/null 2>&1
-          [ "$?" != "0" ] && return 1
-        }
+          [ "$?" == "0" ]
+        fi
         # Create directory
-        [ -d "$1" ] || {
+        if [ ! -d "$1" ] ; then
           mkdir -p "$1" > /dev/null 2>&1
-          [ "$?" != "0" ] && return 1
-        }
+          [ "$?" == "0" ]
+        fi
         shift
       done
 
@@ -63,15 +63,15 @@ exist() { # Check for existence of file or directory
       shift
       while [ "$1" ] ; do
         # Make sure directory is not a symlink
-        test -L "$1" && {
+        if test -L "$1" ; then
           unlink "$1" > /dev/null 2>&1
-          [ "$?" != "0" ] && return 1
-        }
+          [ "$?" == "0" ]
+        fi
         # Remove directory
-        [ -d "$1" ] && {
+        if [ -d "$1" ] ; then
           rm -rf "$1" > /dev/null 2>&1
-          [ "$?" != "0" ] && return 1
-        }
+          [ "$?" == "0" ]
+        fi
         shift
       done
 

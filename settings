@@ -8,9 +8,6 @@ dotfilesRepo="https://github.com/codyopel/dotfiles.git"
 GIT_NAME="codyopel"
 GIT_EMAIL="$EMAIL"
 
-# List hostname of all workstations
-workStations='^\(NOS-4-A2\|LGM\|Shivkatall\)'
-
 # High DPI
 HIGH_DPI=false
 
@@ -25,14 +22,14 @@ appsGraphical=(sakura sublimetext suckless xorg)
 deskenvsPreference=(xmonad gnome kde)
 
 # Shells in order of preference [ash,bash,csh,dash,fish,korn,pdksh,tcsh,zsh]
-shellsPreference=(zsh bash fish)
+shellsPreference=(zsh bash dash fish)
 
 # Text editors in order of preference [emacs,nano,vi,vim,yi]
 editorPreference=(emacs vim nano)
 
 # XDG directories
 XDG_CACHE_HOME="$HOME/.cache"
-XDG_CONFIG_HOME="$HOME/.config" # The config directory cannot be modified currently
+XDG_CONFIG_HOME="$HOME/.config"
 XDG_DATA_HOME="$HOME/.local/share"
 XDG_DESKTOP_DIR="$HOME/Desktop"
 XDG_DOCUMENTS_DIR="$HOME/Documents"

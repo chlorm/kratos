@@ -10,7 +10,9 @@ password_confirmation() {
     echo
     read -s -p "Confirm: " pass2
     echo
-    [ "$pass1" = "$pass2" ] && break
+    if [ "$pass1" = "$pass2" ] ; then
+      break
+    fi
     echo "WARNING: passwords do not match, try again"
   done
 
@@ -52,9 +54,9 @@ y_or_n() { # Ask a yes or no question
 
     case "$answer" in
       '')
-        [ $default != 2 ] && {
+        if [ $default != 2 ] ; then
           return $default
-        }
+        fi
         ;;
       'y'|'yes')
         break && return 0

@@ -2,20 +2,15 @@
 
 download() { # Find download utility on system
 
-    path_hasbin "curl" && {
+    if path_hasbin "curl" ; then
         curl -O "$@" && return 0
-    }
-    path_hasbin "wget" && {
+    elif path_hasbin "wget" ; then
         wget "$@" && return 0
-    }
-    path_hasbin "fetch" && {
+    elif path_hasbin "fetch" ; then
         fetch "$@" && return 0
-    } || {
-        echo "ERROR: unable to download file, please make sure the url is correct and check your internet connection"
-        return 1
-    }
+    fi
 
-    echo "ERROR: no download utility found"
+    echo "ERROR: unable to download file"
     return 1
 
 }

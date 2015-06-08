@@ -8,7 +8,9 @@ dotfile_gen() { # Parses the dotfile for variables before generating file
 
 dotfile_ln() { # Links the configuration file to its proper dotfile
 
-  [ "$#" -eq "0" ] && return 1
+  if [ "$#" -eq "0" ] ; then
+  	return 1
+  fi
 
   local dotfile
 
