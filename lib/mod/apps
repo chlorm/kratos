@@ -9,12 +9,12 @@ apps_configure() {
 
   # Use environment variable $DISPLAY to determine if session is graphical
   if [ -n "$DISPLAY" ] ; then
-    APPS=(appsHeadless[@] appsGraphical[@])
+    APPS=(${appsHeadless[@]} ${appsGraphical[@]})
   else
-    APPS=(appsHeadless[@])
+    APPS=(${appsHeadless[@]})
   fi
 
-  for APP in ${apps[@]} ; do
+  for APP in ${APPS[@]} ; do
     if eval app_${APP}_configure ; then
       echo "  ☑ $APP"
     else
