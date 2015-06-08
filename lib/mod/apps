@@ -18,7 +18,7 @@ apps_configure() {
     if eval app_${APP}_configure ; then
       echo "  ☑ $APP"
     else
-      if [ "$?" -ne "0" ]
+      if [ "$?" -ne "0" ] ; then
         if [ "$?" -eq "2" ] ; then
           echo "  ☐ $APP"
         elif [ "$?" -eq "1" ] ; then
