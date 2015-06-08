@@ -6,8 +6,7 @@ xdg_dirs() {
 
   exist -fx "$XDG_CONFIG_HOME/user-dirs.dirs"
 
-(
-cat <<XDGUSERDIRS
+(cat <<XDGUSERDIRS
 XDG_CACHE_HOME="$XDG_CACHE_HOME"
 XDG_CONFIG_HOME="$XDG_CONFIG_HOME"
 XDG_DATA_HOME="$XDG_DATA_HOME"
@@ -20,8 +19,7 @@ XDG_PUBLICSHARE_DIR="$XDG_PUBLICSHARE_DIR"
 XDG_TEMPLATES_DIR="$XDG_TEMPLATES_DIR"
 XDG_VIDEOS_DIR="$XDG_VIDEOS_DIR"
 
-XDGUSERDIRS
-) > "$XDG_CONFIG_HOME/user-dirs.dirs"
+XDGUSERDIRS) > "$XDG_CONFIG_HOME/user-dirs.dirs"
 
   exist -dc "$XDG_CACHE_HOME" && export XDG_CACHE_HOME
   exist -dc "$XDG_CONFIG_HOME" && export XDG_CONFIG_HOME
@@ -42,35 +40,6 @@ XDGUSERDIRS
 custom_dirs() {
 
   exist -dx "$HOME/dev"
-
-}
-
-dir_tmp() { # Get the path to the temporary directory
-
-  local dir
-  local tmpdir
-  local tmpdirs
-
-  tmpdirs=("$ROOT/dev/shm" "$ROOT/run/shm" "$ROOT/tmp" "$ROOT/var/tmp")
-
-  for dir in ${tmpdirs[@]} ; do
-
-    [ -n "$(mount | grep '\(tmpfs\|ramfs\)' | grep $dir 2> /dev/null)" ] && {
-      tmpdir="$dir/$USER"
-      break
-    }
-  done
-
-  [ -z "$tmpdir" ] && { echo "Failed to find a temporary directory" >&2 ; return 1 ; }
-
-  [ ! -d "$tmpdir" ] && mkdir "$tmpdir" && chmod 0700 "$tmpdir"
-
-  symlink "$tmpdir" "$HOME/.tmp"
-
-  [ ! -d "#tmpdir/cache" ] && mkdir "$tmpdir/cache" > /dev/null 2>&1
-  symlink "$tmpdir/cache" "$XDG_CACHE_HOME"
-
-  echo "$tmpdir"
 
 }
 

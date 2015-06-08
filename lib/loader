@@ -65,6 +65,49 @@ shell_nov() { # Returns the shell executing the current script without appended 
 
 }
 
+dir_tmp() { # Get the path to the temporary directory
+
+  local dir
+  local tmpdir
+  local tmpdirs
+
+  tmpdirs=("$ROOT/dev/shm" "$ROOT/run/shm" "$ROOT/tmp" "$ROOT/var/tmp")
+
+  for dir in ${tmpdirs[@]} ; do
+
+    if [ -n "$(mount | grep '\(tmpfs\|ramfs\)' | grep $dir 2> /dev/null)" ] ; then
+      tmpdir="$dir/$USER"
+      break
+    fi
+
+  done
+
+  if [ -z "$tmpdir" ] ; then
+    echo "Failed to find a temporary directory"
+    return 1
+  fi
+
+  if [ ! -d "$tmpdir" ] ; then
+    mkdir "$tmpdir" || return 1
+    chmod 0700 "$tmpdir" || return 1
+  fi
+
+  symlink "$tmpdir" "$HOME/.tmp" || return 1
+
+  if [ ! -d "$tmpdir/cache" ] ; then
+    mkdir "$tmpdir/cache" || return 1
+    symlink "$tmpdir/cache" "$XDG_CACHE_HOME" || return 1
+  fi
+
+  # Create dotfiles session directory
+  if [ ! -d "$tmpdir/dotfiles" ] ; then
+    mkdir -p "$tmpdir/dotfiles"
+  fi
+
+  return 0
+
+}
+
 dir_try() { # Determines the top level configuration directory
 
   local DIR_BIN
@@ -145,4 +188,7 @@ load_all() {
 
 }
 
-load_all lib/mod
+# Configure tmp directory on every load
+dir_tmp
+
+load_all "lib/mod"
