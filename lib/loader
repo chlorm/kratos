@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 
 # Find and set dotfiles directory
 export DOTFILES_DIR=$(cat "$HOME/.dotfiles.dir")
@@ -28,8 +29,7 @@ svar() { # Stores the output of the command into a variable without a subshell
   local TMP
   local RET
 
-  VAR="$1"
-  shift 1
+  VAR="$1" ; shift
   TMP="$(mktemp 2> /dev/null)" || TMP="$(mktemp -t tmp 2> /dev/null)" || return 128
   $@ >"$TMP"
   RET="$?"

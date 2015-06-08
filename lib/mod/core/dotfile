@@ -2,7 +2,7 @@
 
 dotfile_gen() { # Parses the dotfile for variables before generating file
 
-  cat > $HOME/.$2 < $DOTFILES_DIR/$1
+  cat > "$HOME/.$2" < "$DOTFILES_DIR/$1"
 
 }
 
@@ -14,7 +14,7 @@ dotfile_ln() { # Links the configuration file to its proper dotfile
 
   local dotfile
 
-  for dotfile in $@ ; do
+  for dotfile in "$@" ; do
     symlink "$DOTFILES_DIR/dotfiles/$dotfile" "$HOME/.$dotfile"
   done
 

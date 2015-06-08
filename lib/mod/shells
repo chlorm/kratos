@@ -49,12 +49,6 @@ shells_theme() { # Setup the theme for the shell
     NCOLOR="$(prompt_color white 1)"
   fi
 
-  if info_ws ; then
-    HCOLOR="$(prompt_color green 0)"
-  else
-    HCOLOR="$(prompt_color red 0)"
-  fi
-
   DCOLOR="$(prompt_color yellow 1)"
 
 }
@@ -99,8 +93,10 @@ shells_init() { # Initializes useful functions
     alias uses="equery uses"
     alias layup="sudo layman -S"
   }
-  # Defaults
-  export EDITOR="emacs"
+
+  # Environment Variables
+
+  export EDITOR="vim"
   export PAGER="less -r"
   export BLOCKSIZE="K"
   # Locale/UTF-8
@@ -131,7 +127,10 @@ shells_preference() {
 
 shells_run() { # Automatically executes the preferred shell
 
-  [ "$(shell_nov)" != "$(shells_preference)" ] && { exec "$(shells_preference)" ; exit $? ; }
+  [ "$(shell_nov)" != "$(shells_preference)" ] && {
+    exec "$(shells_preference)"
+    exit $?
+  }
 
 }
 

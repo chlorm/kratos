@@ -4,7 +4,7 @@
 remoteUser="cwopel"
 remoteAddress="192.168.1.5"
 remotePort="22"
-remoteMusicDirectory="/home/${remoteUser}/Music" # Should be an absolute path
+remoteMusicDirectory="/home/$remoteUser/Music" # Should be an absolute path
 localMusicDirectory="$XDG_MUSIC_DIR"
 
 inputArtist="$@"
@@ -15,10 +15,10 @@ inputArtist="$@"
 artistAddPath="$remoteMusicDirectory/\"${@}\""
 
 # Download artist directory
-scp -r -P "${remotePort}" "${remoteUser}"@"${remoteAddress}":"${artistAddPath}" "$localMusicDirectory"
+scp -r -P "$remotePort" "$remoteUser"@"$remoteAddress":"$artistAddPath" "$localMusicDirectory"
 
 # Check for specified formats and convert to ogg
-find $HOME/Music/"${inputArtist}" -depth -name '*' | \
+find "$HOME/Music/$inputArtist" -depth -name '*' | \
 while read curWorkFile ; do
   curWorkFileExt="${curWorkFile##*.}"
   case "$curWorkFileExt" in

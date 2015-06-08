@@ -12,8 +12,7 @@ app_git_dotfiles() {
 
   exist -fx "$HOME/.gitconfig"
 
-(
-cat <<GITCONFIG
+(cat <<GITCONFIG
 [user]
     email = $GIT_EMAIL
     name = $GIT_NAME
