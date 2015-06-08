@@ -96,7 +96,7 @@ dir_tmp() { # Get the path to the temporary directory
 
   if [ ! -d "$tmpdir/cache" ] ; then
     mkdir "$tmpdir/cache" || return 1
-    symlink "$tmpdir/cache" "$XDG_CACHE_HOME" || return 1
+    ln -s "$tmpdir/cache" "$XDG_CACHE_HOME" || return 1
   fi
 
   # Create dotfiles session directory
