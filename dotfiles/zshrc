@@ -1,13 +1,19 @@
 #!/usr/bin/env zsh
 
+[[ -o interactive ]] || return
+
 setopt PROMPT_SUBST
 
-# Load shell configuration options
-. "$(readlink -f $(dirname $(readlink -f $HOME/.zshrc))/../)/lib/loader"
+if [[ -o login ]] ; then
+  . "$(readlink -f $(dirname $(readlink -f $HOME/.zshrc))/../)/login-shell.sh"
+fi
 
-shells_auto
+# Load shell configuration loader
+. "$(readlink -f $(dirname $(readlink -f $HOME/.zshrc))/../)/loader.sh"
 
 alias sudo="nocorrect sudo"
 
 # Load the local config
-[ -f "$HOME/.zshrc.local" ] && source $HOME/.zshrc.local
+if [ -f "$HOME/.zshrc.local" ] ; then
+  . "$HOME/.zshrc.local"
+fi

@@ -1,0 +1,31 @@
+app_golang_installed() {
+
+  path_hasbin "go" > /dev/null || return 1
+
+  return 0
+
+}
+
+app_golang_dirs() {
+
+  exist -dc "$HOME/.go/bin" "$HOME/.go/src" || return 1
+
+  return 0
+
+}
+
+app_golang_cleanup() {
+
+  exist -dx "$HOME/.go"
+
+}
+
+app_golang_configure() {
+
+  app_golang_installed || return 2
+
+  app_golang_dirs || return 1
+
+  return 0
+
+}

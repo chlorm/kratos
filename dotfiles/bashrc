@@ -3,10 +3,14 @@
 # Test for an interactive shell
 [[ $- != *i* ]] && return
 
-# Load shell configuration options
-. "$(readlink -f $(dirname $(readlink -f $HOME/.bashrc))/../)/lib/loader"
-#agent_auto
-shells_auto
+if shopt -q login_shell ; then
+  . "$(readlink -f $(dirname $(readlink -f $HOME/.bashrc))/../)/login-shell.sh"
+fi
+
+# Load shell configuration loader
+. "$(readlink -f $(dirname $(readlink -f $HOME/.bashrc))/../)/loader.sh"
 
 # Load the local config
-[ -f "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"
+if [ -f "$HOME/.bashrc.local" ] ; then
+  . "$HOME/.bashrc.local"
+fi

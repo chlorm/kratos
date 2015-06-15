@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-
-fonts_configure() {
-
-  dotfile_ln "local/share/fonts" || return 1
-
-  return 0
-
-}

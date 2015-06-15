@@ -1,0 +1,31 @@
+app_emacs_installed() {
+
+  path_hasbin "emacs" > /dev/null  || return 1
+
+  return 0
+
+}
+
+app_emacs_dotfiles() {
+
+  dotfile_ln "emacs.d" || return 1
+
+  return 0
+
+}
+
+app_emacs_cleanup() {
+
+  exist -dx "$HOME/.emacs.d"
+
+}
+
+app_emacs_configure() {
+
+  app_emacs_installed || return 2
+
+  app_emacs_dotfiles || return 1
+
+  return 0
+
+}

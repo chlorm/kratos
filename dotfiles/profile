@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+# Test for an interactive shell
+#[[ $- != *i* ]] && return
+
+#if shopt -q login_shell ; then
+  . "$(readlink -f $(dirname $(readlink -f $HOME/.profile))/../)/login-shell.sh"
+#fi
+
+# Load shell configuration loader
+. "$(readlink -f $(dirname $(readlink -f $HOME/.profile))/../)/loader.sh"
+
+# Load the local config
+if [ -f "$HOME/.profile.local" ] ; then
+  . "$HOME/.profile.local"
+fi

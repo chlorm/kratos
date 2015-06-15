@@ -1,0 +1,31 @@
+app_nixpkgs_installed() {
+
+  path_hasbin "nix-env" > /dev/null || return 1
+
+  return 0
+
+}
+
+app_nixpkgs_dotfiles() {
+
+  dotfile_ln "nixpkgs" || return 1
+
+  return 0
+
+}
+
+app_nixpkgs_cleanup() {
+
+  exist -dx "$HOME/.nixpkgs"
+
+}
+
+app_nixpkgs_configure() {
+
+  app_nixpkgs_installed || return 2
+
+  app_nixpkgs_dotfiles || return 1
+
+  return 0
+
+}

@@ -1,0 +1,363 @@
+#!/usr/bin/env sh
+
+. "$DOTFILES_DIR/lib/core.sh"
+# Trash Bin Utiliy
+
+# Complies to XDG specification:
+# http://freedesktop.org/wiki/Specifications/trash-spec/
+
+# Dependencies: coreutils(cksum,ls,mkdir,mv,rm),awk,grep,openssl(or other crypto hash),sha1sum
+
+
+# TODO: get the checksum of the file before and after moving a file
+# to the trash.  Should also be added to the .trashinfo file.  Also
+# need to be checked if the file is restored.
+
+#[Trash Info]
+#Path=/home/cwopel/Videos/Television/from.dusk.till.dawn-the.series/SMALL%20%28copy%29.JPG
+#DeletionDate=2014-10-29T19:10:25
+
+#[Trash Info]
+#Path=[orginal path including the orginal filename]
+#DeletionDate=[ISO 8601 compliant date and time]
+
+trash_usage() {
+
+cat <<EOF
+usage info will go here
+EOF
+
+}
+
+trash() {
+
+  # Check for input
+  [ -z "$1" ] && { echo "ERROR: no input provided" ; return 1 ; }
+
+  # Make sure necessary directories exist before continuing
+  exist -dc "$DIR_TRASH_FILES" || return 1
+  exist -dc "$DIR_TRASH_INFO" || return 1
+
+    case $1 in
+
+      'delete')
+        shift
+        # TODO: allow deletion of specific files and directories
+        ## Bypasses the trash-bin and permanently deletes the target
+        echo "incomplete: rm passthrough for now"
+        # TODO: grep $@ for trash directories and if a match is found exit with error
+        rm $@
+        ;;
+
+      'empty')
+        # Clear all files in trash
+        # TODO: read files in $HOME/.local/share/Trash/info and
+        # delete the .trashinfo file and the file it references
+        # TODO: prompt for confirmation before deleting multiple 
+        # files or directories
+        # TODO: add total file count and size to deletion prompt
+        # TODO: make an optional verbose flag
+
+        totalTrashSize="0"
+        totalTrashFiles="0"
+
+        for trashinfo in "$DIR_TRASH_INFO"; do
+          # Get filename INCOMPLETE
+          findFileName=$(ls -al .trashinfo | awk -F " " '{ print $5 }')
+          # remove trashinfo extension
+          # if -f file exists
+          if [ -f fileExists ]; then
+            # Get filesize INCOMPLETE
+            findFileSize=$(ls -al .trashinfo | awk -F " " '{ print $9 }')
+            # Add filesize to total
+            totalTrashSize=$(( $findFileSize + $totalTrashSize ))
+            # Add one to file counter
+            totalTrashfiles=$(( 1 + $totalTrashFiles ))
+          fi
+        done
+        # Convert totalTrashSize to a human readable format (Kb/Mb/Gb/Tb)INCOMPLETE
+        totalTrashSize="incomplete"
+
+        # Ask user if they want to delete xfiles to free up xspace
+        echo "Are you sure you want to permanently delete $totalTrashfiles($totalTrashSize) (Y/N)"
+        read confirmDeletion
+
+        while [ "$confirmDeletion" != "y" ] || \
+              [ "$confirmDeletion" != "n" ]; do
+          case "$confirmDeletion" in
+            Y|y)
+              #delete files
+
+              for trashinfo in "$DIR_TRASH_INFO"; do
+                # Read trashinfo file
+                findFileName=$(ls -al .trashinfo | awk -F " " '{ print $5 }')
+                
+                # find file in $DIR_TRASH_FILES with matching name
+
+                # delete file in $DIR_TRASH_FILES and if successful, delete file in $DIR_TRASH_INFO
+              done
+              ;;
+            N|n)
+              return 0
+              ;;
+            *)
+              echo "ERROR: Invalid response"
+              echo
+              echo "Are you sure you want to permanently delete $numTrashFiles($sizeTrashFiles) (Y/N)"
+              read confirmDeletion
+              ;;
+          esac
+        done
+        ;;
+
+      'list')
+        # Lists the contents of the trash bin
+        # TODO: add trash files and directories to a file (an index of trash contents)
+        # WILL NOT WORK ONCE RANDOM NAMING IS IMPLEMENTED, NEEDS TO BE FIXED
+        ls -ARhgo --group-directories-first $DIR_TRASH_FILES
+
+
+
+  find $DIR_TRASH_INFO -type f -name '*.trashinfo' | \
+  while IFS= read -r f; do
+    echo "$f"
+  done
+  for f in *.trashinfo; do
+   echo "test"
+  done
+
+
+  for i in */; do
+    cd "$i"
+    for f in *.trasfinfo ; do
+      cat "$f"
+    done
+    cd ..
+  done
+
+
+        for i in "$DIR_TRASH_INFO"; do
+          cat $1 | grep "path"
+          cat $1 | grep "filename"
+
+          # print filename filesize orginal file path
+        done
+        ;;
+      -h|--help)
+        usage
+        ;;
+
+      *) # If no trash flags were found look for rm flags
+        if [ -f $@ ] || [ -d $@ ]; then
+          # TODO: This will handle the 'rm' functionality and compatibility layer
+          # TODO: implement ALL 'rm' options to ensure compatability, the options
+          # will be mapped by the compatibility layer to trash options, this
+          # ensures that trash will be a drop-in replacement for rm
+          echo "delete files"
+          # TODO: add while loop or similiar functionality
+          # Currently will not work as is
+          # Parse for 'rm' options and map to Trash
+          case $@ in
+            -d|--dir)
+              ;;
+            -f|--force)
+              ;;
+            -i)
+              ;;
+            -I)
+              ;;
+            --interactive[=WHEN])
+              ;;
+            --help)
+              ;;
+            --no-preserve-root)
+              echo "This action is not permitted by Trash"
+              ;;
+            --one-file-system)
+              ;;
+            --preserve-root)
+              # Always enabled, must be manually disabled in the code for Trash
+              ;;
+            -r|-R|--recursive)
+              ;;
+            -v|--verbose)
+              ;;
+            --version)
+              echo "Trash version: $VERSION"
+              ;;
+          esac
+        else
+          echo "ERROR: invalid option: $1"
+          echo
+          trash_usage
+          return 1
+        fi
+        ;;
+
+    esac
+
+  # Check for input
+  [ -z $@ ] && { echo "ERROR: no input provided" ; return 1 ; }
+
+  # Make sure necessary directories exist before continuing
+  dir_exist "$DIR_TRASH_FILES" || return 1
+  dir_exist "$DIR_TRASH_INFO" || return 1
+
+    case $1 in
+
+      'delete')
+        shift
+        # TODO: allow deletion of specific files and directories
+        ## Bypasses the trash-bin and permanently deletes the target
+        echo "incomplete: rm passthrough for now"
+        # TODO: grep $@ for trash directories and if a match is found exit with error
+        rm $@
+        ;;
+
+      'empty')
+        # Clear all files in trash
+        # TODO: read files in $HOME/.local/share/Trash/info and
+        # delete the .trashinfo file and the file it references
+        # TODO: prompt for confirmation before deleting multiple 
+        # files or directories
+        # TODO: add total file count and size to deletion prompt
+        # TODO: make an optional verbose flag
+
+        totalTrashSize="0"
+        totalTrashFiles="0"
+
+        for trashinfo in "$DIR_TRASH_INFO"; do
+          # Get filename INCOMPLETE
+          findFileName=$(ls -al .trashinfo | awk -F " " '{ print $5 }')
+          # remove trashinfo extension
+          # if -f file exists
+          if [ -f fileExists ]; then
+            # Get filesize INCOMPLETE
+            findFileSize=$(ls -al .trashinfo | awk -F " " '{ print $9 }')
+            # Add filesize to total
+            totalTrashSize=$(( $findFileSize + $totalTrashSize ))
+            # Add one to file counter
+            totalTrashfiles=$(( 1 + $totalTrashFiles ))
+          fi
+        done
+        # Convert totalTrashSize to a human readable format (Kb/Mb/Gb/Tb)INCOMPLETE
+        totalTrashSize="incomplete"
+
+        # Ask user if they want to delete xfiles to free up xspace
+        echo "Are you sure you want to permanently delete $totalTrashfiles($totalTrashSize) (Y/N)"
+        read confirmDeletion
+
+        while [ "$confirmDeletion" != "y" ] || \
+              [ "$confirmDeletion" != "n" ]; do
+          case "$confirmDeletion" in
+            Y|y)
+              #delete files
+
+              for trashinfo in "$DIR_TRASH_INFO"; do
+                # Read trashinfo file
+                findFileName=$(ls -al .trashinfo | awk -F " " '{ print $5 }')
+                
+                # find file in $DIR_TRASH_FILES with matching name
+
+                # delete file in $DIR_TRASH_FILES and if successful, delete file in $DIR_TRASH_INFO
+              done
+              ;;
+            N|n)
+              return 0
+              ;;
+            *)
+              echo "ERROR: Invalid response"
+              echo
+              echo "Are you sure you want to permanently delete $numTrashFiles($sizeTrashFiles) (Y/N)"
+              read confirmDeletion
+              ;;
+          esac
+        done
+        ;;
+
+      'list')
+        # Lists the contents of the trash bin
+        # TODO: add trash files and directories to a file (an index of trash contents)
+        # WILL NOT WORK ONCE RANDOM NAMING IS IMPLEMENTED, NEEDS TO BE FIXED
+        ls -ARhgo --group-directories-first $DIR_TRASH_FILES
+
+
+
+  find $DIR_TRASH_INFO -type f -name '*.trashinfo' | \
+  while IFS= read -r f; do
+    echo "$f"
+  done
+  for f in *.trashinfo; do
+   echo "test"
+  done
+
+
+  for i in */; do
+    cd "$i"
+    for f in *.trasfinfo ; do
+      cat "$f"
+    done
+    cd ..
+  done
+
+
+        for i in "$DIR_TRASH_INFO"; do
+          cat $1 | grep "path"
+          cat $1 | grep "filename"
+
+          # print filename filesize orginal file path
+        done
+        ;;
+      -h|--help)
+        usage
+        ;;
+
+      *) # If no trash flags were found look for rm flags
+        if [ -f $@ ] || [ -d $@ ]; then
+          # TODO: This will handle the 'rm' functionality and compatibility layer
+          # TODO: implement ALL 'rm' options to ensure compatability, the options
+          # will be mapped by the compatibility layer to trash options, this
+          # ensures that trash will be a drop-in replacement for rm
+          echo "delete files"
+          # TODO: add while loop or similiar functionality
+          # Currently will not work as is
+          # Parse for 'rm' options and map to Trash
+          case $@ in
+            -d|--dir)
+              ;;
+            -f|--force)
+              ;;
+            -i)
+              ;;
+            -I)
+              ;;
+            --interactive[=WHEN])
+              ;;
+            --help)
+              ;;
+            --no-preserve-root)
+              echo "This action is not permitted by Trash"
+              ;;
+            --one-file-system)
+              ;;
+            --preserve-root)
+              # Always enabled, must be manually disabled in the code for Trash
+              ;;
+            -r|-R|--recursive)
+              ;;
+            -v|--verbose)
+              ;;
+            --version)
+              echo "Trash version: $VERSION"
+              ;;
+          esac
+        else
+          echo "ERROR: invalid option: $1"
+          echo
+          trash_usage
+          return 1
+        fi
+        ;;
+
+    esac
+}

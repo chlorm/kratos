@@ -4,7 +4,7 @@
 To install:
 ```
 git clone "https://github.com/codyopel/dotfiles.git" "$HOME/.dotfiles" && \
-cd $HOME/.dotfiles && ./install
+cd $HOME/.dotfiles && . ./install.sh
 ```
 
 Applications
@@ -35,26 +35,16 @@ Applications
 Desktop Environments
 --------------------
 
-* Awesome
-* Cinnamon
 * Gnome
-* i3
-* KDE
-* XFCE
 * Xmonad
 
 Shells
 ------
 
-* Ash
 * Bash
-* Csh
 * Dash
 * Fish
-* Korn
-* Pdksh
 * sh
-* Tcsh
 * Zsh
 
 Scripts
@@ -68,17 +58,6 @@ Scripts
 	+ Automates generating alternate size icons
 * nix *WORK IN PROGRESS*
 	+ Wraps all nix utilities under a single command
-* nixpkgs-clone
-* nixpkgs-merge
-* nixpkgs-update
-* run
-* sign
-* verify
-* vfio-bind
-
-Wrappers
---------
-
 * extract
 	+ Wrapper for .tar.*, .zip, .rar, etc....
 * trash *WORK IN PROGRESS*
