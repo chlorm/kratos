@@ -1,5 +1,12 @@
 #!/usr/bin/env sh
 
+# This file is part of Kratos.
+# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+#
+# Use of this source code is governed by the terms of the
+# BSD-3 license.  A copy of the license can be found in
+# the `LICENSE' file in the top level source directory.
+
 # Initalize shell configuration
 export DOTFILES_DIR="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
 
@@ -8,10 +15,10 @@ export DOTFILES_DIR="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
 # Load settings
 . "$DOTFILES_DIR/dotfiles.conf" || exit 1
 # Load local settings
-if [ -f "$DOTFILES_DIR/dotfiles.local.conf" ] ; then
-  . "$DOTFILES_DIR/dotfiles.local.conf"
+if [ -f "$DOTFILES_DIR/dotfiles.conf.local" ] ; then
+  . "$DOTFILES_DIR/dotfiles.conf.local"
 else
-  echo '#!/usr/bin/env sh' > "$DOTFILES_DIR/dotfiles.local.conf"
+  echo '#!/usr/bin/env sh' > "$DOTFILES_DIR/dotfiles.conf.local"
 fi
 
 git_cd() {

@@ -53,8 +53,10 @@ case "$1" in
       passwordWifi="password $2"
     fi
     # Add connection
-    nmcli d wifi connect "$ssidWifi" $passwordWifi iface "$(wireless_interface)" name "$ssidWifi" || \
-      { echo "ERROR: failed to connect to $ssidWifi" ; return 1 ; }
+    nmcli d wifi connect "$ssidWifi" $passwordWifi iface "$(wireless_interface)" name "$ssidWifi" || {
+      echo "ERROR: failed to connect to $ssidWifi"
+      return 1
+    }
     ;;
   'connect') # Connect to a saved connection
     shift
@@ -70,13 +72,13 @@ case "$1" in
     nmcli c delete id "$ssidWifi"
     ;;
   'status') # List active connections if any
-    nmcli c status
+    nmcli g status
     ;;
   'on') # Turn wireless on
-    nmcli nm wifi on
+    nmcli r wifi on
     ;;
   'off') # Turn wireless off
-    nmcli nm wifi off
+    nmcli r wifi off
     ;;
   '-h'|'--help'|'help')
     wifi_usage

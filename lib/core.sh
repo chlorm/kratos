@@ -1,6 +1,9 @@
-# This file is part of https://github.com/codyopel/dotfiles
-
-# This file is licensed under the terms of the BSD-3 license
+# This file is part of Kratos.
+# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+#
+# Use of this source code is governed by the terms of the
+# BSD-3 license.  A copy of the license can be found in
+# the `LICENSE' file in the top level source directory.
 
 password_confirmation() {
 
@@ -95,13 +98,11 @@ dotfile_ln() { # Links the configuration file to its proper dotfile
 
 }
 
-cpu_architecture() { # Find CPU architecture without endianness
+cpu_architecture() { # Return CPU architecture without endianness or register size
 
   # http://en.wikipedia.org/wiki/Uname
 
   # Switch to using Darwin:sysctl Linux:/proc/cpuinfo, uname is part of the kernel and kernel does not guarentee arch
-
-  # rewite to use /proc/cpuinfo and equvilents, uname -m is not a reliable method
 
   local architecture
 
@@ -112,7 +113,10 @@ cpu_architecture() { # Find CPU architecture without endianness
     Power Macintosh\|powerpc\|ppc\|ppc64\|\
     sun4u\|sparc\|sparc64\)")
 
-  [ -z "$architecture" ] && { echo "ERROR: failed to detect cpu architecture" ; return 1 ; }
+  if [ -z "$architecture" ] ; then
+    echo "ERROR: failed to detect cpu architecture"
+    return 1
+  fi
 
   case "$architecture" in
     'arm'|'armeb'|'armel'|'armv5te'|'armv6'|'armv6l'|'armv6t2'|'armv7l'|'armv8')
@@ -140,23 +144,30 @@ cpu_architecture() { # Find CPU architecture without endianness
 
 }
 
-cpu_endianness() { # Find CPU endianness (ie. 32bit/64bit)
+cpu_register_size() { # Find CPU register size (ie. 32bit/64bit)
 
-  local endianness
-
-  # Change name to register size & add actuall endianness function
+  local register_size
 	
-  endianness=$(getconf LONG_BIT | grep -m 1 -w -o "\(8\|16\|32\|64\|\128\)" | grep -o '[0-9]*')
+  register_size=$(getconf LONG_BIT | grep -m 1 -w -o "\(8\|16\|32\|64\|\128\)" | grep -o '[0-9]*')
 
-  [ -z "$endianness" ] && { echo "ERROR: could not determine cpu endianness" ; return 1 ; }
+  if [ -z "$register_size" ] ; then
+    echo "ERROR: could not determine cpu register size"
+    return 1
+  fi
 
-  echo "$endianness"
+  echo "$register_size"
 
   return 0
 
 }
 
-cpu_cores() { # Find number of physical cpu cores
+cpu_sockets() {
+
+  echo
+
+}
+
+cpus_physical() { # Find number of physical cpu cores
 
   # Does not work with multiple sockets
   # Add function 'cpu_sockets' & and assume both sockets are identical
@@ -176,7 +187,9 @@ cpu_cores() { # Find number of physical cpu cores
       ;;
   esac
 
-  [ -z "$cpucores" ] && cpucores="1"
+  if [ -z "$cpucores" ] ; then
+    cpucores="1"
+  fi
 
   echo "$cpucores"
 
@@ -184,7 +197,7 @@ cpu_cores() { # Find number of physical cpu cores
 
 }
 
-cpu_threads() { # Find number of logical cpu cores
+cpus_logical() { # Find number of logical cpu cores
 
   local cputhreads
 
@@ -200,7 +213,9 @@ cpu_threads() { # Find number of logical cpu cores
       ;;
   esac
 
-  [ -z "$cputhreads" ] && cputhreads="$(cpu_cores)"
+  if [ -z "$cputhreads" ] ; then
+    cputhreads="$(cpu_cores)"
+  fi
 
   echo "$cputhreads"
 
@@ -351,7 +366,7 @@ os_linux() { # Take first result of linux os name match
 
   }
 
-  os_linux_lsb() { # Find linux distro vix linux standard base
+  os_linux_lsb() { # Find linux distro via linux standard base
 
     lsb_release -a 2> /dev/null
 
@@ -389,23 +404,25 @@ p_and_q() {
 
 path_add() { # Add direcory to $PATH
 
-  [ "$(echo "$PATH" | grep "$1" 2> /dev/null)" = '' ] && {
+  if [ "$(echo "$PATH" | grep "$1" 2> /dev/null)" = '' ] ; then
     export PATH="${PATH}:$1"
-  }
+  fi
 
 }
 
 path_remove()  { # Remove directory from $PATH
 
-  [ "$(echo "$PATH" | grep "$1" 2> /dev/null)" = '' ] || {
+  if [ ! "$(echo "$PATH" | grep "$1" 2> /dev/null)" = '' ] ; then
     export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`
-  }
+  fi
 
 }
 
 path_bin() { # Finds the path to the binary
 
-  [ "$#" -ne "1" ] && return 2
+  if [ "$#" -ne "1" ] ; then
+    return 2
+  fi
 
   path_hasbin "$1" > /dev/null 2>&1 && type "$1" | awk '{print $3}' && return 0
 
@@ -415,9 +432,11 @@ path_bin() { # Finds the path to the binary
 
 proc_exists() { # Checks to see if the process is running
 
-  [ ! "$#" -ne "1" ] || return 1
+  if [ "$#" -ne "1" ] ; then
+    return 1
+  fi
 
-  kill -0 $1 > /dev/null 2>&1
+  kill -0 "$1" > /dev/null 2>&1
 
 }
 
@@ -473,28 +492,60 @@ termclr() {
 
   case "$1" in
     'black')
-      [ "$2" -eq "0" ] && echo -n '\e[0;30m' || echo -n '\e[1;30m'
+      if [ "$2" -eq "0" ] ; then
+        echo -n '\e[0;30m'
+      else
+        echo -n '\e[1;30m'
+      fi
       ;;
     'blue')
-      [ "$2" -eq "0" ] && echo -n '\e[0;34m' || echo -n '\e[1;34m'
+      if [ "$2" -eq "0" ] ; then
+        echo -n '\e[0;34m'
+      else
+        echo -n '\e[1;34m'
+      fi
       ;;
     'cyan')
-      [ "$2" -eq "0" ] && echo -n '\e[0;36m' || echo -n '\e[1;36m'
+      if [ "$2" -eq "0" ] ; then
+        echo -n '\e[0;36m'
+      else
+        echo -n '\e[1;36m'
+      fi
       ;;
     'green')
-      [ "$2" -eq "0" ] && echo -n '\e[0;32m' || echo -n '\e[1;32m'
+      if [ "$2" -eq "0" ] ; then
+        echo -n '\e[0;32m'
+      else
+        echo -n '\e[1;32m'
+      fi
       ;;
     'magenta')
-      [ "$2" -eq "0" ] && echo -n '\e[0;35m' || echo -n '\e[1;35m'
+      if [ "$2" -eq "0" ] ; then
+        echo -n '\e[0;35m'
+      else
+        echo -n '\e[1;35m'
+      fi
       ;;
     'red')
-      [ "$2" -eq "0" ] && echo -n '\e[0;31m' || echo -n '\e[1;31m'
+      if [ "$2" -eq "0" ] ; then
+        echo -n '\e[0;31m'
+      else
+        echo -n '\e[1;31m'
+      fi
       ;;
     'white')
-      [ "$2" -eq "0" ] && echo -n '\e[0;37m' || echo -n '\e[1;37m'
+      if [ "$2" -eq "0" ] ; then
+        echo -n '\e[0;37m'
+      else
+        echo -n '\e[1;37m'
+      fi
       ;;
     'yellow')
-      [ "$2" -eq "0" ] && echo -n '\e[0;33m' || echo -n '\e[1;33m'
+      if [ "$2" -eq "0" ] ; then
+        echo -n '\e[0;33m'
+      else
+        echo -n '\e[1;33m'
+      fi
       ;;
     'underline')
       echo -n '\033[0;4m'
@@ -511,7 +562,9 @@ termclr() {
 
 user_root() { # Determine if the user is root
 
-  [ "$(id -u)" -eq 0 ]
+  [ "$(id -u)" -eq 0 ] || return 1
+
+  return 0
 
 }
 
@@ -572,7 +625,7 @@ path_abs() { # Resolves the name of the binary
 
   BIN="$(whereis -b $1 2> /dev/null | awk '{print $2}')"
 
-  [ -z "$BIN" ] && return 1
+  [ -n "$BIN" ] || return 1
   echo "$BIN"
 
   return 0
@@ -636,7 +689,9 @@ deskenvs_executable() {
 
 load_one() { # Source Modules
 
-  [ "$(echo "$1" | grep '\(~$\|^#\)')" != "" ] && return 0
+  if [ "$(echo "$1" | grep '\(~$\|^#\)')" != "" ] ; then
+    return 0
+  fi
   . "$1" || { echo "Failed to load module $1" ; return 1 ; }
 
 }

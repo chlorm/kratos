@@ -30,7 +30,7 @@ Applications
 * Suckless Terminal
 * Tmux
 * Vim
-* Xorg
+* X.org
 
 Desktop Environments
 --------------------
@@ -52,14 +52,14 @@ Scripts
 
 * addartist
 	+ Add all albums by an artist to users local music library
-* arkhive *WORK IN PROGRESS*
+* arkive.sh *WORK IN PROGRESS*
 	+ Automates transcoding according to predetermined settings
 * icongen
 	+ Automates generating alternate size icons
 * nix *WORK IN PROGRESS*
 	+ Wraps all nix utilities under a single command
 * extract
-	+ Wrapper for .tar.*, .zip, .rar, etc....
+	+ Wrapper for extracting .tar.*, .zip, .rar, etc....
 * trash *WORK IN PROGRESS*
 	+ Implements trash bin functionality and works as a drop-in replacement to 'rm'
 * vol

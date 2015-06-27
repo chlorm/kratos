@@ -1,5 +1,19 @@
+# This file is part of Kratos.
+# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
 #
-#export GOPATH="$HOME/.go"
-#path_add "$PATH:$HOME/.go/bin"
-echo
-#path_add "$HOME/.cabal/bin"
+# Use of this source code is governed by the terms of the
+# BSD-3 license.  A copy of the license can be found in
+# the `LICENSE' file in the top level source directory.
+
+if [ -d "$HOME/.bin" ] ; then
+  path_add "$PATH:$HOME/.bin"
+fi
+
+if [ -d "$HOME/dev/go" ] ; then
+  export GOPATH="$HOME/dev/go"
+  path_add "$PATH:$HOME/dev/go/bin"
+fi
+
+if [ -d "$HOME/.cabal/bin" ] ; then
+  path_add "$HOME/.cabal/bin"
+fi

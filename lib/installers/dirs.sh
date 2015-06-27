@@ -1,3 +1,11 @@
+# This file is part of Kratos.
+# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+#
+# Use of this source code is governed by the terms of the
+# BSD-3 license.  A copy of the license can be found in
+# the `LICENSE' file in the top level source directory.
+
+
 # XDG freedesktop directories
 
 # XDG_CACHE_HOME
@@ -27,9 +35,9 @@ exist -dc "$HOME/Videos"
 # Freedesktop trash directories
 
 # DIR_TRASH_INFO
-exist -dc "$HOME/"
+exist -dc "$HOME/.local/share/trash/info"
 # DIR_TRASH_FILES
-exist -dc "$HOME/"
+exist -dc "$HOME/.local/share/trash/files"
 
 
 # Custom directories

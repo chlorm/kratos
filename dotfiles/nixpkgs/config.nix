@@ -7,11 +7,11 @@ pkgs : {
     enableGoogleTalkPlugin = true;
     icedtea = true;
   };
-  #chromium = {
-  #  enablePepperFlash = true;
+  chromium = {
+    enablePepperFlash = true;
   #  enableWideVine = true;
-  #  proprietaryCodecs = true;
-  #};
+    proprietaryCodecs = true;
+  };
   # Suckless
   st.conf = (builtins.readFile ./st/config.mach.h)
     + (builtins.readFile ./st/config.inc.h);

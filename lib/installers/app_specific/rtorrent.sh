@@ -1,3 +1,10 @@
+# This file is part of Kratos.
+# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+#
+# Use of this source code is governed by the terms of the
+# BSD-3 license.  A copy of the license can be found in
+# the `LICENSE' file in the top level source directory.
+
 app_rtorrent_installed() {
 
   path_hasbin "rtorrent" > /dev/null || return 1
@@ -9,7 +16,7 @@ app_rtorrent_installed() {
 app_rtorrent_dirs() {
 
   exist -dc "$HOME/Torrents/Complete" "$HOME/Torrents/Incomplete" \
-            "$HOME/Torrents/Watch" "$XDG_DATA_HOME/rtorrent" || return 1
+            "$HOME/Torrents/Watch" "$HOME/.local/share/rtorrent" || return 1
 
   return 0
 
@@ -23,31 +30,19 @@ app_rtorrent_dotfiles() {
 cat <<RTORRENTRC
 # $DOTFILES_AUTOGEN_WARN
 
-##       ________   ___       ___
-##      /  _____/  /  /      /  /
-##     /  /       /  /      /  /
-##    /  /       /  /____  /  / _______  _______  ____  ____
-##   /  /       /  ___  / /  / /  __  / /  ____/ /    \\/    \\
-##  /  /_____  /  /  / / /  / /  /_/ / /  /     /  /\\    /\\  \\
-## /________/ /__/  /_/ /__/ /______/ /__/     /__/  \\__/  \\__\\ TM
-##
-## Title: rTorrent Configuration File
-## Author: Cody Opel
-## E-mail: codyopel(at)gmail.com
-## Copyright (c) 2014 All Rights Reserved, http://www.chlorm.net
-## License: The MIT License - http://opensource.org/licenses/MIT
+## rTorrent Configuration File
 ## Assumed Directory & File Structure:
 ##   $HOME/Torrents/Complete/ ----- Torrents are moved here when complete
 ##   $HOME/Torrents/Incomplete/ --- Temporaray location for torrents while downloading
 ##   $HOME/Torrents/Watch/ -------- The 'autoload' directory for rtorrent to use
-##   $XDG_DATA_HOME/rtorrent/ - For storing rtorrent session information
+##   $HOME/.local/share/rtorrent/ - For storing rtorrent session information
 
 #
 # Directories
 #
 directory.default.set = $HOME/Torrents/Incomplete/
 method.set_key = event.download.finished,move_complete,"d.directory.set=$HOME/Torrents/Complete;execute2=mv,-u,\$d.base_path=,$HOME/Torrents/Complete"
-session.path.set = $XDG_DATA_HOME/rtorrent
+session.path.set = $HOME/.local/share/rtorrent
 schedule2 = watch.directory.added,5,5,load.start=$HOME/Torrents/Watch/*.torrent
 #
 # Re-hash complete torrents
@@ -87,12 +82,12 @@ protocol.encryption.set = require,require_RC4,allow_incoming,try_outgoing,enable
 #
 # DHT
 #
-dht.mode.set = enable
-dht.port.set = 6881
+#dht.mode.set = enable
+#dht.port.set = 6881
 #
 # Peer exchange
 #
-protocol.pex.set = yes
+#protocol.pex.set = yes
 #
 # Custom Colors
 #

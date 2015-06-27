@@ -1,3 +1,10 @@
+# This file is part of Kratos.
+# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+#
+# Use of this source code is governed by the terms of the
+# BSD-3 license.  A copy of the license can be found in
+# the `LICENSE' file in the top level source directory.
+
 array_from_str() { # Creates an array from the name of the variable and values
 
   ([ "$#" -lt "1" ] || [ "$#" -gt "2" ]) && return 1
@@ -46,6 +53,6 @@ array_size() {
 path_hasbin() { # Test to see if a binary exists in the path
 
   [ "$#" -ne "1" ] && return 2
-  type $1 > /dev/null 2>&1 || { echo "  '$1' not installed" ; return 1 ; }
+  type $1 > /dev/null 2>&1 || return 1
 
 }
