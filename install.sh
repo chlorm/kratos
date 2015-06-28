@@ -171,10 +171,10 @@ if [ -z "$DOTFILES_REPO" ] ; then
   exit 1
 fi
 
-#git remote set-url origin "$DOTFILES_REPO"
-#git remote set-url --push origin "$DOTFILES_REPO"
+git remote set-url origin "$DOTFILES_REPO"
+git remote set-url --push origin "$DOTFILES_REPO"
 
-#dotfiles_latest
+dotfiles_latest
 
 # Run individual installers
 load_all "lib/installers"
