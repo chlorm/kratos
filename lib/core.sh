@@ -5,6 +5,56 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
+dir_tmp() { # Get the path to the temporary directory
+
+  local DIR
+  local TMPDIR
+  local TMPDIRS
+  local ITTR=0
+
+  array_from_str TMPDIRS "$ROOT/dev/shm $ROOT/run/shm $ROOT/tmp $ROOT/var/tmp"
+
+  for DIR in $(array_at TMPDIRS $ITTR) ; do
+
+    if [ -n "$(mount | grep '\(tmpfs\|ramfs\)' | grep $DIR 2> /dev/null)" ] ; then
+      TMPDIR="$DIR/$USER"
+      break
+    fi
+
+    if [ $ITTR -le $(array_size TMPDIRS) ] ; then
+      ITTR=$(($ITTR + 1))
+    else
+      break
+    fi
+
+  done
+
+  if [ -z "$TMPDIR" ] ; then
+    echo "ERROR: Failed to find a temporary directory"
+    return 1
+  fi
+
+  if [ ! -d "$TMPDIR" ] ; then
+    mkdir "$TMPDIR" || return 1
+    chmod 0700 "$TMPDIR" || return 1
+  fi
+
+  ln -sf "$TMPDIR" "$HOME/.tmp" || return 1
+
+  if [ ! -d "$TMPDIR/cache" ] ; then
+    mkdir "$TMPDIR/cache" || return 1
+    ln -sf "$TMPDIR/cache" "$HOME/.cache" || return 1
+  fi
+
+  # Create dotfiles session directory
+  if [ ! -d "$TMPDIR/dotfiles" ] ; then
+    mkdir -p "$TMPDIR/dotfiles" || return 1
+  fi
+
+  return 0
+
+}
+
 password_confirmation() {
 
   local PASS1
@@ -59,7 +109,7 @@ y_or_n() { # Ask a yes or no question
 
     case "$ANSWER" in
       '')
-        if [ $DEFAULT != 2 ] ; then
+        if [ ! $DEFAULT -eq 2 ] ; then
           return $DEFAULT
         fi
         ;;
@@ -86,7 +136,7 @@ dotfile_gen() { # Parses the dotfile for variables before generating file
 
 dotfile_ln() { # Links the configuration file to its proper dotfile
 
-  if [ "$#" -eq "0" ] ; then
+  if [ "$#" -eq 0 ] ; then
     return 1
   fi
 
@@ -100,47 +150,29 @@ dotfile_ln() { # Links the configuration file to its proper dotfile
 
 cpu_architecture() { # Return CPU architecture without endianness or register size
 
-  # http://en.wikipedia.org/wiki/Uname
+  # Do NOT use `uname -m'. This returns the kernels arch, and on system like
+  # Darwin it returns a hard-coded arch string that is invalid.  Only use
+  # utilities that return the cpu's actual arch.  Kernel arch is handled
+  # by `kernel_architecture'.
 
-  # Switch to using Darwin:sysctl Linux:/proc/cpuinfo, uname is part of the kernel and kernel does not guarentee arch
+  # TODO: use sysctl on Darwin
 
-  local architecture
+  local architecture=
 
-  architecture=$(uname -m | grep -m 1 -w -o "\(\
-    arm\|armeb\|armel\|armv5te\|armv6\|armv6l\|armv6t2\|armv7l\|armv8\|\
-    i386\|i486\|i686\|i686-AT386\|i86pc\|x86\|x86_32\|i686-64\|x86pc\|x86_64\|amd64\|k1om\|\
-    mips\|mips64\|\
-    Power Macintosh\|powerpc\|ppc\|ppc64\|\
-    sun4u\|sparc\|sparc64\)")
+  case "$(os_kernel)" in
+    'linux')
+      architecture="$(lscpu | grep -m 1 -w -o "\(arm\|i686\|x86_64\)")"
+      ;;
+  esac
 
   if [ -z "$architecture" ] ; then
     echo "ERROR: failed to detect cpu architecture"
     return 1
   fi
 
-  case "$architecture" in
-    'arm'|'armeb'|'armel'|'armv5te'|'armv6'|'armv6l'|'armv6t2'|'armv7l'|'armv8')
-      echo "arm"
-      ;;
-    'mips'|'mips64')
-      echo "mips"
-      ;;
-    'powerpc'|'ppc'|'ppc64')
-      echo "ppc"
-      ;;
-    'sun4u'|'sparc'|'sparc64')
-      echo "sparc"
-      ;;
-    'i386'|'i486'|'i586'|'i686'|'x86'|'x86_32'|'amd64'|'x86_64'|'i686-AT386'|'i86pc'|'i686-64'|'x86pc'|'k1om')
-      echo "x86"
-      ;;
-    *)
-      echo "ERROR: invalid cpu architecture '$architecture'"
-      return 1
-      ;;
-  esac
+  echo "$architecture" && return 0
 
-  return 0
+  return 1
 
 }
 
@@ -148,12 +180,12 @@ cpu_register_size() { # Find CPU register size (ie. 32bit/64bit)
 
   local register_size
 	
-  register_size=$(getconf LONG_BIT | grep -m 1 -w -o "\(8\|16\|32\|64\|\128\)" | grep -o '[0-9]*')
+  register_size=$(getconf LONG_BIT | grep -m 1 -w -o "\(8\|16\|32\|64\|\128\)" | grep -op '[0-9]+')
 
-  if [ -z "$register_size" ] ; then
+  [ -z "$register_size" ] || {
     echo "ERROR: could not determine cpu register size"
     return 1
-  fi
+  }
 
   echo "$register_size"
 
@@ -163,32 +195,48 @@ cpu_register_size() { # Find CPU register size (ie. 32bit/64bit)
 
 cpu_sockets() {
 
-  echo
+  local SOCKETS=
+
+  case "$(os_kernel)" in
+    'linux')
+      SOCKETS="$(lscpu | grep -m 1 'Socket(s):' | grep -oP "[0-9]+")"
+      ;;
+  esac
+
+  [ $SOCKETS -ge 1 ] || {
+    # Assume a socket exists even if it fails to find any
+    SOCKETS=1
+  }
+
+  echo "$SOCKETS" && return 0
+
+  return 1
 
 }
 
 cpus_physical() { # Find number of physical cpu cores
 
-  # Does not work with multiple sockets
-  # Add function 'cpu_sockets' & and assume both sockets are identical
-  # Only some arm platforms wouldn't work with this logic
+  # Assumes all sockets are identical, only some arm platforms won't
+  # work with this logic
 
   local cpucores
 
   case $(os_kernel) in
-    'linux'|'freebsd')
-      cpucores=$(awk '/^cpu\ cores/ { print $4 ; exit }' /proc/cpuinfo | grep -o '[0-9]*')
+    'linux')
+      cpucores=$(lscpu | grep -m 1 'Core(s) per socket:' | grep -oP '[0-9]+')
       ;;
     'darwin')
-      cpucores=$(sysctl hw | grep -m 1 "hw.physicalcpu:" | grep -o '[0-9]*')
+      cpucores=$(sysctl hw | grep -m 1 "hw.physicalcpu:" | grep -oP '[0-9]+')
       ;;
     'cygwin')
-      cpucores=$(NUMBER_OF_PROCESSORS | grep -o '[0-9]*')
+      cpucores=$(NUMBER_OF_PROCESSORS | grep -oP '[0-9]+')
       ;;
   esac
 
   if [ -z "$cpucores" ] ; then
     cpucores="1"
+  else
+    cpucores=$(($cpucores * $(cpu_sockets)))
   fi
 
   echo "$cpucores"
@@ -199,14 +247,22 @@ cpus_physical() { # Find number of physical cpu cores
 
 cpus_logical() { # Find number of logical cpu cores
 
+  # Assumes all sockets are identical, only some arm platforms won't
+  # work with this logic
+
   local cputhreads
 
   case $(os_kernel) in
     'linux'|'freebsd')
-      cputhreads=$(grep -c ^processor /proc/cpuinfo | grep -o '[0-9]*')
+      # Finds number of logical threads per physical core
+      cputhreads=$(lscpu | grep -m 1 'Thread(s) per core:' | grep -oP '[0-9]+')
+      if [ -n "$cputhreads" ] ; then
+        # Convert to number of threads per cpu
+        cputhreads=$(($cputhreads * $(cpus_physical)))
+      fi
       ;;
     'darwin')
-      cputhreads=$(sysctl hw | grep -m 1 "hw.logicalcpu:" | grep -o '[0-9]*')
+      cputhreads=$(sysctl hw | grep -m 1 "hw.logicalcpu:" | grep -oP '[0-9]+')
       ;;
     'cygwin')
       cputhreads=""
@@ -214,7 +270,9 @@ cpus_logical() { # Find number of logical cpu cores
   esac
 
   if [ -z "$cputhreads" ] ; then
-    cputhreads="$(cpu_cores)"
+    cputhreads="$(cpus_physical)"
+  else
+    cpus_logical=$(($cputhreads * $(cpu_sockets)))
   fi
 
   echo "$cputhreads"
@@ -231,6 +289,9 @@ download() { # Find download utility on system
       wget "$@" && return 0
   elif path_hasbin "fetch" ; then
       fetch "$@" && return 0
+  else
+    echo "ERROR: no download utility found"
+    return 1
   fi
 
   echo "ERROR: unable to download file"
@@ -240,7 +301,7 @@ download() { # Find download utility on system
 
 exist() { # Check for existence of file or directory
 
-  [ ! -z "$1" ] || return 1
+  [ -n "$1" ] || return 1
 
   case "$1" in
     '-fc') # Make sure the file exists
@@ -249,12 +310,12 @@ exist() { # Check for existence of file or directory
         # Make sure file is not a symlink
         if test -L "$1" ; then
           unlink "$1" > /dev/null 2>&1
-          [ "$?" == "0" ]
+          [ "$?" = 0 ]
         fi
         # Create file
         if [ ! -f "$1" ] ; then
           touch "$1" > /dev/null 2>&1
-          [ "$?" == "0" ]
+          [ "$?" = 0 ]
         fi
         shift
       done
@@ -267,12 +328,12 @@ exist() { # Check for existence of file or directory
         # Make sure file is not a symlink
         if test -L "$1" ; then
           unlink "$1" > /dev/null 2>&1
-          [ "$?" == "0" ]
+          [ "$?" -eq 0 ]
         fi
         # Remove file
         if [ -f "$1" ] ; then
           rm -f "$1" > /dev/null 2>&1
-          [ "$?" == "0" ]
+          [ "$?" -eq 0 ]
         fi
         shift
       done
@@ -285,12 +346,12 @@ exist() { # Check for existence of file or directory
         # Make sure directory is not a symlink
         if test -L "$1" ; then
           unlink "$1" > /dev/null 2>&1
-          [ "$?" == "0" ]
+          [ "$?" -eq 0 ]
         fi
         # Create directory
         if [ ! -d "$1" ] ; then
           mkdir -p "$1" > /dev/null 2>&1
-          [ "$?" == "0" ]
+          [ "$?" -eq 0 ]
         fi
         shift
       done
@@ -303,12 +364,12 @@ exist() { # Check for existence of file or directory
         # Make sure directory is not a symlink
         if test -L "$1" ; then
           unlink "$1" > /dev/null 2>&1
-          [ "$?" == "0" ]
+          [ "$?" -eq 0 ]
         fi
         # Remove directory
         if [ -d "$1" ] ; then
           rm -rf "$1" > /dev/null 2>&1
-          [ "$?" == "0" ]
+          [ "$?" -eq 0 ]
         fi
         shift
       done
@@ -337,9 +398,8 @@ os_kernel() { # Find host os kernel
 
   local KERNEL
 
-  KERNEL=$(tolower $(uname -s) | \
-    grep -m 1 -w -o '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)' | \
-    head -n 1)
+  KERNEL=$(tolower $(uname -s) |
+    grep -m 1 -w -o '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)')
 
   if [ -z "$KERNEL" ] ; then
     echo "ERROR: not a supported operating system"
@@ -377,8 +437,7 @@ os_linux() { # Take first result of linux os name match
   local LINUX
 
   LINUX=$(tolower "$(os_linux_release) $(os_linux_uname) $(os_linux_lsb)" | \
-    grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)' | \
-    head -n 1)
+    grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)')
 
   if [ -z "$LINUX" ] ; then
     echo "ERROR: not a supported linux operating system"
@@ -404,7 +463,7 @@ p_and_q() {
 
 path_add() { # Add direcory to $PATH
 
-  if [ "$(echo "$PATH" | grep "$1" 2> /dev/null)" = '' ] ; then
+  if [ -z "$(echo "$PATH" | grep "$1" 2> /dev/null)" ] ; then
     export PATH="${PATH}:$1"
   fi
 
@@ -412,7 +471,7 @@ path_add() { # Add direcory to $PATH
 
 path_remove()  { # Remove directory from $PATH
 
-  if [ ! "$(echo "$PATH" | grep "$1" 2> /dev/null)" = '' ] ; then
+  if [ -n "$(echo "$PATH" | grep "$1" 2> /dev/null)" ] ; then
     export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`
   fi
 
@@ -420,11 +479,11 @@ path_remove()  { # Remove directory from $PATH
 
 path_bin() { # Finds the path to the binary
 
-  if [ "$#" -ne "1" ] ; then
+  if [ "$#" -ne 1 ] ; then
     return 2
   fi
 
-  path_hasbin "$1" > /dev/null 2>&1 && type "$1" | awk '{print $3}' && return 0
+  path_hasbin "$1" > /dev/null 2>&1 && type "$1" | awk '{print $3 ; exit}' && return 0
 
   return 1
 
@@ -432,7 +491,7 @@ path_bin() { # Finds the path to the binary
 
 proc_exists() { # Checks to see if the process is running
 
-  if [ "$#" -ne "1" ] ; then
+  if [ "$#" -ne 1 ] ; then
     return 1
   fi
 
@@ -457,7 +516,7 @@ run_quiet() { # Start an application in the background
   pid="$(pgrep $1)"
 
   if [ -z "$PID" ] ; then
-  	"$@" > /dev/null 2>&1
+  	$@ > /dev/null 2>&1
   fi
 
 }
@@ -492,56 +551,56 @@ termclr() {
 
   case "$1" in
     'black')
-      if [ "$2" -eq "0" ] ; then
+      if [ "$2" -eq 0 ] ; then
         echo -n '\e[0;30m'
       else
         echo -n '\e[1;30m'
       fi
       ;;
     'blue')
-      if [ "$2" -eq "0" ] ; then
+      if [ "$2" -eq 0 ] ; then
         echo -n '\e[0;34m'
       else
         echo -n '\e[1;34m'
       fi
       ;;
     'cyan')
-      if [ "$2" -eq "0" ] ; then
+      if [ "$2" -eq 0 ] ; then
         echo -n '\e[0;36m'
       else
         echo -n '\e[1;36m'
       fi
       ;;
     'green')
-      if [ "$2" -eq "0" ] ; then
+      if [ "$2" -eq 0 ] ; then
         echo -n '\e[0;32m'
       else
         echo -n '\e[1;32m'
       fi
       ;;
     'magenta')
-      if [ "$2" -eq "0" ] ; then
+      if [ "$2" -eq 0 ] ; then
         echo -n '\e[0;35m'
       else
         echo -n '\e[1;35m'
       fi
       ;;
     'red')
-      if [ "$2" -eq "0" ] ; then
+      if [ "$2" -eq 0 ] ; then
         echo -n '\e[0;31m'
       else
         echo -n '\e[1;31m'
       fi
       ;;
     'white')
-      if [ "$2" -eq "0" ] ; then
+      if [ "$2" -eq 0 ] ; then
         echo -n '\e[0;37m'
       else
         echo -n '\e[1;37m'
       fi
       ;;
     'yellow')
-      if [ "$2" -eq "0" ] ; then
+      if [ "$2" -eq 0 ] ; then
         echo -n '\e[0;33m'
       else
         echo -n '\e[1;33m'
@@ -570,13 +629,13 @@ user_root() { # Determine if the user is root
 
 array_empty() { # Extra array functions for accessor simplicity
 
-  [ "$(array_size $1)" -eq "0" ]
+  [ "$(array_size $1)" -eq 0 ]
 
 }
 
 array_forall() {
 
-  [ "$(array_size $1)" -gt "0" ] || return 0
+  [ "$(array_size $1)" -gt 0 ] || return 0
 
   for I in $(seq 0 $(expr $(array_size $1) - 1)) ; do
     eval "$2 \"$(array_at $1 $I)\"" || return 1
@@ -586,7 +645,7 @@ array_forall() {
 
 array_for() {
 
-  [ "$(array_size $1)" -gt "0" ] || return 0
+  [ "$(array_size $1)" -gt 0 ] || return 0
 
   for I in $(seq 0 $(expr $(array_size $1) - 1)) ; do
     array_at "$1" "$I" || return 1
@@ -626,6 +685,7 @@ path_abs() { # Resolves the name of the binary
   BIN="$(whereis -b $1 2> /dev/null | awk '{print $2}')"
 
   [ -n "$BIN" ] || return 1
+
   echo "$BIN"
 
   return 0
@@ -689,24 +749,28 @@ deskenvs_executable() {
 
 load_one() { # Source Modules
 
-  if [ "$(echo "$1" | grep '\(~$\|^#\)')" != "" ] ; then
+  if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
     return 0
   fi
-  . "$1" || { echo "Failed to load module $1" ; return 1 ; }
+
+  . "$1" || {
+    echo "Failed to load module $1"
+    return 1
+  }
 
 }
 
 load_all() {
 
-  [ "$#" -ge "1" ] || return 1
+  [ "$#" -ge 1 ] || return 1
 
   local DIRCONF
   local MODS
 
   svar DIRCONF dotfiles_dir || return 1
 
-  array_from_str MODS "$(find "$DOTFILES_DIR/$1" -type f)"
-  array_forall MODS load_one
+  array_from_str "MODS" "$(find "$DOTFILES_DIR/$1" -type f)"
+  array_forall "MODS" load_one
 
 }
 
