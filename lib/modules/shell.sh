@@ -9,7 +9,7 @@
 
 shells_theme() { # Setup the theme for the shell
 
-  [ "$(shell_nov)" == "fish" ] && return 0
+  [ "$(shell_nov)" = "fish" ] && return 0
 
   # Colors for LS
   case "$(os_kernel)" in
@@ -71,7 +71,7 @@ shells_init() { # Initializes useful functions
   alias defragmentroot="sudo btrfs filesystem defragment -r -v /"
   alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
   # Gentoo
-  if [ "$(os_linux)" == "gentoo" ] ; then
+  if [ "$(os_linux)" = "gentoo" ] ; then
     alias inst="sudo emerge --ask"
     alias search="emerge --search"
     alias uses="equery uses"
@@ -80,7 +80,7 @@ shells_init() { # Initializes useful functions
 
   # Environment Variables
 
-  if [ "$PREFERED_EDITOR" == "emacs" ] ; then
+  if [ "$PREFERED_EDITOR" = "emacs" ] ; then
     export EDITOR="emacs -nw"
   else
     export EDITOR="$PREFERED_EDITOR"
