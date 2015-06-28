@@ -240,4 +240,4 @@ find_deskenv() {
 
   return 0
 }
-find_deskenv || echo "asdfgh"
+find_deskenv || echo "WARNING: no prefered DE found"
