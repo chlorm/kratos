@@ -52,7 +52,7 @@ cat <<XPROFILE
 # Run local commands first
 [ -f "$HOME/.xprofile.local" ] && . "$HOME/.xprofile.local"
 
-. "$DOTFILES_DIR/lib/loader"
+. "$DOTFILES_DIR/loader.sh"
 
 XPROFILE
 ) > "$HOME/.xprofile" || return 1
