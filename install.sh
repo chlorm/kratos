@@ -210,7 +210,7 @@ find_shell() {
   return 1
 
 }
-find_shell
+find_shell || echo "WARNING: no prefered SHELL found"
 
 find_editor() {
 
@@ -234,7 +234,7 @@ find_editor() {
   return 1
 
 }
-find_editor
+find_editor || echo "WARNING: no prefered EDITOR found"
 
 find_deskenv() {
 
@@ -263,4 +263,4 @@ find_deskenv() {
   return 0
 
 }
-find_deskenv || echo "WARNING: no prefered DE found"
+find_deskenv || echo "WARNING: no prefered DESKENV found"
