@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-. "$DOTFILES_DIR/lib/core.sh"
