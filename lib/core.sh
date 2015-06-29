@@ -21,7 +21,7 @@ dir_tmp() { # Get the path to the temporary directory
       break
     fi
 
-    if [ $ITTR -le $(array_size TMPDIRS) ] ; then
+    if [ $ITTR -le $(((array_size TMPDIRS - 1))) ] ; then
       ITTR=$(($ITTR + 1))
     else
       break
@@ -436,7 +436,7 @@ os_linux() { # Take first result of linux os name match
 
   local LINUX
 
-  LINUX=$(tolower "$(os_linux_release) $(os_linux_uname) $(os_linux_lsb)" | \
+  LINUX=$(tolower "$(os_linux_release) $(os_linux_uname) $(os_linux_lsb)" |
     grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)')
 
   if [ -z "$LINUX" ] ; then
@@ -757,6 +757,8 @@ load_one() { # Source Modules
     echo "Failed to load module $1"
     return 1
   }
+
+  return 0
 
 }
 
