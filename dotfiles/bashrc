@@ -21,3 +21,6 @@ fi
 if [ -f "$HOME/.bashrc.local" ] ; then
   . "$HOME/.bashrc.local"
 fi
+
+# Prevent GUI password dialog
+unset SSH_ASKPASS
