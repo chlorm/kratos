@@ -189,54 +189,78 @@ touch "$HOME/.local/share/dotfiles/preferences"
 
 # Preference
 find_shell() {
-  array_from_str _SHELLS "$SHELLS_PREFERENCE"
+
   local ITTR=0
-  local COUNT="$(($(array_size _SHELLS) - 1))"
+
+  array_from_str _SHELLS "$SHELLS_PREFERENCE"
+
   for _SHELL in "$(array_at _SHELLS $ITTR)" ; do
-    path_hasbin "$_SHELL" || {
+    if path_hasbin "$_SHELL" ; then
+      echo "PREFERED_SHELL=\"$_SHELL\"" >> "$HOME/.local/share/dotfiles/preferences"
+      return 0
+    fi
+
+    if [ $ITTR -le $(((array_size TMPDIRS - 1))) ] ; then
       ITTR=$(($ITTR + 1))
-      [ "$ITTR" -le "$COUNT" ] || exit 1
-      continue
-    }
-    echo "PREFERED_SHELL=\"$_SHELL\"" >> "$HOME/.local/share/dotfiles/preferences"
-    break
+    else
+      break
+    fi
   done
+
+  return 1
+
 }
 find_shell
 
 find_editor() {
-  array_from_str _EDITORS "$EDITORS_PREFERENCE"
+
   local ITTR=0
-  local COUNT="$(($(array_size _EDITORS) - 1))"
+
+  array_from_str _EDITORS "$EDITORS_PREFERENCE"
+
   for _EDITOR in "$(array_at _EDITORS $ITTR)" ; do
-    path_hasbin "$_EDITOR" || {
+    if path_hasbin "$_EDITOR" ; then
+      echo "PREFERED_EDITOR=\"$_EDITOR\"" >> "$HOME/.local/share/dotfiles/preferences"
+      return 0
+    fi
+
+    if [ $ITTR -le $(((array_size TMPDIRS - 1))) ] ; then
       ITTR=$(($ITTR + 1))
-      [ "$ITTR" -le "$COUNT" ] || exit 1
-      continue
-    }
-    echo "PREFERED_EDITOR=\"$_EDITOR\"" >> "$HOME/.local/share/dotfiles/preferences"
-    break
+    else
+      break
+    fi
   done
+
+  return 1
+
 }
 find_editor
 
 find_deskenv() {
+
   if [ -n "$DISPLAY" ] ; then
-    array_from_str DESKENVS "$DESKENVS_PREFERENCE"
+
     local ITTR=0
-    local COUNT="$(($(array_size DESKENVS) - 1))"
-    while [ "$ITTR" -le "$COUNT" ] ; do
-      DESKENV="$(array_at DESKENVS $ITTR)"
-      eval path_hasbin "$(deskenvs_executable $DESKENV)" && {
+
+    array_from_str DESKENVS "$DESKENVS_PREFERENCE"
+
+    for _DESKENV in "$(array_at _DESKENV $ITTR)" ; do
+      if path_hasbin "$(deskenvs_executable $DESKENV)" ; then
         echo "PREFERED_DE=$DESKENV" >> "$HOME/.local/share/dotfiles/preferences"
         return 0
-      }
-      ITTR=$(($ITTR + 1))
+      fi
+
+      if [ $ITTR -le $(((array_size TMPDIRS - 1))) ] ; then
+        ITTR=$(($ITTR + 1))
+      else
+        break
+      fi
     done
 
     return 1
   fi
 
   return 0
+
 }
 find_deskenv || echo "WARNING: no prefered DE found"
