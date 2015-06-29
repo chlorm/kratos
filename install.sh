@@ -229,7 +229,6 @@ find_deskenv() {
       DESKENV="$(array_at DESKENVS $ITTR)"
       eval path_hasbin "$(deskenvs_executable $DESKENV)" && {
         echo "PREFERED_DE=$DESKENV" >> "$HOME/.local/share/dotfiles/preferences"
-        break
         return 0
       }
       ITTR=$(($ITTR + 1))
