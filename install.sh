@@ -190,12 +190,12 @@ touch "$HOME/.local/share/dotfiles/preferences"
 # Preference
 find_shell() {
   array_from_str _SHELLS "$SHELLS_PREFERENCE"
-  local ITR=0
+  local ITTR=0
   local COUNT="$(($(array_size _SHELLS) - 1))"
-  for _SHELL in "$(array_at _SHELLS $ITR)" ; do
+  for _SHELL in "$(array_at _SHELLS $ITTR)" ; do
     path_hasbin "$_SHELL" || {
-      ITR=$(($ITR + 1))
-      [ "$ITR" -le "$COUNT" ] || exit 1
+      ITTR=$(($ITTR + 1))
+      [ "$ITTR" -le "$COUNT" ] || exit 1
       continue
     }
     echo "PREFERED_SHELL=\"$_SHELL\"" >> "$HOME/.local/share/dotfiles/preferences"
@@ -206,12 +206,12 @@ find_shell
 
 find_editor() {
   array_from_str _EDITORS "$EDITORS_PREFERENCE"
-  local ITR=0
+  local ITTR=0
   local COUNT="$(($(array_size _EDITORS) - 1))"
-  for _EDITOR in "$(array_at _EDITORS $ITR)" ; do
+  for _EDITOR in "$(array_at _EDITORS $ITTR)" ; do
     path_hasbin "$_EDITOR" || {
-      ITR=$(($ITR + 1))
-      [ "$ITR" -le "$COUNT" ] || exit 1
+      ITTR=$(($ITTR + 1))
+      [ "$ITTR" -le "$COUNT" ] || exit 1
       continue
     }
     echo "PREFERED_EDITOR=\"$_EDITOR\"" >> "$HOME/.local/share/dotfiles/preferences"
@@ -223,16 +223,16 @@ find_editor
 find_deskenv() {
   if [ -n "$DISPLAY" ] ; then
     array_from_str DESKENVS "$DESKENVS_PREFERENCE"
-    local ITR=0
+    local ITTR=0
     local COUNT="$(($(array_size DESKENVS) - 1))"
-    while [ "$ITR" -le "$COUNT" ] ; do
-      DESKENV="$(array_at DESKENVS $ITR)"
+    while [ "$ITTR" -le "$COUNT" ] ; do
+      DESKENV="$(array_at DESKENVS $ITTR)"
       eval path_hasbin "$(deskenvs_executable $DESKENV)" && {
         echo "PREFERED_DE=$DESKENV" >> "$HOME/.local/share/dotfiles/preferences"
         break
         return 0
       }
-      ITR=$(($ITR + 1))
+      ITTR=$(($ITTR + 1))
     done
 
     return 1
