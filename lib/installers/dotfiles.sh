@@ -5,60 +5,79 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-is_exclude() {
-
-  local ITTR_EXCLUDES=0
-
-  array_from_str EXCLUDES "LICENSE README.md"
-
-  for EXCLUDE in "$(array_at EXCLUDES $ITTR)" ; do
-    if [ "$1" = "$EXCLUDE" ] ; then
-      return 1
-    fi
-  done
-
-  return 0
-
-}
-
 install_dotfiles() {
 
+  local DOTFILE_DIRS
+  local DOTFILE_DIR
   local DOTFILE
+  local SYMD_DIRS
+  local ITTR_DOTFILE_DIRS=0
+  local ITTR_SYMD_DIRS
+  local DONT_SYM
+  local SYMD_EXISTS
+  local IGNORE
 
-  for DOTFILE in "$(ls $HOME/.dotfiles)" ; do
-    if [ -f "$HOME/.$DOTFILE" ] ; then
-      is_exclude "$DOTFILE" || continue
-      dotfile_ln "$HOME/$DOTFILE"
-    elif [ -d "$HOME/.$DOTFILE" ] ; then
-      if [ "$DOTFILE" = "config" ] ; then
-        exist -dc "$HOME/.config"
-        local CONFIG_DIR
+  array_from_str DOTFILE_DIRS "$(find $DOTFILES_DIR -type d)"
+  array_new SYMD_DIRS
 
-        for CONFIG_DIR in "$(ls $HOME/.dotfiles/config)" ; do
-          dotfile_ln "$HOME/.dotfiles/config/$CONFIG_DIR"
-        done
+  for DOTFILE_DIR in "$(array_at DOTFILE_DIRS $ITTR_DOTFILE_DIRS)" ; do
 
-        continue
-      elif [ "$DOTFILE" = "local" ] ; then
-        exist -dc "$HOME/.local/share"
-        local LOCAL_SHARE_DIR
+    DONT_SYM=false
 
-        for LOCAL_SHARE_DIR in "$(ls $HOME/.dotfiles/local/share)" ; do
-          dotfile_ln "$HOME/.dotfiles/config/$LOCAL_SHARE_DIR"
-        done
-
-        continue
-      elif [ "$DOTFILE" = "ssh" ] ; then
-        exist -dc "$HOME/.ssh"
-        dotfile_ln "$HOME/$DOTFILE/config"
-      else
-        dotfile_ln "$HOME/$DOTFILE"
+    if [ -f "$DOTFILE_DIR/.kratos" ] ; then
+      if [ -n "$(grep -m 1 "dont_sym=./")" ] ; then
+        DONT_SYM=true
       fi
-    else
-      echo "probably an error"
     fi
+
+    if [ "$DONT_SYM" = true ] ; then
+      for DOTFILE in "$(find $DOTFILE_DIR -type f -maxdepth 1)" ; do
+
+        IGNORE=false
+
+        if [ -f "$DOTFILE_DIR/.kratos" ] ; then
+          if [ -n "$(grep "ignore=$(basename $DOTFILE)" $DOTFILE_DIR/.kratos)" ] ; then
+            IGNORE=true
+          fi
+        fi
+
+        if [ "$IGNORE" = false ] ; then
+          symlink "$DOTFILE" "$HOME/.$(echo "$DOTFILES_DIR" | sed -e 's/$DOTFILES_DIR\///')"
+        fi
+
+      done
+    else
+
+      ITTR_SYMD_DIRS=0
+
+      for SYMD_DIR in "$(array_at SYMD_DIRS $ITTR_SYMD_DIRS)" ; do
+        SYMD_EXISTS=false
+        if [ "$DOTFILE_DIR" = "$SYMD_DIR/*" ] ; then # needs to match path/* anything, as long as is dir and after the dir in array
+          SYMD_EXISTS=true
+        fi
+
+        if [ "$ITTR_SYMD_DIRS" -le "$(((array_size SYMD_DIRS - 1)))" ] ; then
+          ITTR_SYMD_DIRS=(($ITTR_SYMD_DIRS + 1))
+        else
+          break
+        fi
+      done
+
+      if [ "$SYMD_EXISTS" = false ] ; then
+        symlink "$DOTFILE_DIR" "$HOME/.$(echo "$DOTFILE_DIR" | sed -e 's/$DOTFILES_DIR\///')"
+      fi
+
+    fi
+
+    if [ "$ITTR_DOTFILE_DIRS" -le "$(((array_size DOTFILE_DIRS - 1)))" ] ; then
+      ITTR_DOTFILE_DIRS=(($ITTR_DOTFILE_DIRS + 1))
+    else
+      break
+    fi
+
   done
 
   return 0
 
 }
+install_dotfiles
