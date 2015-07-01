@@ -56,8 +56,8 @@ install_dotfiles() {
           SYMD_EXISTS=true
         fi
 
-        if [ "$ITTR_SYMD_DIRS" -le "$(((array_size SYMD_DIRS - 1)))" ] ; then
-          ITTR_SYMD_DIRS=(($ITTR_SYMD_DIRS + 1))
+        if [ "$ITTR_SYMD_DIRS" -le "$(($(array_size SYMD_DIRS) - 1))" ] ; then
+          ITTR_SYMD_DIRS=$(($ITTR_SYMD_DIRS + 1))
         else
           break
         fi
@@ -69,7 +69,7 @@ install_dotfiles() {
 
     fi
 
-    if [ "$ITTR_DOTFILE_DIRS" -le "$(((array_size DOTFILE_DIRS - 1)))" ] ; then
+    if [ "$ITTR_DOTFILE_DIRS" -le "$(($(array_size DOTFILE_DIRS) - 1))" ] ; then
       ITTR_DOTFILE_DIRS=(($ITTR_DOTFILE_DIRS + 1))
     else
       break
