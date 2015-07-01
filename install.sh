@@ -8,23 +8,24 @@
 # the `LICENSE' file in the top level source directory.
 
 # Initalize shell configuration
-export DOTFILES_DIR="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
+export KRATOS_DIR="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
+export DOTFILES_DIR="$HOME/.dotfiles"
 
-. "$DOTFILES_DIR/lib/core.sh" || exit 1
+. "$KRATOS_DIR/lib/core.sh" || exit 1
 
 # Load settings
-. "$DOTFILES_DIR/dotfiles.conf" || exit 1
+. "$KRATOS_DIR/dotfiles.conf" || exit 1
 # Load local settings
-if [ -f "$DOTFILES_DIR/dotfiles.conf.local" ] ; then
-  . "$DOTFILES_DIR/dotfiles.conf.local"
+if [ -f "$KRATOS_DIR/dotfiles.conf.local" ] ; then
+  . "$KRATOS_DIR/dotfiles.conf.local"
 else
-  echo '#!/usr/bin/env sh' > "$DOTFILES_DIR/dotfiles.conf.local"
+  echo '#!/usr/bin/env sh' > "$KRATOS_DIR/dotfiles.conf.local"
 fi
 
 git_cd() {
 
   if [ -z "$1" ] ; then
-    cd "$DOTFILES_DIR"
+    cd "$KRATOS_DIR"
   else
     cd "$1"
   fi
@@ -100,7 +101,7 @@ git_sub_pull() { # Update the submodules
 
   git_cd $1 || return 2
 
-  STR="$(git submodule -q foreach --recursive "\"$DOTFILES_DIR/bin/run\" git_pull_nostat .")" || return 2
+  STR="$(git submodule -q foreach --recursive "\"$KRATOS_DIR/bin/run\" git_pull_nostat .")" || return 2
 
   [ "$(echo "$STR" | grep 'Updated')" = "" ]
 
@@ -166,22 +167,22 @@ dotfiles_update() { # Updates dotfiles and submodules
 
 }
 
-if [ -z "$DOTFILES_REPO" ] ; then
-  echo "ERROR: dotfiles remote repo origin is not set"
+if [ -z "$KRATOS_DIR" ] ; then
+  echo "ERROR: kratos remote repo origin is not set"
   exit 1
 fi
 
-git remote set-url origin "$DOTFILES_REPO"
-git remote set-url --push origin "$DOTFILES_REPO"
+#git remote set-url origin "$DOTFILES_REPO"
+#git remote set-url --push origin "$DOTFILES_REPO"
 
-dotfiles_latest
+#dotfiles_latest
 
 # Run individual installers
 load_all "lib/installers"
 
 exist -dc "$HOME/.local/share/dotfiles"
 
-echo "export DOTFILES_DIR=\"$DOTFILES_DIR\"" > "$HOME/.local/share/dotfiles/dir"
+echo "export KRATOS_DIR=\"$KRATOS_DIR\"" > "$HOME/.local/share/dotfiles/dir"
 
 exist -fx "$HOME/.local/share/dotfiles/preferences"
 
