@@ -25,7 +25,7 @@ install_dotfiles() {
     DONT_SYM=false
 
     if [ -f "$DOTFILE_DIR/.kratos" ] ; then
-      if [ -n "$(grep -m 1 "dont_sym=./")" ] ; then
+      if [ -n "$(grep -m 1 'dont_sym=./' $DOTFILE_DIR/.kratos)" ] ; then
         DONT_SYM=true
       fi
     fi
@@ -70,7 +70,7 @@ install_dotfiles() {
     fi
 
     if [ "$ITTR_DOTFILE_DIRS" -le "$(($(array_size DOTFILE_DIRS) - 1))" ] ; then
-      ITTR_DOTFILE_DIRS=(($ITTR_DOTFILE_DIRS + 1))
+      ITTR_DOTFILE_DIRS=$(($ITTR_DOTFILE_DIRS + 1))
     else
       break
     fi
