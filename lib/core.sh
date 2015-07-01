@@ -143,7 +143,7 @@ dotfile_ln() { # Links the configuration file to its proper dotfile
   local dotfile
 
   for dotfile in "$@" ; do
-    symlink "$DOTFILES_DIR/dotfiles/$dotfile" "$HOME/.$dotfile"
+    symlink "$DOTFILES_DIR/$dotfile" "$HOME/.$dotfile"
   done
 
 }
@@ -717,6 +717,14 @@ dotfiles_dir() {
 
 }
 
+kratos_dir() {
+
+  echo "$KRATOS_DIR" && return 0
+
+  return 1
+
+}
+
 deskenvs_executable() {
 
   case "$1" in
@@ -769,15 +777,15 @@ load_all() {
   local DIRCONF
   local MODS
 
-  svar DIRCONF dotfiles_dir || return 1
+  svar DIRCONF kratos_dir || return 1
 
-  array_from_str "MODS" "$(find "$DOTFILES_DIR/$1" -type f)"
+  array_from_str "MODS" "$(find "$KRATOS_DIR/$1" -type f)"
   array_forall "MODS" load_one
 
 }
 
 # Loads the shell specific fixes
-. "$DOTFILES_DIR/lib/shell_fixes/$(shell_nov).sh" 2> /dev/null || {
+. "$KRATOS_DIR/lib/shell_fixes/$(shell_nov).sh" 2> /dev/null || {
   echo "Failed to load the fixes for the current shell" >&2
   exit 1
 }
