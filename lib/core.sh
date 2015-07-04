@@ -11,7 +11,7 @@ dir_tmp() { # Get the path to the temporary directory
   local TMPDIR=
   local TMPDIRS=("$ROOT/dev/shm" "$ROOT/run/shm" "$ROOT/tmp" "$ROOT/var/tmp")
 
-  for DIR in ${TMPDIRS[@]} ; do
+  for DIR in "${TMPDIRS[@]}" ; do
 
     if [ -n "$(mount | grep '\(tmpfs\|ramfs\)' | grep $DIR 2> /dev/null)" ] ; then
       TMPDIR="$DIR/$USER"
@@ -747,7 +747,7 @@ load_all() {
 
   MODS=($(find "$KRATOS_DIR/$1" -type f))
 
-  for MOD in ${MODS[@]} ; do
+  for MOD in "${MODS[@]}" ; do
     load_one "$MOD"
   done
 
