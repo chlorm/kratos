@@ -44,6 +44,10 @@ install_dotfiles() {
           fi
         fi
 
+        if [[ "$(basename $DIR)" =~ ^\. ]] ; then
+          IGNORE=true
+        fi
+
         if [ "$IGNORE" = false ] && [ -z "$(echo "$FILE" | grep ".kratos")" ] ; then
           exist -fx "$HOME/.$(echo "$FILE" | sed -e "s|$FILES_DIR\/||")"
           # Symlink FILE
