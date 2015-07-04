@@ -10,13 +10,13 @@ install_dotfiles() {
   local DIRS
   local DIR
   local FILE
-  local SYMD_DIRS
+  local SKIP_DIRS
   local DONT_SYM
-  local SYMD_EXISTS
+  local SKIP_DIR
   local IGNORE
 
   DIRS=($(find $DOTFILES_DIR -type d -not -iwholename '*.git*'))
-  SYMD_DIRS=()
+  SKIP_DIRS=()
 
   for DIR in "${DIRS[@]}" ; do
     DONT_SYM=false
@@ -57,27 +57,27 @@ install_dotfiles() {
     else
       # TODO: fix this to match files correctly
       if [[ "$(basename $DIR)" =~ ^\. ]] ; then
-        SYMD_DIRS+=("$DIR")
+        SKIP_DIRS+=("$DIR")
         continue
       fi
 
-      SYMD_EXISTS=false
-      for SYMD_DIR in "${SYMD_DIRS[@]}" ; do
+      SKIP_DIR=false
+      for SYMD_DIR in "${SKIP_DIRS[@]}" ; do
         # If the current $DIR exists in $SYMD_DIR
         if [ -n "$(echo $DIR | grep "$SYMD_DIR")" ] ; then
           # If the $SYMD_DIR is a subdirectory of $DIR (Needs to remove anything before match to be sure)
           if [ -n "$(echo $SYMD_DIR | sed -e "s|$DIR||")" ] ; then
-            SYMD_EXISTS=true
+            SKIP_DIR=true
             continue
           fi
         fi
       done
 
-      if [ "$SYMD_EXISTS" = false ] ; then
+      if [ "$SKIP_DIR" = false ] ; then
         exist -dx "$HOME/.$(echo "$DIR" | sed -e "s|$DOTFILES_DIR\/||")"
         # Symlink DIR
         symlink "$DIR" "$HOME/.$(echo "$DIR" | sed -e "s|$DOTFILES_DIR\/||")"
-        SYMD_DIRS+=("$DIR")
+        SKIP_DIRS+=("$DIR")
       fi
     fi
 
