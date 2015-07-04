@@ -42,23 +42,23 @@ cat <<NCMPCPP
 ## License: The MIT License - http://opensource.org/licenses/MIT
 ## Comments:
 ##    Assumed Directory & File Structure:
-##      $HOME/.ncmpcpp/ ------------ ncmpcpp directory
-##      $HOME/.ncmpcpp/config ------ ncmpcpp configuration file
-##      $XDG_CONFIG_HOME/mpd/ --------- mpd directory
-##      $XDG_CONFIG_HOME/mpd/lyrics --- mpd lyrics directory
-##      $HOME/.tmp/mpd.fifo -------- mpd fifo ouput file
+##      ~/.ncmpcpp/ ------------ ncmpcpp directory
+##      ~/.ncmpcpp/config ------ ncmpcpp configuration file
+##      ~/.config/mpd/ --------- mpd directory
+##      ~/.config/mpd/lyrics --- mpd lyrics directory
+##      ~/.tmp/mpd.fifo -------- mpd fifo ouput file
 
 # MPD
 mpd_host = localhost
 mpd_port = 6600
-mpd_music_dir = $XDG_MUSIC_DIR
+mpd_music_dir = ~/Music
 mpd_connection_timeout = 5
 mpd_crossfade_time = 5
 #mpd_communication_mode = "notifications" (polling/notifications)
 ###################
 # Global settings #
 ###################
-ncmpcpp_directory = $HOME/.ncmpcpp
+ncmpcpp_directory = ~/.ncmpcpp
 startup_screen = playlist
 search_engine_default_search_mode = 1
 allow_for_physical_item_deletion = no
@@ -92,7 +92,7 @@ mouse_list_scroll_whole_page = yes
 ## supported lyrics databases:
 ## - 1 - lyricsplugin.com
 #lyrics_database = 1
-lyrics_directory = $XDG_CONFIG_HOME/mpd/lyrics
+lyrics_directory = ~/.config/mpd/lyrics
 follow_now_playing_lyrics = no
 store_lyrics_in_song_dir = no
 external_editor = nano
