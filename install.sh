@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # This file is part of Kratos.
 # Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
@@ -34,23 +34,23 @@ git_cd() {
 
 git_cbr() {( # Gets the current git branch
 
-    git_cd $1 || return 1
+  git_cd $1 || return 1
 
-    git rev-parse --abbrev-ref HEAD 2> /dev/null
+  git rev-parse --abbrev-ref HEAD 2> /dev/null
 
 )}
 
 git_pull() {( # Updates the root git tree
 
-    # Returns 2 if failed, 1 if updated, 0 if up-to-date
+  # Returns 2 if failed, 1 if updated, 0 if up-to-date
 
-    git_cd $1 || return 2
+  git_cd $1 || return 2
 
-    git reset --hard > /dev/null 2>&1
+  git reset --hard > /dev/null 2>&1
 
-    STR="$(git pull origin "$(git_cbr $1)" 2>&1)" || return 2
+  STR="$(git pull origin "$(git_cbr $1)" 2>&1)" || return 2
 
-    [ "$(echo "$STR" | grep 'Already up-to-date.')" != "" ]
+  [ "$(echo "$STR" | grep 'Already up-to-date.')" != "" ]
 
 )}
 

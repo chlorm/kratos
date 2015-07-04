@@ -7,72 +7,73 @@
 
 install_dotfiles() {
 
-  local DOTFILE_DIRS
-  local DOTFILE_DIR
-  local DOTFILE
+  local DIRS
+  local DIR
+  local FILE
   local SYMD_DIRS
-  local ITTR_DOTFILE_DIRS=0
-  local ITTR_SYMD_DIRS
   local DONT_SYM
   local SYMD_EXISTS
   local IGNORE
 
-  array_from_str DOTFILE_DIRS "$(find $DOTFILES_DIR -type d)"
-  array_new SYMD_DIRS
+  DIRS=($(find $DOTFILES_DIR -type d))
+  SYMD_DIRS=()
 
-  for DOTFILE_DIR in "$(array_at DOTFILE_DIRS $ITTR_DOTFILE_DIRS)" ; do
-
+  for DIR in "${DIRS[@]}" ; do
     DONT_SYM=false
 
-    if [ -f "$DOTFILE_DIR/.kratos" ] ; then
-      if [ -n "$(grep -m 1 'dont_sym=./' $DOTFILE_DIR/.kratos)" ] ; then
+    if [ -f "$DIR/.kratos" ] ; then
+      if [ -n "$(grep 'dont_sym=./' $DIR/.kratos)" ] ; then
         DONT_SYM=true
       fi
     fi
 
+    FILES=()
+
     if [ "$DONT_SYM" = true ] ; then
-      for DOTFILE in "$(find $DOTFILE_DIR -type f -maxdepth 1)" ; do
+      FILES=($(find $DIR -maxdepth 1 -type f))
+      for FILE in "${FILES[@]}" ; do
+        if [ "$(basename $FILE)" = ".kratos" ] ; then
+          continue
+        fi
 
         IGNORE=false
 
-        if [ -f "$DOTFILE_DIR/.kratos" ] ; then
-          if [ -n "$(grep "ignore=$(basename $DOTFILE)" $DOTFILE_DIR/.kratos)" ] ; then
+        if [ -f "$DIR/.kratos" ] ; then
+          if [ -n "$(grep "ignore=$(basename $FILE)" $DIR/.kratos)" ] ; then
             IGNORE=true
           fi
         fi
 
-        if [ "$IGNORE" = false ] ; then
-          symlink "$DOTFILE" "$HOME/.$(echo "$DOTFILES_DIR" | sed -e 's/$DOTFILES_DIR\///')"
+        if [ "$IGNORE" = false ] && [ -z "$(echo "$FILE" | grep ".kratos")" ] ; then
+          exist -fx "$HOME/.$(echo "$FILE" | sed -e "s|$FILES_DIR\/||")"
+          # Symlink FILE
+          symlink "$FILE" "$HOME/.$(echo "$FILE" | sed -e "s|$FILES_DIR\/||")"
         fi
-
       done
     else
+      # TODO: fix this to match files correctly
+      if [[ "$(basename $DIR)" =~ ^\. ]] ; then
+        SYMD_DIRS+=("$DIR")
+        continue
+      fi
 
-      ITTR_SYMD_DIRS=0
-
-      for SYMD_DIR in "$(array_at SYMD_DIRS $ITTR_SYMD_DIRS)" ; do
-        SYMD_EXISTS=false
-        if [ "$DOTFILE_DIR" = "$SYMD_DIR/*" ] ; then # needs to match path/* anything, as long as is dir and after the dir in array
-          SYMD_EXISTS=true
-        fi
-
-        if [ "$ITTR_SYMD_DIRS" -le "$(($(array_size SYMD_DIRS) - 1))" ] ; then
-          ITTR_SYMD_DIRS=$(($ITTR_SYMD_DIRS + 1))
-        else
-          break
+      SYMD_EXISTS=false
+      for SYMD_DIR in "${SYMD_DIRS[@]}" ; do
+        # If the current $DIR exists in $SYMD_DIR
+        if [ -n "$(echo $DIR | grep "$SYMD_DIR")" ] ; then
+          # If the $SYMD_DIR is a subdirectory of $DIR (Needs to remove anything before match to be sure)
+          if [ -n "$(echo $SYMD_DIR | sed -e "s|$DIR||")" ] ; then
+            SYMD_EXISTS=true
+          fi
         fi
       done
 
       if [ "$SYMD_EXISTS" = false ] ; then
-        symlink "$DOTFILE_DIR" "$HOME/.$(echo "$DOTFILE_DIR" | sed -e 's/$DOTFILES_DIR\///')"
+        exist -dx "$HOME/.$(echo "$DIR" | sed -e "s|$DOTFILES_DIR\/||")"
+        # Symlink DIR
+        symlink "$DIR" "$HOME/.$(echo "$DIR" | sed -e "s|$DOTFILES_DIR\/||")"
+        SYMD_DIRS+=("$DIR")
       fi
-
-    fi
-
-    if [ "$ITTR_DOTFILE_DIRS" -le "$(($(array_size DOTFILE_DIRS) - 1))" ] ; then
-      ITTR_DOTFILE_DIRS=$(($ITTR_DOTFILE_DIRS + 1))
-    else
-      break
     fi
 
   done

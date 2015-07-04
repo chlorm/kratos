@@ -8,29 +8,20 @@
 dir_tmp() { # Get the path to the temporary directory
 
   local DIR
-  local TMPDIR
-  local TMPDIRS
-  local ITTR=0
+  local TMPDIR=
+  local TMPDIRS=("$ROOT/dev/shm" "$ROOT/run/shm" "$ROOT/tmp" "$ROOT/var/tmp")
 
-  array_from_str TMPDIRS "$ROOT/dev/shm $ROOT/run/shm $ROOT/tmp $ROOT/var/tmp"
-
-  for DIR in $(array_at TMPDIRS $ITTR) ; do
+  for DIR in ${TMPDIRS[@]} ; do
 
     if [ -n "$(mount | grep '\(tmpfs\|ramfs\)' | grep $DIR 2> /dev/null)" ] ; then
       TMPDIR="$DIR/$USER"
       break
     fi
 
-    if [ $ITTR -le $(((array_size TMPDIRS - 1))) ] ; then
-      ITTR=$(($ITTR + 1))
-    else
-      break
-    fi
-
   done
 
   if [ -z "$TMPDIR" ] ; then
-    echo "ERROR: Failed to find a temporary directory"
+    echo "ERROR: Failed to find a tmp directory"
     return 1
   fi
 
@@ -531,7 +522,7 @@ sudo_wrap() { # Wraps the command in sudo if sudo exists and runs it
 
 }
 
-symlink() { # Make sure the symbolic link points to the correct location $2 -> $1
+symlink() { # Create a symbolic link $1 -> $2
 
   mkdir -p "$(dirname "$2")"
   if [ "$(readlink -f "$2")" != "$1" ] ; then
@@ -624,32 +615,6 @@ user_root() { # Determine if the user is root
   [ "$(id -u)" -eq 0 ] || return 1
 
   return 0
-
-}
-
-array_empty() { # Extra array functions for accessor simplicity
-
-  [ "$(array_size $1)" -eq 0 ]
-
-}
-
-array_forall() {
-
-  [ "$(array_size $1)" -gt 0 ] || return 0
-
-  for I in $(seq 0 $(expr $(array_size $1) - 1)) ; do
-    eval "$2 \"$(array_at $1 $I)\"" || return 1
-  done
-
-}
-
-array_for() {
-
-  [ "$(array_size $1)" -gt 0 ] || return 0
-
-  for I in $(seq 0 $(expr $(array_size $1) - 1)) ; do
-    array_at "$1" "$I" || return 1
-  done
 
 }
 
@@ -776,11 +741,17 @@ load_all() {
 
   local DIRCONF
   local MODS
+  local MOD
 
   svar DIRCONF kratos_dir || return 1
 
-  array_from_str "MODS" "$(find "$KRATOS_DIR/$1" -type f)"
-  array_forall "MODS" load_one
+  MODS=($(find "$KRATOS_DIR/$1" -type f))
+
+  for MOD in ${MODS[@]} ; do
+    load_one "$MOD"
+  done
+
+  return 0
 
 }
 

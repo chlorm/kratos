@@ -10,7 +10,7 @@ unset DOTFILES_DIR
 . "$HOME/.local/share/dotfiles/dir"
 . "$HOME/.local/share/dotfiles/preferences"
 
-. "$DOTFILES_DIR/lib/core.sh"
+. "$KRATOS_DIR/lib/core.sh"
 load_all "lib/modules"
 
 if [ "$INITALIZED" != true ] ; then

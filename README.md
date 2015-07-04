@@ -1,68 +1,12 @@
-.dotfiles
+Kratos
 =========
+
+Orginally this was all POSIX compliant shell, but dealing with a language that doesn't have support for real arrays isn't fun, and creating your own array implementation on top of it works up and to a point before it becomes a nightmare to maintain.  Hence is the reason why only BASH is supported for the backend.  Kratos can still spawn the users preferred shell, but Kratos' functions can only be called if your curent shell is BASH.  Only fish is supported beyond this because some of the functions have been rewritten to support fish.
+
+Why not support ZSH, because ZSH performance is dogshit, and it is worse when you include functions in you prompt
 
 To install:
 ```
-git clone "https://github.com/codyopel/dotfiles.git" "$HOME/.dotfiles" && \
-cd $HOME/.dotfiles && . ./install.sh
+git clone "https://github.com/chlorm/kratos.git" "$HOME/.local/share" && \
+cd $HOME/.local/share/kratos && ./install.sh
 ```
-
-Applications
-------------
-
-* Beets
-* Cabal
-* Emacs
-* Git
-* Golang
-* Gvim
-* Htop
-* Minidlna
-* MPD
-* mpDris2
-* Ncmpcpp >=0.6
-* Nixpkgs
-* Pulseaudio
-* rTorrent >0.9.4
-* Sakura
-* SSH
-* Sublime Text
-* Suckless Terminal
-* Tmux
-* Vim
-* X.org
-
-Desktop Environments
---------------------
-
-* Gnome
-* Xmonad
-
-Shells
-------
-
-* Bash
-* Dash
-* Fish
-* sh
-* Zsh
-
-Scripts
--------
-
-* addartist
-	+ Add all albums by an artist to users local music library
-* arkive.sh *WORK IN PROGRESS*
-	+ Automates transcoding according to predetermined settings
-* icongen
-	+ Automates generating alternate size icons
-* nix *WORK IN PROGRESS*
-	+ Wraps all nix utilities under a single command
-* extract
-	+ Wrapper for extracting .tar.*, .zip, .rar, etc....
-* trash *WORK IN PROGRESS*
-	+ Implements trash bin functionality and works as a drop-in replacement to 'rm'
-* vol
-	+ Volume control wrapper for pacmd (pulseaudio)
-* wifi
-	+ Wifi connection wrapper for nmcli (network manger)
