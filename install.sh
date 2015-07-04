@@ -32,15 +32,15 @@ git_cd() {
 
 }
 
-git_cbr() {( # Gets the current git branch
+git_cbr() { # Gets the current git branch
 
   git_cd $1 || return 1
 
   git rev-parse --abbrev-ref HEAD 2> /dev/null
 
-)}
+}
 
-git_pull() {( # Updates the root git tree
+git_pull() { # Updates the root git tree
 
   # Returns 2 if failed, 1 if updated, 0 if up-to-date
 
@@ -52,7 +52,7 @@ git_pull() {( # Updates the root git tree
 
   [ "$(echo "$STR" | grep 'Already up-to-date.')" != "" ]
 
-)}
+}
 
 git_pull_nostat() { # Updates the root git tree and only returns >0 on error
 
@@ -191,20 +191,10 @@ touch "$HOME/.local/share/dotfiles/preferences"
 # Preference
 find_shell() {
 
-  local ITTR=0
-
-  array_from_str _SHELLS "$SHELLS_PREFERENCE"
-
-  for _SHELL in "$(array_at _SHELLS $ITTR)" ; do
+  for _SHELL in "${SHELLS_PREFERENCE[@]}" ; do
     if path_hasbin "$_SHELL" ; then
       echo "PREFERED_SHELL=\"$_SHELL\"" >> "$HOME/.local/share/dotfiles/preferences"
       return 0
-    fi
-
-    if [ $ITTR -le $(((array_size TMPDIRS - 1))) ] ; then
-      ITTR=$(($ITTR + 1))
-    else
-      break
     fi
   done
 
@@ -215,20 +205,10 @@ find_shell || echo "WARNING: no prefered SHELL found"
 
 find_editor() {
 
-  local ITTR=0
-
-  array_from_str _EDITORS "$EDITORS_PREFERENCE"
-
-  for _EDITOR in "$(array_at _EDITORS $ITTR)" ; do
+  for _EDITOR in "${EDITORS_PREFERENCE[@]}" ; do
     if path_hasbin "$_EDITOR" ; then
       echo "PREFERED_EDITOR=\"$_EDITOR\"" >> "$HOME/.local/share/dotfiles/preferences"
       return 0
-    fi
-
-    if [ $ITTR -le $(((array_size TMPDIRS - 1))) ] ; then
-      ITTR=$(($ITTR + 1))
-    else
-      break
     fi
   done
 
@@ -240,21 +220,10 @@ find_editor || echo "WARNING: no prefered EDITOR found"
 find_deskenv() {
 
   if [ -n "$DISPLAY" ] ; then
-
-    local ITTR=0
-
-    array_from_str DESKENVS "$DESKENVS_PREFERENCE"
-
-    for _DESKENV in "$(array_at _DESKENV $ITTR)" ; do
+    for _DESKENV in "${DESKENVS_PREFERENCE[@]}" ; do
       if path_hasbin "$(deskenvs_executable $DESKENV)" ; then
         echo "PREFERED_DE=$DESKENV" >> "$HOME/.local/share/dotfiles/preferences"
         return 0
-      fi
-
-      if [ $ITTR -le $(((array_size TMPDIRS - 1))) ] ; then
-        ITTR=$(($ITTR + 1))
-      else
-        break
       fi
     done
 
