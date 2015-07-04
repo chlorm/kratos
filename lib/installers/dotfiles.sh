@@ -68,6 +68,7 @@ install_dotfiles() {
           # If the $SYMD_DIR is a subdirectory of $DIR (Needs to remove anything before match to be sure)
           if [ -n "$(echo $SYMD_DIR | sed -e "s|$DIR||")" ] ; then
             SYMD_EXISTS=true
+            continue
           fi
         fi
       done
