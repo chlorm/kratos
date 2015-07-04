@@ -15,7 +15,7 @@ install_dotfiles() {
   local SYMD_EXISTS
   local IGNORE
 
-  DIRS=($(find $DOTFILES_DIR -type d))
+  DIRS=($(find $DOTFILES_DIR -type d -not -iwholename '*.git*'))
   SYMD_DIRS=()
 
   for DIR in "${DIRS[@]}" ; do
