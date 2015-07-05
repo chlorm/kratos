@@ -7,9 +7,15 @@ git clone "https://github.com/chlorm/kratos.git" "$HOME/.local/share" && \
 cd $HOME/.local/share/kratos && ./install.sh
 ```
 
+This requires a shell with BASH style array support (i.e. BASH, KSH, ZSH)
+
 TODO:
 -----
 
+* Migrate the BASHisms (in the if statements) in dotfiles.sh to be compatible with BASH, ZSH, & KSH (and any other shell that supports BASH like arrays).  This will allow supporting additional shells.
+	+ migrate if statements
+	+ use sh for shebangs
+	+ add init check to see if executing shell is supported, if not try to find and spawn a compatible shell, else fail
 * Support for updating dotfiles & kratos repos
 * Always exclude symlinking the ~/.bin dir.  symlink contents into dir
 * Add support for config file in dotfiles
@@ -18,13 +24,12 @@ TODO:
 * Add support for parsing for and replacing variables in config files
 * Add support for a do before/after hook for dotfiles, needed for directory creation and such
 * Add a way to find or set the dotfile dir at install time
-* Investigate support for shells other than BASH, however unlikely, won't run natively though if things work
 * Fix deskenv exec support
-* remove shell fixes and use native implementations
+* Remove shell fixes for arrays and only support shells that support BASH style arrays (i.e. bash, zsh, ksh)
 * Add user agent support
 * Work on PATH configuration
 * Work on SSH configuration and handling of keys
-
-Orginally this was all POSIX compliant shell, but dealing with a language that doesn't have support for real arrays isn't fun, and creating your own array implementation on top of it works up and to a point before it becomes a nightmare to maintain.  Hence is the reason why only BASH is supported for the backend.  Kratos can still spawn the users preferred shell, but Kratos' functions can only be called if your curent shell is BASH.  Only fish is supported beyond this because some of the functions have been rewritten to support fish.
-
-Why not support ZSH, because ZSH performance is dogshit, and it is worse when you include functions in you prompt
+* Split shell loader functions out of lib/core.sh (e.g. prompt)
+* Allow user defined color scheme
+* Add color mapping between terminals color levels (e.g. 1/4/8/16/88/256)
+	+ Should generate a file with the colors at each level that is sourced by the loader at shell init
