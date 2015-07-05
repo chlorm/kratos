@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # This file is part of Kratos.
 # Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
@@ -7,11 +7,31 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-# Initalize shell configuration
 export KRATOS_DIR="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
 export DOTFILES_DIR="$HOME/.dotfiles"
 
 . "$KRATOS_DIR/lib/core.sh" || exit 1
+
+# Test for supported shell, if not supported try executing
+# any supported shell for installation
+case "$(shell_nov)" in
+  'bash'|'ksh'|'zsh')
+    echo
+    ;;
+  *)
+    if path_hasbin "bash" ; then
+      exec bash
+    elif path_hasbin "zsh" ; then
+      exec zsh
+    elif path_hasbin "ksh" ; then
+      exec ksh
+    else
+      echo "ERROR: Your shell is not supported by Kratos and no"
+      echo "supported shell could not be found on you system"
+      exit 1
+    fi
+    ;;
+esac
 
 # Load settings
 . "$KRATOS_DIR/dotfiles.conf" || exit 1
