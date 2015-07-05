@@ -7,12 +7,12 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-# Test for an interactive shell
-[[ $- != *i* ]] && return
-
 if shopt -q login_shell ; then
   . "$(readlink -f $(dirname $(readlink -f $HOME/.bashrc))/../)/login-shell.sh"
 fi
+
+# Test for an interactive shell
+[[ $- == *i* ]] || return
 
 # Load shell configuration loader
 . "$(readlink -f $(dirname $(readlink -f $HOME/.bashrc))/../)/loader.sh"
