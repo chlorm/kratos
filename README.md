@@ -3,11 +3,17 @@ Kratos
 
 To install:
 ```
-git clone "https://github.com/chlorm/kratos.git" "$HOME/.local/share" && \
+git clone "https://github.com/chlorm/kratos.git" "$HOME/.local/share/kratos" && \
 cd $HOME/.local/share/kratos && ./install.sh
 ```
 
-This requires a shell with BASH style array support (i.e. BASH, KSH, ZSH)
+### Prerequisites
+A shell with support for BASH style arrays (i.e. BASH, KSH, ZSH)
+git v2
+Assumes /usr/bin/env exists and is configured correctly
+
+
+Eventually this will end up as a hybrid of oh-my-zsh/prezto and a dotfile manager
 
 TODO:
 -----
@@ -33,3 +39,4 @@ TODO:
 * Allow user defined color scheme
 * Add color mapping between terminals color levels (e.g. 1/4/8/16/88/256)
 	+ Should generate a file with the colors at each level that is sourced by the loader at shell init
+* Avoid any instances of loops iterating through arrays at runtime
