@@ -15,7 +15,7 @@ export DOTFILES_DIR="$HOME/.dotfiles"
 # Test for supported shell, if not supported try executing
 # any supported shell for installation
 case "$(shell_nov)" in
-  'bash'|'ksh'|'zsh')
+  'bash'|'ksh'|'pdksh'|'zsh')
     echo
     ;;
   *)
@@ -23,6 +23,8 @@ case "$(shell_nov)" in
       exec bash
     elif path_hasbin "zsh" ; then
       exec zsh
+    elif path_hasbin "pdksh" ; then
+      exec pdksh
     elif path_hasbin "ksh" ; then
       exec ksh
     else
@@ -41,6 +43,44 @@ if [ -f "$KRATOS_DIR/dotfiles.conf.local" ] ; then
 else
   echo '#!/usr/bin/env sh' > "$KRATOS_DIR/dotfiles.conf.local"
 fi
+
+# XDG freedesktop directories
+
+# XDG_CACHE_HOME
+exist -dc "$HOME/.cache"
+# XDG_CONFIG_HOME
+exist -dc "$HOME/.config"
+# XDG_DATA_HOME
+exist -dc "$HOME/.local/share"
+# XDG_DESKTOP_DIR
+exist -dc "$HOME/Desktop"
+# XDG_DOCUMENTS_DIR
+exist -dc "$HOME/Documents"
+# XDG_DOWNLOAD_DIR
+exist -dc "$HOME/Downloads"
+# XDG_MUSIC_DIR
+exist -dc "$HOME/Music"
+# XDG_PICTURES_DIR
+exist -dc "$HOME/Pictures"
+# XDG_PUBLICSHARE_DIR
+exist -dc "$HOME/Share"
+# XDG_TEMPLATES_DIR
+exist -dc "$HOME/Templates"
+# XDG_VIDEOS_DIR
+exist -dc "$HOME/Videos"
+
+
+# Freedesktop trash directories
+
+# DIR_TRASH_INFO
+exist -dc "$HOME/.local/share/trash/info"
+# DIR_TRASH_FILES
+exist -dc "$HOME/.local/share/trash/files"
+
+
+# Custom directories
+
+exist -dc "$HOME/Dev"
 
 git_cd() {
 
@@ -197,9 +237,6 @@ fi
 
 #dotfiles_latest
 
-# Run individual installers
-load_all "lib/installers"
-
 exist -dc "$HOME/.local/share/dotfiles"
 
 echo "export KRATOS_DIR=\"$KRATOS_DIR\"" > "$HOME/.local/share/dotfiles/dir"
@@ -254,3 +291,107 @@ find_deskenv() {
 
 }
 find_deskenv || echo "WARNING: no prefered DESKENV found"
+
+install_dotfiles() {
+
+  local DIRS
+  local DIR
+  local FILE
+  local SKIP_DIRS=()
+  local DONT_SYM
+  local SKIP_DIR
+  local IGNORE
+
+  DIRS=($(find $DOTFILES_DIR -type d -not -iwholename '*.git*'))
+  # TODO: add check for trailing slash or something to make sure it is a dir
+  #  before adding it to the array, however it currently only contains dirs
+  DONT_SYM_LIST=($(cat "$DOTFILES_DIR/.kratosdontsym"))
+
+  for DIR in "${DIRS[@]}" ; do
+    DONT_SYM=false
+
+    for DONT_SYM_ITEM in "${DONT_SYM_LIST[@]}" ; do
+      if [[ "$DIR" == "$DOTFILES_DIR/${DONT_SYM_ITEM%/}" ]] ; then
+        DONT_SYM=true
+        break
+      fi
+    done
+
+    FILES=()
+
+    if [ "$DONT_SYM" = true ] ; then
+      FILES=($(find $DIR -maxdepth 1 -type f))
+      for FILE in "${FILES[@]}" ; do
+        FILE_IGNORES=($(cat "$DOTFILES_DIR/.kratosignore") '.kratosignore' '.kratosdontsym')
+        for FILE_IGNORE in "${FILE_IGNORES[@]}" ; do
+          if [ "$(basename "$FILE")" == "$FILE_IGNORE" ] ; then
+            continue
+          fi
+        done
+
+
+        IGNORE=false
+
+        if [ -f "$DIR/.kratos" ] ; then
+          if [ -n "$(grep "ignore=$(basename $FILE)" $DIR/.kratos)" ] ; then
+            IGNORE=true
+          fi
+        fi
+
+        if [[ "$(basename $DIR)" =~ ^\. ]] ; then
+          IGNORE=true
+        fi
+
+        if [ "$IGNORE" = false ] && [ -z "$(echo "$FILE" | grep ".kratos")" ] ; then
+          exist -fx "$HOME/.$(echo "$FILE" | sed -e "s|$FILES_DIR\/||")"
+          # Symlink FILE
+          symlink "$FILE" "$HOME/.$(echo "$FILE" | sed -e "s|$FILES_DIR\/||")"
+        fi
+      done
+    else
+      # TODO: fix this to match files correctly
+      if [[ "$(basename "$DIR")" == '.dotfiles' ]] ; then
+        continue
+      elif [[ "$(basename $DIR)" =~ ^\. ]] ; then
+        SKIP_DIRS+=("$DIR")
+        continue
+      fi
+
+      SKIP_DIR=false
+      for SYMD_DIR in "${SKIP_DIRS[@]}" ; do
+        # If the current $DIR exists in $SYMD_DIR
+        if [[ -n "$(echo $DIR | grep "$SYMD_DIR")" ]] ; then
+          # If the $SYMD_DIR is a subdirectory of $DIR (Needs to remove anything before match to be sure)
+          if [ -n "$(echo $SYMD_DIR | sed -e "s|$DIR||")" ] ; then
+            SKIP_DIR=true
+            continue
+          fi
+        fi
+      done
+
+      if [ "$SKIP_DIR" = false ] ; then
+        exist -dx "$HOME/.$(echo "$DIR" | sed -e "s|$DOTFILES_DIR\/||")"
+        # Symlink DIR
+        symlink "$DIR" "$HOME/.$(echo "$DIR" | sed -e "s|$DOTFILES_DIR\/||")"
+        SKIP_DIRS+=("$DIR")
+      fi
+    fi
+
+  done
+
+  return 0
+
+}
+install_dotfiles
+
+symlink "$KRATOS_DIR/rc/profile" "$HOME/.profile"
+
+symlink "$KRATOS_DIR/rc/bashrc" "$HOME/.bashrc"
+symlink "$KRATOS_DIR/rc/bash_login" "$HOME/.bash_login"
+symlink "$KRATOS_DIR/rc/bash_login" "$HOME/.bash_logout"
+
+symlink "$KRATOS_DIR/rc/kshrc" "$HOME/.kshrc"
+symlink "$KRATOS_DIR/rc/ksh_login" "$HOME/.ksh_login"
+
+symlink "$KRATOS_DIR/rc/zshrc" "$HOME/.zshrc"
+symlink "$KRATOS_DIR/rc/zsh_login" "$HOME/.zsh_login"
