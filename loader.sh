@@ -6,12 +6,13 @@
 # the `LICENSE' file in the top level source directory.
 
 # Initalize shell configuration
-unset DOTFILES_DIR
-. "$HOME/.local/share/dotfiles/dir"
+export KRATOS_DIR="$HOME/.local/share/kratos"
+export DOTFILES_DIR="$HOME/.dotfiles"
 . "$HOME/.local/share/dotfiles/preferences"
 
 . "$KRATOS_DIR/lib/core.sh"
-load_all "lib/modules"
+load_all "lib"
+load_all "modules"
 
 if [ "$INITALIZED" != true ] ; then
   shells_tmp
