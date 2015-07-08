@@ -40,20 +40,6 @@ shells_theme() { # Setup the theme for the shell
 
 }
 
-shells_tmp() { # Create the temporary history file for the shell
-
-  local TMP
-
-  if TMP="$(dir_tmp)" ; then
-    export HISTFILE="$TMP/history.$(shell_nov)"
-    export SAVEHIST="9999"
-  else
-    export HISTFILE="/dev/null"
-    export SAVEHIST="0"
-  fi
-
-}
-
 shells_init() { # Initializes useful functions
 
   alias root="sudo_wrap su -"

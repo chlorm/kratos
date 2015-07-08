@@ -5,10 +5,12 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-path_hasbin() { # Test to see if a binary exists in the path
+sudo_wrap() { # Wraps the command in sudo if sudo exists and runs it
 
-  [ "$#" -ne "1" ] && return 2
-
-  type "$1" > /dev/null 2>&1 || return 1
+  if path_hasbin "sudo" ; then
+    sudo $@
+  else
+    $@
+  fi
 
 }
