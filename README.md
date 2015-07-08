@@ -8,9 +8,9 @@ cd $HOME/.local/share/kratos && ./install.sh
 ```
 
 ### Prerequisites
-A shell with support for BASH style arrays (i.e. BASH, KSH, PDKSH, ZSH)
-git v2
-Assumes /usr/bin/env exists and is configured correctly
+* A shell with support for BASH style arrays (i.e. BASH, KSH, PDKSH, ZSH)
+* git v2
+* Assumes /usr/bin/env exists and is configured correctly
 
 
 Eventually this will end up as a hybrid of oh-my-zsh/prezto and a dotfile manager
