@@ -10,20 +10,47 @@ export KRATOS_DIR="$HOME/.kratos"
 export DOTFILES_DIR="$HOME/.dotfiles"
 . "$HOME/.local/share/dotfiles/preferences"
 
-. "$KRATOS_DIR/lib/core.sh"
+load_one() { # Source Modules
+
+  if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
+    return 0
+  fi
+
+  . "$1" || {
+    echo "Failed to load module $1"
+    return 1
+  }
+
+  return 0
+
+}
+
+load_all() {
+
+  [ "$#" -ge 1 ] || return 1
+
+  local MODS
+  local MOD
+
+  MODS=($(find "$KRATOS_DIR/$1" -type f))
+
+  for MOD in "${MODS[@]}" ; do
+    load_one "$MOD"
+  done
+
+  return 0
+
+}
+
 load_all "lib"
 load_all "modules"
 
-if [ "$INITALIZED" != true ] ; then
-  shells_tmp
-  shells_theme
-  shells_init
-  export INITALIZED=true
-fi
+shells_tmp
+shells_theme
+shells_init
+prompt_configure
 
-if [ "$PREFERED_SHELL" != "$(shell_nov)" ] ; then
+if [[ "$PREFERED_SHELL" != "$(shell)" && -n "$PREFERED_SHELL" ]] ; then
   exec "$PREFERED_SHELL"
   exit $?
 fi
-
-prompt_configure
