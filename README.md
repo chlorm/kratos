@@ -10,6 +10,7 @@ cd $HOME/.local/share/kratos && ./install.sh
 ### Prerequisites
 * A shell with support for BASH style arrays (i.e. BASH, KSH, PDKSH, ZSH)
 * git v2
+* systemd
 * Assumes /usr/bin/env exists and is configured correctly
 
 
