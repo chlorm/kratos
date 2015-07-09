@@ -26,12 +26,12 @@ function shells_tmp { # Create the temporary history file for the shell
   fi
 
 }
-shells_tmp
+
 alias h='history'
 
 # Not sure what this crap does
 function hs {
-    history | grep $*
+  history | grep "$*"
 }
 
 alias hsi='hs -i'
