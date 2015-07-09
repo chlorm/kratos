@@ -41,4 +41,3 @@ function ssh_auto {
   return 0
 
 }
-ssh_auto
