@@ -207,7 +207,7 @@ local vcsstatus=
 
 prompt_configure() { # Create prompt
 
-  case "$PREFERED_SHELL" in
+  case "$(shell)" in
     'zsh') # Must use single quotes to delay evaluation
       export PROMPT='$(prompt_color green 0)%n$(prompt_color black 1)@$(prompt_color white 1)%M$(prompt_color black 1)[$(prompt_color magenta 0)%~$(prompt_color black 1)]$(prompt_color green 0)$(prompt_vcs)$(prompt_color black 1)$([ -z $(prompt_vcs 2> /dev/null) ] || echo "∫")$(prompt_color white 1)$(prompt_vcs_branch)$(prompt_color cyan 0)〉$(prompt_color reset)'
       ;;
