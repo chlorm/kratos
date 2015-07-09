@@ -395,3 +395,7 @@ symlink "$KRATOS_DIR/rc/ksh_login" "$HOME/.ksh_login"
 
 symlink "$KRATOS_DIR/rc/zshrc" "$HOME/.zshrc"
 symlink "$KRATOS_DIR/rc/zsh_login" "$HOME/.zsh_login"
+
+symlink "$KRATOS_DIR/rc/xinitrc" "$HOME/.xinitrc"
+symlink "$KRATOS_DIR/rc/xprofile" "$HOME/.xprofile"
+symlink "$KRATOS_DIR/rc/xsession" "$HOME/.xsession"
