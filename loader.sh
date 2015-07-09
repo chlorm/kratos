@@ -6,7 +6,7 @@
 # the `LICENSE' file in the top level source directory.
 
 # Initalize shell configuration
-export KRATOS_DIR="$HOME/.local/share/kratos"
+export KRATOS_DIR="$HOME/.kratos"
 export DOTFILES_DIR="$HOME/.dotfiles"
 . "$HOME/.local/share/dotfiles/preferences"
 
