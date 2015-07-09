@@ -2,5 +2,3 @@
 
 # Run local commands first
 [ -f "$HOME/.xprofile.local" ] && . "$HOME/.xprofile.local"
-
-. "$DOTFILES_DIR/loader.sh"

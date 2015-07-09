@@ -3,13 +3,7 @@
 # Run local commands first
 [ -f "$HOME/.xinitrc.local" ] && . "$HOME/.xinitrc.local"
 
-. "$DOTFILES_DIR/lib/loader"
 
-[ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile"
-
-path_add "$HOME/.bin"
-#agent_auto
-deskenvs_auto
 
 # Gnome 3.xx
 #exec gnome-session
