@@ -7,33 +7,65 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-export KRATOS_DIR="$(readlink -f "$(dirname "$(readlink -f "$0")")")"
+export KRATOS_DIR="$(readlink -f "$(dirname "$(readlink -f "$0")")")/../"
 export DOTFILES_DIR="$HOME/.dotfiles"
 
-. "$KRATOS_DIR/lib/core.sh" || exit 1
+load_one() { # Source Modules
+
+  if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
+    return 0
+  fi
+
+  . "$1" || {
+    echo "Failed to load module $1"
+    return 1
+  }
+
+  return 0
+
+}
+
+load_all() {
+
+  [ "$#" -ge 1 ] || return 1
+
+  local MODS
+  local MOD
+
+  MODS=($(find "$KRATOS_DIR/$1" -type f))
+
+  for MOD in "${MODS[@]}" ; do
+    load_one "$MOD"
+  done
+
+  return 0
+
+}
+
+load_all "lib"
 
 # Test for supported shell, if not supported try executing
 # any supported shell for installation
-case "$(shell_nov)" in
-  'bash'|'ksh'|'pdksh'|'zsh')
-    echo
-    ;;
-  *)
-    if path_hasbin "bash" ; then
-      exec bash
-    elif path_hasbin "zsh" ; then
-      exec zsh
-    elif path_hasbin "pdksh" ; then
-      exec pdksh
-    elif path_hasbin "ksh" ; then
-      exec ksh
-    else
-      echo "ERROR: Your shell is not supported by Kratos and no"
-      echo "supported shell could not be found on you system"
-      exit 1
-    fi
-    ;;
-esac
+# case "$(shell_nov)" in
+#   'bash'|'ksh'|'pdksh'|'zsh')
+#     echo
+#     ;;
+#   *)
+#     if path_hasbin "bash" ; then
+#       exec bash
+#     elif path_hasbin "zsh" ; then
+#       exec zsh
+#     elif path_hasbin "pdksh" ; then
+#       exec pdksh
+#     elif path_hasbin "ksh" ; then
+#       exec ksh
+#     else
+#       echo "ERROR: Your shell is not supported by Kratos and no"
+#       echo "supported shell could not be found on you system"
+#       exit 1
+#     fi
+#     ;;
+# esac
 
 # Load settings
 . "$KRATOS_DIR/dotfiles.conf" || exit 1
@@ -292,6 +324,9 @@ find_deskenv() {
 }
 find_deskenv || echo "WARNING: no prefered DESKENV found"
 
+# TODO:
+# + Always create directories, never symlink, only symlink files
+
 install_dotfiles() {
 
   local DIRS
@@ -328,6 +363,24 @@ install_dotfiles() {
             continue
           fi
         done
+
+
+        # Currently executes all before, but in the future should respect
+        #  install-port, and .install should override the install phase.
+        case "${FILE##*.}" in
+          '.install-pre')
+            . "$FILE"
+            continue
+            ;;
+          'install')
+            . "$FILE"
+            continue
+            ;;
+          'install-post')
+            . "$FILE"
+            continue
+            ;;
+        esac
 
 
         IGNORE=false
