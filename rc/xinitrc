@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+# Run local commands first
+[ -f "$HOME/.xinitrc.local" ] && . "$HOME/.xinitrc.local"
+
+. "$DOTFILES_DIR/lib/loader"
+
+[ -f "$HOME/.xprofile" ] && . "$HOME/.xprofile"
+
+path_add "$HOME/.bin"
+#agent_auto
+deskenvs_auto
+
+# Gnome 3.xx
+#exec gnome-session
+#systemd --user
+#dbus-launch nm-applet &
+#eval &(gnome-keyring-daemon --components=pkcs11,secrets,ssh,gpg)
+#export GNOME_KEYRING_PID
+#export GNOME_KEYRING_SOCKET
+#export SSH_AUTH_SOCK
+#export GPG_AGENT_INFO
