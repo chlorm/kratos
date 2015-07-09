@@ -3,18 +3,35 @@ Kratos
 
 To install:
 ```
-git clone "https://github.com/chlorm/kratos.git" "$HOME/.local/share/kratos" && \
-cd $HOME/.local/share/kratos && ./install.sh
+git clone "https://github.com/chlorm/kratos.git" "$HOME/.kratos" && \
+cd $HOME/.kratos/tools && ./install.sh
 ```
 
 ### Prerequisites
 * A shell with support for BASH style arrays (i.e. BASH, KSH, PDKSH, ZSH)
 * git v2
-* systemd
+* systemd (Might be able to also partially support OSX, however supporting
+   sysvinit systemd would require root access)
 * Assumes /usr/bin/env exists and is configured correctly
 
-
-Eventually this will end up as a hybrid of oh-my-zsh/prezto and a dotfile manager
+### Design Goals
+* Never require root access for ANYTHING, if it needs root it can't be a part of
+   Kratos
+* Handle autostarting applications
+* Configure environment variables
+* Launch prefered deskenv if one isn't running
+* Setup ssh keys
+* Configure and launch user-agent (ssh-agent/gpg-agent)
+* Support for creating themes
+* Support for managing dotfiles
+* Variable replacement for dotfiles (way to work around applications requiring
+   explicit paths and possibly other use cases)
+   + FILENAME: `<dotfile>.gen`
+* Do-before and Do-after functions for dotfiles to allow for directory creation
+   and additional setup. Maybe other hooks could be added.
+   + CHANGE: Use `<dotfile>.install`, `<dotfile>.install-pre` &
+      `<dotfile>.install-post`
+* Dotfiles init hooks for auto starting applications
 
 TODO:
 -----
