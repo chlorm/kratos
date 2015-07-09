@@ -17,6 +17,6 @@
 if [ "$TERM" == 'xterm' ] ; then
   # See if xterm supports 256 color
   if [ -n "$VTE_VERSION" ] ; then
-    export "xterm-256color"
+    export TERM="xterm-256color"
   fi
 fi
