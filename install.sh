@@ -343,9 +343,9 @@ install_dotfiles() {
         fi
 
         if [ "$IGNORE" = false ] && [ -z "$(echo "$FILE" | grep ".kratos")" ] ; then
-          exist -fx "$HOME/.$(echo "$FILE" | sed -e "s|$FILES_DIR\/||")"
+          exist -fx "$HOME/.$(echo "$FILE" | sed -e "s|$DOTFILES_DIR\/||")"
           # Symlink FILE
-          symlink "$FILE" "$HOME/.$(echo "$FILE" | sed -e "s|$FILES_DIR\/||")"
+          symlink "$FILE" "$HOME/.$(echo "$FILE" | sed -e "s|$DOTFILES_DIR\/||")"
         fi
       done
     else
