@@ -11,7 +11,7 @@
 [[ $- == *i* ]] || return
 
 # Load shell configuration loader
-. "$(readlink -f $(dirname $(readlink -f $HOME/.bashrc))/../)/loader.sh"
+. "$(readlink -f $(dirname $(readlink -f $HOME/.bashrc))/../)/tools/loader.sh"
 
 # Load the local config
 if [ -f "$HOME/.bashrc.local" ] ; then

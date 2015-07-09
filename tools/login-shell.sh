@@ -1,5 +1,3 @@
-#!/usr.bin.env bash
-
 # This file is part of Kratos.
 # Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
 #
@@ -7,5 +5,5 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-# Test for a login shell
-shopt -q login_shell || return
+# TODO:
+# Figure out what should be spawned by login shells

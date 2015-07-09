@@ -5,9 +5,5 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-if [ -n "$DISPLAY" ] ; then
-  # find installed DE's
-  #export PREFERED_DESKENV
-  #exec DE
-  echo
-fi
+# TODO:
+# The init functions, called once by systemd user service on startup (or login, not sure)

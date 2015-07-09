@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
+# xinitrc start deskenv
+
+# Run xsession after for deskenvs that don't support doing so
+
 # Run local commands first
 [ -f "$HOME/.xinitrc.local" ] && . "$HOME/.xinitrc.local"
 
