@@ -11,7 +11,7 @@ cd $HOME/.kratos/tools && ./install.sh
 * A shell with support for BASH style arrays (i.e. BASH, KSH, PDKSH, ZSH)
 * git v2
 * systemd (Might be able to also partially support OSX, however supporting
-   sysvinit systemd would require root access)
+   sysvinit like service managers would require root access)
 * Assumes /usr/bin/env exists and is configured correctly
 
 ### Design Goals
