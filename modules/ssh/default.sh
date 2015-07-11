@@ -12,10 +12,11 @@ function ssh_auto {
   path_hasbin "openssl" || return 1
 
   # Makes sure the ssh directory exists
-  #exist -dc "$HOME/.ssh" || return 1
+  exist -dc "$HOME/.ssh" || return 1
 
   # Makes sure the client configuration is installed
   [ -f "$HOME/.ssh/config" ] || return 1
+
   ssh-keygen -H > /dev/null 2>&1 || return 1
   exist -fx "$HOME/.ssh/known_hosts.old" || return 1
 
@@ -29,6 +30,7 @@ function ssh_auto {
   fi
 
   if [[ ! -f "$HOME/.ssh/id_rsa.pub" && ! -f "$HOME/.ssh/id_ed25519.pub" ]] ; then
+    # Creates new ssh keys with the provided password
     local PASS="$(password_confirmation)"
     exist -fx "$HOME/.ssh/id_rsa" || return 1
     ssh-keygen -N "$PASS" -f "$HOME/.ssh/id_rsa" -t rsa -b 4096 || return 1
