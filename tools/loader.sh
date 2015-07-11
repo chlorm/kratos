@@ -10,7 +10,7 @@ export KRATOS_DIR="$HOME/.kratos"
 export DOTFILES_DIR="$HOME/.dotfiles"
 . "$HOME/.local/share/dotfiles/preferences"
 
-load_one() { # Source Modules
+function load_one { # Source Modules
 
   if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
     return 0
@@ -25,7 +25,7 @@ load_one() { # Source Modules
 
 }
 
-load_all() {
+function load_all {
 
   [ "$#" -ge 1 ] || return 1
 
@@ -42,12 +42,11 @@ load_all() {
 
 }
 
-load_all "lib"
 load_all "modules"
 
 shells_tmp
-shells_theme
-shells_init
+shell.theme
+shell.init
 prompt_configure
 
 if [[ "$PREFERED_SHELL" != "$(shell)" && -n "$PREFERED_SHELL" ]] ; then

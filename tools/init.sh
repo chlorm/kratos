@@ -7,3 +7,5 @@
 
 # TODO:
 # The init functions, called once by systemd user service on startup (or login, not sure)
+
+path.add "${PATH}:${HOME}/.bin"
