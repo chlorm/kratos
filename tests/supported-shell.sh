@@ -30,3 +30,5 @@ function function_definition_test {
 
 }
 function_definition_test
+
+# BASH's $FUNCNAME & $FUNCNAME[@] (call stack)
