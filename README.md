@@ -9,6 +9,7 @@ cd $HOME/.kratos/tools && ./install.sh
 
 ### Prerequisites
 * A shell with support for BASH style arrays (i.e. BASH, KSH, PDKSH, ZSH)
+  + Portions currently only work with BASH
 * git v2
 * systemd (Might be able to also partially support OSX, however supporting
    sysvinit like service managers would require root access)
