@@ -7,7 +7,7 @@
 
 # Add search, list, query, upgrade, info, history support
 
-function pkg_usage {
+function pkg.usage {
 
 cat <<EOF
 Pkg is an abstraction layer for system package managers.
@@ -24,71 +24,71 @@ EOF
 
 }
 
-function pkg_mgr {
+function pkg.mgr {
 
-  case "$(os_kernel)" in
+  case "$(os.kernel)" in
 
     'cygwin')
       # ??? chloclatey
-      echo "not supported"
+      err.error "not supported"
       ;;
 
     'darwin')
       # ??? homebrew
-      echo "not supported"
+      err.error "not supported"
       ;;
 
     'freebsd') # Ports
-      path_hasbin portmaster || return 1
-      path_hasbin portsnap || return 1
+      path.hasbin.err 'portmaster' || return 1
+      path.hasbin.err 'portsnap' || return 1
       echo "ports"
       return 0
       ;;
 
     'linux')
-      case "$(os_linux)" in
+      case "$(os.linux)" in
 
         'Debian'|'Ubuntu') # Apt
-          path_hasbin apt-get || return 1
+          path.hasbin.err 'apt-get' || return 1
           echo "apt"
           return 0
           ;;
 
         'nixos') # Nix
-          path_hasbin nix-env || return 1
-          path_hasbin nixos-rebuild || return 1
-          path_hasbin nix-collect-garbage || return 1
-          path_hasbin nix-channel || return 1
+          path.hasbin.err 'nix-env' || return 1
+          path.hasbin.err 'nixos-rebuild' || return 1
+          path.hasbin.err 'nix-collect-garbage' || return 1
+          path.hasbin.err 'nix-channel' || return 1
           echo "nix"
           return 0
           ;;
 
         'arch') # Pacman
-          path_hasbin pacman || return 1
+          path.hasbin.err 'pacman' || return 1
           echo "pacman"
           return 0
           ;;
 
         'gentoo') # Portage
-          path_hasbin emerge || return 1
+          path.hasbin.err 'emerge' || return 1
           echo "portage"
           return 0
           ;;
 
         'centos'|'fedora'|'red hat') # Red Hat
-          path_hasbin yum || return 1
+          path.hasbin.err 'yum' || return 1
           echo "rpm"
           return 0
           ;;
 
         'suse') # Yast, not sure about this cluster fuck
-          path_hasbin zypper || return 1
+          path.hasbin.err 'zypper' || return 1
           echo "yast"
           return 0
           ;;
 
         *)
-          echo "ERROR: not a suppoted linux distro"
+          err.error "not a suppoted linux distro"
           return 1
           ;;
 
@@ -96,7 +96,7 @@ function pkg_mgr {
       ;;
 
     *)
-      echo "ERROR: not a supported base OS"
+      err.error "not a supported base OS"
       return 1
       ;;
 
@@ -104,12 +104,15 @@ function pkg_mgr {
 
 }
 
-pkg() {
+function pkg {
   case "$1" in
+    '')
+      err.error "no input provided"
+      ;;
     'clean')
-      case "$(pkg_mgr)" in
+      case "$(pkg.mgr)" in
         'apt-get')
-          echo "unsupported action"
+          err.error "unsupported action"
           ;;
         'nix')
           sudo_wrap nix-collect-garbage -d
@@ -124,10 +127,10 @@ pkg() {
           return $?
           ;;
         'rpm')
-          echo "unsupported action"
+          err.error "unsupported action"
           ;;
         'yast')
-          echo "unsupported action"
+          err.error "unsupported action"
           ;;
         *)
           return 1
@@ -135,7 +138,7 @@ pkg() {
       esac
       ;;
     'install')
-      case "$(pkg_mgr)" in
+      case "$(pkg.mgr)" in
         'apt')
           shift
           sudo_wrap apt-get install $@
@@ -177,7 +180,7 @@ pkg() {
       esac
       ;;
     'uninstall')
-      case "$(pkg_mgr)" in
+      case "$(pkg.mgr)" in
         'ports')
           shift
           sudo_wrap portmaster -esdy $@
@@ -189,7 +192,7 @@ pkg() {
           return $?
           ;;
         'nix')
-          echo "unsupported action"
+          err.error "unsupported action"
           ;;
         'pacman')
           shift
@@ -217,7 +220,7 @@ pkg() {
       esac
       ;;
     'update')
-      case "$(pkg_mgr)" in
+      case "$(pkg.mgr)" in
         'ports')
             sudo_wrap portsnap fetch || return $?
             sudo_wrap portsnap update || return $?
@@ -258,12 +261,12 @@ pkg() {
       esac
       ;;
     '-h'|'--help'|'help')
-      pkg_usage
+      pkg.usage
       return 0
       ;;
     *)
-      echo "WARNING: Invalid option: $1"
-      pkg_usage
+      pkg.usage
+      err.error "Invalid option: $1"
       return 1
       ;;
   esac

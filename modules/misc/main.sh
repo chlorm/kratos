@@ -5,26 +5,6 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-dotfile_gen() { # Parses the dotfile for variables before generating file
-
-  cat > "$HOME/.$2" < "$DOTFILES_DIR/$1"
-
-}
-
-dotfile_ln() { # Links the configuration file to its proper dotfile
-
-  if [ "$#" -eq 0 ] ; then
-    return 1
-  fi
-
-  local dotfile
-
-  for dotfile in "$@" ; do
-    symlink "$DOTFILES_DIR/$dotfile" "$HOME/.$dotfile"
-  done
-
-}
-
 exist() { # Check for existence of file or directory
 
   [ -n "$1" ] || return 1
@@ -131,18 +111,6 @@ p_and_q() {
 
 }
 
-path_bin() { # Finds the path to the binary
-
-  if [ "$#" -ne 1 ] ; then
-    return 2
-  fi
-
-  path_hasbin "$1" > /dev/null 2>&1 && type "$1" | awk '{print $3 ; exit}' && return 0
-
-  return 1
-
-}
-
 proc_exists() { # Checks to see if the process is running
 
   if [ "$#" -ne 1 ] ; then
@@ -244,20 +212,6 @@ termclr() {
       echo -n '\e[0m'
       ;;
   esac
-
-}
-
-path_abs() { # Resolves the name of the binary
-
-  local BIN
-
-  BIN="$(whereis -b $1 2> /dev/null | awk '{print $2}')"
-
-  [ -n "$BIN" ] || return 1
-
-  echo "$BIN"
-
-  return 0
 
 }
 

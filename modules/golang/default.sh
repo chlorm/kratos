@@ -5,12 +5,14 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-if [[ -n "$GOPATH" && "$GOPATH" != "$HOME/Dev/go" ]] ; then
-  # Probably need to sanitize $GOPATH in case if contains multiple PATHs
-  # Output paths to an array and iterate throught the array elements
-  path_add "$GOPATH/bin"
-  export GOPATH="$GOPATH"
-elif [ -d "$HOME/Dev/go" ] ; then
-  path_add "$HOME/Dev/go/bin"
-  export GOPATH="$HOME/Dev/go"
-fi
+function golang {
+  if [[ -n "$GOPATH" && "$GOPATH" != "$HOME/Dev/go" ]] ; then
+    # Probably need to sanitize $GOPATH in case if contains multiple PATHs
+    # Output paths to an array and iterate throught the array elements
+    path.add "$GOPATH/bin"
+    export GOPATH="$GOPATH"
+  elif [ -d "$HOME/Dev/go" ] ; then
+    path.add "$HOME/Dev/go/bin"
+    export GOPATH="$HOME/Dev/go"
+  fi
+}

@@ -26,7 +26,7 @@
 #Path=[orginal path including the orginal filename]
 #DeletionDate=[ISO 8601 compliant date and time]
 
-function trash_usage {
+function trash.usage {
 
 cat <<EOF
 usage info will go here
@@ -106,7 +106,7 @@ function trash {
               return 0
               ;;
             *)
-              echo "ERROR: Invalid response"
+              err.error "Invalid response"
               echo
               echo "Are you sure you want to permanently delete $numTrashFiles($sizeTrashFiles) (Y/N)"
               read confirmDeletion
@@ -192,7 +192,7 @@ function trash {
               ;;
           esac
         else
-          echo "ERROR: invalid option: $1"
+          err.error "invalid option: $1"
           echo
           trash_usage
           return 1

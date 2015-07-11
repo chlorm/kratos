@@ -25,7 +25,7 @@ function dir_tmp { # Get the path to the temporary directory
   done
 
   if [ -z "$TMPDIR" ] ; then
-    echo "ERROR: Failed to find a tmp directory"
+    err.error "Failed to find a tmp directory"
     return 1
   fi
 

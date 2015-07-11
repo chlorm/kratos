@@ -7,7 +7,7 @@
 
 function fbterm_tty {
 
-  path_hasbin "fdterm" || return 0
+  path.hasbin "fdterm" || return 0
 
   if [ "$(tty|grep -o '/dev/tty')" == '/dev/tty' ] ; then
     fbterm || return 1

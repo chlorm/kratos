@@ -8,8 +8,8 @@
 function ssh_auto {
 
   # Make sure that we have the required binaries
-  path_hasbin "ssh-keygen" || return 1
-  path_hasbin "openssl" || return 1
+  path.hasbin 'ssh-keygen' || return 1
+  path.hasbin 'openssl' || return 1
 
   # Makes sure the ssh directory exists
   exist -dc "$HOME/.ssh" || return 1

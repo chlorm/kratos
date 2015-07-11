@@ -7,7 +7,7 @@
 
 prompt_color() { # Get colors for the current shell
 
-  if [ "$(shell_nov)" = "zsh" ] ; then
+  if [ "$(shell)" = "zsh" ] ; then
     echo -n '%{'
   else
     echo -n '\['
@@ -81,7 +81,7 @@ prompt_color() { # Get colors for the current shell
       ;;
   esac
 
-  if [ "$(shell_nov)" = "zsh" ] ; then
+  if [ "$(shell)" = "zsh" ] ; then
     echo -n '%}'
   else
     echo -n '\]'
@@ -91,28 +91,28 @@ prompt_color() { # Get colors for the current shell
 
 prompt_vcs() { # Determine if the current directory is a vcs repo
 
-  if path_hasbin git > /dev/null 2>&1 ; then
+  if path.hasbin 'git' > /dev/null 2>&1 ; then
     if git status > /dev/null 2>&1 ; then
       echo "git"
       return 0
     fi
   fi
 
-  #if path_hasbin hg > /dev/null 2>&1 ; then
+  #if path.hasbin hg > /dev/null 2>&1 ; then
   #  if hg status > /dev/null 2>&1 ; then
   #    echo "hg"
   #    return 0
   #  fi
   #fi
 
-  #if path_hasbin bzr > /dev/null 2>&1 ; then
+  #if path.hasbin bzr > /dev/null 2>&1 ; then
   #  if bzr root > /dev/null 2>&1 ; then
   #    echo "bzr"
   #    return 0
   #  fi
   #fi
 
-  #if path_hasbin svn > /dev/null 2>&1 ; then
+  #if path.hasbin svn > /dev/null 2>&1 ; then
   #  if svn info > /dev/null 2>&1 ; then
   #    echo "svn"
   #    return 0
@@ -120,7 +120,7 @@ prompt_vcs() { # Determine if the current directory is a vcs repo
   #fi
 
   # I don't use CVS, disabled for performance
-  #if path_hasbin cvs > /dev/null 2>&1 ; then
+  #if path.hasbin cvs > /dev/null 2>&1 ; then
   #  if cvs status > /dev/null 2>&1 ; then
   #    echo "cvs"
   #    return 0
@@ -128,7 +128,7 @@ prompt_vcs() { # Determine if the current directory is a vcs repo
   #fi
 
   # TODO: add darcs support
-  #if path_hasbin darcs > /dev/null 2>&1 ; then
+  #if path.hasbin darcs > /dev/null 2>&1 ; then
   #  if darcs ??? > /dev/null 2>&1 ; then
   #    echo "darcs"
   #    return 0

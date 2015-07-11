@@ -14,19 +14,19 @@ y_or_n() { # Ask a yes or no question
   case "$2" in
     '')
       DEFAULT=2
-      PROMPT="(y/n)"
+      PROMPT='(y/n)'
       ;;
     'y')
       DEFAULT=0
-      PROMPT="(Y/n)"
+      PROMPT='(Y/n)'
       ;;
     'n')
       DEFAULT=1
-      PROMPT="(y/N)"
+      PROMPT='(y/N)'
       ;;
     *)
       DEFAULT=2
-      PROMPT="(y/n)"
+      PROMPT='(y/n)'
       ;;
   esac
 

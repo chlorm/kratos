@@ -7,11 +7,11 @@
 
 function bat { # Use acpi if possible
 
-  acpi -b 2> /dev/null || bat_old
+  acpi -b 2> /dev/null || bat.sys
 
 }
 
-function bat_old { # Gets the string representing the state of the batteries
+function bat.sys { # Gets the string representing the state of the batteries
 
   local BAT
   local BATS
@@ -21,21 +21,19 @@ function bat_old { # Gets the string representing the state of the batteries
   BATS=($(ls "$ROOT/sys/class/power_supply" | grep "^BAT"))
 
   for BAT in "${BATS[@]}" ; do
-    bat_one "$BAT"
+    bat.one "$BAT"
   done
 
 }
 
-function bat_one {
+function bat.one {
 
-  local BAT_DIR
-  local B
+  local BAT_DIR="$ROOT/sys/class/power_supply/$1"
+  local B="$(cat "$BAT_DIR/status" 2> /dev/null)" || return 1
   local NOW
   local FULL
 
   echo -n "$1: "
-  BAT_DIR="$ROOT/sys/class/power_supply/$1"
-  B="$(cat "$BAT_DIR/status" 2> /dev/null)" || return 1
 
   case "$B" in
     Charging)

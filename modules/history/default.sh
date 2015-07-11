@@ -10,7 +10,7 @@ function shells_tmp { # Create the temporary history file for the shell
   local TMP
 
   if TMP="$(dir_tmp)" ; then
-    export HISTFILE="$TMP/history.$(shell_nov)"
+    export HISTFILE="$TMP/history.$(shell)"
     export HISTSIZE=10000
     export SAVEHIST=10000
   else
@@ -19,9 +19,9 @@ function shells_tmp { # Create the temporary history file for the shell
     export SAVEHIST=0
   fi
 
-  if [[ "$(shell_nov)" == 'bash' || "$(shell_nov)" == 'ksh' ]] ; then
+  if [[ "$(shell)" == 'bash' || "$(shell)" == 'ksh' ]] ; then
     shopt -s histappend
-  elif [[ "$(shell_nov)" == 'zsh' ]] ; then
+  elif [[ "$(shell)" == 'zsh' ]] ; then
   	setopt append_history
   fi
 

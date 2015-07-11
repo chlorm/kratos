@@ -5,7 +5,8 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-if path_hasbin "yum" ; then
+function yum.aliases {
+if path.hasbin 'yum' ; then
   alias yumc='sudo yum clean all' # Cleans the cache.
   alias yumh='yum history'        # Displays history.
   alias yumi='sudo yum install'   # Installs package(s).
@@ -17,3 +18,4 @@ if path_hasbin "yum" ; then
   alias yumu='sudo yum update'    # Updates packages.
   alias yumU='sudo yum upgrade'   # Upgrades packages.
 fi
+}

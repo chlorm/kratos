@@ -12,7 +12,7 @@
 # + Maybe rename to alevel/alev, more agnostic of input and output devices
 #    or create seperate utility for handling input devices
 
-function vol_usage {
+function vol.usage {
 
 cat <<EOF
 vol is a wrapper for pactl/pacmd
@@ -46,7 +46,10 @@ function active_sound_card {
       grep -o '[0-9]*')
   }
 
-  [ -z "$activeSoundCard" ] && { echo "ERROR: failed to obtain sound card" ; return 1 ; }
+  [ -z "$activeSoundCard" ] && {
+    err.error "failed to obtain sound card"
+    return 1
+  }
 
   echo "$activeSoundCard"
 
@@ -54,7 +57,7 @@ function active_sound_card {
 
 }
 
-function volume_current {
+function vol.current {
 
   pactl list sinks | \
     grep --after-context=9 "Sink #$(active_sound_card)" | \
@@ -66,12 +69,12 @@ function volume_current {
 function vol {
 
   # If 'pactl' is not installed, be done now
-  path_hasbin pactl || return 1
+  path.hasbin.err 'pactl' || return 1
 
   # Parse Arguments
   case "$1" in
     '')
-      echo "Volume: $(volume_current)"
+      echo "Volume: $(vol.current)"
       ;;
     [U,u]|[U,u][P,p])
       pactl set-sink-volume $(active_sound_card) -- "+5%"
@@ -86,7 +89,7 @@ function vol {
       pactl list sinks | grep "Sink #\|alsa.mixer_name"
       ;;
     '--help')
-      vol_usage
+      vol.usage
       return 0
       ;;
     *)
@@ -95,8 +98,8 @@ function vol {
           pactl set-sink-volume $(active_sound_card) -- "${1}%"
           ;;
         *)
-          echo -e "$(termclr red 0)ERROR: must be an integer between 0 and 150$(termclr reset 0)"
-          vol_usage
+          vol.usage
+          err.error "must be an integer between 0 and 150"
           return 1
           ;;
       esac

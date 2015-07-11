@@ -7,18 +7,18 @@
 
 download() { # Find download utility on system
 
-  if path_hasbin "curl" ; then
+  if path.hasbin "curl" ; then
       curl -sOL "$@" && return 0
-  elif path_hasbin "wget" ; then
+  elif path.hasbin "wget" ; then
       wget "$@" && return 0
-  elif path_hasbin "fetch" ; then
+  elif path.hasbin "fetch" ; then
       fetch "$@" && return 0
   else
-    echo "ERROR: no download utility found"
+    err.error "no download utility found"
     return 1
   fi
 
-  echo "ERROR: unable to download file"
+  err.error "unable to download file"
   return 1
 
 }

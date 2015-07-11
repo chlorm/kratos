@@ -5,17 +5,16 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function haskell_bin {
+function haskell.bin {
 
-  path_hasbin "ghc" || return 0
+  path.hasbin "ghc" || return 0
 
-  if [[ "$(os_kernel)" == 'darwin' && -d "$HOME/Library/Haskell/bin" ]] ; then
-    path_add "$HOME/Library/Haskell/bin" || return 1
+  if [[ "$(os.kernel)" == 'darwin' ]] ; then
+    path.add "$HOME/Library/Haskell/bin" || return 1
   else
-    path_add "$HOME/.cabal/bin" || return 1
+    path.add "$HOME/.cabal/bin" || return 1
   fi
 
   return 0
 
 }
-haskell_bin

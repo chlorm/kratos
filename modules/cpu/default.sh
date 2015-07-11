@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function cpu_architecture { # Return CPU architecture without endianness or register size
+function cpu.architecture { # Return CPU architecture without endianness or register size
 
   # Do NOT use `uname -m'. This returns the kernels arch, and on system like
   # Darwin it returns a hard-coded arch string that is invalid.  Only use
@@ -16,14 +16,14 @@ function cpu_architecture { # Return CPU architecture without endianness or regi
 
   local architecture=
 
-  case "$(os_kernel)" in
+  case "$(os.kernel)" in
     'linux')
       architecture="$(lscpu | grep -m 1 -w -o "\(arm\|i686\|x86_64\)")"
       ;;
   esac
 
   if [ -z "$architecture" ] ; then
-    echo "ERROR: failed to detect cpu architecture"
+    err.error "failed to detect cpu architecture"
     return 1
   fi
 
@@ -33,14 +33,14 @@ function cpu_architecture { # Return CPU architecture without endianness or regi
 
 }
 
-function cpu_register_size { # Find CPU register size (ie. 32bit/64bit)
+function cpu.register_size { # Find CPU register size (ie. 32bit/64bit)
 
   local register_size
-	
+
   register_size=$(getconf LONG_BIT | grep -m 1 -w -o "\(8\|16\|32\|64\|\128\)" | grep -op '[0-9]+')
 
   [ -z "$register_size" ] || {
-    echo "ERROR: could not determine cpu register size"
+    err.error "could not determine cpu register size"
     return 1
   }
 
@@ -50,11 +50,11 @@ function cpu_register_size { # Find CPU register size (ie. 32bit/64bit)
 
 }
 
-function cpu_sockets {
+function cpu.sockets {
 
   local SOCKETS=
 
-  case "$(os_kernel)" in
+  case "$(os.kernel)" in
     'linux')
       SOCKETS="$(lscpu | grep -m 1 'Socket(s):' | grep -oP "[0-9]+")"
       ;;
@@ -71,14 +71,14 @@ function cpu_sockets {
 
 }
 
-function cpus_physical { # Find number of physical cpu cores
+function cpu.physical { # Find number of physical cpu cores
 
   # Assumes all sockets are identical, only some arm platforms won't
   # work with this logic
 
   local cpucores
 
-  case $(os_kernel) in
+  case $(os.kernel) in
     'linux')
       cpucores=$(lscpu | grep -m 1 'Core(s) per socket:' | grep -oP '[0-9]+')
       ;;
@@ -93,7 +93,7 @@ function cpus_physical { # Find number of physical cpu cores
   if [ -z "$cpucores" ] ; then
     cpucores="1"
   else
-    cpucores=$(($cpucores * $(cpu_sockets)))
+    cpucores=$(($cpucores * $(cpu.sockets)))
   fi
 
   echo "$cpucores"
@@ -102,20 +102,20 @@ function cpus_physical { # Find number of physical cpu cores
 
 }
 
-function cpus_logical { # Find number of logical cpu cores
+function cpu.logical { # Find number of logical cpu cores
 
   # Assumes all sockets are identical, only some arm platforms won't
   # work with this logic
 
   local cputhreads
 
-  case $(os_kernel) in
+  case $(os.kernel) in
     'linux'|'freebsd')
       # Finds number of logical threads per physical core
       cputhreads=$(lscpu | grep -m 1 'Thread(s) per core:' | grep -oP '[0-9]+')
       if [ -n "$cputhreads" ] ; then
         # Convert to number of threads per cpu
-        cputhreads=$(($cputhreads * $(cpus_physical)))
+        cputhreads=$(($cputhreads * $(cpu.physical)))
       fi
       ;;
     'darwin')
@@ -127,9 +127,9 @@ function cpus_logical { # Find number of logical cpu cores
   esac
 
   if [ -z "$cputhreads" ] ; then
-    cputhreads="$(cpus_physical)"
+    cputhreads="$(cpu.physical)"
   else
-    cpus_logical=$(($cputhreads * $(cpu_sockets)))
+    cpu.logical=$(($cputhreads * $(cpu.sockets)))
   fi
 
   echo "$cputhreads"
