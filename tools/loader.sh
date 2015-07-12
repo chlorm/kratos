@@ -44,12 +44,12 @@ function load_all {
 
 load_all "modules"
 
-shells_tmp
-shell.theme
-shell.init
-prompt_configure
-
 if [[ "$PREFERED_SHELL" != "$(shell)" && -n "$PREFERED_SHELL" ]] ; then
   exec "$PREFERED_SHELL"
   exit $?
 fi
+
+shells_tmp
+shell.theme
+shell.init
+prompt_configure

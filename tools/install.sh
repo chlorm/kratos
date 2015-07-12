@@ -30,7 +30,7 @@ function load_one { # Source Modules
 
 }
 
-load_all() {
+function load_all {
 
   [ "$#" -ge 1 ] || return 1
 
