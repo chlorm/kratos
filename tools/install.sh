@@ -42,7 +42,7 @@ load_all() {
 
 }
 
-load_all "lib"
+load_all "modules"
 
 # Test for supported shell, if not supported try executing
 # any supported shell for installation
