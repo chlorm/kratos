@@ -46,6 +46,10 @@ function wifi {
   path.hasbin.err 'nmcli' || return 1
 
   case "$1" in
+    '')
+      wifi.usage
+      err.error "no input provided"
+      ;;
     'list') # List saved connections
       nmcli d wifi list
       ;;
