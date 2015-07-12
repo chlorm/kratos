@@ -149,6 +149,48 @@ dotfiles_update() { # Updates dotfiles and submodules
 
 }
 
+# TODO: Don't use $DISPLAY at install time to detect if the environment is graphical
+function kratos.preferred.deskenv {
+
+  for _DESKENV in "${DESKENVS_PREFERENCE[@]}" ; do
+    if path_hasbin "$(deskenvs_executable $DESKENV)" ; then
+      echo "PREFERED_DE=$DESKENV" >> "$HOME/.local/share/dotfiles/preferences"
+      return 0
+    fi
+  done
+
+  return 1
+
+  return 0
+
+}
+
+function kratos.preferred.editor {
+
+  for _EDITOR in "${EDITORS_PREFERENCE[@]}" ; do
+    if path_hasbin "$_EDITOR" ; then
+      echo "PREFERED_EDITOR=\"$_EDITOR\"" >> "$HOME/.local/share/dotfiles/preferences"
+      return 0
+    fi
+  done
+
+  return 1
+
+}
+
+function kratos.preferred.shell {
+
+  for _SHELL in "${SHELLS_PREFERENCE[@]}" ; do
+    if path_hasbin "$_SHELL" ; then
+      echo "PREFERED_SHELL=\"$_SHELL\"" >> "$HOME/.local/share/dotfiles/preferences"
+      return 0
+    fi
+  done
+
+  return 1
+
+}
+
 function kratos {
 
   echo

@@ -122,8 +122,6 @@ fi
 
 #dotfiles_latest
 
-exist -dc "$HOME/.local/share/dotfiles"
-
 echo "export KRATOS_DIR=\"$KRATOS_DIR\"" > "$HOME/.local/share/dotfiles/dir"
 
 exist -fx "$HOME/.local/share/dotfiles/preferences"
@@ -131,51 +129,11 @@ exist -fx "$HOME/.local/share/dotfiles/preferences"
 touch "$HOME/.local/share/dotfiles/preferences"
 
 # Preference
-find_shell() {
+kratos.preferred.shell || echo "WARNING: no prefered SHELL found"
+kratos.preferred.editor || echo "WARNING: no prefered EDITOR found"
+kratos.preferred.deskenv || echo "WARNING: no prefered DESKENV found"
 
-  for _SHELL in "${SHELLS_PREFERENCE[@]}" ; do
-    if path_hasbin "$_SHELL" ; then
-      echo "PREFERED_SHELL=\"$_SHELL\"" >> "$HOME/.local/share/dotfiles/preferences"
-      return 0
-    fi
-  done
-
-  return 1
-
-}
-find_shell || echo "WARNING: no prefered SHELL found"
-
-find_editor() {
-
-  for _EDITOR in "${EDITORS_PREFERENCE[@]}" ; do
-    if path_hasbin "$_EDITOR" ; then
-      echo "PREFERED_EDITOR=\"$_EDITOR\"" >> "$HOME/.local/share/dotfiles/preferences"
-      return 0
-    fi
-  done
-
-  return 1
-
-}
-find_editor || echo "WARNING: no prefered EDITOR found"
-
-find_deskenv() {
-
-  if [ -n "$DISPLAY" ] ; then
-    for _DESKENV in "${DESKENVS_PREFERENCE[@]}" ; do
-      if path_hasbin "$(deskenvs_executable $DESKENV)" ; then
-        echo "PREFERED_DE=$DESKENV" >> "$HOME/.local/share/dotfiles/preferences"
-        return 0
-      fi
-    done
-
-    return 1
-  fi
-
-  return 0
-
-}
-find_deskenv || echo "WARNING: no prefered DESKENV found"
+hook.dotfiles
 
 # TODO:
 # + Always create directories, never symlink, only symlink files
