@@ -11,8 +11,7 @@ cd $HOME/.kratos/tools && ./install.sh
 * A shell with support for BASH style arrays (i.e. BASH, KSH, PDKSH, ZSH)
   + Portions currently only work with BASH
 * git v2
-* systemd (Might be able to also partially support OSX, however supporting
-   sysvinit like service managers would require root access)
+* systemd
 * Assumes /usr/bin/env exists and is configured correctly
 
 ### Design Goals
@@ -45,22 +44,16 @@ TODO:
 	+ add init check to see if executing shell is supported, if not try to find
 	   and spawn a compatible shell, else fail
 * Support for updating dotfiles & kratos repos
-* Always exclude symlinking the ~/.bin dir.  symlink contents into dir
 * Add support for config file in dotfiles
 * Fix how environment variables and aliases are handled and split appropriately
    between dotfiles and kratos
 * Move wrapper scripts back to kratos
 * Add support for parsing for and replacing variables in config files
-* Add support for a do before/after hook for dotfiles, needed for directory
-   creation and such
 * Add a way to find or set the dotfile dir at install time
 * Fix deskenv exec support
-* Remove shell fixes for arrays and only support shells that support BASH style
-   arrays (i.e. bash, zsh, ksh)
 * Add user agent support
 * Work on PATH configuration
 * Work on SSH configuration and handling of keys
-* Split shell loader functions out of lib/core.sh (e.g. prompt)
 * Allow user defined color scheme
 * Add color mapping between terminals color levels (e.g. 1/4/8/16/88/256)
 	+ Should generate a file with the colors at each level that is sourced by the
@@ -68,6 +61,6 @@ TODO:
 * Avoid any instances of loops iterating through arrays at runtime
 * Add editor args variable (e.g. for setting -nw for emacs), used in EDITOR
    environment variable.
-* Add a way to introduce module execution priority (maybe using `wait` to wait
-	 for other modules to finish)
 * Add error logging to kratos std lib
+* Findout if ZSH/KSH/PDKSH have an alternative to BASH's FUNCNAME[@] array for
+   accessing the call stack history.
