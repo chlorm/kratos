@@ -10,6 +10,11 @@
 export KRATOS_DIR="$(readlink -f "$(dirname "$(readlink -f "$0")")")/../"
 export DOTFILES_DIR="$HOME/.dotfiles"
 
+if [ -z "$KRATOS_DIR" ] ; then
+  echo "ERROR: kratos remote repo origin is not set"
+  exit 1
+fi
+
 function load_one { # Source Modules
 
   if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
@@ -43,38 +48,6 @@ load_all() {
 }
 
 load_all "modules"
-
-# Test for supported shell, if not supported try executing
-# any supported shell for installation
-# case "$(shell_nov)" in
-#   'bash'|'ksh'|'pdksh'|'zsh')
-#     echo
-#     ;;
-#   *)
-#     if path_hasbin "bash" ; then
-#       exec bash
-#     elif path_hasbin "zsh" ; then
-#       exec zsh
-#     elif path_hasbin "pdksh" ; then
-#       exec pdksh
-#     elif path_hasbin "ksh" ; then
-#       exec ksh
-#     else
-#       echo "ERROR: Your shell is not supported by Kratos and no"
-#       echo "supported shell could not be found on you system"
-#       exit 1
-#     fi
-#     ;;
-# esac
-
-# Load settings
-. "$KRATOS_DIR/dotfiles.conf" || exit 1
-# Load local settings
-if [ -f "$KRATOS_DIR/dotfiles.conf.local" ] ; then
-  . "$KRATOS_DIR/dotfiles.conf.local"
-else
-  echo '#!/usr/bin/env sh' > "$KRATOS_DIR/dotfiles.conf.local"
-fi
 
 # XDG freedesktop directories
 
@@ -112,28 +85,27 @@ exist -dc "$HOME/.local/share/trash/files"
 
 exist -dc "$HOME/Dev"
 
-if [ -z "$KRATOS_DIR" ] ; then
-  echo "ERROR: kratos remote repo origin is not set"
-  exit 1
-fi
-
 #git remote set-url origin "$DOTFILES_REPO"
 #git remote set-url --push origin "$DOTFILES_REPO"
 
 #dotfiles_latest
 
-echo "export KRATOS_DIR=\"$KRATOS_DIR\"" > "$HOME/.local/share/dotfiles/dir"
+echo "export KRATOS_DIR=\"$KRATOS_DIR\"" > "$HOME/.local/share/kratos/dir"
 
-exist -fx "$HOME/.local/share/dotfiles/preferences"
+# Install dotfiles
+hook.dotfiles
 
-touch "$HOME/.local/share/dotfiles/preferences"
+# Load settings
+if [ -f "$HOME/.config/kratos/config" ] ; then
+  . "$HOME/.config/kratos/config"
+fi
 
 # Preference
+exist -fx "$HOME/.local/share/dotfiles/preferences"
+touch "$HOME/.local/share/dotfiles/preferences"
 kratos.preferred.shell || echo "WARNING: no prefered SHELL found"
 kratos.preferred.editor || echo "WARNING: no prefered EDITOR found"
 kratos.preferred.deskenv || echo "WARNING: no prefered DESKENV found"
-
-hook.dotfiles
 
 # TODO:
 # + Always create directories, never symlink, only symlink files
