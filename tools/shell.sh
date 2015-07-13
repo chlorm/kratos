@@ -6,9 +6,10 @@
 # the `LICENSE' file in the top level source directory.
 
 # Initalize shell configuration
-export KRATOS_DIR="$HOME/.kratos"
-export DOTFILES_DIR="$HOME/.dotfiles"
-. "$HOME/.local/share/dotfiles/preferences"
+export KRATOS_DIR="${HOME}/.kratos"
+export DOTFILES_DIR="${HOME}/.dotfiles"
+. "${HOME}/.local/share/kratos/preferences"
+. "${HOME}/.local/share/kratos/tmpdir"
 
 function load_one { # Source Modules
 
@@ -17,7 +18,7 @@ function load_one { # Source Modules
   fi
 
   . "$1" || {
-    echo "Failed to load module $1"
+    err.error "Failed to load module $1"
     return 1
   }
 
@@ -44,8 +45,8 @@ function load_all {
 
 load_all "modules"
 
-if [[ "$PREFERED_SHELL" != "$(shell)" && -n "$PREFERED_SHELL" ]] ; then
-  exec "$PREFERED_SHELL"
+if [[ "$PREFERRED_SHELL" != "$(shell)" && -n "$PREFERRED_SHELL" ]] ; then
+  exec "$PREFERRED_SHELL"
   exit $?
 fi
 
