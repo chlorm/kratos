@@ -19,7 +19,7 @@ function shell {
   fi
 
   # Resolve symlinked shells
-  LSHELL="$(basename "$(readlink -f "$(path.bin.abs "$LSHELL")")")"
+  LSHELL="$(basename "$(readlink -f "$(PathBinAbs "$LSHELL")")")"
 
   # Remove appended major version
   LSHELL="$(echo "$LSHELL" | sed 's/^\([a-z]*\).*/\1/')"
@@ -65,7 +65,7 @@ function ShellTheme { # Setup the theme for the shell
 
 }
 
-shell.init() { # Initializes useful functions
+ShellInit() { # Initializes useful functions
 
   alias root="sudo_wrap su -"
   alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"

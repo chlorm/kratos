@@ -7,7 +7,7 @@
 
 function HaskellBin {
 
-  path.hasbin "ghc" || return 0
+  PathHasBin "ghc" || return 0
 
   if [[ "$(os.kernel)" == 'darwin' ]] ; then
     PathAdd "$HOME/Library/Haskell/bin" || return 1

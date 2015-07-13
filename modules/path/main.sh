@@ -63,7 +63,7 @@ function PathHasBin { # Test to see if a binary exists in the path
       whence -p "${1}" > /dev/null 2>&1 || return 1
       ;;
     *)
-      err.error "Not reporting a supported shell" "${FUNCNAME[1]}"
+      ErrError "Not reporting a supported shell" "${FUNCNAME[1]}"
       return 1
       ;;
   esac
@@ -74,8 +74,8 @@ function PathHasBin { # Test to see if a binary exists in the path
 
 function PathHasbinErr {
 
-  path.hasbin "${1}" || {
-    err.error "\`${1}' is not installed" "${FUNCNAME[1]}"
+  PathHasBin "${1}" || {
+    ErrError "\`${1}' is not installed" "${FUNCNAME[1]}"
     return 1
   }
 
