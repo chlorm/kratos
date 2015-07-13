@@ -10,7 +10,7 @@
 # Test for a login shell
 shopt -q login_shell || return
 
-. "$(readlink -f $(dirname $(readlink -f $HOME/.ksh_login))/../)/tools/login-shell.sh"
+. "$(readlink -f $(dirname $(readlink -f $HOME/.ksh_login))/../)/tools/shell.login.sh"
 
 # Load the local config
 if [ -f "$HOME/.bash_login.local" ] ; then
