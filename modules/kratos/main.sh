@@ -4,6 +4,7 @@
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
+
 git_cd() {
 
   if [ -z "$1" ] ; then
@@ -153,11 +154,13 @@ dotfiles_update() { # Updates dotfiles and submodules
 function kratos.preferred.deskenv {
 
   for _DESKENV in "${DESKENVS_PREFERENCE[@]}" ; do
-    if path_hasbin "$(deskenvs_executable $DESKENV)" ; then
-      echo "PREFERED_DE=$DESKENV" >> "$HOME/.local/share/dotfiles/preferences"
+    if path.hasbin "$(deskenvs_executable $DESKENV)" ; then
+      echo "PREFERRED_DE=$DESKENV" >> "$HOME/.local/share/kratos/preferences"
       return 0
     fi
   done
+
+  err.warn "no preferred deskenvs found"
 
   return 1
 
@@ -168,11 +171,13 @@ function kratos.preferred.deskenv {
 function kratos.preferred.editor {
 
   for _EDITOR in "${EDITORS_PREFERENCE[@]}" ; do
-    if path_hasbin "$_EDITOR" ; then
-      echo "PREFERED_EDITOR=\"$_EDITOR\"" >> "$HOME/.local/share/dotfiles/preferences"
+    if path.hasbin "$_EDITOR" ; then
+      echo "PREFERRED_EDITOR=\"$_EDITOR\"" >> "$HOME/.local/share/kratos/preferences"
       return 0
     fi
   done
+
+  err.warn "no preferred editors found"
 
   return 1
 
@@ -181,11 +186,13 @@ function kratos.preferred.editor {
 function kratos.preferred.shell {
 
   for _SHELL in "${SHELLS_PREFERENCE[@]}" ; do
-    if path_hasbin "$_SHELL" ; then
-      echo "PREFERED_SHELL=\"$_SHELL\"" >> "$HOME/.local/share/dotfiles/preferences"
+    if path.hasbin "$_SHELL" ; then
+      echo "PREFERRED_SHELL=\"$_SHELL\"" >> "$HOME/.local/share/kratos/preferences"
       return 0
     fi
   done
+
+  err.warn "no preferred shells found"
 
   return 1
 
