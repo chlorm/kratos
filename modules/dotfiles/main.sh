@@ -127,6 +127,11 @@ function hook.dotfiles {
   local IGNORE_ITEM
   local IGNORE_LIST=($(cat "${DOTFILES_DIR}/.kratosignore"))
 
+  # TODO: Add systemd support
+  # The systemd directory requires special attention because systemd does not
+  #  support symlinked service files.
+  IGNORE_LIST+=("$HOME/.config/systemd")
+
   for DOTFILE in "${DOTFILES[@]}" ; do
 
     # Ignore hidden files
@@ -173,6 +178,7 @@ function hook.dotfiles {
         if [[ "${DOTFILE##*.}" == 'generate' ]] ; then
           hook.generate "${DOTFILE}" || return 1
         else
+          # TODO: add logic to prevent from following symlinked directory paths, may not be necessary
           exist -fx "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || return 1
           # Symlink DOTFILE
           symlink "${DOTFILE}" "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || return 1
