@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # This file is part of Kratos.
 # Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
 #
@@ -8,4 +10,11 @@
 # TODO:
 # The init functions, called once by systemd user service on startup (or login, not sure)
 
-path.add "${PATH}:${HOME}/.bin"
+. "${HOME}/.kratos/modules/path/main.sh"
+. "${HOME}/.kratos/modules/tmp/main.sh"
+
+# Add user bin directory to PATH
+path.add "${HOME}/.bin"
+
+# Setup user tmp directory
+tmp.dir
