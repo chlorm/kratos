@@ -11,7 +11,7 @@ function bat { # Use acpi if possible
 
 }
 
-function bat.sys { # Gets the string representing the state of the batteries
+function BatSys { # Gets the string representing the state of the batteries
 
   local BAT
   local BATS
@@ -21,12 +21,12 @@ function bat.sys { # Gets the string representing the state of the batteries
   BATS=($(ls "$ROOT/sys/class/power_supply" | grep "^BAT"))
 
   for BAT in "${BATS[@]}" ; do
-    bat.one "$BAT"
+    BatOne "$BAT"
   done
 
 }
 
-function bat.one {
+function BatOne {
 
   local BAT_DIR="$ROOT/sys/class/power_supply/$1"
   local B="$(cat "$BAT_DIR/status" 2> /dev/null)" || return 1

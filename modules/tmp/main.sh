@@ -9,7 +9,7 @@
 # + Add a fallback to use the ~/.cache directory and delete the directory on logout
 # + Only setup tmp.dir during init, add function for returning the current tmp.dir
 
-function tmp.dir { # Get the path to the temporary directory
+function TmpDir { # Get the path to the temporary directory
 
   local DIR
   local TMPDIR=
@@ -25,7 +25,7 @@ function tmp.dir { # Get the path to the temporary directory
   done
 
   if [ -z "$TMPDIR" ] ; then
-    err.error "Failed to find a tmp directory"
+    ErrError "Failed to find a tmp directory"
     return 1
   fi
 
@@ -53,6 +53,3 @@ function tmp.dir { # Get the path to the temporary directory
   return 0
 
 }
-
-# Deprecated
-function dir_tmp { tmp.dir ; }

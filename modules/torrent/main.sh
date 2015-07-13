@@ -9,7 +9,7 @@
 # Algorithm borrowed from http://wiki.rtorrent.org/MagnetUri and adapted to work with zsh.
 #
 
-function magnet_to_torrent {
+function magnet2torrent {
 
   [[ "$1" =~ xt=urn:btih:([^\&/]+) ]] || return 1
 

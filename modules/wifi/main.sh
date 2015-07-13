@@ -12,13 +12,13 @@
 # Add wpa_supplicant support
 # Maybe convert wifi -> net (lan,wan,wlan, etc...)
 
-function wireless.interface { # Find wireless interface name
+function WirelessInterface { # Find wireless interface name
 
   nmcli d | awk '/802-11-wireless/ {print $1}'
 
 }
 
-function wifi.usage {
+function WifiUsage {
 
 cat <<EOF
 Wifi is a wrapper for nmcli.
@@ -43,12 +43,12 @@ EOF
 
 function wifi {
 
-  path.hasbin.err 'nmcli' || return 1
+  PathHasBinErr 'nmcli' || return 1
 
   case "$1" in
     '')
-      wifi.usage
-      err.error "no input provided"
+      WifiUsage
+      ErrError "no input provided"
       ;;
     'list') # List saved connections
       nmcli d wifi list
@@ -67,8 +67,8 @@ function wifi {
         passwordWifi="password $2"
       fi
       # Add connection
-      nmcli d wifi connect "$ssidWifi" $passwordWifi iface "$(wireless.interface)" name "$ssidWifi" || {
-        err.error "connecting to $ssidWifi"
+      nmcli d wifi connect "$ssidWifi" $passwordWifi iface "$(WirelessInterface)" name "$ssidWifi" || {
+        ErrError "connecting to $ssidWifi"
         return 1
       }
       ;;
@@ -95,11 +95,11 @@ function wifi {
       nmcli r wifi off
       ;;
     '-h'|'--help'|'help')
-      wifi_usage
+      WifiUsage
       ;;
     *)
       wifi.usage
-      err.error "invalid option: $@"
+      ErrError "invalid option: $@"
       ;;
 
   esac

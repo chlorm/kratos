@@ -30,17 +30,14 @@ function shell {
 
 }
 
-# Deprecated
-function shell_nov { shell ; }
-
 # http://en.wikipedia.org/wiki/Comparison_of_command_shells
 
-function shell.theme { # Setup the theme for the shell
+function ShellTheme { # Setup the theme for the shell
 
   [ "$(shell)" = "fish" ] && return 0
 
   # Colors for LS
-  case "$(os.kernel)" in
+  case "$(OSKernel)" in
     'linux'|'cygwin')
       eval "$(dircolors -b)"
       alias ls='ls --color=auto'
@@ -58,13 +55,13 @@ function shell.theme { # Setup the theme for the shell
 #  fi
 
   # Setup Special Colors
-  if user.root ; then
-    NCOLOR="$(prompt_color cyan 0)"
+  if UserRoot ; then
+    NCOLOR="$(PromptColor cyan 0)"
   else
-    NCOLOR="$(prompt_color white 1)"
+    NCOLOR="$(PromptColor white 1)"
   fi
 
-  DCOLOR="$(prompt_color yellow 1)"
+  DCOLOR="$(PromptColor yellow 1)"
 
 }
 
@@ -85,7 +82,7 @@ shell.init() { # Initializes useful functions
   alias defragmentroot="sudo btrfs filesystem defragment -r -v /"
   alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
   # Gentoo
-  if [ "$(os.linux)" = "gentoo" ] ; then
+  if [ "$(OSLinux)" = "gentoo" ] ; then
     alias inst="sudo emerge --ask"
     alias search="emerge --search"
     alias uses="equery uses"

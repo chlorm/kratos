@@ -14,7 +14,7 @@
 
 # if isTTY, then try fbterm else false
 
-function term.clrs {
+function TermClrs {
 if [ "$TERM" == 'xterm' ] ; then
   # See if xterm supports 256 color
   if [ -n "$VTE_VERSION" ] ; then

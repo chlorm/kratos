@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # This file is part of Kratos.
 # Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
@@ -7,7 +7,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-export KRATOS_DIR="$(readlink -f "$(dirname "$(readlink -f "$0")")")/../"
+export KRATOS_DIR="$(readlink -f "$(dirname "$(readlink -f "$0")")")/.."
 export DOTFILES_DIR="$HOME/.dotfiles"
 
 if [ -z "$KRATOS_DIR" ] ; then
@@ -15,7 +15,7 @@ if [ -z "$KRATOS_DIR" ] ; then
   exit 1
 fi
 
-function load_one { # Source Modules
+function LoadModule { # Source Modules
 
   if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
     return 0
@@ -30,7 +30,7 @@ function load_one { # Source Modules
 
 }
 
-function load_all {
+function LoadModuleDir {
 
   [ "$#" -ge 1 ] || return 1
 
@@ -40,14 +40,14 @@ function load_all {
   MODS=($(find "$KRATOS_DIR/$1" -type f))
 
   for MOD in "${MODS[@]}" ; do
-    load_one "$MOD"
+    LoadModule "$MOD"
   done
 
   return 0
 
 }
 
-load_all "modules"
+LoadModuleDir "modules"
 
 # XDG freedesktop directories
 
@@ -90,22 +90,23 @@ exist -dc "$HOME/Dev"
 
 #dotfiles_latest
 
+mkdir -p "$HOME/.local/share/kratos"
 echo "export KRATOS_DIR=\"$KRATOS_DIR\"" > "$HOME/.local/share/kratos/dir"
 
 # Install dotfiles
-hook.dotfiles
+DotfilesHook
 
 # Load settings
 if [ -f "$HOME/.config/kratos/config" ] ; then
   . "$HOME/.config/kratos/config"
+  # Preference
+  exist -fx "$HOME/.local/share/kratos/preferences"
+  touch "$HOME/.local/share/kratos/preferences"
+  KratosPreferredShell
+  KratosPreferredEditor
+  KratosPreferredDeskenv
 fi
 
-# Preference
-exist -fx "$HOME/.local/share/dotfiles/preferences"
-touch "$HOME/.local/share/dotfiles/preferences"
-kratos.preferred.shell || echo "WARNING: no prefered SHELL found"
-kratos.preferred.editor || echo "WARNING: no prefered EDITOR found"
-kratos.preferred.deskenv || echo "WARNING: no prefered DESKENV found"
 
 # TODO:
 # + Always create directories, never symlink, only symlink files
@@ -125,3 +126,5 @@ symlink "$KRATOS_DIR/rc/zsh_login" "$HOME/.zsh_login"
 symlink "$KRATOS_DIR/rc/xinitrc" "$HOME/.xinitrc"
 symlink "$KRATOS_DIR/rc/xprofile" "$HOME/.xprofile"
 symlink "$KRATOS_DIR/rc/xsession" "$HOME/.xsession"
+
+symlink "$KRATOS_DIR/systemd/kratos-init.service" "$HOME/.config/systemd/user/kratos-init.service"

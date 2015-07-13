@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-prompt_color() { # Get colors for the current shell
+function PromptColor { # Get colors for the current shell
 
   if [ "$(shell)" = "zsh" ] ; then
     echo -n '%{'
@@ -89,30 +89,30 @@ prompt_color() { # Get colors for the current shell
 
 }
 
-prompt_vcs() { # Determine if the current directory is a vcs repo
+function PromptVcs { # Determine if the current directory is a vcs repo
 
-  if path.hasbin 'git' > /dev/null 2>&1 ; then
+  if PathHasBin 'git' > /dev/null 2>&1 ; then
     if git status > /dev/null 2>&1 ; then
       echo "git"
       return 0
     fi
   fi
 
-  #if path.hasbin hg > /dev/null 2>&1 ; then
+  #if PathHasBin hg > /dev/null 2>&1 ; then
   #  if hg status > /dev/null 2>&1 ; then
   #    echo "hg"
   #    return 0
   #  fi
   #fi
 
-  #if path.hasbin bzr > /dev/null 2>&1 ; then
+  #if PathHasBin bzr > /dev/null 2>&1 ; then
   #  if bzr root > /dev/null 2>&1 ; then
   #    echo "bzr"
   #    return 0
   #  fi
   #fi
 
-  #if path.hasbin svn > /dev/null 2>&1 ; then
+  #if PathHasBin svn > /dev/null 2>&1 ; then
   #  if svn info > /dev/null 2>&1 ; then
   #    echo "svn"
   #    return 0
@@ -120,7 +120,7 @@ prompt_vcs() { # Determine if the current directory is a vcs repo
   #fi
 
   # I don't use CVS, disabled for performance
-  #if path.hasbin cvs > /dev/null 2>&1 ; then
+  #if PathHasBin cvs > /dev/null 2>&1 ; then
   #  if cvs status > /dev/null 2>&1 ; then
   #    echo "cvs"
   #    return 0
@@ -128,7 +128,7 @@ prompt_vcs() { # Determine if the current directory is a vcs repo
   #fi
 
   # TODO: add darcs support
-  #if path.hasbin darcs > /dev/null 2>&1 ; then
+  #if PathHasBin darcs > /dev/null 2>&1 ; then
   #  if darcs ??? > /dev/null 2>&1 ; then
   #    echo "darcs"
   #    return 0
@@ -139,11 +139,11 @@ prompt_vcs() { # Determine if the current directory is a vcs repo
 
 }
 
-prompt_vcs_branch() { # Return current vcs branch
+function PromptVcsBranch { # Return current vcs branch
 
 local branch
 
-  case "$(prompt_vcs)" in
+  case "$(PromptVcs)" in
     'bzr')
       return 0
       ;;
@@ -154,7 +154,7 @@ local branch
       return 0
       ;;
     'git')
-      branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(prompt_vcs_dirty)/")
+      branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(PromptVcsDirty)/")
       if [ -n "$branch" ] ; then
         echo "$branch"
       fi
@@ -172,11 +172,11 @@ local branch
 
 }
 
-prompt_vcs_dirty() { # Append '*' if vcs branch is dirty
+function PromptVcsDirty { # Append '*' if vcs branch is dirty
 
 local vcsstatus=
 
-  case "$(prompt_vcs)" in
+  case "$(PromptVcs)" in
     'bzr')
       return 0
       ;;
@@ -205,14 +205,14 @@ local vcsstatus=
 
 }
 
-prompt_configure() { # Create prompt
+function PromptConfigure { # Create prompt
 
   case "$(shell)" in
     'zsh') # Must use single quotes to delay evaluation
-      export PROMPT='$(prompt_color green 0)%n$(prompt_color black 1)@$(prompt_color white 1)%M$(prompt_color black 1)[$(prompt_color magenta 0)%~$(prompt_color black 1)]$(prompt_color green 0)$(prompt_vcs)$(prompt_color black 1)$([ -z $(prompt_vcs 2> /dev/null) ] || echo "∫")$(prompt_color white 1)$(prompt_vcs_branch)$(prompt_color cyan 0)〉$(prompt_color reset)'
+      export PROMPT='$(PromptColor green 0)%n$(PromptColor black 1)@$(PromptColor white 1)%M$(PromptColor black 1)[$(PromptColor magenta 0)%~$(PromptColor black 1)]$(PromptColor green 0)$(PromptVcs)$(PromptColor black 1)$([ -z $(PromptVcs 2> /dev/null) ] || echo "∫")$(PromptColor white 1)$(PromptVcsBranch)$(PromptColor cyan 0)〉$(PromptColor reset)'
       ;;
-    'bash'|'dash')
-      export PS1="$(prompt_color green 0)\u$(prompt_color black 1)@$(prompt_color white 1)\h$(prompt_color black 1)[$(prompt_color magenta 0)\w$(prompt_color black 1)]$(prompt_color green 0)\$(prompt_vcs)$(prompt_color black 1)\$([ -z \$(prompt_vcs 2> /dev/null) ] || echo "∫")$(prompt_color white 1)\$(prompt_vcs_branch)$(prompt_color cyan 0)〉$(prompt_color reset)"
+    'bash')
+      export PS1="$(PromptColor green 0)\u$(PromptColor black 1)@$(PromptColor white 1)\h$(PromptColor black 1)[$(PromptColor magenta 0)\w$(PromptColor black 1)]$(PromptColor green 0)\$(PromptVcs)$(PromptColor black 1)\$([ -z \$(PromptVcs 2> /dev/null) ] || echo "∫")$(PromptColor white 1)\$(PromptVcsBranch)$(PromptColor cyan 0)〉$(PromptColor reset)"
       ;;
   esac
 

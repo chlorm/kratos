@@ -8,7 +8,7 @@
 # TODO: Find a way to return the executing function
 # ZSH: $funcsourcetrace and $funcfiletrace. requires 5.0
 
-function err.error {
+function ErrError {
 
   if [ -n "${2}" ] ; then
     echo "Kratos: ERROR in \`${2}': ${1}"
@@ -20,7 +20,7 @@ function err.error {
 
 }
 
-function err.warn {
+function ErrWarn {
 
   if [ -n "${2}" ] ; then
     echo "Kratos: WARNING in \`${2}': ${1}"

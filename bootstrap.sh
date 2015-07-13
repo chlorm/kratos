@@ -24,7 +24,7 @@
 
 # Respawn shell or source ~/.profile which will handle doing so
 
-load.module() { # Source Modules
+LoadModule() { # Source Modules
 
   . "${HOME}/.kratos/modules/${1}/default.sh" || {
     echo "Failed to load module $1"
@@ -35,11 +35,11 @@ load.module() { # Source Modules
 
 }
 
-load.module 'path' || exit 1
-load.module 'shell' || exit 1
-load.module 'error' || exit 1
+LoadModule 'path' || exit 1
+LoadModule 'shell' || exit 1
+LoadModule 'error' || exit 1
 
-path.hasbin.err '/usr/bin/env' || exit 1
-path.hasbin.err 'systemctl' || exit 1
-path.hasbin.err 'git' || exit 1
+PathHasBinErr '/usr/bin/env' || exit 1
+PathHasBinErr 'systemctl' || exit 1
+PathHasBinErr 'git' || exit 1
 # Find git version and make sure at least 2.0

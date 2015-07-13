@@ -151,10 +151,10 @@ dotfiles_update() { # Updates dotfiles and submodules
 }
 
 # TODO: Don't use $DISPLAY at install time to detect if the environment is graphical
-function kratos.preferred.deskenv {
+function KratosPreferredDeskenv {
 
   for _DESKENV in "${DESKENVS_PREFERENCE[@]}" ; do
-    if path.hasbin "$(deskenvs_executable $DESKENV)" ; then
+    if PathHasBin "$(deskenvs_executable $DESKENV)" ; then
       echo "PREFERRED_DE=$DESKENV" >> "$HOME/.local/share/kratos/preferences"
       return 0
     fi
@@ -168,31 +168,31 @@ function kratos.preferred.deskenv {
 
 }
 
-function kratos.preferred.editor {
+function kratosPreferredEditor {
 
   for _EDITOR in "${EDITORS_PREFERENCE[@]}" ; do
-    if path.hasbin "$_EDITOR" ; then
+    if PathHasBin "$_EDITOR" ; then
       echo "PREFERRED_EDITOR=\"$_EDITOR\"" >> "$HOME/.local/share/kratos/preferences"
       return 0
     fi
   done
 
-  err.warn "no preferred editors found"
+  ErrWarn "no preferred editors found"
 
   return 1
 
 }
 
-function kratos.preferred.shell {
+function KratosPreferredShell {
 
   for _SHELL in "${SHELLS_PREFERENCE[@]}" ; do
-    if path.hasbin "$_SHELL" ; then
+    if PathHasBin "$_SHELL" ; then
       echo "PREFERRED_SHELL=\"$_SHELL\"" >> "$HOME/.local/share/kratos/preferences"
       return 0
     fi
   done
 
-  err.warn "no preferred shells found"
+  ErrWarn "no preferred shells found"
 
   return 1
 

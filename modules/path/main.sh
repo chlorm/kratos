@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function path.add { # Add direcory to $PATH
+function PathAdd { # Add direcory to $PATH
 
   if [[ -z "$(echo "${PATH}" | grep "${1}" 2> /dev/null)" && -d "${1}" ]] ; then
     export PATH="${PATH}:${1}"
@@ -15,7 +15,7 @@ function path.add { # Add direcory to $PATH
 
 }
 
-function path.remove { # Remove directory from $PATH
+function PathRemove { # Remove directory from $PATH
 
   if [ -n "$(echo "$PATH" | grep "$1" 2> /dev/null)" ] ; then
     export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`
@@ -25,7 +25,7 @@ function path.remove { # Remove directory from $PATH
 
 }
 
-function path.bin { # Finds the path to the binary
+function PathBin { # Finds the path to the binary
 
   if [ "$#" -ne 1 ] ; then
     return 2
@@ -37,7 +37,7 @@ function path.bin { # Finds the path to the binary
 
 }
 
-function path.bin.abs { # Resolves the absolute path of the binary
+function PathBinAbs { # Resolves the absolute path of the binary
 
   local BIN
 
@@ -51,7 +51,7 @@ function path.bin.abs { # Resolves the absolute path of the binary
 
 }
 
-function path.hasbin { # Test to see if a binary exists in the path
+function PathHasBin { # Test to see if a binary exists in the path
 
   [ "$#" -ne "1" ] && return 2
 
@@ -72,7 +72,7 @@ function path.hasbin { # Test to see if a binary exists in the path
 
 }
 
-function path.hasbin.err {
+function PathHasbinErr {
 
   path.hasbin "${1}" || {
     err.error "\`${1}' is not installed" "${FUNCNAME[1]}"

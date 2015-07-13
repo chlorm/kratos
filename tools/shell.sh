@@ -11,14 +11,14 @@ export DOTFILES_DIR="${HOME}/.dotfiles"
 . "${HOME}/.local/share/kratos/preferences"
 . "${HOME}/.local/share/kratos/tmpdir"
 
-function load_one { # Source Modules
+function LoadOne { # Source Modules
 
   if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
     return 0
   fi
 
   . "$1" || {
-    err.error "Failed to load module $1"
+    echo "Failed to load module $1"
     return 1
   }
 
@@ -26,7 +26,7 @@ function load_one { # Source Modules
 
 }
 
-function load_all {
+function LoadAll {
 
   [ "$#" -ge 1 ] || return 1
 
@@ -36,21 +36,21 @@ function load_all {
   MODS=($(find "$KRATOS_DIR/$1" -type f))
 
   for MOD in "${MODS[@]}" ; do
-    load_one "$MOD"
+    LoadOne "$MOD"
   done
 
   return 0
 
 }
 
-load_all "modules"
+LoadAll "modules"
 
 if [[ "$PREFERRED_SHELL" != "$(shell)" && -n "$PREFERRED_SHELL" ]] ; then
   exec "$PREFERRED_SHELL"
   exit $?
 fi
 
-shells_tmp
-shell.theme
-shell.init
-prompt_configure
+ShellTmp
+ShellTheme
+ShellInit
+PromptConfigure

@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-exist() { # Check for existence of file or directory
+function exist { # Check for existence of file or directory
 
   [ -n "$1" ] || return 1
 
@@ -88,19 +88,19 @@ exist() { # Check for existence of file or directory
 
 }
 
-tolower() {
+function tolower {
 
   echo "$@" | tr '[A-Z]' '[a-z]'
 
 }
 
-toupper() {
+function toupper {
 
   echo "$@" | tr '[a-z]' '[A-Z]'
 
 }
 
-p_and_q() {
+function p_and_q {
 
   local STAT
 
@@ -111,7 +111,7 @@ p_and_q() {
 
 }
 
-proc_exists() { # Checks to see if the process is running
+function ProcExists { # Checks to see if the process is running
 
   if [ "$#" -ne 1 ] ; then
     return 1
@@ -121,7 +121,7 @@ proc_exists() { # Checks to see if the process is running
 
 }
 
-check_pidfile() { # Checks the pidfile to see if the process is running
+function CheckPidfile { # Checks the pidfile to see if the process is running
 
   if [ -f "$1" ] ; then
   	proc_exists "$(cat $1 2> /dev/null)"
@@ -129,7 +129,7 @@ check_pidfile() { # Checks the pidfile to see if the process is running
 
 }
 
-run_quiet() { # Start an application in the background
+function RunQuiet { # Start an application in the background
 
   path_hasbin "$1" || return 1
 
@@ -143,7 +143,7 @@ run_quiet() { # Start an application in the background
 
 }
 
-termclr() {
+function termclr {
 
   case "$1" in
     'black')
@@ -215,7 +215,7 @@ termclr() {
 
 }
 
-svar() { # Stores the output of the command into a variable without a subshell
+function svar { # Stores the output of the command into a variable without a subshell
 
   local VAR
   local TMP
@@ -232,7 +232,7 @@ svar() { # Stores the output of the command into a variable without a subshell
 
 }
 
-dotfiles_dir() {
+function dotfiles_dir {
 
   echo "$DOTFILES_DIR" && return 0
 
@@ -240,7 +240,7 @@ dotfiles_dir() {
 
 }
 
-kratos_dir() {
+function kratos_dir {
 
   echo "$KRATOS_DIR" && return 0
 
@@ -248,7 +248,7 @@ kratos_dir() {
 
 }
 
-deskenvs_executable() {
+function deskenvs_executable {
 
   case "$1" in
     'awesome')

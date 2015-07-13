@@ -5,11 +5,11 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function ssh_auto {
+function SshAuto {
 
   # Make sure that we have the required binaries
-  path.hasbin 'ssh-keygen' || return 1
-  path.hasbin 'openssl' || return 1
+  PathHasBin 'ssh-keygen' || return 1
+  PathHasBin 'openssl' || return 1
 
   # Makes sure the ssh directory exists
   exist -dc "$HOME/.ssh" || return 1

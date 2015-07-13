@@ -9,10 +9,10 @@ function golang {
   if [[ -n "$GOPATH" && "$GOPATH" != "$HOME/Dev/go" ]] ; then
     # Probably need to sanitize $GOPATH in case if contains multiple PATHs
     # Output paths to an array and iterate throught the array elements
-    path.add "$GOPATH/bin"
+    PathAdd "$GOPATH/bin"
     export GOPATH="$GOPATH"
   elif [ -d "$HOME/Dev/go" ] ; then
-    path.add "$HOME/Dev/go/bin"
+    PathAdd "$HOME/Dev/go/bin"
     export GOPATH="$HOME/Dev/go"
   fi
 }

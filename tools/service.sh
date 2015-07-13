@@ -14,7 +14,7 @@
 . "${HOME}/.kratos/modules/tmp/main.sh"
 
 # Add user bin directory to PATH
-path.add "${HOME}/.bin"
+PathAdd "${HOME}/.bin"
 
 # Setup user tmp directory
-tmp.dir
+TmpDir

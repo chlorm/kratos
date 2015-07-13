@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-symlink() { # Create a symbolic link $1 -> $2
+function symlink { # Create a symbolic link $1 -> $2
 
   mkdir -p "$(dirname "$2")"
   if [ "$(readlink -f "$2")" != "$1" ] ; then

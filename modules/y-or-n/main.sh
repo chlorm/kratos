@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-y_or_n() { # Ask a yes or no question
+function YorN { # Ask a yes or no question
 
   local ANSWER
   local DEFAULT=2

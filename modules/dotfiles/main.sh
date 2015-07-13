@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function hook.generate.pre {
+function DotfilesPreGenerateHook {
 
   if [[ -f "${1}/.generate-pre" ]] ; then
     . "${1}/.generate-pre" || return 1
@@ -15,7 +15,7 @@ function hook.generate.pre {
 
 }
 
-function hook.generate {
+function DotfilesGenerateHook {
 
   if [[ -f "${1}/.generate" ]] ; then
     # TODO:
@@ -27,7 +27,7 @@ function hook.generate {
 
 }
 
-function hook.generate.post {
+function DotfilesPostGenerateHook {
 
   if [[ -f "${1}/.generate-post" ]] ; then
     . "${1}/.generate-post" || return 1
@@ -37,7 +37,7 @@ function hook.generate.post {
 
 }
 
-function hook.install.pre {
+function DotfilesPreInstallHook {
 
   if [[ -f "${1}/.install-pre" ]] ; then
     . "${1}/.install-pre" || return 1
@@ -47,7 +47,7 @@ function hook.install.pre {
 
 }
 
-function hook.install {
+function DotfilesInstallHook {
 
   if [[ -f "${1}/.install" ]] ; then
     . "${1}/.install" || return 1
@@ -57,7 +57,7 @@ function hook.install {
 
 }
 
-function hook.install.post {
+function DotfilesPostInstallHook {
 
   if [[ -f "${1}/.install-post" ]] ; then
     . "${1}/.install-post" || return 1
@@ -67,7 +67,7 @@ function hook.install.post {
 
 }
 
-function hook.uninstall.pre {
+function DotfilesPreUninstallHook {
 
   if [[ -f "${1}/.uninstall-pre" ]] ; then
     . "${1}/.uninstall-pre" || return 1
@@ -77,7 +77,7 @@ function hook.uninstall.pre {
 
 }
 
-function hook.uninstall {
+function DotfilesUninstallHook {
 
   if [[ -f "${1}/.uninstall" ]] ; then
     . "${1}/.uninstall" || return 1
@@ -87,7 +87,7 @@ function hook.uninstall {
 
 }
 
-function hook.uninstall.post {
+function DotfilesPostUninstallHook {
 
   if [[ -f "${1}/.uninstall-post" ]] ; then
     . "${1}/.uninstall-post" || return 1
@@ -97,7 +97,7 @@ function hook.uninstall.post {
 
 }
 
-function hook.dotfiles {
+function DotfilesHook {
 
   # This function handles the installation of files within the ~/.dotfiles
   #  directory.  It only symlinks files, not directories, this is to work around
@@ -157,26 +157,28 @@ function hook.dotfiles {
     done
 
     if "${UNINSTALL}" ; then
-      hook.uninstall.pre "${DOTFILE}" || return 1
+      DotfilesPreUninstallHook "${DOTFILE}" || return 1
     else
-      hook.install.pre "${DOTFILE}" || return 1
+      DotfilesPreInstallHook "${DOTFILE}" || return 1
     fi
 
     if "${UNINSTALL}" ; then
       if [[ -f "${DOTFILE}/.uninstall" ]] ; then
-        hook.uninstall "${DOTFILE}" || return 1
+        DotfilesUninstallHook "${DOTFILE}" || return 1
       else
         echo "uninstall"
       fi
     else
       if [[ -f "{DOTFILE}/.install" ]] ; then
-        hook.install "${DOTFILE}" || return 1
+        DotfilesInstallHook "${DOTFILE}" || return 1
       else
 
         # TODO: add loop for .kratosdontsym
 
+        # TODO: Add DotfilesPreGenerateHook & DotfilesPostGenerateHook
+
         if [[ "${DOTFILE##*.}" == 'generate' ]] ; then
-          hook.generate "${DOTFILE}" || return 1
+          DotfilesGenerateHook "${DOTFILE}" || return 1
         else
           # TODO: add logic to prevent from following symlinked directory paths, may not be necessary
           exist -fx "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || return 1
@@ -187,9 +189,9 @@ function hook.dotfiles {
     fi
 
     if "${UNINSTALL}" ; then
-      hook.uninstall.post "${DOTFILE}" || return 1
+      DotfilesPostUninstallHook "${DOTFILE}" || return 1
     else
-      hook.install.post "${DOTFILE}" || return 1
+      DotfilesPostInstallHook "${DOTFILE}" || return 1
     fi
 
   done

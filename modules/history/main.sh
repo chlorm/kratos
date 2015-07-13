@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function shells_tmp { # Create the temporary history file for the shell
+function ShellTmp { # Create the temporary history file for the shell
 
   local TMP
 

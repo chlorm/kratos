@@ -5,9 +5,9 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function sudo.wrap { # Wraps the command in sudo if sudo exists and runs it
+function SudoWrap { # Wraps the command in sudo if sudo exists and runs it
 
-  if path_hasbin 'sudo' ; then
+  if PathHasBin 'sudo' ; then
     sudo $@
   else
     $@
