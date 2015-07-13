@@ -9,7 +9,7 @@ function shells_tmp { # Create the temporary history file for the shell
 
   local TMP
 
-  if TMP="$(dir_tmp)" ; then
+  if [[ -d "$TMPLOCAL" ]] ; then
     export HISTFILE="$TMP/history.$(shell)"
     export HISTSIZE=10000
     export SAVEHIST=10000
