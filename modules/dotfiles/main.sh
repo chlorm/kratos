@@ -99,7 +99,14 @@ function DotfilesPostUninstallHook {
 
 function DotfilesSystemdHook {
 
-  echo
+  # Find type for symlinking
+
+  local TYPE=
+
+  #exist -dc "${HOME}/.config/systemd/user/${TYPE}.target.wants"
+  #symlink "${1}" "${HOME}/.config/systemd/user/${TYPE}.target.wants/$(basename "${DOTFILE}")"
+
+  return 0
 
 }
 
@@ -128,8 +135,8 @@ function DotfilesHook {
 
   local DOTFILE
   local DOTFILES=($(find "${DOTFILES_DIR}" -type f -not -iwholename '*.git*'))
-  local DONT_SYM_ITEM
-  local DONT_SYM_LIST=($(cat "${DOTFILES_DIR}/.kratosdontsym"))
+  #local DONT_SYM_ITEM
+  #local DONT_SYM_LIST=($(cat "${DOTFILES_DIR}/.kratosdontsym"))
   local IGNORE_STATUS
   local IGNORE_ITEM
   local IGNORE_LIST=($(cat "${DOTFILES_DIR}/.kratosignore"))
@@ -137,6 +144,8 @@ function DotfilesHook {
   # TODO: Add systemd support
   # The systemd directory requires special attention because systemd does not
   #  support symlinked service files.
+  # Maybe we should symlink the service files to ~/.config/systemd/user/<type>.target.wants
+  #  assuming that they should be activated in not in .kratosignore
   IGNORE_LIST+=("$HOME/.config/systemd")
 
   for DOTFILE in "${DOTFILES[@]}" ; do
@@ -168,20 +177,22 @@ function DotfilesHook {
       continue
     fi
 
-    if "${UNINSTALL}" ; then
+    # PRE-(Un)Install
+    if ${UNINSTALL} ; then
       DotfilesPreUninstallHook "${DOTFILE}" || return 1
     else
       DotfilesPreInstallHook "${DOTFILE}" || return 1
     fi
 
-    if "${UNINSTALL}" ; then
-      if [[ -f "${DOTFILE}/.uninstall" ]] ; then
+    # (Un)Install
+    if ${UNINSTALL} ; then
+      if [[ -f "${DOTFILE}.uninstall" ]] ; then
         DotfilesUninstallHook "${DOTFILE}" || return 1
       else
         echo "uninstall"
       fi
     else
-      if [[ -f "{DOTFILE}/.install" ]] ; then
+      if [[ -f "{DOTFILE}.install" ]] ; then
         DotfilesInstallHook "${DOTFILE}" || return 1
       else
 
@@ -190,7 +201,11 @@ function DotfilesHook {
         # TODO: Add DotfilesPreGenerateHook & DotfilesPostGenerateHook
 
         if [[ "${DOTFILE##*.}" == 'generate' ]] ; then
+          DotfilesPreGenerateHook "${DOTFILE}" || return 1
           DotfilesGenerateHook "${DOTFILE}" || return 1
+          DotfilesPostGenerateHook "${DOTFILE}" || return 1
+        elif [[ -n "$(echo "${DOTFILE}" | grep "config/systemd/user")" ]] ; then
+          DotfilesSystemdHook "${DOTFILE}" || return 1
         else
           # TODO: add logic to prevent from following symlinked directory paths, may not be necessary
           exist -fx "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || return 1
@@ -200,7 +215,8 @@ function DotfilesHook {
       fi
     fi
 
-    if "${UNINSTALL}" ; then
+    # POST-(Un)Install
+    if ${UNINSTALL} ; then
       DotfilesPostUninstallHook "${DOTFILE}" || return 1
     else
       DotfilesPostInstallHook "${DOTFILE}" || return 1
