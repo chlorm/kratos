@@ -12,7 +12,7 @@
 function TmpDir { # Get the path to the temporary directory
 
   local DIR
-  local TMPDIR=
+  local TMPDIR
   local TMPDIRS=("${ROOT}/dev/shm" "${ROOT}/run/shm" "${ROOT}/tmp" "${ROOT}/var/tmp")
 
   for DIR in "${TMPDIRS[@]}" ; do
@@ -24,25 +24,25 @@ function TmpDir { # Get the path to the temporary directory
 
   done
 
-  if [ -z "$TMPDIR" ] ; then
+  if [ -z "${TMPDIR}" ] ; then
     ErrError "Failed to find a tmp directory"
     return 1
   fi
 
-  if [ ! -d "$TMPDIR" ] ; then
-    mkdir "$TMPDIR" || return 1
-    chmod 0700 "$TMPDIR" || return 1
+  if [ ! -d "${TMPDIR}" ] ; then
+    mkdir "${TMPDIR}" || return 1
+    chmod 0700 "${TMPDIR}" || return 1
   fi
 
-  ln -sf "$TMPDIR" "$HOME/.tmp" || return 1
+  ln -sf "${TMPDIR}" "${HOME}/.tmp" || return 1
 
-  exist -dx "$HOME/.cache" || return 1
-  mkdir -p "$TMPDIR/cache" || return 1
-  ln -sf "$TMPDIR/cache" "$HOME/.cache" || return 1
+  exist -dx "${HOME}/.cache" || return 1
+  mkdir -p "${TMPDIR}/cache" || return 1
+  ln -sf "${TMPDIR}/cache" "${HOME}/.cache" || return 1
 
   # Create dotfiles session directory
-  if [ ! -d "$TMPDIR/dotfiles" ] ; then
-    mkdir -p "$TMPDIR/dotfiles" || return 1
+  if [ ! -d "${TMPDIR}/dotfiles" ] ; then
+    mkdir -p "${TMPDIR}/dotfiles" || return 1
   fi
 
   exist -dc "${HOME}/.local/share/kratos"

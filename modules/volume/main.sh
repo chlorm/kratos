@@ -36,22 +36,22 @@ function ActiveSoundCard {
   soundCard=$(\
     pactl list sinks | \
     grep --before-context=1 "State: RUNNING" | \
-    awk -F'[^0-9]*' '/Sink\ \#/ { print $2 ; exit }')
+    awk -F'[^0-9]*' '/Sink\ \#/ {print $2 ; exit}')
 
   # If no active sound card is found fallback to the default
-  [ -z "$activeSoundCard" ] && {
+  [ -z "${activeSoundCard}" ] && {
     soundCard=$(\
       pacmd list-sinks | \
       grep -m 1 "* index: " | \
       grep -o '[0-9]*')
   }
 
-  [ -z "$activeSoundCard" ] && {
+  [ -z "${activeSoundCard}" ] && {
     ErrError "failed to obtain sound card"
     return 1
   }
 
-  echo "$soundCard"
+  echo "${soundCard}"
 
   return 0
 
@@ -60,9 +60,9 @@ function ActiveSoundCard {
 function VolCurrent {
 
   pactl list sinks | \
-    grep --after-context=9 "Sink #$(active_sound_card)" | \
+    grep --after-context=9 "Sink #$(ActiveSoundCard)" | \
     grep "Volume:" | \
-    awk '/[^0-9]*\%/ { print $5 ; exit }'
+    awk '/[^0-9]*\%/ {print $5 ; exit}'
 
 }
 
@@ -72,7 +72,7 @@ function vol {
   PathHasBinErr 'pactl' || return 1
 
   # Parse Arguments
-  case "$1" in
+  case "${1}" in
     '')
       echo "Volume: $(VolCurrent)"
       ;;

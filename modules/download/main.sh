@@ -7,18 +7,18 @@
 
 function download { # Find download utility on system
 
-  if PathHasBin "curl" ; then
-      curl -sOL "$@" && return 0
-  elif PathHasBin "wget" ; then
-      wget "$@" && return 0
-  elif PathHasBin "fetch" ; then
-      fetch "$@" && return 0
+  if PathHasBin 'curl' ; then
+      curl -sOL $@ && return 0
+  elif PathHasBin 'wget' ; then
+      wget $@ && return 0
+  elif PathHasBin 'fetch' ; then
+      fetch $@ && return 0
   else
-    ErrError "no download utility found"
+    ErrError 'no download utility found'
     return 1
   fi
 
-  ErrError "unable to download file"
+  ErrError 'unable to download file'
   return 1
 
 }

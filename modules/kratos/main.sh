@@ -101,7 +101,7 @@ dotfiles_latest() { # Gets the latest version of the dotfiles
   git_pull
   case "$?" in
     2)
-      err.error "Failed to update the configuration directory"
+      ErrError "Failed to update the configuration directory"
       return 2
       ;;
     1)
@@ -112,7 +112,7 @@ dotfiles_latest() { # Gets the latest version of the dotfiles
   git_sub_init
   case "$?" in
     2)
-      err.error "Failed to initialize configuration submodules"
+      ErrError "Failed to initialize configuration submodules"
       return 2
       ;;
     1)
@@ -123,7 +123,7 @@ dotfiles_latest() { # Gets the latest version of the dotfiles
   git_sub_pull
   case "$?" in
     2)
-      err.error "Failed to update configuration submodules"
+      ErrError "Failed to update configuration submodules"
       return 2
       ;;
     1)
@@ -160,7 +160,7 @@ function KratosPreferredDeskenv {
     fi
   done
 
-  err.warn "no preferred deskenvs found"
+  ErrWarn "no preferred deskenvs found"
 
   return 1
 

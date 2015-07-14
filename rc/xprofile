@@ -4,8 +4,8 @@
 # Figuring out prefered deskenv and what deskenv are installed should be checked here
 
 # Run local commands first
-[[ -f "$HOME/.xprofile.local" ]] && . "$HOME/.xprofile.local"
+[[ -f "${HOME}/.xprofile.local" ]] && . "${HOME}/.xprofile.local"
 
-if [[ -f "$HOME/.xinitrc" ]] ; then
-  . "$HOME/.xinitrc"
+if [[ -f "${HOME}/.xinitrc" ]] ; then
+  . "${HOME}/.xinitrc"
 fi

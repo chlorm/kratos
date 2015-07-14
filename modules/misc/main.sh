@@ -7,21 +7,21 @@
 
 function exist { # Check for existence of file or directory
 
-  [ -n "$1" ] || return 1
+  [ -n "${1}" ] || return 1
 
-  case "$1" in
+  case "${1}" in
     '-fc') # Make sure the file exists
       shift
-      while [ "$1" ] ; do
+      while [ "${1}" ] ; do
         # Make sure file is not a symlink
-        if test -L "$1" ; then
-          unlink "$1" > /dev/null 2>&1
-          [ "$?" = 0 ]
+        if test -L "${1}" ; then
+          unlink "${1}" > /dev/null 2>&1
+          [ $? = 0 ]
         fi
         # Create file
-        if [ ! -f "$1" ] ; then
-          touch "$1" > /dev/null 2>&1
-          [ "$?" = 0 ]
+        if [ ! -f "${1}" ] ; then
+          touch "${1}" > /dev/null 2>&1
+          [ $? = 0 ]
         fi
         shift
       done
@@ -30,16 +30,16 @@ function exist { # Check for existence of file or directory
       ;;
     '-fx') # Make sure file doesn't exist
       shift
-      while [ "$1" ] ; do
+      while [ "${1}" ] ; do
         # Make sure file is not a symlink
-        if test -L "$1" ; then
-          unlink "$1" > /dev/null 2>&1
-          [ "$?" -eq 0 ]
+        if test -L "${1}" ; then
+          unlink "${1}" > /dev/null 2>&1
+          [ $? -eq 0 ]
         fi
         # Remove file
         if [ -f "$1" ] ; then
           rm -f "$1" > /dev/null 2>&1
-          [ "$?" -eq 0 ]
+          [ $? -eq 0 ]
         fi
         shift
       done
@@ -96,7 +96,7 @@ function tolower {
 
 function toupper {
 
-  echo "$@" | tr '[a-z]' '[A-Z]'
+  echo $@ | tr '[a-z]' '[A-Z]'
 
 }
 
@@ -104,16 +104,16 @@ function p_and_q {
 
   local STAT
 
-  STAT="$1"
-  shift 1
-  echo "$@"
+  STAT="${1}"
+  shift
+  echo $@
   exit $STAT
 
 }
 
 function ProcExists { # Checks to see if the process is running
 
-  if [ "$#" -ne 1 ] ; then
+  if [ $# -ne 1 ] ; then
     return 1
   fi
 
@@ -124,14 +124,14 @@ function ProcExists { # Checks to see if the process is running
 function CheckPidfile { # Checks the pidfile to see if the process is running
 
   if [ -f "$1" ] ; then
-  	proc_exists "$(cat $1 2> /dev/null)"
+  	ProcExists "$(cat $1 2> /dev/null)"
   fi
 
 }
 
 function RunQuiet { # Start an application in the background
 
-  path_hasbin "$1" || return 1
+  PathHasBin "$1" || return 1
 
   local pid
 

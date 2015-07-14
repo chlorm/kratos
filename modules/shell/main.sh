@@ -12,21 +12,21 @@ function shell {
   local LPROC="$(ps hp $$ | grep "$$")"
 
   # Workaround for su spawned shells
-  if [ -n "$(echo "$LPROC" | grep '\-su')" ] ; then
-    LSHELL="$(basename "$(echo "$LPROC" | sed 's/^.*(\([^)]*\)).*$/\1/')")"
+  if [ -n "$(echo "${LPROC}" | grep '\-su')" ] ; then
+    LSHELL="$(basename "$(echo "${LPROC}" | sed 's/^.*(\([^)]*\)).*$/\1/')")"
   else
-    LSHELL="$(basename "$(echo "$LPROC" | sed 's/-//' | awk '{print $5}')")"
+    LSHELL="$(basename "$(echo "${LPROC}" | sed 's/-//' | awk '{print $5 ; exit}')")"
   fi
 
   # Resolve symlinked shells
-  LSHELL="$(basename "$(readlink -f "$(PathBinAbs "$LSHELL")")")"
+  LSHELL="$(basename "$(readlink -f "$(PathBinAbs "${LSHELL}")")")"
 
   # Remove appended major version
-  LSHELL="$(echo "$LSHELL" | sed 's/^\([a-z]*\).*/\1/')"
+  LSHELL="$(echo "${LSHELL}" | sed 's/^\([a-z]*\).*/\1/')"
 
-  LSHELL="$(tolower "$LSHELL")"
+  LSHELL="$(tolower "${LSHELL}")"
 
-  echo "$LSHELL"
+  echo "${LSHELL}"
 
 }
 
@@ -34,7 +34,7 @@ function shell {
 
 function ShellTheme { # Setup the theme for the shell
 
-  [ "$(shell)" = "fish" ] && return 0
+  [ "$(shell)" = 'fish' ] && return 0
 
   # Colors for LS
   case "$(OSKernel)" in
@@ -44,7 +44,7 @@ function ShellTheme { # Setup the theme for the shell
       ;;
     'freebsd')
       export CLICOLOR=1
-      export LSCOLORS="ExGxFxdxCxDhDxaBadaCeC"
+      export LSCOLORS='ExGxFxdxCxDhDxaBadaCeC'
       ;;
   esac
 
@@ -65,9 +65,9 @@ function ShellTheme { # Setup the theme for the shell
 
 }
 
-ShellInit() { # Initializes useful functions
+function ShellInit { # Initializes useful functions
 
-  alias root="sudo_wrap su -"
+  alias root="SudoWrap su -"
   alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
   alias nixpaste="curl -F 'text=<-' http://nixpaste.noip.me"
   #alias t='laptop_bat ; date'
@@ -82,7 +82,7 @@ ShellInit() { # Initializes useful functions
   alias defragmentroot="sudo btrfs filesystem defragment -r -v /"
   alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
   # Gentoo
-  if [ "$(OSLinux)" = "gentoo" ] ; then
+  if [ "$(OSLinux)" = 'gentoo' ] ; then
     alias inst="sudo emerge --ask"
     alias search="emerge --search"
     alias uses="equery uses"
@@ -91,12 +91,12 @@ ShellInit() { # Initializes useful functions
 
   # Environment Variables
 
-  if [ "$PREFERED_EDITOR" = "emacs" ] ; then
+  if [ "${PREFERED_EDITOR}" = 'emacs' ] ; then
     export EDITOR="emacs -nw"
   else
-    export EDITOR="$PREFERED_EDITOR"
+    export EDITOR="${PREFERED_EDITOR}"
   fi
-  export PAGER="less -r"
+  export PAGER="less -R"
   export BLOCKSIZE="K"
   # Locale/UTF-8
   export LANG=en_US.UTF-8

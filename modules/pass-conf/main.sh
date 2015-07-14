@@ -15,13 +15,13 @@ function PasswordConfirmation {
     echo
     read -s -p "Confirm: " PASS2
     echo
-    if [ "$PASS1" = "$PASS2" ] ; then
+    if [ "${PASS1}" = "${PASS2}" ] ; then
       break
     fi
     echo "WARNING: passwords do not match, try again"
   done
 
-  echo "$PASS1" > /dev/null 2>&1 && return 0
+  echo "${PASS1}" > /dev/null 2>&1 && return 0
 
   return 1
 

@@ -41,16 +41,16 @@ function PkgMgr {
     'freebsd') # Ports
       PathHasBinErr 'portmaster' || return 1
       PathHasBinErr 'portsnap' || return 1
-      echo "ports"
+      echo 'ports'
       return 0
       ;;
 
     'linux')
-      case "$(os.linux)" in
+      case "$(OSLinux)" in
 
         'Debian'|'Ubuntu') # Apt
           PathHasBinErr 'apt-get' || return 1
-          echo "apt"
+          echo 'apt'
           return 0
           ;;
 
@@ -59,36 +59,36 @@ function PkgMgr {
           PathHasBinErr 'nixos-rebuild' || return 1
           PathHasBinErr 'nix-collect-garbage' || return 1
           PathHasBinErr 'nix-channel' || return 1
-          echo "nix"
+          echo 'nix'
           return 0
           ;;
 
         'arch') # Pacman
           PathHasBinErr 'pacman' || return 1
-          echo "pacman"
+          echo 'pacman'
           return 0
           ;;
 
         'gentoo') # Portage
           PathHasBinErr 'emerge' || return 1
-          echo "portage"
+          echo 'portage'
           return 0
           ;;
 
         'centos'|'fedora'|'red hat') # Red Hat
           PathHasBinErr 'yum' || return 1
-          echo "rpm"
+          echo 'rpm'
           return 0
           ;;
 
         'suse') # Yast, not sure about this cluster fuck
           PathHasBinErr 'zypper' || return 1
-          echo "yast"
+          echo 'yast'
           return 0
           ;;
 
         *)
-          ErrError "not a suppoted linux distro"
+          ErrError 'not a suppoted linux distro'
           return 1
           ;;
 
@@ -96,7 +96,7 @@ function PkgMgr {
       ;;
 
     *)
-      ErrError "not a supported base OS"
+      ErrError 'not a supported base OS'
       return 1
       ;;
 
@@ -105,14 +105,14 @@ function PkgMgr {
 }
 
 function pkg {
-  case "$1" in
+  case "${1}" in
     '')
-      ErrError "no input provided"
+      ErrError 'no input provided'
       ;;
     'clean')
-      case "$(pkg.mgr)" in
+      case "$(PkgMgr)" in
         'apt-get')
-          ErrError "unsupported action"
+          ErrError 'unsupported action'
           ;;
         'nix')
           SudoWrap nix-collect-garbage -d
@@ -127,10 +127,10 @@ function pkg {
           return $?
           ;;
         'rpm')
-          ErrError "unsupported action"
+          ErrError 'unsupported action'
           ;;
         'yast')
-          ErrError "unsupported action"
+          ErrError 'unsupported action'
           ;;
         *)
           return 1
@@ -138,7 +138,7 @@ function pkg {
       esac
       ;;
     'install')
-      case "$(pkg.mgr)" in
+      case "$(PkgMgr)" in
         'apt')
           shift
           SudoWrap apt-get install $@
@@ -192,7 +192,7 @@ function pkg {
           return $?
           ;;
         'nix')
-          ErrError "unsupported action"
+          ErrError 'unsupported action'
           ;;
         'pacman')
           shift
@@ -220,7 +220,7 @@ function pkg {
       esac
       ;;
     'update')
-      case "$(pkg.mgr)" in
+      case "$(PkgMgr)" in
         'ports')
             SudoWrap portsnap fetch || return $?
             SudoWrap portsnap update || return $?

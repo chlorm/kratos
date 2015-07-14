@@ -5,7 +5,7 @@
 # Run xsession after for deskenvs that don't support doing so
 
 # Run local commands first
-[[ -f "$HOME/.xinitrc.local" ]] && . "$HOME/.xinitrc.local"
+[[ -f "${HOME}/.xinitrc.local" ]] && . "${HOME}/.xinitrc.local"
 
 # Gnome 3.xx
 #exec gnome-session
@@ -17,6 +17,6 @@
 #export SSH_AUTH_SOCK
 #export GPG_AGENT_INFO
 
-if [[ -f "$HOME/.xsession" ]] ; then
-  . "$HOME/.xsession"
+if [[ -f "${HOME}/.xsession" ]] ; then
+  . "${HOME}/.xsession"
 fi

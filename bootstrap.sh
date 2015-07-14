@@ -27,7 +27,7 @@
 LoadModule() { # Source Modules
 
   . "${HOME}/.kratos/modules/${1}/default.sh" || {
-    echo "Failed to load module $1"
+    echo "Failed to load module ${1}"
     return 1
   }
 

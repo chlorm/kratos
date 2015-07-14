@@ -17,7 +17,7 @@ function PathAdd { # Add direcory to $PATH
 
 function PathRemove { # Remove directory from $PATH
 
-  if [ -n "$(echo "$PATH" | grep "$1" 2> /dev/null)" ] ; then
+  if [ -n "$(echo "${PATH}" | grep "$1" 2> /dev/null)" ] ; then
     export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`
   fi
 
@@ -52,11 +52,11 @@ function PathBinAbs { # Resolves the absolute path of the binary
 
   local BIN
 
-  BIN="$(whereis -b $1 2> /dev/null | awk '{print $2 ; exit}')"
+  BIN="$(whereis -b ${1} 2> /dev/null | awk '{print $2 ; exit}')"
 
-  [ -n "$BIN" ] || return 1
+  [ -n "${BIN}" ] || return 1
 
-  echo "$BIN"
+  echo "${BIN}"
 
   return 0
 

@@ -7,10 +7,8 @@
 
 function ShellTmp { # Create the temporary history file for the shell
 
-  local TMP
-
-  if [[ -d "$TMPLOCAL" ]] ; then
-    export HISTFILE="$TMP/history.$(shell)"
+  if [[ -d "${TMP}" ]] ; then
+    export HISTFILE="${TMP}/history.$(shell)"
     export HISTSIZE=10000
     export SAVEHIST=10000
   else
@@ -19,11 +17,14 @@ function ShellTmp { # Create the temporary history file for the shell
     export SAVEHIST=0
   fi
 
-  if [[ "$(shell)" == 'bash' || "$(shell)" == 'ksh' ]] ; then
-    shopt -s histappend
-  elif [[ "$(shell)" == 'zsh' ]] ; then
-  	setopt append_history
-  fi
+  case "$(shell)" in
+    'bash'|'ksh'|'pdksh')
+      shopt -s histappend
+      ;;
+    'zsh')
+    	setopt append_history
+      ;;
+  esac
 
 }
 

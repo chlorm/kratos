@@ -11,7 +11,7 @@ function YorN { # Ask a yes or no question
   local DEFAULT=2
   local PROMPT
 
-  case "$2" in
+  case "${2}" in
     '')
       DEFAULT=2
       PROMPT='(y/n)'
@@ -31,14 +31,14 @@ function YorN { # Ask a yes or no question
   esac
 
   while true ; do
-    read -p "$1 $PROMPT: " ANSWER
+    read -p "${1} ${PROMPT}: " ANSWER
 
-    ANSWER="$(tolower $ANSWER)"
+    ANSWER="$(tolower ${ANSWER})"
 
-    case "$ANSWER" in
+    case "${ANSWER}" in
       '')
-        if [ ! $DEFAULT -eq 2 ] ; then
-          return $DEFAULT
+        if [ ! ${DEFAULT} -eq 2 ] ; then
+          return ${DEFAULT}
         fi
         ;;
       'y'|'yes')

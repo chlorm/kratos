@@ -11,11 +11,11 @@
 [[ $- == *i* ]] || return
 
 # Load shell configuration loader
-. "$(readlink -f $(dirname $(readlink -f $HOME/.kshrc))/../)/tools/shell.sh"
+. "$(readlink -f $(dirname $(readlink -f ${HOME}/.kshrc))/../)/tools/shell.sh"
 
 # Load the local config
-if [ -f "$HOME/.kshrc.local" ] ; then
-  . "$HOME/.kshrc.local"
+if [ -f "${HOME}/.kshrc.local" ] ; then
+  . "${HOME}/.kshrc.local"
 fi
 
 # Prevent GUI password dialog

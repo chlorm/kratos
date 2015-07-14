@@ -10,13 +10,13 @@
 # Test for a login shell
 shopt -q login_shell || return
 
-. "$(readlink -f $(dirname $(readlink -f $HOME/.bash_login))/../)/tools/shell.login.sh"
+. "$(readlink -f $(dirname $(readlink -f ${HOME}/.bash_login))/../)/tools/shell.login.sh"
 
 # Load the local config
-if [ -f "$HOME/.bash_login.local" ] ; then
-  . "$HOME/.bash_login.local"
+if [ -f "${HOME}/.bash_login.local" ] ; then
+  . "${HOME}/.bash_login.local"
 fi
 
 if [[ $- == *i* ]] ; then
-  . "$HOME/.bashrc"
+  . "${HOME}/.bashrc"
 fi

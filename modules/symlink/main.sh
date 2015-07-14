@@ -7,11 +7,11 @@
 
 function symlink { # Create a symbolic link $1 -> $2
 
-  mkdir -p "$(dirname "$2")"
-  if [ "$(readlink -f "$2")" != "$1" ] ; then
-    rm -rf "$2"
-    if [ -f "$1" ] || [ -d "$1" ] ; then
-      ln -sf "$1" "$2" 2> /dev/null || return 1
+  mkdir -p "$(dirname "${2}")"
+  if [ "$(readlink -f "${2}")" != "${1}" ] ; then
+    rm -rf "${2}"
+    if [ -f "${1}" ] || [ -d "${1}" ] ; then
+      ln -sf "${1}" "${2}" 2> /dev/null || return 1
     else
       return 1
     fi

@@ -14,7 +14,7 @@
 
 function WirelessInterface { # Find wireless interface name
 
-  nmcli d | awk '/802-11-wireless/ {print $1}'
+  nmcli d | awk '/802-11-wireless/ {print $1 ; exit}'
 
 }
 
@@ -43,12 +43,15 @@ EOF
 
 function wifi {
 
+  local PASS
+  local SSID
+
   PathHasBinErr 'nmcli' || return 1
 
-  case "$1" in
+  case "${1}" in
     '')
       WifiUsage
-      ErrError "no input provided"
+      ErrError 'no input provided'
       ;;
     'list') # List saved connections
       nmcli d wifi list
@@ -58,32 +61,30 @@ function wifi {
       ;;
     'add') # Add a saved connection
       shift
-      ssidWifi="$1"
-      passwordWifi="$2"
+      PASS="${2}"
+      SSID="${1}"
       # If no password is provided, assume one is not needed
-      if [ -z "$passwordWifi" ]; then
-        passwordWifi=""
-      else
-        passwordWifi="password $2"
+      if [ -n "${2}" ]; then
+        PASS="password ${2}"
       fi
       # Add connection
-      nmcli d wifi connect "$ssidWifi" $passwordWifi iface "$(WirelessInterface)" name "$ssidWifi" || {
-        ErrError "connecting to $ssidWifi"
+      nmcli d wifi connect "${SSID}" ${PASS} iface "$(WirelessInterface)" name "${SSID}" || {
+        ErrError "connecting to ${SSID}"
         return 1
       }
       ;;
     'connect') # Connect to a saved connection
       shift
-      ssidWifi="$1"
-      nmcli c up id "$ssidWifi"
+      SSID="${1}"
+      nmcli c up id "${SSID}"
       ;;
     'disconnect') # Disconnect from current wireless network
-      nmcli d disconnect iface $(wireless.interface)
+      nmcli d disconnect iface "$(WirelessInterface)"
       ;;
     'remove') # Remove a saved connection
       shift
-      ssidWifi="$1"
-      nmcli c delete id "$ssidWifi"
+      SSID="${1}"
+      nmcli c delete id "${SSID}"
       ;;
     'status') # List active connections if any
       nmcli g status
@@ -98,7 +99,7 @@ function wifi {
       WifiUsage
       ;;
     *)
-      wifi.usage
+      WifiUsage
       ErrError "invalid option: $@"
       ;;
 

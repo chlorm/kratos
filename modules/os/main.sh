@@ -10,12 +10,12 @@ function OSKernel { # Find host os kernel
   local KERNEL=$(tolower $(uname -s) $(echo ${OSTYPE}) |
     grep -m 1 -w -o '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)')
 
-  if [ -z "$KERNEL" ] ; then
-    ErrError "not a supported operating system"
+  if [ -z "${KERNEL}" ] ; then
+    ErrError 'not a supported operating system'
     return 1
   fi
 
-  echo "$KERNEL"
+  echo "${KERNEL}"
 
   return 0
 
@@ -45,15 +45,15 @@ function OSLinux { # Take first result of linux os name match
 
   local LINUX
 
-  LINUX=$(tolower "$(OSLinuxRelease) $(OSLinuxUname) $(OSLinuxLsb)" |
-    grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)')
+  LINUX="$(tolower "$(OSLinuxRelease) $(OSLinuxUname) $(OSLinuxLsb)" |
+    grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)')"
 
-  if [ -z "$LINUX" ] ; then
-    ErrError "not a supported linux operating system"
+  if [ -z "${LINUX}" ] ; then
+    ErrError 'not a supported linux operating system'
     return 1
   fi
 
-  echo "$LINUX"
+  echo "${LINUX}"
 
   return 0
 

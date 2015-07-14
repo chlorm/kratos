@@ -11,11 +11,11 @@
 [[ $- == *i* ]] || return
 
 # Load shell configuration loader
-. "$(readlink -f $(dirname $(readlink -f $HOME/.bashrc))/../)/tools/shell.sh"
+. "$(readlink -f $(dirname $(readlink -f ${HOME}/.bashrc))/../)/tools/shell.sh"
 
 # Load the local config
-if [ -f "$HOME/.bashrc.local" ] ; then
-  . "$HOME/.bashrc.local"
+if [ -f "${HOME}/.bashrc.local" ] ; then
+  . "${HOME}/.bashrc.local"
 fi
 
 # Prevent GUI password dialog

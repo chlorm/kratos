@@ -11,7 +11,7 @@ function ArchiveUsage {
 
 function archive {
 
-  case "$1" in
+  case "${1}" in
     '-c')
       ;;
     '-e')
@@ -23,68 +23,68 @@ function archive {
 }
 
 function ArchiveExtract {
-if [ -z "$1" ] ; then
-  ErrError "no input provided"
+if [ -z "${1}" ] ; then
+  ErrError 'no input provided'
   exit 1
-elif [ -f "$1" ] ; then
-  case "$1" in
+elif [ -f "${1}" ] ; then
+  case "${1}" in
     *'.tar')
-      PathHasBinErr tar || return 1
-      tar xf "$1"
+      PathHasBinErr 'tar' || return 1
+      tar xf "${1}"
       ;;
     *'.tar.bz2')
-      PathHasBinErr tar || return 1
-      tar xjf "$1"
+      PathHasBinErr 'tar' || return 1
+      tar xjf "${1}"
       ;;
     *'.tbz2')
-      PathHasBinErr tar || return 1
-      tar xjf "$1"
+      PathHasBinErr 'tar' || return 1
+      tar xjf "${1}"
       ;;
     *'.bz2')
-      PathHasBinErr bunzip2 || return 1
-      bunzip2 "$1"
+      PathHasBinErr 'bunzip2' || return 1
+      bunzip2 "${1}"
       ;;
     *'.tar.gz')
-      PathHasBinErr tar || return 1
-      tar xzf "$1"
+      PathHasBinErr 'tar' || return 1
+      tar xzf "${1}"
       ;;
     *'.tgz')
-      PathHasBinErr tar || return 1
-      tar xzf "$1"
+      PathHasBinErr 'tar' || return 1
+      tar xzf "${1}"
       ;;
     *'.gz')
-      PathHasBinErr gunzip || return 1
-      gunzip "$1"
+      PathHasBinErr 'gunzip' || return 1
+      gunzip "${1}"
       ;;
     *'.tar.xz')
-      PathHasBinErr tar || return 1
-      tar xJf "$1"
+      PathHasBinErr 'tar' || return 1
+      tar xJf "${1}"
       ;;
     *'.txz')
-      PathHasBinErr tar || return 1
-      tar xJf "$1"
+      PathHasBinErr 'tar' || return 1
+      tar xJf "${1}"
       ;;
     *'.rar')
-      PathHasBinErr unrar || return 1
-      unrar e "$1"
+      PathHasBinErr 'unrar' || return 1
+      unrar e "${1}"
       ;;
     *'.zip')
-      PathHasBinErr unzip || return 1
-      unzip "$1"
+      PathHasBinErr 'unzip' || return 1
+      unzip "${1}"
       ;;
     *'.Z')
-      PathHasBinErr uncompress || return 1
-      uncompress "$1"
+      PathHasBinErr 'uncompress' || return 1
+      uncompress "${1}"
       ;;
     *'.7z')
-      PathHasBinErr 7z || return 1
-      7z x "$1"
+      PathHasBinErr '7z' || return 1
+      7z x "${1}"
       ;;
     *)
-      ErrError "'$1' is not a supported file type"
+      ErrError "\`${1}' is not a supported file type"
       ;;
     esac
 else
-    ErrError "'$1' is not a file"
+  ErrError "\`${1}' is not a file"
 fi
 }

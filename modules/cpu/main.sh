@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function Cpu.Architecture { # Return CPU architecture without endianness or register size
+function CpuArchitecture { # Return CPU architecture without endianness or register size
 
   # Do NOT use `uname -m'. This returns the kernels arch, and on system like
   # Darwin it returns a hard-coded arch string that is invalid.  Only use
@@ -14,7 +14,7 @@ function Cpu.Architecture { # Return CPU architecture without endianness or regi
 
   # TODO: use sysctl on Darwin
 
-  local architecture=
+  local architecture
 
   case "$(OSKernel)" in
     'linux')
@@ -22,12 +22,12 @@ function Cpu.Architecture { # Return CPU architecture without endianness or regi
       ;;
   esac
 
-  if [ -z "$architecture" ] ; then
-    ErrError "failed to detect cpu architecture"
+  if [[ -z "${architecture}" ]] ; then
+    ErrError 'failed to detect cpu architecture'
     return 1
   fi
 
-  echo "$architecture" && return 0
+  echo "${architecture}" && return 0
 
   return 1
 
@@ -39,12 +39,12 @@ function CpuRegisterSize { # Find CPU register size (ie. 32bit/64bit)
 
   register_size=$(getconf LONG_BIT | grep -m 1 -w -o "\(8\|16\|32\|64\|\128\)" | grep -op '[0-9]+')
 
-  [ -z "$register_size" ] || {
-    ErrError "could not determine cpu register size"
+  [ -z "${register_size}" ] || {
+    ErrError 'could not determine cpu register size'
     return 1
   }
 
-  echo "$register_size"
+  echo "${register_size}"
 
   return 0
 
@@ -60,12 +60,12 @@ function CpuSockets {
       ;;
   esac
 
-  [ $SOCKETS -ge 1 ] || {
+  [ ${SOCKETS} -ge 1 ] || {
     # Assume a socket exists even if it fails to find any
     SOCKETS=1
   }
 
-  echo "$SOCKETS" && return 0
+  echo "${SOCKETS}" && return 0
 
   return 1
 
@@ -90,8 +90,8 @@ function CpuPhysical { # Find number of physical cpu cores
       ;;
   esac
 
-  if [ -z "$cpucores" ] ; then
-    cpucores="1"
+  if [ -z "${cpucores}" ] ; then
+    cpucores=1
   else
     cpucores=$(($cpucores * $(CpuSockets)))
   fi
@@ -113,26 +113,26 @@ function CpuLogical { # Find number of logical cpu cores
     'linux'|'freebsd')
       # Finds number of logical threads per physical core
       cputhreads=$(lscpu | grep -m 1 'Thread(s) per core:' | grep -oP '[0-9]+')
-      if [ -n "$cputhreads" ] ; then
+      if [ -n "${cputhreads}" ] ; then
         # Convert to number of threads per cpu
-        cputhreads=$(($cputhreads * $(CpuPhysical)))
+        cputhreads=$((${cputhreads} * $(CpuPhysical)))
       fi
       ;;
     'darwin')
       cputhreads=$(sysctl hw | grep -m 1 "hw.logicalcpu:" | grep -oP '[0-9]+')
       ;;
     'cygwin')
-      cputhreads=""
+      cputhreads=''
       ;;
   esac
 
-  if [ -z "$cputhreads" ] ; then
+  if [ -z "${cputhreads}" ] ; then
     cputhreads="$(CpuPhysical)"
   else
-    cputhreads=$(($cputhreads * $(CpuSockets)))
+    cputhreads=$((${cputhreads} * $(CpuSockets)))
   fi
 
-  echo "$cputhreads"
+  echo "${cputhreads}"
 
   return 0
 

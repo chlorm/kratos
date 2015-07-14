@@ -146,7 +146,7 @@ function DotfilesHook {
   #  support symlinked service files.
   # Maybe we should symlink the service files to ~/.config/systemd/user/<type>.target.wants
   #  assuming that they should be activated in not in .kratosignore
-  IGNORE_LIST+=("$HOME/.config/systemd")
+  IGNORE_LIST+=("${HOME}/.config/systemd")
 
   for DOTFILE in "${DOTFILES[@]}" ; do
 
@@ -168,7 +168,7 @@ function DotfilesHook {
     IGNORE_STATUS=false
     for IGNORE_ITEM in "${IGNORE_LIST[@]}" ; do
       # Respect ignoring files within ignore directories
-      if [[ -n "$(echo "${DOTFILE}" | grep "$IGNORE_ITEM")" ]] ; then
+      if [[ -n "$(echo "${DOTFILE}" | grep "${IGNORE_ITEM}")" ]] ; then
         IGNORE_STATUS=true
         break
       fi

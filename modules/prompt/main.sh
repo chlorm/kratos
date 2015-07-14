@@ -7,36 +7,36 @@
 
 function PromptColor { # Get colors for the current shell
 
-  if [ "$(shell)" = "zsh" ] ; then
+  if [ "$(shell)" = 'zsh' ] ; then
     echo -n '%{'
   else
     echo -n '\['
   fi
 
-  case "$1" in
+  case "${1}" in
     'black')
-      if [ "$2" -eq "0" ] ; then
+      if [ ${2} -eq 0 ] ; then
         echo -n '\e[0;30m'
       else
         echo -n '\e[1;30m'
       fi
       ;;
     'blue')
-      if [ "$2" -eq "0" ] ; then
+      if [ ${2} -eq 0 ] ; then
         echo -n '\e[0;34m'
       else
         echo -n '\e[1;34m'
       fi
       ;;
     'cyan')
-      if [ "$2" -eq "0" ] ; then
+      if [ ${2} -eq 0 ] ; then
         echo -n '\e[0;36m'
       else
         echo -n '\e[1;36m'
       fi
       ;;
     'green')
-      if [ "$2" -eq "0" ] ; then
+      if [ ${2} -eq 0 ] ; then
         echo -n '\e[0;38;5;154m'
       else
         echo -n '\e[1;38;5;154m'
@@ -81,7 +81,7 @@ function PromptColor { # Get colors for the current shell
       ;;
   esac
 
-  if [ "$(shell)" = "zsh" ] ; then
+  if [ "$(shell)" = 'zsh' ] ; then
     echo -n '%}'
   else
     echo -n '\]'
@@ -154,9 +154,9 @@ local branch
       return 0
       ;;
     'git')
-      branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(PromptVcsDirty)/")
-      if [ -n "$branch" ] ; then
-        echo "$branch"
+      branch="$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(PromptVcsDirty)/")"
+      if [ -n "${branch}" ] ; then
+        echo "${branch}"
       fi
       return 0
       ;;
@@ -188,7 +188,7 @@ local vcsstatus=
       ;;
     'git')
       vcsstatus="$(git status 2> /dev/null | grep -m 1 -w -o 'working directory clean')"
-      if [ "$vcsstatus" != "working directory clean" ] ; then
+      if [ "${vcsstatus}" != 'working directory clean' ] ; then
         echo "*"
       fi
       return 0

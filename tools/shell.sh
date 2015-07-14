@@ -13,12 +13,12 @@ export DOTFILES_DIR="${HOME}/.dotfiles"
 
 function LoadOne { # Source Modules
 
-  if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
+  if [ -n "$(echo "${1}" | grep '\(~$\|^#\)')" ] ; then
     return 0
   fi
 
-  . "$1" || {
-    echo "Failed to load module $1"
+  . "${1}" || {
+    echo "Failed to load module ${1}"
     return 1
   }
 
@@ -33,20 +33,20 @@ function LoadAll {
   local MODS
   local MOD
 
-  MODS=($(find "$KRATOS_DIR/$1" -type f -name 'main.sh'))
+  MODS=($(find "${KRATOS_DIR}/${1}" -type f -name 'main.sh'))
 
   for MOD in "${MODS[@]}" ; do
-    LoadOne "$MOD"
+    LoadOne "${MOD}"
   done
 
   return 0
 
 }
 
-LoadAll "modules"
+LoadAll 'modules'
 
-if [[ "$PREFERRED_SHELL" != "$(shell)" && -n "$PREFERRED_SHELL" ]] ; then
-  exec "$PREFERRED_SHELL"
+if [[ "${PREFERRED_SHELL}" != "$(shell)" && -n "${PREFERRED_SHELL}" ]] ; then
+  exec "${PREFERRED_SHELL}"
   exit $?
 fi
 

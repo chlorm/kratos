@@ -9,11 +9,11 @@
 # to test shell compatibility with Kratos.
 
 # BASH style arrays are used throughout Kratos
-shell_array_test() {
+function shell_array_test {
 
-  local TEST_FOR_ARRAY_SUPPORT=("823")
+  local TEST_FOR_ARRAY_SUPPORT=('823')
 
-  if [ "${TEST_FOR_ARRAY_SUPPORT[0]}" -eq 823 ] ; then
+  if [[ ${TEST_FOR_ARRAY_SUPPORT[0]} -eq 823 ]] ; then
     return 0
   else
     return 1
@@ -32,3 +32,4 @@ function function_definition_test {
 function_definition_test
 
 # BASH's $FUNCNAME & $FUNCNAME[@] (call stack)
+# ZSH: funcstack
