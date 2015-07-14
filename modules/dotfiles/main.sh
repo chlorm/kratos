@@ -97,6 +97,12 @@ function DotfilesPostUninstallHook {
 
 }
 
+function DotfilesSystemdHook {
+
+  echo
+
+}
+
 function DotfilesHook {
 
   # This function handles the installation of files within the ~/.dotfiles
