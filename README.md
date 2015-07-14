@@ -14,53 +14,37 @@ cd $HOME/.kratos/tools && ./install.sh
 * systemd
 * Assumes /usr/bin/env exists and is configured correctly
 
-### Design Goals
-* Never require root access for ANYTHING, if it needs root it can't be a part of
+### Design Goals/TODO
+- [x] Never require root access for ANYTHING, if it needs root it can't be a part of
    Kratos
-* Handle autostarting applications
-* Configure environment variables
-* Launch prefered deskenv if one isn't running
-* Setup ssh keys
-* Configure and launch user-agent (ssh-agent/gpg-agent)
-* Support for creating themes
-* Support for managing dotfiles
-* Variable replacement for dotfiles (way to work around applications requiring
+- [ ] Handle autostarting applications (via systemd)
+- [ ] Configure environment variables (EDITOR,PAGER,etc...)
+- [ ] Launch prefered deskenv if one isn't running (Handled via .xinitrc)
+- [ ] Configure and launch user-agent (ssh-agent/gpg-agent)
+- [ ] Support for themeing
+- [x] Support for managing dotfiles
+- [ ] Variable replacement for dotfiles (way to work around applications requiring
    explicit paths and possibly other use cases)
    + FILENAME: `<dotfile>.gen`
-* Do-before and Do-after functions for dotfiles to allow for directory creation
+- [x] Do-before and Do-after functions for dotfiles to allow for directory creation
    and additional setup. Maybe other hooks could be added.
    + CHANGE: Use `<dotfile>.install`, `<dotfile>.install-pre` &
       `<dotfile>.install-post`
-* Dotfiles init hooks for auto starting applications
-
-TODO:
------
-
-* Migrate the BASHisms (in the if statements) in dotfiles.sh to be compatible
-   with BASH, ZSH, & KSH (and any other shell that supports BASH like arrays).
-	 This will allow supporting additional shells.
-	+ migrate if statements
-	+ use sh for shebangs
-	+ add init check to see if executing shell is supported, if not try to find
-	   and spawn a compatible shell, else fail
-* Support for updating dotfiles & kratos repos
-* Add support for config file in dotfiles
-* Fix how environment variables and aliases are handled and split appropriately
+- [ ] Dotfiles init hooks for auto starting applications
+- [ ] Support for updating dotfiles & kratos repos
+- [x] Add support for config file in dotfiles
+- [ ] Fix how environment variables and aliases are handled and split appropriately
    between dotfiles and kratos
-* Move wrapper scripts back to kratos
-* Add support for parsing for and replacing variables in config files
-* Add a way to find or set the dotfile dir at install time
-* Fix deskenv exec support
-* Add user agent support
-* Work on PATH configuration
-* Work on SSH configuration and handling of keys
-* Allow user defined color scheme
-* Add color mapping between terminals color levels (e.g. 1/4/8/16/88/256)
+- [x] Move wrapper scripts back to kratos
+- [ ] Add a way to find or set the dotfile dir at install time
+* [ ] Work on PATH configuration
+* [ ] Work on SSH configuration and handling of keys
+* [ ] Add color mapping between terminals color levels (e.g. 1/4/8/16/88/256)
 	+ Should generate a file with the colors at each level that is sourced by the
 	   loader at shell init
-* Avoid any instances of loops iterating through arrays at runtime
-* Add editor args variable (e.g. for setting -nw for emacs), used in EDITOR
+* [ ] Avoid any instances of loops iterating through arrays at runtime
+* [ ] Add editor args variable (e.g. for setting -nw for emacs), used in EDITOR
    environment variable.
-* Add error logging to kratos std lib
-* Findout if ZSH/KSH/PDKSH have an alternative to BASH's FUNCNAME[@] array for
+* [ ] Add error logging to kratos std lib
+* [ ] Findout if KSH/PDKSH have an alternative to BASH's FUNCNAME[@] array for
    accessing the call stack history.
