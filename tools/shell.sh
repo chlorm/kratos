@@ -33,7 +33,7 @@ function LoadAll {
   local MODS
   local MOD
 
-  MODS=($(find "$KRATOS_DIR/$1" -type f))
+  MODS=($(find "$KRATOS_DIR/$1" -type f -name 'main.sh'))
 
   for MOD in "${MODS[@]}" ; do
     LoadOne "$MOD"
