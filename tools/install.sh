@@ -94,7 +94,10 @@ mkdir -p "$HOME/.local/share/kratos"
 echo "export KRATOS_DIR=\"$KRATOS_DIR\"" > "$HOME/.local/share/kratos/dir"
 
 # Install dotfiles
-DotfilesHook
+DotfilesHook || {
+  ErrError 'Dotfiles install failed'
+  exit 1
+}
 
 # Load settings
 if [ -f "$HOME/.config/kratos/config" ] ; then
