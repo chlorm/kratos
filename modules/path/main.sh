@@ -27,11 +27,22 @@ function PathRemove { # Remove directory from $PATH
 
 function PathBin { # Finds the path to the binary
 
-  if [ "$#" -ne 1 ] ; then
+  if [ $# -ne 1 ] ; then
     return 2
   fi
 
-  path.hasbin "$1" > /dev/null 2>&1 && type "$1" | awk '{print $3 ; exit}' && return 0
+  PathHasBin "${1}" > /dev/null 2>&1 || return 1
+
+  case "$(shell)" in
+    'bash')
+      type "${1}" | awk '{print $3 ; exit}'
+      return 0
+      ;;
+    'ksh'|'pdksh'|'zsh')
+      whence -p "${1}" | awk '{print $3 ; exit}'
+      return 0
+      ;;
+  esac
 
   return 1
 
@@ -41,7 +52,7 @@ function PathBinAbs { # Resolves the absolute path of the binary
 
   local BIN
 
-  BIN="$(whereis -b $1 2> /dev/null | awk '{print $2}')"
+  BIN="$(whereis -b $1 2> /dev/null | awk '{print $2 ; exit}')"
 
   [ -n "$BIN" ] || return 1
 
@@ -53,7 +64,7 @@ function PathBinAbs { # Resolves the absolute path of the binary
 
 function PathHasBin { # Test to see if a binary exists in the path
 
-  [ "$#" -ne "1" ] && return 2
+  [ $# -ne 1 ] && return 2
 
   case "$(shell)" in
     'bash')
@@ -63,7 +74,7 @@ function PathHasBin { # Test to see if a binary exists in the path
       whence -p "${1}" > /dev/null 2>&1 || return 1
       ;;
     *)
-      ErrError "Not reporting a supported shell" "$(ErrCallStack)"
+      ErrError 'Not reporting a supported shell' "$(ErrCallStack)"
       return 1
       ;;
   esac
