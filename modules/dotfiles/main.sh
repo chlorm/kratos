@@ -127,9 +127,10 @@ function DotfilesHook {
   fi
 
   local DOTFILE
-  local DOTFILES=($(find "${DOTFILES_DIR}" -type f))
+  local DOTFILES=($(find "${DOTFILES_DIR}" -type f -not -iwholename '*.git*'))
   local DONT_SYM_ITEM
   local DONT_SYM_LIST=($(cat "${DOTFILES_DIR}/.kratosdontsym"))
+  local IGNORE_STATUS
   local IGNORE_ITEM
   local IGNORE_LIST=($(cat "${DOTFILES_DIR}/.kratosignore"))
 
@@ -155,12 +156,17 @@ function DotfilesHook {
     esac
 
     # Respect .kratosignore
+    IGNORE_STATUS=false
     for IGNORE_ITEM in "${IGNORE_LIST[@]}" ; do
       # Respect ignoring files within ignore directories
       if [[ -n "$(echo "${DOTFILE}" | grep "$IGNORE_ITEM")" ]] ; then
-        continue
+        IGNORE_STATUS=true
+        break
       fi
     done
+    if $IGNORE_STATUS ; then
+      continue
+    fi
 
     if "${UNINSTALL}" ; then
       DotfilesPreUninstallHook "${DOTFILE}" || return 1
