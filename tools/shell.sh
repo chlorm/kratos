@@ -9,48 +9,27 @@
 export KRATOS_DIR="${HOME}/.kratos"
 export DOTFILES_DIR="${HOME}/.dotfiles"
 . "${HOME}/.local/share/kratos/preferences"
-. "${HOME}/.local/share/kratos/tmpdir"
 
-function LoadOne { # Source Modules
+. "${KRATOS_DIR}/lib/core.sh"
 
-  if [ -n "$(echo "${1}" | grep '\(~$\|^#\)')" ] ; then
-    return 0
-  fi
-
-  . "${1}" || {
-    echo "Failed to load module ${1}"
-    return 1
-  }
-
-  return 0
-
-}
-
-function LoadAll {
-
-  [ "$#" -ge 1 ] || return 1
-
-  local MODS
-  local MOD
-
-  MODS=($(find "${KRATOS_DIR}/${1}" -type f -name 'main.sh'))
-
-  for MOD in "${MODS[@]}" ; do
-    LoadOne "${MOD}"
-  done
-
-  return 0
-
-}
-
-LoadAll 'modules'
+if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
+  . "${KRATOS_DIR}/lib/core.sh"
+fi
 
 if [[ "${PREFERRED_SHELL}" != "$(shell)" && -n "${PREFERRED_SHELL}" ]] ; then
   exec "${PREFERRED_SHELL}"
   exit $?
 fi
 
-ShellTmp
-ShellTheme
-ShellInit
-PromptConfigure
+if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
+  LoadAll 'modules'
+
+  PathAdd "${HOME}/.bin"
+
+  ShellTmp
+  ShellTheme
+  ShellInit
+  PromptConfigure
+
+  KRATOS_SHELL_INIT=true
+fi

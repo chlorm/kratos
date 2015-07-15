@@ -12,16 +12,16 @@ function SshAuto {
   PathHasBin 'openssl' || return 1
 
   # Makes sure the ssh directory exists
-  exist -dc "${HOME}/.ssh" || return 1
+  EnsureDirExists "${HOME}/.ssh" || return 1
 
   # Makes sure the client configuration is installed
   [ -f "${HOME}/.ssh/config" ] || return 1
 
   ssh-keygen -H > /dev/null 2>&1 || return 1
-  exist -fx "${HOME}/.ssh/known_hosts.old" || return 1
+  EnsureFileDestroy "${HOME}/.ssh/known_hosts.old" || return 1
 
   # Populates the authorized_keys file
-  exist -fx "${HOME}/.ssh/authorized_keys" || return 1
+  EnsureFileDestroy "${HOME}/.ssh/authorized_keys" || return 1
   local POP_KEYS=($(find ${DOTFILES_DIR}/ssh -type f | grep -v 'config$' | grep '.pub$'))
   if [ ${#POP_KEYS[@]} -ge 1 ] ; then
     for POP_KEY in "${POP_KEYS[@]}" ; do
@@ -32,9 +32,9 @@ function SshAuto {
   if [[ ! -f "${HOME}/.ssh/id_rsa.pub" && ! -f "${HOME}/.ssh/id_ed25519.pub" ]] ; then
     # Creates new ssh keys with the provided password
     local PASS="$(PasswordConfirmation)"
-    exist -fx "${HOME}/.ssh/id_rsa" || return 1
+    EnsureFileDestroy "${HOME}/.ssh/id_rsa" || return 1
     ssh-keygen -N "${PASS}" -f "${HOME}/.ssh/id_rsa" -t rsa -b 4096 || return 1
-    exist -fx "${HOME}/.ssh/id_ed25519" || return 1
+    EnsureFileDestroy "${HOME}/.ssh/id_ed25519" || return 1
     ssh-keygen -N "${PASS}" -f "${HOME}/.ssh/id_ed25519" -t ed25519 || return 1
   fi
 

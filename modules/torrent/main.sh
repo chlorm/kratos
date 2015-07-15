@@ -11,14 +11,37 @@
 
 function magnet2torrent {
 
-  [[ "$1" =~ xt=urn:btih:([^\&/]+) ]] || return 1
+  local URI
+  local filename
 
-  hashh=${match[1]}
+  function MatchArray {
 
-  if [[ "$1" =~ dn=([^\&/]+) ]];then
-    filename=${match[1]}
+    if [[ "$(shell)" == 'bash' ]] ; then
+      echo "${BASH_REMATCH[1]}"
+    elif [[ "$(shell)" == 'zsh' ]] ; then
+      echo "${match[1]}"
+    fi
+
+  }
+
+  [[ -n $@ ]] || {
+    ErrError 'no input'
+    return 1
+  }
+
+  # TODO: fix zsh parse error near &
+  if [[ "${1}" =~ xt=urn:btih:([^\&/]+) ]] ; then
+    URI="$(MatchArray)"
   else
-    filename=$hashh
+    ErrError 'no URI found'
+    return 1
+  fi
+
+  # TODO: Fix the filename regex
+  if [[ "${1}" =~ dn=([^\&/]+) ]] ; then
+    filename="$(MatchArray)"
+  else
+    filename="${URI}"
   fi
 
   echo "d10:magnet-uri${#1}:${1}e" > "${filename}.torrent"

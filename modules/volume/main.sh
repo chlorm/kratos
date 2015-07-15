@@ -99,7 +99,7 @@ function vol {
           ;;
         *)
           VolUsage
-          ErrError "must be an integer between 0 and 150"
+          ErrError 'must be an integer between 0 and 150'
           return 1
           ;;
       esac

@@ -15,85 +15,56 @@ if [ -z "$KRATOS_DIR" ] ; then
   exit 1
 fi
 
-function LoadModule { # Source Modules
+. "${KRATOS_DIR}/lib/core.sh"
 
-  if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
-    return 0
-  fi
-
-  . "${1}" || {
-    echo "Failed to load module ${1}"
-    return 1
-  }
-
-  return 0
-
-}
-
-function LoadModuleDir {
-
-  [ "$#" -ge 1 ] || return 1
-
-  local MODS
-  local MOD
-
-  MODS=($(find "${KRATOS_DIR}/${1}" -type f))
-
-  for MOD in "${MODS[@]}" ; do
-    LoadModule "${MOD}"
-  done
-
-  return 0
-
-}
-
-LoadModuleDir 'modules'
+LoadAll 'modules'
 
 # XDG freedesktop directories
 
 # XDG_CACHE_HOME
-exist -dc "${HOME}/.cache"
+EnsureDirExists "${HOME}/.cache"
 # XDG_CONFIG_HOME
-exist -dc "${HOME}/.config"
+EnsureDirExists "${HOME}/.config"
 # XDG_DATA_HOME
-exist -dc "${HOME}/.local/share"
+EnsureDirExists "${HOME}/.local/share"
 # XDG_DESKTOP_DIR
-exist -dc "${HOME}/Desktop"
+EnsureDirExists "${HOME}/Desktop"
 # XDG_DOCUMENTS_DIR
-exist -dc "${HOME}/Documents"
+EnsureDirExists "${HOME}/Documents"
 # XDG_DOWNLOAD_DIR
-exist -dc "${HOME}/Downloads"
+EnsureDirExists "${HOME}/Downloads"
 # XDG_MUSIC_DIR
-exist -dc "${HOME}/Music"
+EnsureDirExists "${HOME}/Music"
 # XDG_PICTURES_DIR
-exist -dc "${HOME}/Pictures"
+EnsureDirExists "${HOME}/Pictures"
 # XDG_PUBLICSHARE_DIR
-exist -dc "${HOME}/Share"
+EnsureDirExists "${HOME}/Share"
 # XDG_TEMPLATES_DIR
-exist -dc "${HOME}/Templates"
+EnsureDirExists "${HOME}/Templates"
 # XDG_VIDEOS_DIR
-exist -dc "${HOME}/Videos"
+EnsureDirExists "${HOME}/Videos"
 
 # Freedesktop trash directories
 
 # DIR_TRASH_INFO
-exist -dc "${HOME}/.local/share/trash/info"
+EnsureDirExists "${HOME}/.local/share/trash/info"
 # DIR_TRASH_FILES
-exist -dc "${HOME}/.local/share/trash/files"
+EnsureDirExists "${HOME}/.local/share/trash/files"
 
 # Custom directories
 
-exist -dc "${HOME}/Dev"
+EnsureDirExists "${HOME}/Dev"
 
 #git remote set-url origin "$DOTFILES_REPO"
 #git remote set-url --push origin "$DOTFILES_REPO"
 
 #dotfiles_latest
 
-mkdir -p "${HOME}/.local/share/kratos"
+EnsureDirExists "${HOME}/.local/share/kratos"
 echo "export KRATOS_DIR=\"${KRATOS_DIR}\"" > "${HOME}/.local/share/kratos/dir"
 
 # Install dotfiles
+# TODO: Only run if module is enabled
 DotfilesHook || {
   ErrError 'Dotfiles install failed'
   exit 1
@@ -103,8 +74,8 @@ DotfilesHook || {
 if [ -f "${HOME}/.config/kratos/config" ] ; then
   . "${HOME}/.config/kratos/config"
   # Preference
-  exist -fx "${HOME}/.local/share/kratos/preferences"
-  touch "${HOME}/.local/share/kratos/preferences"
+  EnsureFileDestroy "${HOME}/.local/share/kratos/preferences"
+  EnsureFileExists "${HOME}/.local/share/kratos/preferences"
   KratosPreferredShell
   KratosPreferredEditor
   KratosPreferredDeskenv

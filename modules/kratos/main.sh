@@ -40,7 +40,7 @@ git_pull() { # Updates the root git tree
 git_pull_nostat() { # Updates the root git tree and only returns >0 on error
 
   git_pull $@
-  case "$?" in
+  case $? in
     2)
       return 1
       ;;
@@ -99,7 +99,7 @@ dotfiles_latest() { # Gets the latest version of the dotfiles
   ACUM=0
 
   git_pull
-  case "$?" in
+  case $? in
     2)
       ErrError "Failed to update the configuration directory"
       return 2
@@ -110,7 +110,7 @@ dotfiles_latest() { # Gets the latest version of the dotfiles
   esac
 
   git_sub_init
-  case "$?" in
+  case $? in
     2)
       ErrError "Failed to initialize configuration submodules"
       return 2
@@ -121,7 +121,7 @@ dotfiles_latest() { # Gets the latest version of the dotfiles
   esac
 
   git_sub_pull
-  case "$?" in
+  case $? in
     2)
       ErrError "Failed to update configuration submodules"
       return 2
@@ -138,7 +138,7 @@ dotfiles_latest() { # Gets the latest version of the dotfiles
 dotfiles_update() { # Updates dotfiles and submodules
 
   dotfiles_latest
-  case "$?" in
+  case $? in
     2)
       return 2
       ;;

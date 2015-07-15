@@ -30,12 +30,12 @@ function PkgMgr {
 
     'cygwin')
       # ??? chloclatey
-      ErrError "not supported"
+      ErrError 'not supported'
       ;;
 
     'darwin')
       # ??? homebrew
-      ErrError "not supported"
+      ErrError 'not supported'
       ;;
 
     'freebsd') # Ports

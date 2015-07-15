@@ -208,7 +208,7 @@ function DotfilesHook {
           DotfilesSystemdHook "${DOTFILE}" || return 1
         else
           # TODO: add logic to prevent from following symlinked directory paths, may not be necessary
-          exist -fx "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || return 1
+          EnsureFileDestroy "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || return 1
           # Symlink DOTFILE
           symlink "${DOTFILE}" "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || return 1
         fi

@@ -5,36 +5,11 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-# Returns the shell executing the current script
-function shell {
-
-  local LSHELL=
-  local LPROC="$(ps hp $$ | grep "$$")"
-
-  # Workaround for su spawned shells
-  if [ -n "$(echo "${LPROC}" | grep '\-su')" ] ; then
-    LSHELL="$(basename "$(echo "${LPROC}" | sed 's/^.*(\([^)]*\)).*$/\1/')")"
-  else
-    LSHELL="$(basename "$(echo "${LPROC}" | sed 's/-//' | awk '{print $5 ; exit}')")"
-  fi
-
-  # Resolve symlinked shells
-  LSHELL="$(basename "$(readlink -f "$(PathBinAbs "${LSHELL}")")")"
-
-  # Remove appended major version
-  LSHELL="$(echo "${LSHELL}" | sed 's/^\([a-z]*\).*/\1/')"
-
-  LSHELL="$(tolower "${LSHELL}")"
-
-  echo "${LSHELL}"
-
-}
-
 # http://en.wikipedia.org/wiki/Comparison_of_command_shells
 
 function ShellTheme { # Setup the theme for the shell
 
-  [ "$(shell)" = 'fish' ] && return 0
+  [[ "$(shell)" == 'fish' ]] && return 0
 
   # Colors for LS
   case "$(OSKernel)" in
@@ -55,7 +30,7 @@ function ShellTheme { # Setup the theme for the shell
 #  fi
 
   # Setup Special Colors
-  if UserRoot ; then
+  if IsRoot ; then
     NCOLOR="$(PromptColor cyan 0)"
   else
     NCOLOR="$(PromptColor white 1)"
@@ -82,7 +57,7 @@ function ShellInit { # Initializes useful functions
   alias defragmentroot="sudo btrfs filesystem defragment -r -v /"
   alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
   # Gentoo
-  if [ "$(OSLinux)" = 'gentoo' ] ; then
+  if [[ "$(OSLinux)" == 'gentoo' ]] ; then
     alias inst="sudo emerge --ask"
     alias search="emerge --search"
     alias uses="equery uses"

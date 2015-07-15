@@ -5,100 +5,6 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function exist { # Check for existence of file or directory
-
-  [ -n "${1}" ] || return 1
-
-  case "${1}" in
-    '-fc') # Make sure the file exists
-      shift
-      while [ "${1}" ] ; do
-        # Make sure file is not a symlink
-        if test -L "${1}" ; then
-          unlink "${1}" > /dev/null 2>&1
-          [ $? = 0 ]
-        fi
-        # Create file
-        if [ ! -f "${1}" ] ; then
-          touch "${1}" > /dev/null 2>&1
-          [ $? = 0 ]
-        fi
-        shift
-      done
-
-      return 0
-      ;;
-    '-fx') # Make sure file doesn't exist
-      shift
-      while [ "${1}" ] ; do
-        # Make sure file is not a symlink
-        if test -L "${1}" ; then
-          unlink "${1}" > /dev/null 2>&1
-          [ $? -eq 0 ]
-        fi
-        # Remove file
-        if [ -f "$1" ] ; then
-          rm -f "$1" > /dev/null 2>&1
-          [ $? -eq 0 ]
-        fi
-        shift
-      done
-
-      return 0
-      ;;
-    '-dc') # Make sure directory exists
-      shift
-      while [ "$1" ] ; do
-        # Make sure directory is not a symlink
-        if test -L "$1" ; then
-          unlink "$1" > /dev/null 2>&1
-          [ "$?" -eq 0 ]
-        fi
-        # Create directory
-        if [ ! -d "$1" ] ; then
-          mkdir -p "$1" > /dev/null 2>&1
-          [ "$?" -eq 0 ]
-        fi
-        shift
-      done
-
-      return 0
-      ;;
-    '-dx') # Make sure directory doesn't exists
-      shift
-      while [ "$1" ] ; do
-        # Make sure directory is not a symlink
-        if test -L "$1" ; then
-          unlink "$1" > /dev/null 2>&1
-          [ "$?" -eq 0 ]
-        fi
-        # Remove directory
-        if [ -d "$1" ] ; then
-          rm -rf "$1" > /dev/null 2>&1
-          [ "$?" -eq 0 ]
-        fi
-        shift
-      done
-
-      return 0
-      ;;
-  esac
-
-  return 1
-
-}
-
-function tolower {
-
-  echo "$@" | tr '[A-Z]' '[a-z]'
-
-}
-
-function toupper {
-
-  echo $@ | tr '[a-z]' '[A-Z]'
-
-}
 
 function p_and_q {
 
@@ -108,38 +14,6 @@ function p_and_q {
   shift
   echo $@
   exit $STAT
-
-}
-
-function ProcExists { # Checks to see if the process is running
-
-  if [ $# -ne 1 ] ; then
-    return 1
-  fi
-
-  kill -0 "$1" > /dev/null 2>&1
-
-}
-
-function CheckPidfile { # Checks the pidfile to see if the process is running
-
-  if [ -f "$1" ] ; then
-  	ProcExists "$(cat $1 2> /dev/null)"
-  fi
-
-}
-
-function RunQuiet { # Start an application in the background
-
-  PathHasBin "$1" || return 1
-
-  local pid
-
-  pid="$(pgrep $1)"
-
-  if [ -z "$PID" ] ; then
-  	$@ > /dev/null 2>&1
-  fi
 
 }
 
@@ -212,23 +86,6 @@ function termclr {
       echo -n '\e[0m'
       ;;
   esac
-
-}
-
-function svar { # Stores the output of the command into a variable without a subshell
-
-  local VAR
-  local TMP
-  local RET
-
-  VAR="$1" ; shift
-  TMP="$(mktemp 2> /dev/null)" || TMP="$(mktemp -t tmp 2> /dev/null)" || return 128
-  "$@" > "$TMP"
-  RET="$?"
-  read "$VAR" < "$TMP"
-  rm "$TMP"
-
-  return "$RET"
 
 }
 

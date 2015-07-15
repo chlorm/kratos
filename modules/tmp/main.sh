@@ -25,30 +25,28 @@ function TmpDir { # Get the path to the temporary directory
   done
 
   if [ -z "${TMPDIR}" ] ; then
-    ErrError "Failed to find a tmp directory"
+    ErrError 'Failed to find a tmp directory'
     return 1
   fi
 
   if [ ! -d "${TMPDIR}" ] ; then
-    mkdir "${TMPDIR}" || return 1
+    EnsureDirExists "${TMPDIR}" || return 1
     chmod 0700 "${TMPDIR}" || return 1
   fi
 
-  ln -sf "${TMPDIR}" "${HOME}/.tmp" || return 1
+  symlink "${TMPDIR}" "${HOME}/.tmp" || return 1
 
-  exist -dx "${HOME}/.cache" || return 1
-  mkdir -p "${TMPDIR}/cache" || return 1
-  ln -sf "${TMPDIR}/cache" "${HOME}/.cache" || return 1
+  EnsureDirDestroy "${HOME}/.cache" || return 1
+  EnsureDirExists "${TMPDIR}/cache" || return 1
+  symlink "${TMPDIR}/cache" "${HOME}/.cache" || return 1
 
   # Create dotfiles session directory
   if [ ! -d "${TMPDIR}/dotfiles" ] ; then
     mkdir -p "${TMPDIR}/dotfiles" || return 1
   fi
 
-  exist -dc "${HOME}/.local/share/kratos"
-  exist -fx "${HOME}/.local/share/kratos/tmpdir"
-  touch "${HOME}/.local/share/kratos/tmpdir"
-  echo "TMPLOCAL=\"${HOME}/.tmp\"" >> "${HOME}/.local/share/kratos/tmpdir"
+  # Deprecated
+  EnsureFileDestroy "${HOME}/.local/share/kratos/tmpdir"
 
   return 0
 

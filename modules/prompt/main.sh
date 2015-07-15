@@ -7,7 +7,7 @@
 
 function PromptColor { # Get colors for the current shell
 
-  if [ "$(shell)" = 'zsh' ] ; then
+  if [[ "$(shell)" == 'zsh' ]] ; then
     echo -n '%{'
   else
     echo -n '\['
@@ -81,7 +81,7 @@ function PromptColor { # Get colors for the current shell
       ;;
   esac
 
-  if [ "$(shell)" = 'zsh' ] ; then
+  if [[ "$(shell)" == 'zsh' ]] ; then
     echo -n '%}'
   else
     echo -n '\]'
