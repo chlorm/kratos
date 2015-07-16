@@ -92,8 +92,8 @@ symlink "${KRATOS_DIR}/rc/kshrc" "${HOME}/.kshrc"
 #symlink "${KRATOS_DIR}/rc/ksh_login" "${HOME}/.ksh_login"
 
 symlink "${KRATOS_DIR}/rc/zshrc" "${HOME}/.zshrc"
-symlink "${KRATOS_DIR}/rc/zsh_profile" "${HOME}/.zsh_profile"
-symlink "${KRATOS_DIR}/rc/zsh_logout" "${HOME}/.zsh_logout"
+symlink "${KRATOS_DIR}/rc/zprofile" "${HOME}/.zprofile"
+symlink "${KRATOS_DIR}/rc/zlogout" "${HOME}/.zlogout"
 
 symlink "${KRATOS_DIR}/rc/xinitrc" "${HOME}/.xinitrc"
 symlink "${KRATOS_DIR}/rc/xprofile" "${HOME}/.xprofile"
