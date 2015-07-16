@@ -7,3 +7,6 @@
 
 # TODO:
 # Figure out what should be spawned by login shells
+
+# TODO:
+# Check for Kratos and plugin updates
