@@ -157,7 +157,7 @@ function EnsureDirDestroy {
 
   while [ "${1}" ] ; do
     # Make sure directory is not a symlink
-    if test -L "${1}" ; then
+    if [[ -L "${1}" ]] ; then
       unlink "${1}" > /dev/null 2>&1 || return 1
     fi
     # Remove directory
@@ -173,7 +173,7 @@ function EnsureDirExists {
 
   while [ "${1}" ] ; do
     # Make sure directory is not a symlink
-    if test -L "${1}" ; then
+    if [[ -L "${1}" ]] ; then
       unlink "${1}" > /dev/null 2>&1 || return 1
     fi
     # Create directory
@@ -189,7 +189,7 @@ function EnsureFileDestroy {
 
   while [ "${1}" ] ; do
     # Make sure file is not a symlink
-    if test -L "${1}" ; then
+    if [[ -L "${1}" ]] ; then
       unlink "${1}" > /dev/null 2>&1 || return 1
     fi
     # Remove file
@@ -205,7 +205,7 @@ function EnsureFileExists {
 
   while [ "${1}" ] ; do
     # Make sure file is not a symlink
-    if test -L "${1}" ; then
+    if [[ -L "${1}" ]] ; then
       unlink "${1}" > /dev/null 2>&1 || return 1
     fi
     # Create file
