@@ -8,7 +8,10 @@
 function DotfilesPreGenerateHook {
 
   if [[ -f "${1}/.generate-pre" ]] ; then
-    . "${1}/.generate-pre" || return 1
+    . "${1}/.generate-pre" || {
+      ErrError "failed to source \`${1}.generate-pre'"
+      return 1
+    }
   fi
 
   return 0
@@ -30,7 +33,10 @@ function DotfilesGenerateHook {
 function DotfilesPostGenerateHook {
 
   if [[ -f "${1}/.generate-post" ]] ; then
-    . "${1}/.generate-post" || return 1
+    . "${1}/.generate-post" || {
+      ErrError "failed to source \`${1}.generate-post'"
+      return 1
+    }
   fi
 
   return 0
@@ -40,7 +46,10 @@ function DotfilesPostGenerateHook {
 function DotfilesPreInstallHook {
 
   if [[ -f "${1}/.install-pre" ]] ; then
-    . "${1}/.install-pre" || return 1
+    . "${1}/.install-pre" || {
+      ErrError "failed to source \`${1}.install-pre'"
+      return 1
+    }
   fi
 
   return 0
@@ -50,7 +59,10 @@ function DotfilesPreInstallHook {
 function DotfilesInstallHook {
 
   if [[ -f "${1}/.install" ]] ; then
-    . "${1}/.install" || return 1
+    . "${1}/.install" || {
+      ErrError "failed to source \`${1}.install'"
+      return 1
+    }
   fi
 
   return 0
@@ -60,7 +72,10 @@ function DotfilesInstallHook {
 function DotfilesPostInstallHook {
 
   if [[ -f "${1}/.install-post" ]] ; then
-    . "${1}/.install-post" || return 1
+    . "${1}/.install-post" || {
+      ErrError "failed to source \`${1}.install-post'"
+      return 1
+    }
   fi
 
   return 0
@@ -70,7 +85,10 @@ function DotfilesPostInstallHook {
 function DotfilesPreUninstallHook {
 
   if [[ -f "${1}/.uninstall-pre" ]] ; then
-    . "${1}/.uninstall-pre" || return 1
+    . "${1}/.uninstall-pre" || {
+      ErrError "failed to source \`${1}.uninstall-pre'"
+      return 1
+    }
   fi
 
   return 0
@@ -80,7 +98,10 @@ function DotfilesPreUninstallHook {
 function DotfilesUninstallHook {
 
   if [[ -f "${1}/.uninstall" ]] ; then
-    . "${1}/.uninstall" || return 1
+    . "${1}/.uninstall" || {
+      ErrError "failed to source \`${1}.uninstall'"
+      return 1
+    }
   fi
 
   return 0
@@ -90,7 +111,10 @@ function DotfilesUninstallHook {
 function DotfilesPostUninstallHook {
 
   if [[ -f "${1}/.uninstall-post" ]] ; then
-    . "${1}/.uninstall-post" || return 1
+    . "${1}/.uninstall-post" || {
+      ErrError "failed to source \`${1}.uninstall-post'"
+      return 1
+    }
   fi
 
   return 0
@@ -134,12 +158,19 @@ function DotfilesHook {
   fi
 
   local DOTFILE
-  local DOTFILES=($(find "${DOTFILES_DIR}" -type f -not -iwholename '*.git*'))
+  # Respect filenames with spaces
+  local DOTFILES
+  while read -rd '' ; do
+    DOTFILES+=("${REPLY}")
+  done < <(find ${DOTFILES_DIR} -type f -not -iwholename '*.git*' -print0)
   #local DONT_SYM_ITEM
   #local DONT_SYM_LIST=($(cat "${DOTFILES_DIR}/.kratosdontsym"))
   local IGNORE_STATUS
   local IGNORE_ITEM
-  local IGNORE_LIST=($(cat "${DOTFILES_DIR}/.kratosignore"))
+  #local IGNORE_LIST=($(cat "${DOTFILES_DIR}/.kratosignore"))
+  local IGNORE_LIST_STRING="$(cat "${DOTFILES_DIR}/.kratosignore")"
+  local IGNORE_LIST
+  IGNORE_LIST=(${IGNORE_LIST_STRING})
 
   # TODO: Add systemd support
   # The systemd directory requires special attention because systemd does not
@@ -150,12 +181,18 @@ function DotfilesHook {
 
   for DOTFILE in "${DOTFILES[@]}" ; do
 
-    # Ignore hidden files
-    [[ "$(basename "${DOTFILE}")" =~ ^\. ]] && continue
+    # Catch potential errors where array elements are being split in to multiple
+    #  elements (such as the issue with spaces in arrays)
+    if [[ -n ${DOTFILE} && ! -e ${DOTFILE} ]] ; then
+      ErrWarn "invalid file: ${DOTFILE}"
+    fi
 
-    # Run kratos hooks
-    # Currently executes all before, but in the future should respect
-    #  install-post, and .install should override the install phase.
+    # Ignore hidden files
+    [[ "$(basename "${DOTFILE}")" =~ "^\." ]] && continue
+    # Make sure file exists
+    [[ -e "${DOTFILE}" ]] || continue
+
+    # Ignore kratos hooks
     case "${DOTFILE##*.}" in
       'install-pre'|'install'|'install-post'|\
       'generate-pre'|'generate-post'|\
@@ -208,9 +245,16 @@ function DotfilesHook {
           DotfilesSystemdHook "${DOTFILE}" || return 1
         else
           # TODO: add logic to prevent from following symlinked directory paths, may not be necessary
-          EnsureFileDestroy "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || return 1
+          EnsureFileDestroy "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || {
+            ErrError "failed to remove: ${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")"
+            return 1
+          }
           # Symlink DOTFILE
-          symlink "${DOTFILE}" "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || return 1
+          echo "Installing: ${DOTFILE}"
+          symlink "${DOTFILE}" "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || {
+            ErrError "failed to symlink \`${DOTFILE}' to \`${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")'"
+            return 1
+          }
         fi
       fi
     fi
