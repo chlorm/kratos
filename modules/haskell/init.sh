@@ -5,11 +5,11 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-PathHasBin 'ghc' && {
+if PathHasBin 'ghc' ; then
 
   HaskellDirs
 
   # Add haskell bin/ directory to $PATH
   HaskellBinPath
 
-}
+fi

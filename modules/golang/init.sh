@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-PathHasBin 'go' && {
+if PathHasBin 'go' ; then
 
   GoLangDirs
 
@@ -14,4 +14,4 @@ PathHasBin 'go' && {
 
   GoLangGoPath
 
-}
+fi
