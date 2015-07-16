@@ -17,7 +17,7 @@ fi
 
 . "${KRATOS_DIR}/lib/core.sh"
 
-LoadAll 'modules'
+LoadAll 'modules' || exit 1
 
 # XDG freedesktop directories
 
@@ -65,10 +65,7 @@ echo "export KRATOS_DIR=\"${KRATOS_DIR}\"" > "${HOME}/.local/share/kratos/dir"
 
 # Install dotfiles
 # TODO: Only run if module is enabled
-DotfilesHook || {
-  ErrError 'Dotfiles install failed'
-  exit 1
-}
+DotfilesHook || exit 1
 
 # Load settings
 if [ -f "${HOME}/.config/kratos/config" ] ; then
@@ -88,14 +85,15 @@ fi
 symlink "${KRATOS_DIR}/rc/profile" "${HOME}/.profile"
 
 symlink "${KRATOS_DIR}/rc/bashrc" "${HOME}/.bashrc"
-symlink "${KRATOS_DIR}/rc/bash_login" "${HOME}/.bash_login"
-symlink "${KRATOS_DIR}/rc/bash_login" "${HOME}/.bash_logout"
+symlink "${KRATOS_DIR}/rc/bash_profile" "${HOME}/.bash_profile"
+symlink "${KRATOS_DIR}/rc/bash_logout" "${HOME}/.bash_logout"
 
 symlink "${KRATOS_DIR}/rc/kshrc" "${HOME}/.kshrc"
-symlink "${KRATOS_DIR}/rc/ksh_login" "${HOME}/.ksh_login"
+#symlink "${KRATOS_DIR}/rc/ksh_login" "${HOME}/.ksh_login"
 
 symlink "${KRATOS_DIR}/rc/zshrc" "${HOME}/.zshrc"
-symlink "${KRATOS_DIR}/rc/zsh_login" "${HOME}/.zsh_login"
+symlink "${KRATOS_DIR}/rc/zsh_profile" "${HOME}/.zsh_profile"
+symlink "${KRATOS_DIR}/rc/zsh_logout" "${HOME}/.zsh_logout"
 
 symlink "${KRATOS_DIR}/rc/xinitrc" "${HOME}/.xinitrc"
 symlink "${KRATOS_DIR}/rc/xprofile" "${HOME}/.xprofile"
