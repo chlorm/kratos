@@ -168,7 +168,7 @@ function KratosPreferredDeskenv {
 
 }
 
-function kratosPreferredEditor {
+function KratosPreferredEditor {
 
   for _EDITOR in "${EDITORS_PREFERENCE[@]}" ; do
     if PathHasBin "$_EDITOR" ; then
