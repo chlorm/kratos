@@ -11,7 +11,7 @@
 
 function magnet2torrent {
 
-  local URI
+  local INFO_HASH
   local filename
 
   function MatchArray {
@@ -25,15 +25,15 @@ function magnet2torrent {
   }
 
   [[ -n $@ ]] || {
-    ErrError 'no input'
+    ErrError 'no input provided'
     return 1
   }
 
   # TODO: fix zsh parse error near &
   if [[ "${1}" =~ xt=urn:btih:([^\&/]+) ]] ; then
-    URI="$(MatchArray)"
+    INFO_HASH="$(MatchArray)"
   else
-    ErrError 'no URI found'
+    ErrError 'no info hash found'
     return 1
   fi
 
@@ -41,7 +41,7 @@ function magnet2torrent {
   if [[ "${1}" =~ dn=([^\&/]+) ]] ; then
     filename="$(MatchArray)"
   else
-    filename="${URI}"
+    filename="${INFO_HASH}"
   fi
 
   echo "d10:magnet-uri${#1}:${1}e" > "${filename}.torrent"
