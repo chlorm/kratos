@@ -13,7 +13,8 @@ function TmpDir { # Get the path to the temporary directory
 
   local DIR
   local TMPDIR
-  local TMPDIRS=("${ROOT}/dev/shm" "${ROOT}/run/shm" "${ROOT}/tmp" "${ROOT}/var/tmp")
+  local TMPDIRS
+  TMPDIRS=("${ROOT}/dev/shm" "${ROOT}/run/shm" "${ROOT}/tmp" "${ROOT}/var/tmp")
 
   for DIR in "${TMPDIRS[@]}" ; do
 
