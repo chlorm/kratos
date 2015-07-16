@@ -7,4 +7,4 @@
 
 # Default aliases
 
-alias dev="cd ${HOME}/Dev"
+alias proj="cd ${HOME}/Projects"

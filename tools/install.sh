@@ -53,7 +53,7 @@ EnsureDirExists "${HOME}/.local/share/trash/files"
 
 # Custom directories
 
-EnsureDirExists "${HOME}/Dev"
+EnsureDirExists "${HOME}/Projects"
 
 #git remote set-url origin "$DOTFILES_REPO"
 #git remote set-url --push origin "$DOTFILES_REPO"
