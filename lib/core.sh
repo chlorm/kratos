@@ -271,7 +271,22 @@ function IsRoot { # Determine if the user is root
 }
 
 #function LoadCompletion
-#function LoadInit
+
+function LoadInit { # Source Inits
+
+  if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
+    return 0
+  fi
+
+  . "${1}" || {
+    ErrError "Failed to load init ${1}"
+    return 1
+  }
+
+  return 0
+
+}
+
 function LoadModule { # Source Modules
 
   if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
@@ -286,6 +301,7 @@ function LoadModule { # Source Modules
   return 0
 
 }
+
 #function LoadTest
 #function LoadTheme
 

@@ -23,6 +23,7 @@ fi
 
 if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   LoadAll 'modules'
+  LoadAll 'inits'
 
   PathAdd "${HOME}/.bin"
 
