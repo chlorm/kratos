@@ -26,7 +26,7 @@ EOF
 
 function PkgMgr {
 
-  case "$(OSKernel)" in
+  case "$(OsKernel)" in
 
     'cygwin')
       # ??? chloclatey
@@ -46,7 +46,7 @@ function PkgMgr {
       ;;
 
     'linux')
-      case "$(OSLinux)" in
+      case "$(OsLinux)" in
 
         'Debian'|'Ubuntu') # Apt
           PathHasBinErr 'apt-get' || return 1

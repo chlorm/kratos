@@ -13,7 +13,7 @@ function CpuArchitecture { # Return CPU architecture without endianness or regis
 
   local architecture
 
-  case "$(OSKernel)" in
+  case "$(OsKernel)" in
     'linux')
       architecture="$(lscpu | grep -m 1 -w -o "\(arm\|i686\|x86_64\)")"
       ;;
@@ -51,7 +51,7 @@ function CpuSockets {
 
   local SOCKETS=
 
-  case "$(OSKernel)" in
+  case "$(OsKernel)" in
     'linux')
       SOCKETS="$(lscpu | grep -m 1 'Socket(s):' | grep -oP "[0-9]+")"
       ;;
@@ -75,7 +75,7 @@ function CpuPhysical { # Find number of physical cpu cores
 
   local cpucores
 
-  case "$(OSKernel)" in
+  case "$(OsKernel)" in
     'linux')
       cpucores=$(lscpu | grep -m 1 'Core(s) per socket:' | grep -oP '[0-9]+')
       ;;
@@ -106,7 +106,7 @@ function CpuLogical { # Find number of logical cpu cores
 
   local cputhreads
 
-  case $(OSKernel) in
+  case $(OsKernel) in
     'linux'|'freebsd')
       # Finds number of logical threads per physical core
       cputhreads=$(lscpu | grep -m 1 'Thread(s) per core:' | grep -oP '[0-9]+')
@@ -333,7 +333,7 @@ function LoadAll {
 
 }
 
-function OSKernel { # Find host os kernel
+function OsKernel { # Find host os kernel
 
   local KERNEL=$(ToLower $(uname -s) $(echo ${OSTYPE}) |
     grep -m 1 -w -o '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)')
@@ -349,31 +349,31 @@ function OSKernel { # Find host os kernel
 
 }
 
-function OSLinux { # Take first result of linux os name match
+function OsLinux { # Take first result of linux os name match
 
-  function OSLinuxRelease { # Finds linux distro via /etc/*-release
+  function OsLinuxRelease { # Finds linux distro via /etc/*-release
 
     cat $ROOT/etc/*-release 2> /dev/null
 
   }
 
-  function OSLinuxUname { # Finds linux distro via uname -a
+  function OsLinuxUname { # Finds linux distro via uname -a
 
     uname -a 2> /dev/null
 
   }
 
-  function OSLinuxLsb { # Find linux distro via linux standard base
+  function OsLinuxLsb { # Find linux distro via linux standard base
 
     lsb_release -a 2> /dev/null
 
   }
 
-  [ "$(OSKernel)" = 'linux' ] || return 1
+  [ "$(OsKernel)" = 'linux' ] || return 1
 
   local LINUX
 
-  LINUX="$(ToLower "$(OSLinuxRelease) $(OSLinuxUname) $(OSLinuxLsb)" |
+  LINUX="$(ToLower "$(OsLinuxRelease) $(OsLinuxUname) $(OsLinuxLsb)" |
     grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)')"
 
   if [ -z "${LINUX}" ] ; then

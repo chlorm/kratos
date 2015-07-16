@@ -9,7 +9,7 @@ function HaskellBin {
 
   PathHasBin 'ghc' || return 0
 
-  if [[ "$(OSKernel)" == 'darwin' ]] ; then
+  if [[ "$(OsKernel)" == 'darwin' ]] ; then
     PathAdd "${HOME}/Library/Haskell/bin" || return 1
   else
     PathAdd "${HOME}/.cabal/bin" || return 1

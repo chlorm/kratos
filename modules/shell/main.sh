@@ -12,7 +12,7 @@ function ShellTheme { # Setup the theme for the shell
   [[ "$(shell)" == 'fish' ]] && return 0
 
   # Colors for LS
-  case "$(OSKernel)" in
+  case "$(OsKernel)" in
     'linux'|'cygwin')
       eval "$(dircolors -b)"
       alias ls='ls --color=auto'
@@ -57,7 +57,7 @@ function ShellInit { # Initializes useful functions
   alias defragmentroot="sudo btrfs filesystem defragment -r -v /"
   alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
   # Gentoo
-  if [[ "$(OSLinux)" == 'gentoo' ]] ; then
+  if [[ "$(OsLinux)" == 'gentoo' ]] ; then
     alias inst="sudo emerge --ask"
     alias search="emerge --search"
     alias uses="equery uses"
