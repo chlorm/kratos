@@ -219,13 +219,22 @@ function EnsureFileExists {
 
 function ErrCallStack {
 
-  if [[ "$(shell)" == 'bash' ]] ; then
-    echo "${FUNCNAME[2]}"
-  elif [[ "$( shell)" == 'zsh' ]] ; then
-    echo "${funcstack[3]}"
-  else
-    echo '???'
-  fi
+  case "$(shell)" in
+    'bash')
+      echo "${FUNCNAME[2]}"
+      return 0
+      ;;
+    'zsh')
+      echo "${funcstack[3]}"
+      return 0
+      ;;
+    *)
+      echo '???'
+      return 1
+      ;;
+  esac
+
+  return 1
 
 }
 
@@ -582,9 +591,10 @@ function symlink { # Create a symbolic link $1 -> $2
   EnsureDirExists "$(dirname "${2}")"
   if [ "$(readlink -f "${2}")" != "${1}" ] ; then
     rm -rf "${2}"
-    if [ -f "${1}" ] || [ -d "${1}" ] ; then
-      ln -sf "${1}" "${2}" 2> /dev/null || return 1
+    if [[ -e "${1}" ]] ; then
+      ln -sf "${1}" "${2}" || return 1
     else
+      ErrError "file does not exist: \`${1}'"
       return 1
     fi
   fi
