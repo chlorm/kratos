@@ -8,12 +8,14 @@
 # Initalize shell configuration
 export KRATOS_DIR="${HOME}/.kratos"
 export DOTFILES_DIR="${HOME}/.dotfiles"
-. "${HOME}/.local/share/kratos/preferences"
-
-. "${KRATOS_DIR}/lib/core.sh"
 
 if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   . "${KRATOS_DIR}/lib/core.sh"
+  . "${KRATOS_DIR}/lib/DEFAULTS.sh"
+  . "${HOME}/.local/share/kratos/preferences"
+  if [[ -f "${HOME}/.config/kratos/config" ]] ; then
+    . "${HOME}/.config/kratos/config"
+  fi
 fi
 
 if [[ "${PREFERRED_SHELL}" != "$(shell)" && -n "${PREFERRED_SHELL}" ]] ; then
