@@ -24,22 +24,20 @@
 
 # Respawn shell or source ~/.profile which will handle doing so
 
-LoadModule() { # Source Modules
+export KRATOS_DIR="$(readlink -f "$(dirname "$(readlink -f "${0}")")")/"
+export DOTFILES_DIR="${HOME}/.dotfiles"
 
-  . "${HOME}/.kratos/modules/${1}/default.sh" || {
-    echo "Failed to load module ${1}"
-    return 1
-  }
+if [ -z "$KRATOS_DIR" ] ; then
+  echo "ERROR: kratos remote repo origin is not set"
+  exit 1
+fi
 
-  return 0
+. "${KRATOS_DIR}/lib/core.sh"
 
-}
+LoadAll 'modules' || exit 1
 
-LoadModule 'path' || exit 1
-LoadModule 'shell' || exit 1
-LoadModule 'error' || exit 1
-
-PathHasBinErr '/usr/bin/env' || exit 1
-PathHasBinErr 'systemctl' || exit 1
+#PathHasBinErr '/usr/bin/env' || exit 1
 PathHasBinErr 'git' || exit 1
 # Find git version and make sure at least 2.0
+
+kratos 'update'

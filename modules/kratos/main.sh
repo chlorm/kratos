@@ -198,8 +198,106 @@ function KratosPreferredShell {
 
 }
 
+function KratosLogo {
+
+cat <<EOF
+oooo    oooo                        .
+`888   .8P'                       .o8
+ 888  d8'    oooo d8b  .oooo.   .o888oo  .ooooo.   .oooo.o
+ 88888[      `888""8P `P  )88b    888   d88' `88b d88(  "8
+ 888`88b.     888      .oP"888    888   888   888 `"Y88b.
+ 888  `88b.   888     d8(  888    888 . 888   888 o.  )88b
+o888o  o888o d888b    `Y888""8o   "888" `Y8bod8P' 8""888P'
+EOF
+
+}
+
 function kratos {
 
-  echo
+  case "${1}" in
+    'update')
+      #KratosLogo
+
+      # XDG freedesktop directories
+
+      # XDG_CACHE_HOME
+      EnsureDirExists "${HOME}/.cache"
+      # XDG_CONFIG_HOME
+      EnsureDirExists "${HOME}/.config"
+      # XDG_DATA_HOME
+      EnsureDirExists "${HOME}/.local/share"
+      # XDG_DESKTOP_DIR
+      EnsureDirExists "${HOME}/Desktop"
+      # XDG_DOCUMENTS_DIR
+      EnsureDirExists "${HOME}/Documents"
+      # XDG_DOWNLOAD_DIR
+      EnsureDirExists "${HOME}/Downloads"
+      # XDG_MUSIC_DIR
+      EnsureDirExists "${HOME}/Music"
+      # XDG_PICTURES_DIR
+      EnsureDirExists "${HOME}/Pictures"
+      # XDG_PUBLICSHARE_DIR
+      EnsureDirExists "${HOME}/Share"
+      # XDG_TEMPLATES_DIR
+      EnsureDirExists "${HOME}/Templates"
+      # XDG_VIDEOS_DIR
+      EnsureDirExists "${HOME}/Videos"
+
+      # Freedesktop trash directories
+
+      # DIR_TRASH_INFO
+      EnsureDirExists "${HOME}/.local/share/trash/info"
+      # DIR_TRASH_FILES
+      EnsureDirExists "${HOME}/.local/share/trash/files"
+
+      # Custom directories
+
+      EnsureDirExists "${HOME}/Projects"
+
+      #git remote set-url origin "$DOTFILES_REPO"
+      #git remote set-url --push origin "$DOTFILES_REPO"
+
+      #dotfiles_latest
+
+      EnsureDirExists "${HOME}/.local/share/kratos"
+      echo "export KRATOS_DIR=\"${KRATOS_DIR}\"" > "${HOME}/.local/share/kratos/dir"
+
+      # Install dotfiles
+      # TODO: Only run if module is enabled
+      DotfilesHook || exit 1
+
+      # Load settings
+      if [ -f "${HOME}/.config/kratos/config" ] ; then
+        . "${HOME}/.config/kratos/config"
+        # Preference
+        EnsureFileDestroy "${HOME}/.local/share/kratos/preferences"
+        EnsureFileExists "${HOME}/.local/share/kratos/preferences"
+        KratosPreferredShell
+        KratosPreferredEditor
+        KratosPreferredDeskenv
+      fi
+      symlink "${KRATOS_DIR}/rc/profile" "${HOME}/.profile"
+
+      symlink "${KRATOS_DIR}/rc/bashrc" "${HOME}/.bashrc"
+      symlink "${KRATOS_DIR}/rc/bash_profile" "${HOME}/.bash_profile"
+      symlink "${KRATOS_DIR}/rc/bash_logout" "${HOME}/.bash_logout"
+
+      symlink "${KRATOS_DIR}/rc/kshrc" "${HOME}/.kshrc"
+      #symlink "${KRATOS_DIR}/rc/ksh_login" "${HOME}/.ksh_login"
+
+      symlink "${KRATOS_DIR}/rc/zshrc" "${HOME}/.zshrc"
+      symlink "${KRATOS_DIR}/rc/zprofile" "${HOME}/.zprofile"
+      symlink "${KRATOS_DIR}/rc/zlogout" "${HOME}/.zlogout"
+
+      symlink "${KRATOS_DIR}/rc/xinitrc" "${HOME}/.xinitrc"
+      symlink "${KRATOS_DIR}/rc/xprofile" "${HOME}/.xprofile"
+      symlink "${KRATOS_DIR}/rc/xsession" "${HOME}/.xsession"
+
+      #symlink "${KRATOS_DIR}/systemd/kratos-init.service" "${HOME}/.config/systemd/user/kratos-init.service"
+      ;;
+    'upgrade')
+      ;;
+    #'uninstall'
+  esac
 
 }
