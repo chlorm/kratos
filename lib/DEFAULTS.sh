@@ -31,3 +31,12 @@ KRATOS_CREATE_TRASH_DIRECTORIES=true
 # ~/Templates"    # XDG_TEMPLATES_DIR
 # ~/Videos"       # XDG_VIDEOS_DIR
 KRATOS_CREATE_XDG_DIRECTORIES=true
+
+# TODO: implement proper high dpi support
+# Enable high dpi settings for high resolution displays
+KRATOS_HIGH_DPI=false
+# TODO: Maybe use values 1-10 and have minor scaling changes at each level.
+#  Example: This would be intended for scaling from a standard ~720p 13inch
+#  display to using a 4k at 13inch or other small screen sizes.  Would handle
+#  setting font size where applicable and could be tied into generated dotfiles.
+KRATOS_DPI_SCALE=1
