@@ -91,49 +91,38 @@ function PromptColor { # Get colors for the current shell
 
 function PromptVcs { # Determine if the current directory is a vcs repo
 
-  if PathHasBin 'git' > /dev/null 2>&1 ; then
-    if git status > /dev/null 2>&1 ; then
-      echo "git"
-      return 0
-    fi
+  if git status > /dev/null 2>&1 ; then
+    echo "git"
+    return 0
   fi
 
-  #if PathHasBin hg > /dev/null 2>&1 ; then
   #  if hg status > /dev/null 2>&1 ; then
   #    echo "hg"
   #    return 0
   #  fi
-  #fi
 
-  #if PathHasBin bzr > /dev/null 2>&1 ; then
   #  if bzr root > /dev/null 2>&1 ; then
   #    echo "bzr"
   #    return 0
   #  fi
-  #fi
 
-  #if PathHasBin svn > /dev/null 2>&1 ; then
   #  if svn info > /dev/null 2>&1 ; then
   #    echo "svn"
   #    return 0
   #  fi
-  #fi
 
-  # I don't use CVS, disabled for performance
-  #if PathHasBin cvs > /dev/null 2>&1 ; then
   #  if cvs status > /dev/null 2>&1 ; then
   #    echo "cvs"
   #    return 0
   #  fi
-  #fi
 
   # TODO: add darcs support
-  #if PathHasBin darcs > /dev/null 2>&1 ; then
   #  if darcs ??? > /dev/null 2>&1 ; then
   #    echo "darcs"
   #    return 0
   #  fi
-  #fi
+
+  # TODO: Add fossil support
 
   return 0
 
