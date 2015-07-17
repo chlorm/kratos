@@ -5,6 +5,10 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
+# WARNING: enabling the auto updater with destroy any local changes in both your
+# dotfiles and kratos repo, this is not recommended.
+KRATOS_AUTO_UPDATER=false
+
 # Add user specified directories to this array in your local config
 KRATOS_CREATE_CUSTOM_DIRECTOIES=()
 
