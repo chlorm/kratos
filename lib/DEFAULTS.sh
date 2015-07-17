@@ -5,6 +5,9 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
+# Add user specified directories to this array in your local config
+KRATOS_CREATE_CUSTOM_DIRECTOIES=()
+
 # ~/Projects
 KRATOS_CREATE_PROJECT_DIRECTORIES=true
 
