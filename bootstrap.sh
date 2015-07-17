@@ -5,25 +5,6 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-# TODO:
-# + Bootstrap kratos installation, afterwards all everything should be controlled
-#    by the kratos module.
-
-
-
-
-
-# Check to see if reqired applications are installed
-#  systemd, gitv2, /usr/bin/env
-
-# Make sure executing shell is supported
-
-# Check to see if kratos directory exists, if not, clone kratos
-
-# Install shell rc files
-
-# Respawn shell or source ~/.profile which will handle doing so
-
 export KRATOS_DIR="$(readlink -f "$(dirname "$(readlink -f "${0}")")")/"
 export DOTFILES_DIR="${HOME}/.dotfiles"
 
@@ -36,8 +17,16 @@ fi
 
 LoadAll 'modules' || exit 1
 
+# TODO: make sure shell is supported before continuing if it hasn't failed
+#  before this point.  Spawn one if it isn't.
+
+# TODO: Add check for supported shell as default shell and change it if not.
+
+# TODO: Check for previous Kratos installation, and test installation if
+#  found for errors.
+
 #PathHasBinErr '/usr/bin/env' || exit 1
 PathHasBinErr 'git' || exit 1
-# Find git version and make sure at least 2.0
+# TODO: Make sure git is at least version 2.0.
 
 kratos 'update'
