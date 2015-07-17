@@ -158,20 +158,19 @@ function DotfilesHook {
   fi
 
   local DOTFILE
-  # Respect filenames with spaces
   local DOTFILES
-  while read -rd '' ; do
-    DOTFILES+=("${REPLY}")
-  done < <(find ${DOTFILES_DIR} -type f -not -iwholename '*.git*' -print0)
   #local DONT_SYM_ITEM
   #local DONT_SYM_LIST=($(cat "${DOTFILES_DIR}/.kratosdontsym"))
   local IGNORE_STATUS
   local IGNORE_ITEM
-  #local IGNORE_LIST=($(cat "${DOTFILES_DIR}/.kratosignore"))
-  local IGNORE_LIST_STRING="$(cat "${DOTFILES_DIR}/.kratosignore")"
   local IGNORE_LIST
-  IGNORE_LIST=(${IGNORE_LIST_STRING})
 
+  # Respect filenames with spaces
+  while read -rd '' ; do
+    DOTFILES+=("${REPLY}")
+  done < <(find ${DOTFILES_DIR} -type f -not -iwholename '*.git*' -print0)
+
+  IGNORE_LIST=($(cat "${DOTFILES_DIR}/.kratosignore"))
   # TODO: Add systemd support
   # The systemd directory requires special attention because systemd does not
   #  support symlinked service files.
@@ -244,13 +243,19 @@ function DotfilesHook {
         elif [[ -n "$(echo "${DOTFILE}" | grep "config/systemd/user")" ]] ; then
           DotfilesSystemdHook "${DOTFILE}" || return 1
         else
+          if [[ -e "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" ]] ; then
+            echo -ne "Updating: ${DOTFILE}"\\r
+          else
+            echo -ne "Installing: ${DOTFILE}"\\r
+          fi
+
           # TODO: add logic to prevent from following symlinked directory paths, may not be necessary
           EnsureFileDestroy "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || {
             ErrError "failed to remove: ${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")"
             return 1
           }
+
           # Symlink DOTFILE
-          echo "Installing: ${DOTFILE}"
           symlink "${DOTFILE}" "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || {
             ErrError "failed to symlink \`${DOTFILE}' to \`${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")'"
             return 1
