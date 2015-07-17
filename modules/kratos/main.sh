@@ -200,71 +200,95 @@ function KratosPreferredShell {
 
 function KratosLogo {
 
-cat <<EOF
-oooo    oooo                        .
-`888   .8P'                       .o8
- 888  d8'    oooo d8b  .oooo.   .o888oo  .ooooo.   .oooo.o
- 88888[      `888""8P `P  )88b    888   d88' `88b d88(  "8
- 888`88b.     888      .oP"888    888   888   888 `"Y88b.
- 888  `88b.   888     d8(  888    888 . 888   888 o.  )88b
-o888o  o888o d888b    `Y888""8o   "888" `Y8bod8P' 8""888P'
+cat <<'EOF'
+
+  oooo    oooo                        .
+  `888   .8P'                       .o8
+   888  d8'    oooo d8b  .oooo.   .o888oo  .ooooo.   .oooo.o
+   88888[      `888""8P `P  )88b    888   d88' `88b d88(  "8
+   888`88b.     888      .oP"888    888   888   888 `"Y88b.
+   888  `88b.   888     d8(  888    888 . 888   888 o.  )88b
+  o888o  o888o d888b    `Y888""8o   "888" `Y8bod8P' 8""888P'
+
 EOF
 
 }
 
 function kratos {
 
+  local DIR
+  local KRATOS_CREATE_DIRS
+
+  KRATOS_CREATE_DIRS=()
+
   case "${1}" in
     'update')
-      #KratosLogo
+      KratosLogo
 
-      # XDG freedesktop directories
-
-      # XDG_CACHE_HOME
-      EnsureDirExists "${HOME}/.cache"
-      # XDG_CONFIG_HOME
-      EnsureDirExists "${HOME}/.config"
-      # XDG_DATA_HOME
-      EnsureDirExists "${HOME}/.local/share"
-      # XDG_DESKTOP_DIR
-      EnsureDirExists "${HOME}/Desktop"
-      # XDG_DOCUMENTS_DIR
-      EnsureDirExists "${HOME}/Documents"
-      # XDG_DOWNLOAD_DIR
-      EnsureDirExists "${HOME}/Downloads"
-      # XDG_MUSIC_DIR
-      EnsureDirExists "${HOME}/Music"
-      # XDG_PICTURES_DIR
-      EnsureDirExists "${HOME}/Pictures"
-      # XDG_PUBLICSHARE_DIR
-      EnsureDirExists "${HOME}/Share"
-      # XDG_TEMPLATES_DIR
-      EnsureDirExists "${HOME}/Templates"
-      # XDG_VIDEOS_DIR
-      EnsureDirExists "${HOME}/Videos"
+      KRATOS_PROJECT_DIRS=(
+        "${HOME}/Projects"
+      )
 
       # Freedesktop trash directories
+      KRATOS_TRASH_DIRS=(
+        "${HOME}/.local/share/trash/info"
+        "${HOME}/.local/share/trash/files"
+      )
 
-      # DIR_TRASH_INFO
-      EnsureDirExists "${HOME}/.local/share/trash/info"
-      # DIR_TRASH_FILES
-      EnsureDirExists "${HOME}/.local/share/trash/files"
+      # XDG freedesktop directories
+      KRATOS_XDG_DIRS=(
+        "${HOME}/.cache" # XDG_CACHE_HOME
+        "${HOME}/.config" # XDG_CONFIG_HOME
+        "${HOME}/.local/share" # XDG_DATA_HOME
+        "${HOME}/Desktop" # XDG_DESKTOP_DIR
+        "${HOME}/Documents" # XDG_DOCUMENTS_DIR
+        "${HOME}/Downloads" # XDG_DOWNLOAD_DIR
+        "${HOME}/Music" # XDG_MUSIC_DIR
+        "${HOME}/Pictures" # XDG_PICTURES_DIR
+        "${HOME}/Share" # XDG_PUBLICSHARE_DIR
+        "${HOME}/Templates" # XDG_TEMPLATES_DIR
+        "${HOME}/Videos" # XDG_VIDEOS_DIR
+      )
 
-      # Custom directories
+      if ${KRATOS_CREATE_PROJECT_DIRECTORIES} ; then
+        KRATOS_CREATE_DIRS+=( ${KRATOS_PROJECT_DIRS[@]} )
+      fi
 
-      EnsureDirExists "${HOME}/Projects"
+      if ${KRATOS_CREATE_TRASH_DIRECTORIES} ; then
+        KRATOS_CREATE_DIRS+=( ${KRATOS_TRASH_DIRS[@]} )
+      fi
+
+      if ${KRATOS_CREATE_XDG_DIRECTORIES} ; then
+        KRATOS_CREATE_DIRS+=( ${KRATOS_XDG_DIRS[@]} )
+      fi
+
+      KRATOS_CREATE_DIRS+=( "${HOME}/.local/share/kratos" )
+
+      echo -ne "Updating directories: "
+      for DIR in ${KRATOS_CREATE_DIRS[@]} ; do
+        if [[ ! -d "${DIR}" ]] ; then
+          echo -ne "Creating directory: ${DIR}"\\r
+        fi
+        EnsureDirExists "${DIR}" || {
+          ErrError "failed to create directory: ${DIR}"
+          return 1
+        }
+      done
+      echo "Success"
 
       #git remote set-url origin "$DOTFILES_REPO"
       #git remote set-url --push origin "$DOTFILES_REPO"
-
       #dotfiles_latest
 
-      EnsureDirExists "${HOME}/.local/share/kratos"
       echo "export KRATOS_DIR=\"${KRATOS_DIR}\"" > "${HOME}/.local/share/kratos/dir"
 
       # Install dotfiles
       # TODO: Only run if module is enabled
+      echo -n "Updating dotfiles: "
+      echo
       DotfilesHook || exit 1
+      echo -ne ''\\r
+      echo "Success"
 
       # Load settings
       if [ -f "${HOME}/.config/kratos/config" ] ; then
