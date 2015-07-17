@@ -250,6 +250,10 @@ function kratos {
         "${HOME}/Videos" # XDG_VIDEOS_DIR
       )
 
+      if [[ ${#KRATOS_CREATE_CUSTOM_DIRECTOIES[@]} -ge 1 ]] ; then
+        KRATOS_CREATE_DIRS+=( ${KRATOS_CREATE_CUSTOM_DIRECTOIES[@]} )
+      fi
+
       if ${KRATOS_CREATE_PROJECT_DIRECTORIES} ; then
         KRATOS_CREATE_DIRS+=( ${KRATOS_PROJECT_DIRS[@]} )
       fi
