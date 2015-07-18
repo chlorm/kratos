@@ -119,7 +119,7 @@ function pkg {
           return $?
           ;;
         'pacman')
-          [ -n "$(pacman -Qqdt)" ] && SudoWrap pacman -Rns $(pacman -Qqdt)
+          [[ -n "$(pacman -Qqdt)" ]] && SudoWrap pacman -Rns $(pacman -Qqdt)
           return $?
           ;;
         'portage')

@@ -33,20 +33,22 @@ function ActiveSoundCard {
 
   local soundCard
 
-  soundCard=$(\
-    pactl list sinks | \
-    grep --before-context=1 "State: RUNNING" | \
-    awk -F'[^0-9]*' '/Sink\ \#/ {print $2 ; exit}')
+  soundCard=$(
+    pactl list sinks |
+    grep --before-context=1 "State: RUNNING" |
+    awk -F'[^0-9]*' '/Sink\ \#/ {print $2 ; exit}'
+  )
 
   # If no active sound card is found fallback to the default
-  [ -z "${activeSoundCard}" ] && {
-    soundCard=$(\
-      pacmd list-sinks | \
-      grep -m 1 "* index: " | \
-      grep -o '[0-9]*')
+  [ -z "${soundCard}" ] && {
+    soundCard=$(
+      pacmd list-sinks |
+      grep -m 1 "* index: " |
+      grep -o '[0-9]*'
+    )
   }
 
-  [ -z "${activeSoundCard}" ] && {
+  [ -z "${soundCard}" ] && {
     ErrError "failed to obtain sound card"
     return 1
   }
@@ -59,10 +61,10 @@ function ActiveSoundCard {
 
 function VolCurrent {
 
-  pactl list sinks | \
-    grep --after-context=9 "Sink #$(ActiveSoundCard)" | \
-    grep "Volume:" | \
-    awk '/[^0-9]*\%/ {print $5 ; exit}'
+  pactl list sinks |
+  grep --after-context=9 "Sink #$(ActiveSoundCard)" |
+  grep "Volume:" |
+  awk '/[^0-9]*\%/ {print $5 ; exit}'
 
 }
 

@@ -64,7 +64,7 @@ function wifi {
       PASS="${2}"
       SSID="${1}"
       # If no password is provided, assume one is not needed
-      if [ -n "${2}" ]; then
+      if [[ -n "${2}" ]] ; then
         PASS="password ${2}"
       fi
       # Add connection

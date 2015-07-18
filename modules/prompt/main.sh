@@ -92,7 +92,7 @@ function PromptColor { # Get colors for the current shell
 function PromptVcs { # Determine if the current directory is a vcs repo
 
   if git status > /dev/null 2>&1 ; then
-    echo "git"
+    echo 'git'
     return 0
   fi
 
@@ -143,8 +143,11 @@ local branch
       return 0
       ;;
     'git')
-      branch="$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(PromptVcsDirty)/")"
-      if [ -n "${branch}" ] ; then
+      branch="$(
+        git branch --no-color 2> /dev/null |
+        sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(PromptVcsDirty)/"
+      )"
+      if [[ -n "${branch}" ]] ; then
         echo "${branch}"
       fi
       return 0
@@ -176,8 +179,11 @@ local vcsstatus=
       return 0
       ;;
     'git')
-      vcsstatus="$(git status 2> /dev/null | grep -m 1 -w -o 'working directory clean')"
-      if [ "${vcsstatus}" != 'working directory clean' ] ; then
+      vcsstatus="$(
+        git status 2> /dev/null |
+        grep -m 1 -w -o 'working directory clean'
+      )"
+      if [[ "${vcsstatus}" != 'working directory clean' ]] ; then
         echo "*"
       fi
       return 0

@@ -173,7 +173,8 @@ function DotfilesHook {
     DOTFILES+=("${REPLY}")
   done < <(find ${DOTFILES_DIR} -type f -not -iwholename '*.git*' -print0)
 
-  IGNORE_LIST=($(cat "${DOTFILES_DIR}/.kratosignore"))
+  IGNORE_LIST=()
+  IGNORE_LIST+=($(cat "${DOTFILES_DIR}/.kratosignore"))
   # TODO: Add systemd support
   # The systemd directory requires special attention because systemd does not
   #  support symlinked service files.
@@ -212,7 +213,7 @@ function DotfilesHook {
         break
       fi
     done
-    if $IGNORE_STATUS ; then
+    if ${IGNORE_STATUS} ; then
       continue
     fi
 

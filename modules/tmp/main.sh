@@ -14,23 +14,29 @@ function TmpDir { # Get the path to the temporary directory
   local DIR
   local TMPDIR
   local TMPDIRS
-  TMPDIRS=("${ROOT}/dev/shm" "${ROOT}/run/shm" "${ROOT}/tmp" "${ROOT}/var/tmp")
+
+  TMPDIRS=(
+    "${ROOT}/dev/shm"
+    "${ROOT}/run/shm"
+    "${ROOT}/tmp"
+    "${ROOT}/var/tmp"
+  )
 
   for DIR in "${TMPDIRS[@]}" ; do
 
-    if [ -n "$(mount | grep '\(tmpfs\|ramfs\)' | grep "${DIR}" 2> /dev/null)" ] ; then
+    if [[ -n "$(mount | grep '\(tmpfs\|ramfs\)' | grep "${DIR}" 2> /dev/null)" ]] ; then
       TMPDIR="${DIR}/${USER}"
       break
     fi
 
   done
 
-  if [ -z "${TMPDIR}" ] ; then
+  if [[ -z "${TMPDIR}" ]] ; then
     ErrError 'Failed to find a tmp directory'
     return 1
   fi
 
-  if [ ! -d "${TMPDIR}" ] ; then
+  if [[ ! -d "${TMPDIR}" ]] ; then
     EnsureDirExists "${TMPDIR}" || return 1
     chmod 0700 "${TMPDIR}" || return 1
   fi
@@ -42,7 +48,7 @@ function TmpDir { # Get the path to the temporary directory
   symlink "${TMPDIR}/cache" "${HOME}/.cache" || return 1
 
   # Create dotfiles session directory
-  if [ ! -d "${TMPDIR}/dotfiles" ] ; then
+  if [[ ! -d "${TMPDIR}/dotfiles" ]] ; then
     mkdir -p "${TMPDIR}/dotfiles" || return 1
   fi
 

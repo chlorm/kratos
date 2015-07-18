@@ -18,7 +18,7 @@ function SshAuto {
   EnsureDirExists "${HOME}/.ssh" || return 1
 
   # Makes sure the client configuration is installed
-  [ -f "${HOME}/.ssh/config" ] || return 1
+  [[ -f "${HOME}/.ssh/config" ]] || return 1
 
   ssh-keygen -H > /dev/null 2>&1 || return 1
   EnsureFileDestroy "${HOME}/.ssh/known_hosts.old" || return 1
@@ -26,7 +26,7 @@ function SshAuto {
   # Populates the authorized_keys file
   EnsureFileDestroy "${HOME}/.ssh/authorized_keys" || return 1
   POP_KEYS=($(find ${DOTFILES_DIR}/ssh -type f | grep -v 'config$' | grep '.pub$'))
-  if [ ${#POP_KEYS[@]} -ge 1 ] ; then
+  if [[ ${#POP_KEYS[@]} -ge 1 ]] ; then
     for POP_KEY in "${POP_KEYS[@]}" ; do
       cat "${POP_KEY}" >> "${HOME}/.ssh/authorized_keys" || return 1
     done

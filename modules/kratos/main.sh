@@ -164,8 +164,6 @@ function KratosPreferredDeskenv {
 
   return 1
 
-  return 0
-
 }
 
 function KratosPreferredEditor {
@@ -295,7 +293,7 @@ function kratos {
       echo "Success"
 
       # Load settings
-      if [ -f "${HOME}/.config/kratos/config" ] ; then
+      if [[ -f "${HOME}/.config/kratos/config" ]] ; then
         . "${HOME}/.config/kratos/config"
         # Preference
         EnsureFileDestroy "${HOME}/.local/share/kratos/preferences"

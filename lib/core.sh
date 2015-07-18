@@ -9,13 +9,19 @@ function CpuArchitecture { # Return CPU architecture without endianness or regis
 
   # Do NOT use `uname -m' to achieve this functionality.
 
-  # TODO: use sysctl on Darwin
-
   local architecture
 
   case "$(OsKernel)" in
+    'darwin')
+      # TODO: use sysctl on Darwin
+      ErrError 'darwin support not implemented'
+      return 1
+      ;;
     'linux')
-      architecture="$(lscpu | grep -m 1 -w -o "\(arm\|i686\|x86_64\)")"
+      architecture="$(
+        lscpu |
+        grep -m 1 -w -o "\(arm\|i686\|x86_64\)"
+      )"
       ;;
   esac
 
@@ -34,9 +40,13 @@ function CpuRegisterSize { # Find CPU register size (ie. 32bit/64bit)
 
   local register_size
 
-  register_size=$(getconf LONG_BIT | grep -m 1 -w -o "\(8\|16\|32\|64\|\128\)" | grep -op '[0-9]+')
+  register_size=$(
+    getconf LONG_BIT |
+    grep -m 1 -w -o "\(8\|16\|32\|64\|\128\)" |
+    grep -op '[0-9]+'
+  )
 
-  [ -z "${register_size}" ] || {
+  [[ -z "${register_size}" ]] || {
     ErrError 'could not determine cpu register size'
     return 1
   }
@@ -53,11 +63,15 @@ function CpuSockets {
 
   case "$(OsKernel)" in
     'linux')
-      SOCKETS="$(lscpu | grep -m 1 'Socket(s):' | grep -oP "[0-9]+")"
+      SOCKETS="$(
+        lscpu |
+        grep -m 1 'Socket(s):' |
+        grep -oP "[0-9]+"
+      )"
       ;;
   esac
 
-  [ ${SOCKETS} -ge 1 ] || {
+  [[ ${SOCKETS} -ge 1 ]] || {
     # Assume a socket exists even if it fails to find any
     SOCKETS=1
   }
@@ -71,23 +85,34 @@ function CpuSockets {
 function CpuPhysical { # Find number of physical cpu cores
 
   # Assumes all sockets are identical, only some arm platforms won't
-  # work with this logic
+  # work with this logic.
 
   local cpucores
 
   case "$(OsKernel)" in
     'linux')
-      cpucores=$(lscpu | grep -m 1 'Core(s) per socket:' | grep -oP '[0-9]+')
+      cpucores=$(
+        lscpu |
+        grep -m 1 'Core(s) per socket:' |
+        grep -oP '[0-9]+'
+      )
       ;;
     'darwin')
-      cpucores=$(sysctl hw | grep -m 1 "hw.physicalcpu:" | grep -oP '[0-9]+')
+      cpucores=$(
+        sysctl hw |
+        grep -m 1 "hw.physicalcpu:" |
+        grep -oP '[0-9]+'
+      )
       ;;
     'cygwin')
-      cpucores=$(NUMBER_OF_PROCESSORS | grep -oP '[0-9]+')
+      cpucores=$(
+        NUMBER_OF_PROCESSORS |
+        grep -oP '[0-9]+'
+      )
       ;;
   esac
 
-  if [ -z "${cpucores}" ] ; then
+  if [[ -z "${cpucores}" ]] ; then
     cpucores=1
   else
     cpucores=$(($cpucores * $(CpuSockets)))
@@ -109,21 +134,29 @@ function CpuLogical { # Find number of logical cpu cores
   case $(OsKernel) in
     'linux'|'freebsd')
       # Finds number of logical threads per physical core
-      cputhreads=$(lscpu | grep -m 1 'Thread(s) per core:' | grep -oP '[0-9]+')
-      if [ -n "${cputhreads}" ] ; then
+      cputhreads=$(
+        lscpu |
+        grep -m 1 'Thread(s) per core:' |
+        grep -oP '[0-9]+'
+      )
+      if [[ -n "${cputhreads}" ]] ; then
         # Convert to number of threads per cpu
         cputhreads=$((${cputhreads} * $(CpuPhysical)))
       fi
       ;;
     'darwin')
-      cputhreads=$(sysctl hw | grep -m 1 "hw.logicalcpu:" | grep -oP '[0-9]+')
+      cputhreads=$(
+        sysctl hw |
+        grep -m 1 "hw.logicalcpu:" |
+        grep -oP '[0-9]+'
+      )
       ;;
     'cygwin')
       cputhreads=''
       ;;
   esac
 
-  if [ -z "${cputhreads}" ] ; then
+  if [[ -z "${cputhreads}" ]] ; then
     cputhreads="$(CpuPhysical)"
   else
     cputhreads=$((${cputhreads} * $(CpuSockets)))
@@ -161,7 +194,7 @@ function EnsureDirDestroy {
       unlink "${1}" > /dev/null 2>&1 || return 1
     fi
     # Remove directory
-    if [ -d "${1}" ] ; then
+    if [[ -d "${1}" ]] ; then
       rm -rf "${1}" > /dev/null 2>&1 || return 1
     fi
     shift
@@ -177,7 +210,7 @@ function EnsureDirExists {
       unlink "${1}" > /dev/null 2>&1 || return 1
     fi
     # Create directory
-    if [ ! -d "${1}" ] ; then
+    if [[ ! -d "${1}" ]] ; then
       mkdir -p "${1}" > /dev/null 2>&1 || return 1
     fi
     shift
@@ -193,7 +226,7 @@ function EnsureFileDestroy {
       unlink "${1}" > /dev/null 2>&1 || return 1
     fi
     # Remove file
-    if [ -f "${1}" ] ; then
+    if [[ -f "${1}" ]] ; then
       rm -f "${1}" > /dev/null 2>&1 || return 1
     fi
     shift
@@ -264,7 +297,7 @@ function ErrWarn {
 
 function IsRoot { # Determine if the user is root
 
-  [ $(id -u) -eq 0 ] || return 1
+  [[ $(id -u) -eq 0 ]] || return 1
 
   return 0
 
@@ -274,7 +307,7 @@ function IsRoot { # Determine if the user is root
 
 function LoadInit { # Source Inits
 
-  if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
+  if [[ -n "$(echo "$1" | grep '\(~$\|^#\)')" ]] ; then
     return 0
   fi
 
@@ -289,7 +322,7 @@ function LoadInit { # Source Inits
 
 function LoadModule { # Source Modules
 
-  if [ -n "$(echo "$1" | grep '\(~$\|^#\)')" ] ; then
+  if [[ -n "$(echo "$1" | grep '\(~$\|^#\)')" ]] ; then
     return 0
   fi
 
@@ -358,10 +391,12 @@ function OsKernel { # Find host os kernel
 
   local KERNEL
 
-  KERNEL=$(ToLower $(uname -s) $(echo ${OSTYPE}) |
-    grep -m 1 -w -o '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)')
+  KERNEL=$(
+    ToLower $(uname -s) $(echo ${OSTYPE}) |
+    grep -m 1 -w -o '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)'
+  )
 
-  if [ -z "${KERNEL}" ] ; then
+  if [[ -z "${KERNEL}" ]] ; then
     ErrError 'not a supported operating system'
     return 1
   fi
@@ -396,10 +431,12 @@ function OsLinux { # Take first result of linux os name match
 
   local LINUX
 
-  LINUX="$(ToLower "$(OsLinuxRelease) $(OsLinuxUname) $(OsLinuxLsb)" |
-    grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)')"
+  LINUX="$(
+    ToLower "$(OsLinuxRelease) $(OsLinuxUname) $(OsLinuxLsb)" |
+    grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)'
+  )"
 
-  if [ -z "${LINUX}" ] ; then
+  if [[ -z "${LINUX}" ]] ; then
     ErrError 'not a supported linux operating system'
     return 1
   fi
@@ -420,7 +457,7 @@ function PasswordConfirmation {
     echo
     read -s -p "Confirm: " PASS2
     echo
-    if [ "${PASS1}" = "${PASS2}" ] ; then
+    if [[ "${PASS1}" = "${PASS2}" ]] ; then
       break
     fi
     echo "WARNING: passwords do not match, try again"
@@ -444,7 +481,7 @@ function PathAdd { # Add direcory to $PATH
 
 function PathRemove { # Remove directory from $PATH
 
-  if [ -n "$(echo "${PATH}" | grep "$1" 2> /dev/null)" ] ; then
+  if [[ -n "$(echo "${PATH}" | grep "$1" 2> /dev/null)" ]] ; then
     export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`
   fi
 
@@ -454,7 +491,7 @@ function PathRemove { # Remove directory from $PATH
 
 function PathBin { # Finds the path to the binary
 
-  if [ $# -ne 1 ] ; then
+  if [[ $# -ne 1 ]] ; then
     return 2
   fi
 
@@ -481,7 +518,7 @@ function PathBinAbs { # Resolves the absolute path of the binary
 
   BIN="$(whereis -b ${1} 2> /dev/null | awk '{print $2 ; exit}')"
 
-  [ -n "${BIN}" ] || return 1
+  [[ -n "${BIN}" ]] || return 1
 
   echo "${BIN}"
 
@@ -491,7 +528,7 @@ function PathBinAbs { # Resolves the absolute path of the binary
 
 function PathHasBin { # Test to see if a binary exists in the path
 
-  [ $# -ne 1 ] && return 2
+  [[ $# -ne 1 ]] && return 2
 
   case "$(shell)" in
     'bash')
@@ -523,7 +560,7 @@ function PathHasBinErr {
 
 function ProcExists { # Checks to see if the process is running
 
-  if [ $# -ne 1 ] ; then
+  if [[ $# -ne 1 ]] ; then
     return 1
   fi
 
@@ -533,7 +570,7 @@ function ProcExists { # Checks to see if the process is running
 
 function ProcPidFile { # Checks the pidfile to see if the process is running
 
-  if [ -f "${1}" ] ; then
+  if [[ -f "${1}" ]] ; then
   	ProcExists "$(cat ${1} 2> /dev/null)"
   fi
 
@@ -547,7 +584,7 @@ function RunQuiet { # Start an application in the background
 
   PID="$(pgrep ${1})"
 
-  if [ -z "${PID}" ] ; then
+  if [[ -z "${PID}" ]] ; then
   	$@ > /dev/null 2>&1 || return 1
   fi
 
@@ -564,10 +601,21 @@ function shell {
   LPROC="$(ps hp $$ | grep "$$")"
 
   # Workaround for su spawned shells
-  if [ -n "$(echo "${LPROC}" | grep '\-su')" ] ; then
-    LSHELL="$(basename "$(echo "${LPROC}" | sed 's/^.*(\([^)]*\)).*$/\1/')")"
+  if [[ -n "$(echo "${LPROC}" | grep '\-su')" ]] ; then
+    LSHELL="$(
+      basename "$(
+        echo "${LPROC}" |
+        sed 's/^.*(\([^)]*\)).*$/\1/'
+      )"
+    )"
   else
-    LSHELL="$(basename "$(echo "${LPROC}" | sed 's/-//' | awk '{print $5 ; exit}')")"
+    LSHELL="$(
+      basename "$(
+        echo "${LPROC}" |
+        sed 's/-//' |
+        awk '{print $5 ; exit}'
+      )"
+    )"
   fi
 
   # Resolve symlinked shells
@@ -601,7 +649,9 @@ function StoreAsVar { # Stores the output of the command into a variable without
   local RET
 
   VAR="${1}" ; shift
-  TMP="$(mktemp 2> /dev/null)" || TMP="$(mktemp -t tmp 2> /dev/null)" || return 128
+  TMP="$(mktemp 2> /dev/null)" || {
+    TMP="$(mktemp -t tmp 2> /dev/null)" || return 128
+  }
   $@ > "${TMP}"
   RET=$?
   read "${VAR}" < "${TMP}"
@@ -614,7 +664,7 @@ function StoreAsVar { # Stores the output of the command into a variable without
 function symlink { # Create a symbolic link $1 -> $2
 
   EnsureDirExists "$(dirname "${2}")"
-  if [ "$(readlink -f "${2}")" != "${1}" ] ; then
+  if [[ "$(readlink -f "${2}")" != "${1}" ]] ; then
     rm -rf "${2}"
     if [[ -e "${1}" ]] ; then
       ln -sf "${1}" "${2}" || return 1

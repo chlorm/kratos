@@ -66,7 +66,7 @@ function ShellInit { # Initializes useful functions
 
   # Environment Variables
 
-  if [ "${PREFERED_EDITOR}" = 'emacs' ] ; then
+  if [[ "${PREFERED_EDITOR}" = 'emacs' ]] ; then
     export EDITOR="emacs -nw"
   else
     export EDITOR="${PREFERED_EDITOR}"
