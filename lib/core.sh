@@ -49,7 +49,7 @@ function CpuRegisterSize { # Find CPU register size (ie. 32bit/64bit)
 
 function CpuSockets {
 
-  local SOCKETS=
+  local SOCKETS
 
   case "$(OsKernel)" in
     'linux')
@@ -310,23 +310,28 @@ function LoadAll {
   local ITEM
   local ITEMS
 
+  ITEMS=()
+
   case "${1}" in
     'inits')
-      ITEMS=($(find "${KRATOS_DIR}/modules" -type f -name 'init.sh'))
+      ITEMS+=($(find "${KRATOS_DIR}/modules" -type f -name 'init.sh'))
       for ITEM in "${ITEMS[@]}" ; do
         LoadInit "${ITEM}"
       done
       return 0
       ;;
     'modules')
-      ITEMS=($(find "${KRATOS_DIR}/modules" -type f -name 'main.sh'))
+      ITEMS+=($(find "${KRATOS_DIR}/modules" -type f -name 'main.sh'))
       for ITEM in "${ITEMS[@]}" ; do
         LoadModule "${ITEM}"
       done
       return 0
       ;;
+    'plugins')
+      ITEMS=()
+      ;;
     'tests')
-      ITEMS=($(find "${KRATOS_DIR}/modules" -type f -name 'test.sh'))
+      ITEMS+=($(find "${KRATOS_DIR}/modules" -type f -name 'test.sh'))
       for ITEM in "${ITEMS[@]}" ; do
         LoadTest "${ITEM}"
       done
@@ -351,7 +356,9 @@ function LoadAll {
 
 function OsKernel { # Find host os kernel
 
-  local KERNEL=$(ToLower $(uname -s) $(echo ${OSTYPE}) |
+  local KERNEL
+
+  KERNEL=$(ToLower $(uname -s) $(echo ${OSTYPE}) |
     grep -m 1 -w -o '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)')
 
   if [ -z "${KERNEL}" ] ; then
@@ -551,8 +558,10 @@ function RunQuiet { # Start an application in the background
 # Returns the shell executing the current script
 function shell {
 
-  local LSHELL=
-  local LPROC="$(ps hp $$ | grep "$$")"
+  local LSHELL
+  local LPROC
+
+  LPROC="$(ps hp $$ | grep "$$")"
 
   # Workaround for su spawned shells
   if [ -n "$(echo "${LPROC}" | grep '\-su')" ] ; then
@@ -634,8 +643,10 @@ function ToUpper {
 function YorN { # Ask a yes or no question
 
   local ANSWER
-  local DEFAULT=2
+  local DEFAULT
   local PROMPT
+
+  DEFAULT=2
 
   case "${2}" in
     '')

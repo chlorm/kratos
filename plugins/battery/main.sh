@@ -28,10 +28,13 @@ function BatSys { # Gets the string representing the state of the batteries
 
 function BatOne {
 
-  local BAT_DIR="${ROOT}/sys/class/power_supply/$1"
-  local B="$(cat "${BAT_DIR}/status" 2> /dev/null)" || return 1
+  local BAT_DIR
+  local B
   local NOW
   local FULL
+
+  BAT_DIR="${ROOT}/sys/class/power_supply/$1"
+  B=="$(cat "${BAT_DIR}/status" 2> /dev/null)"
 
   echo -n "${1}: "
 

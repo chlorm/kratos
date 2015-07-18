@@ -125,7 +125,7 @@ function DotfilesSystemdHook {
 
   # Find type for symlinking
 
-  local TYPE=
+  local TYPE
 
   #exist -dc "${HOME}/.config/systemd/user/${TYPE}.target.wants"
   #symlink "${1}" "${HOME}/.config/systemd/user/${TYPE}.target.wants/$(basename "${DOTFILE}")"
@@ -152,7 +152,10 @@ function DotfilesHook {
   #     outside of doing it this way and it prevents people from working on
   #     development in side of a dotfiles directory.
 
-  local UNINSTALL=false
+  local UNINSTALL
+
+  UNINSTALL=false
+
   if [[ "${1}" == 'uninstall' ]] ; then
     UNINSTALL=true
   fi

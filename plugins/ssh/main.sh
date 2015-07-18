@@ -7,6 +7,9 @@
 
 function SshAuto {
 
+  local POP_KEYS
+  local PASS
+
   # Make sure that we have the required binaries
   PathHasBin 'ssh-keygen' || return 1
   PathHasBin 'openssl' || return 1
@@ -22,7 +25,7 @@ function SshAuto {
 
   # Populates the authorized_keys file
   EnsureFileDestroy "${HOME}/.ssh/authorized_keys" || return 1
-  local POP_KEYS=($(find ${DOTFILES_DIR}/ssh -type f | grep -v 'config$' | grep '.pub$'))
+  POP_KEYS=($(find ${DOTFILES_DIR}/ssh -type f | grep -v 'config$' | grep '.pub$'))
   if [ ${#POP_KEYS[@]} -ge 1 ] ; then
     for POP_KEY in "${POP_KEYS[@]}" ; do
       cat "${POP_KEY}" >> "${HOME}/.ssh/authorized_keys" || return 1
@@ -31,7 +34,7 @@ function SshAuto {
 
   if [[ ! -f "${HOME}/.ssh/id_rsa.pub" && ! -f "${HOME}/.ssh/id_ed25519.pub" ]] ; then
     # Creates new ssh keys with the provided password
-    local PASS="$(PasswordConfirmation)"
+    PASS="$(PasswordConfirmation)"
     EnsureFileDestroy "${HOME}/.ssh/id_rsa" || return 1
     ssh-keygen -N "${PASS}" -f "${HOME}/.ssh/id_rsa" -t rsa -b 4096 || return 1
     EnsureFileDestroy "${HOME}/.ssh/id_ed25519" || return 1
