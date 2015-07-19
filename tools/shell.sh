@@ -25,7 +25,7 @@ fi
 
 if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   LoadAll 'modules'
-  LoadAll 'inits'
+  LoadAll 'plugins'
 
   PathAdd "${HOME}/.bin"
 

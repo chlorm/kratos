@@ -136,56 +136,44 @@ function DotfilesSystemdHook {
 
 function DotfilesHook {
 
-  # This function handles the installation of files within the ~/.dotfiles
-  #  directory.  It only symlinks files, not directories, this is to work around
-  #  some issues when symlinking directories.  This gets a bit messy when
-  #  vendoring plugins for something like atom or sublime-text that have a
-  #  complex heirarchy of directories and lots of files potentially.  A solution
-  #  is needed so that adding support for symlinking directories wouldn't be as
-  #  complicated.  The possibilities for handling this include:
-  #  + Use install hooks to handle symlinking directories, this involves also
-  #     having to add those directories to .kratosignore, and maybe additional
-  #     logic may have to be added to .kratosignore.
-  #  + Only symlink directories if the directory is a git submodule.  This also
-  #     makes since for vendored plugins and such to be git submodules.  also
-  #     there are not many cases where symlink directories would be needed
-  #     outside of doing it this way and it prevents people from working on
-  #     development in side of a dotfiles directory.
-
+  local DOTFILE
+  local DOTFILES
   local UNINSTALL
+  #local DONT_SYM_ITEM
+  local IGNORE_ITEM
+  local IGNORE_LIST
+  local IGNORE_STATUS
 
   UNINSTALL=false
-
   if [[ "${1}" == 'uninstall' ]] ; then
     UNINSTALL=true
   fi
 
-  local DOTFILE
-  local DOTFILES
-  #local DONT_SYM_ITEM
   #local DONT_SYM_LIST=($(cat "${DOTFILES_DIR}/.kratosdontsym"))
-  local IGNORE_STATUS
-  local IGNORE_ITEM
-  local IGNORE_LIST
 
+  DOTFILES=()
   # Respect filenames with spaces
   while read -rd '' ; do
-    DOTFILES+=("${REPLY}")
+    DOTFILES+=(
+      "${REPLY}"
+    )
   done < <(find ${DOTFILES_DIR} -type f -not -iwholename '*.git*' -print0)
 
   IGNORE_LIST=()
-  IGNORE_LIST+=($(cat "${DOTFILES_DIR}/.kratosignore"))
+  if [[ -f "${DOTFILES_DIR}/.kratosignore" ]] ; then
+    IGNORE_LIST+=(
+      $(cat "${DOTFILES_DIR}/.kratosignore")
+    )
+  fi
   # TODO: Add systemd support
-  # The systemd directory requires special attention because systemd does not
-  #  support symlinked service files.
-  # Maybe we should symlink the service files to ~/.config/systemd/user/<type>.target.wants
-  #  assuming that they should be activated in not in .kratosignore
-  IGNORE_LIST+=("${HOME}/.config/systemd")
+  IGNORE_LIST+=(
+    "${HOME}/.config/systemd"
+  )
 
   for DOTFILE in "${DOTFILES[@]}" ; do
 
-    # Catch potential errors where array elements are being split in to multiple
-    #  elements (such as the issue with spaces in arrays)
+    # Catch potential errors where paths are split into multiple array elements
+    #  caused by spaces in the path.
     if [[ -n ${DOTFILE} && ! -e ${DOTFILE} ]] ; then
       ErrWarn "invalid file: ${DOTFILE}"
     fi
@@ -254,14 +242,26 @@ function DotfilesHook {
           fi
 
           # TODO: add logic to prevent from following symlinked directory paths, may not be necessary
-          EnsureFileDestroy "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || {
-            ErrError "failed to remove: ${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")"
+          EnsureFileDestroy "${HOME}/.$(
+                              echo "${DOTFILE}" |
+                              sed -e "s|${DOTFILES_DIR}\/||"
+                            )" || {
+            ErrError "failed to remove: ${HOME}/.$(
+                       echo "${DOTFILE}" |
+                       sed -e "s|${DOTFILES_DIR}\/||"
+                     )"
             return 1
           }
 
           # Symlink DOTFILE
-          symlink "${DOTFILE}" "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" || {
-            ErrError "failed to symlink \`${DOTFILE}' to \`${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")'"
+          symlink "${DOTFILE}" "${HOME}/.$(
+                    echo "${DOTFILE}" |
+                    sed -e "s|${DOTFILES_DIR}\/||"
+                  )" || {
+            ErrError "failed to symlink \`${DOTFILE}' to \`${HOME}/.$(
+                       echo "${DOTFILE}" |
+                       sed -e "s|${DOTFILES_DIR}\/||"
+                     )'"
             return 1
           }
         fi

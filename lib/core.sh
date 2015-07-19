@@ -303,8 +303,6 @@ function IsRoot { # Determine if the user is root
 
 }
 
-#function LoadCompletion
-
 function LoadInit { # Source Inits
 
   if [[ -n "$(echo "$1" | grep '\(~$\|^#\)')" ]] ; then
@@ -312,7 +310,7 @@ function LoadInit { # Source Inits
   fi
 
   . "${1}" || {
-    ErrError "Failed to load init ${1}"
+    ErrError "Failed to load init: ${1}"
     return 1
   }
 
@@ -327,7 +325,7 @@ function LoadModule { # Source Modules
   fi
 
   . "${1}" || {
-    ErrError "Failed to load module ${1}"
+    ErrError "Failed to load module: ${1}"
     return 1
   }
 
@@ -335,55 +333,67 @@ function LoadModule { # Source Modules
 
 }
 
-#function LoadTest
-#function LoadTheme
+function LoadPlugin {
+
+  if [[ -n "$(echo "$1" | grep '\(~$\|^#\)')" ]] ; then
+    return 0
+  fi
+
+  . "${1}" || {
+    ErrError "Failed to load plugin: ${1}"
+    return 1
+  }
+
+}
 
 function LoadAll {
 
-  local ITEM
-  local ITEMS
+  local INIT
+  local INITS
+  local initExists
+  local KRATOS_MODULES
+  local MODULES
+  local PLUGIN
+  local pluginExists
 
-  ITEMS=()
+  INITS=()
 
   case "${1}" in
-    'inits')
-      ITEMS+=($(find "${KRATOS_DIR}/modules" -type f -name 'init.sh'))
-      for ITEM in "${ITEMS[@]}" ; do
-        LoadInit "${ITEM}"
-      done
-      return 0
-      ;;
     'modules')
-      ITEMS+=($(find "${KRATOS_DIR}/modules" -type f -name 'main.sh'))
-      for ITEM in "${ITEMS[@]}" ; do
-        LoadModule "${ITEM}"
+      KRATOS_MODULES=( $(find "${KRATOS_DIR}/modules" -type f -name 'main.sh') )
+      for MODULE in "${KRATOS_MODULES[@]}" ; do
+        if [[ -f "${MODULE}" ]] ; then
+          LoadModule "${MODULE}"
+          initExists="$(find $(dirname ${MODULE}) -type f -name 'init.sh')"
+          if [[ -f "${initExists}" ]] ; then
+            INITS+=( "${initExists}" )
+          fi
+        fi
       done
-      return 0
       ;;
     'plugins')
-      ITEMS=()
-      ;;
-    'tests')
-      ITEMS+=($(find "${KRATOS_DIR}/modules" -type f -name 'test.sh'))
-      for ITEM in "${ITEMS[@]}" ; do
-        LoadTest "${ITEM}"
+      for PLUGIN in "${KRATOS_PLUGINS[@]}" ; do
+        pluginExists="$(find ${KRATOS_DIR}/plugins -type f -name 'main.sh' -iwholename "*${PLUGIN}*")"
+        if [[ -f "${pluginExists}" ]] ; then
+          LoadPlugin "${pluginExists}"
+          initExists="$(find $(dirname ${pluginExists}) -type f -name 'init.sh')"
+          if [[ -f "${initExists}" ]] ; then
+            INITS+=( "${initExists}" )
+          fi
+        fi
       done
-      return 0
       ;;
-    #'themes')
-    #  ITEMS=($(find "${KRATOS_DIR}/themes" -type f -name *.theme))
-    #  for ITEM in "${ITEMS[@]}" ; do
-    #    LoadInit "${ITEM}"
-    #  done
-    #  return 0
-    #  ;;
     *)
       ErrError "unknown loader: \`${1}'"
       return 1
       ;;
   esac
 
-  return 1
+  for INIT in "${INITS[@]}" ; do
+    LoadInit "${INIT}"
+  done
+
+  return 0
 
 }
 
