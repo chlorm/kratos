@@ -1,52 +1,110 @@
 Kratos
 ======
 
-To install:
-```
-git clone "https://github.com/chlorm/kratos.git" "$HOME/.kratos" && \
-cd $HOME/.kratos/tools && ./install.sh
-```
+A BASH/ZSH user environemnt configuration framework
 
 ### Prerequisites
-* A shell with support for BASH style arrays (i.e. BASH, KSH, PDKSH, ZSH)
-  + Portions currently only work with BASH
-* git v2
-* ~~systemd~~
-* Assumes /usr/bin/env exists and is configured correctly
+* BASH >=3.1 or ZSH >=5
+* GIT >=2 (optional support for updating)
 
-### Design Goals/TODO
-- [x] Never require root access for ANYTHING, if it needs root it can't be a part of
-   Kratos
-- [ ] Handle autostarting applications (via systemd & fallback solutions)
-- [ ] Configure environment variables (EDITOR,PAGER,etc...)
-- [ ] Launch prefered deskenv if one isn't running (Handled via .xinitrc)
-- [ ] Configure and launch user-agent (ssh-agent/gpg-agent)
-- [ ] Support for themeing
-- [x] Support for managing dotfiles
-- [ ] Variable replacement for dotfiles (way to work around applications requiring
-   explicit paths and possibly other use cases)
-   + FILENAME: `<dotfile>.gen`
-- [x] Do-before and Do-after functions for dotfiles to allow for directory creation
-   and additional setup. Maybe other hooks could be added.
-   + CHANGE: Use `<dotfile>.install`, `<dotfile>.install-pre` &
-      `<dotfile>.install-post`
-- [ ] Dotfiles init hooks for auto starting applications
-- [ ] Support for updating dotfiles & kratos repos
-- [x] Add support for config file in dotfiles
-- [ ] Fix how environment variables and aliases are handled and split appropriately
-   between dotfiles and kratos
-- [x] Move wrapper scripts back to kratos
-- [ ] Add a way to find or set the dotfile dir at install time
-* [x] Work on PATH configuration
-  + Handled via modules/plugins in the init.sh files.
-* [ ] Work on SSH configuration and handling of keys
-* [ ] Add color mapping between terminals color levels (e.g. 1/4/8/16/88/256)
-	+ Should generate a file with the colors at each level that is sourced by the
-	   loader at shell init
-* [ ] Avoid any instances of loops iterating through arrays at runtime
-* [ ] Add editor args variable (e.g. for setting -nw for emacs), used in EDITOR
-   environment variable.
-* [x] Add error logging to kratos std lib
-  + Handles errors, but doesn't do any logging to disk
-* [ ] Findout if KSH/PDKSH have an alternative to BASH's FUNCNAME[@] array for
-   accessing the call stack history.
+##### Recommended:
+* Linux (Support for other platforms is a bit more hit and miss at the moment)
+* gpg-agent
+* openssl
+* rsync
+
+### Installation
+```
+git clone "https://github.com/chlorm/kratos.git" "$HOME/.kratos" && \
+cd $HOME/.kratos && ./bootstrap.sh
+```
+
+### Dotfiles
+Kratos has builtin support for installing user's config files.
+
+TODO:
+* [x] Support for installing dotfiles
+* [x] Install hooks (do before/after, override install)
+* [ ] Support for specifing dotfiles directory
+* [ ] Support for restoring changes
+* [ ] Variable replacement for auto generating dotfiles
+
+### Plugins
+Currently Kratos only supports internal vendored plugins.
+```bash
+plugins=(battery golang haskell)
+```
+TODO:
+* [ ] Support for adding plugins by url
+* [ ] Support for adding plugins by paths
+
+### Themes
+Currently the themeing is hardcoded into Kratos.
+
+TODO:
+* [ ] Support for custom prompts
+* [ ] Support for creating color schemes
+* [ ] Map colors color codes to the terminals native codes
+  + Kratos uses 256 color codes, but some terminals only support 4,8,16 & 88 colors
+  + Helps to ensure consistency for color schemes
+
+### Additional features
+* [x] Standard library
+* [ ] Shell alias auto configuration
+* [ ] Autostart applications
+* [ ] Set editor environment variables
+  + [ ] Editor arguments
+  + Auto detect installed editors and use first match to user's preferred editors
+* [ ] Manage shell history
+  + [ ] Forward/Back directory history functions
+* [ ] Locale configuration
+* [ ] Prompt customization
+  + Allow L1,L2,R1,&R2 prompts (where applicable for given shells)
+* [ ] Auto configure terminal color support
+* [ ] Auto configure pager
+* [x] TMP directory configuration
+  + [ ] tmpfs fallback solution
+* [ ] Autostarting preferred Desktop Environment(/Window Manager)
+* [ ] Auto configure user agent (ssh-agent/gpg-agent)
+* [ ] Support for updating, plugins, kratos, and dotfiles.
+* [ ] Support for auto completion
+  + Need to wrap the differences between BASH & ZSH as clean as possible
+
+### Plugins
+* [ ] battery
+  + [ ] add visual battery meter
+  + [x] functions for detecting batteries, capacity, and status
+  + [ ] fallback for pre /sys
+* [ ] golang
+  + [ ] support for multiple GOPATH's
+  + [x] Configure GOPATH and create directories
+  + [x] Add Go /bin directory to PATH
+* [x] haskell
+  + [x] Add cabal /bin directory to PATH
+* [x] pkg
+* [ ] SSH
+  + [x] Generate ssh keys
+  + [ ] Support smart cards
+  + [ ] Support for adding public keys in dotfiles to authorized_keys
+  + [ ] Support for additional user specified keys
+* [x] torrent
+ + [x] generate torrent from a magnet link
+* [ ] trash
+* [ ] user-agent
+* [ ] volume
+  + [x] pulseaudio support
+    - [ ] adjust multiple pulseaudio channels simultaneously
+  + [ ] alsa
+* [ ] wifi
+  + [x] nmcli support
+  + [ ] wpa_supplicant support
+
+### Notes
+* Look into auto-generating a plugin/module list via login shells to defer
+   having to generate it with each interactive shell.
+  + Use CSC32 to see if config was modified, else ignore changes to kratos config
+* Defer additional checks to see if the TMP directory is configured
+  + Once the TMP directory is create a file in the tmp directory and only
+     configure if it doesn't exist
+* Get rid of ShellInit, this should be split into respective modules/plugins
+* Support for local config outside of dotfiles
