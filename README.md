@@ -1,7 +1,7 @@
 Kratos
 ======
 
-A BASH/ZSH user environemnt configuration framework
+A BASH/ZSH user environment configuration framework
 
 ### Prerequisites
 * BASH >=3.1 or ZSH >=5
