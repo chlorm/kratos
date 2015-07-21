@@ -1,17 +1,16 @@
 
 function PathHasInstalled {
 
-  if PathHasBin "${1}" ; then
-    echo "PathHasBin$(
-        ToUpper "${1}" |
-        sed -e 's/-/_/'
-      )=true" >> "${HOME}/.local/share/kratos/is-installed"
-  else
-    echo "PathHasBin$(
-        ToUpper "${1}" |
-        sed -e 's/-/_/'
-      )=false" >> "${HOME}/.local/share/kratos/is-installed"
-  fi
+  echo "PathHasBin$(
+      ToUpper "${1}" |
+      sed -e 's/-/_/'
+    )=$(
+      if PathHasBin "${1}" ; then
+        echo 'true'
+      else
+        echo 'false'
+      fi
+    )" >> "${HOME}/.local/share/kratos/is-installed"
 
   return 0
 
