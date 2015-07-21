@@ -13,6 +13,9 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   . "${KRATOS_DIR}/lib/core.sh"
   . "${KRATOS_DIR}/lib/DEFAULTS.sh"
   . "${HOME}/.local/share/kratos/preferences"
+  . "${HOME}/.local/share/kratos/is-installed"
+  #. "${HOME}/.local/share/kratos/modules"
+  #. "${HOME}/.local/share/kratos/plugins"
   if [[ -f "${HOME}/.config/kratos/config" ]] ; then
     . "${HOME}/.config/kratos/config"
   fi

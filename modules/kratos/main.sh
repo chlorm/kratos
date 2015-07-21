@@ -223,6 +223,10 @@ function kratos {
     'update')
       KratosLogo
 
+      # Generate the pre-fligt checks files
+      echo "Pre-flight checks: "
+      . "${KRATOS_DIR}/lib/pre-flight-checks.sh"
+
       KRATOS_PROJECT_DIRS=(
         "${HOME}/Projects"
       )
@@ -320,6 +324,8 @@ function kratos {
       symlink "${KRATOS_DIR}/rc/xsession" "${HOME}/.xsession"
 
       #symlink "${KRATOS_DIR}/systemd/kratos-init.service" "${HOME}/.config/systemd/user/kratos-init.service"
+
+      #eval . "${HOME}/.$(shell)rc"
       ;;
     'upgrade')
       ;;

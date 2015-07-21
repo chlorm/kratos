@@ -91,9 +91,11 @@ function PromptColor { # Get colors for the current shell
 
 function PromptVcs { # Determine if the current directory is a vcs repo
 
-  if git status > /dev/null 2>&1 ; then
-    echo 'git'
-    return 0
+  if ${PathHasBinGIT} ; then
+    if git status > /dev/null 2>&1 ; then
+      echo 'git'
+      return 0
+    fi
   fi
 
   #  if hg status > /dev/null 2>&1 ; then

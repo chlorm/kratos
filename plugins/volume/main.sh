@@ -71,7 +71,8 @@ function VolCurrent {
 function vol {
 
   # If 'pactl' is not installed, be done now
-  PathHasBinErr 'pactl' || return 1
+  ${PathHasBinPACMD} || return 1
+  ${PathHasBinPACTL} || return 1
 
   # Parse Arguments
   case "${1}" in

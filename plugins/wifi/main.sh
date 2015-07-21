@@ -46,7 +46,7 @@ function wifi {
   local PASS
   local SSID
 
-  PathHasBinErr 'nmcli' || return 1
+  ${PathHasBinNMCLI} || return 1
 
   case "${1}" in
     '')

@@ -11,8 +11,8 @@ function SshAuto {
   local PASS
 
   # Make sure that we have the required binaries
-  PathHasBin 'ssh-keygen' || return 1
-  PathHasBin 'openssl' || return 1
+  ${PathHasBinSSH_KEYGEN} || return 1
+  ${PathHasBinOPENSSL} || return 1
 
   # Makes sure the ssh directory exists
   EnsureDirExists "${HOME}/.ssh" || return 1
@@ -41,6 +41,7 @@ function SshAuto {
     ssh-keygen -N "${PASS}" -f "${HOME}/.ssh/id_ed25519" -t ed25519 || return 1
   fi
 
+  # TODO: handle with user-agent
   ssh-add "${HOME}/.ssh/id_rsa" > /dev/null 2>&1 || return 1
 
   return 0
