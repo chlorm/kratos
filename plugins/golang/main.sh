@@ -7,9 +7,9 @@
 
 function GoLangDirs {
 
-  EnsureDirExists "${HOME}/Projects/go/bin" || return 1
-  EnsureDirExists "${HOME}/Projects/go/pkg" || return 1
-  EnsureDirExists "${HOME}/Projects/go/src" || return 1
+  EnsureDirExists "${KRATOS_GOPATH}/bin" || return 1
+  EnsureDirExists "${KRATOS_GOPATH}/pkg" || return 1
+  EnsureDirExists "${KRATOS_GOPATH}/src" || return 1
 
   return 0
 
@@ -17,7 +17,7 @@ function GoLangDirs {
 
 function GoLangBinPath {
 
-  if [[ -n "${GOPATH}" && "${GOPATH}" != "${HOME}/Projects/go" ]] ; then
+  if [[ -n "${GOPATH}" && "${GOPATH}" != "${KRATOS_GOPATH}" ]] ; then
     # TODO: sanitize $GOPATH in case it contains multiple PATHs
     # Output paths to an array and iterate throught the array elements
     PathAdd "${GOPATH}/bin" || {
@@ -25,12 +25,12 @@ function GoLangBinPath {
       return 1
     }
     export GOPATH="${GOPATH}"
-  elif [ -d "${HOME}/Projects/go" ] ; then
-    PathAdd "${HOME}/Projects/go/bin" || {
+  elif [ -d "${KRATOS_GOPATH}/bin" ] ; then
+    PathAdd "${KRATOS_GOPATH}/bin" || {
       ErrWarn 'failed to configure $GOPATH'
       return 1
     }
-    export GOPATH="${HOME}/Projects/go"
+    export GOPATH="${KRATOS_GOPATH}"
   fi
 
   return 0
@@ -43,7 +43,7 @@ function GoLangGoPath {
     # TODO: add tests to make sure dirs in $GOPATH exist
     export GOPATH="${GOPATH}"
   else
-    export GOPATH="${HOME}/Projects/go"
+    export GOPATH="${KRATOS_GOPATH}"
   fi
 
   return 0
