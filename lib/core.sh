@@ -157,7 +157,7 @@ function CpuLogical { # Find number of logical cpu cores
   esac
 
   if [[ -z "${cputhreads}" ]] ; then
-    cputhreads="$(CpuPhysical)"
+    cputhreads=$(CpuPhysical)
   else
     cputhreads=$((${cputhreads} * $(CpuSockets)))
   fi
@@ -360,7 +360,9 @@ function LoadAll {
 
   case "${1}" in
     'modules')
-      KRATOS_MODULES=( $(find "${KRATOS_DIR}/modules" -type f -name 'main.sh') )
+      KRATOS_MODULES=( $(
+        find "${KRATOS_DIR}/modules" -type f -name 'main.sh'
+      ) )
       for MODULE in "${KRATOS_MODULES[@]}" ; do
         if [[ -f "${MODULE}" ]] ; then
           LoadModule "${MODULE}"
@@ -373,10 +375,14 @@ function LoadAll {
       ;;
     'plugins')
       for PLUGIN in "${KRATOS_PLUGINS[@]}" ; do
-        pluginExists="$(find ${KRATOS_DIR}/plugins -type f -name 'main.sh' -iwholename "*${PLUGIN}*")"
+        pluginExists="$(
+          find ${KRATOS_DIR}/plugins -type f -name 'main.sh' -iwholename "*${PLUGIN}*"
+        )"
         if [[ -f "${pluginExists}" ]] ; then
           LoadPlugin "${pluginExists}"
-          initExists="$(find $(dirname ${pluginExists}) -type f -name 'init.sh')"
+          initExists="$(
+            find $(dirname ${pluginExists}) -type f -name 'init.sh'
+          )"
           if [[ -f "${initExists}" ]] ; then
             INITS+=( "${initExists}" )
           fi
@@ -467,7 +473,7 @@ function PasswordConfirmation {
     echo
     read -s -p "Confirm: " PASS2
     echo
-    if [[ "${PASS1}" = "${PASS2}" ]] ; then
+    if [[ "${PASS1}" == "${PASS2}" ]] ; then
       break
     fi
     echo "WARNING: passwords do not match, try again"
