@@ -168,7 +168,7 @@ local branch
 
 function PromptVcsDirty { # Append '*' if vcs branch is dirty
 
-local vcsstatus=
+local vcsstatus
 
   case "$(PromptVcs)" in
     'bzr')
