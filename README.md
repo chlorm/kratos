@@ -108,3 +108,5 @@ TODO:
      configure if it doesn't exist
 * Get rid of ShellInit, this should be split into respective modules/plugins
 * Support for local config outside of dotfiles
+* Decide on variable casing scheme(camel vs. snake, etc...) (local vs. global
+   variables)
