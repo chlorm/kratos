@@ -111,4 +111,3 @@ TODO:
 * Support for local config outside of dotfiles
 * Decide on variable casing scheme(camel vs. snake, etc...) (local vs. global
    variables)
-* Convert usage of ~/.tmp to ~/.cache to complie with XDG

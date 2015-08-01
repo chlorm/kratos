@@ -5,5 +5,5 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-# Configure a user tmp directory
-DirTmp
+# Configure a user cache directory
+DirCache
