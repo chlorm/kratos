@@ -62,6 +62,7 @@ TODO:
   + Allow L1,L2,R1,&R2 prompts (where applicable for given shells)
 * [ ] Auto configure terminal color support
 * [ ] Auto configure pager
+  + [ ] Color support
 * [x] TMP directory configuration
   + [ ] tmpfs fallback solution
 * [ ] Autostarting preferred Desktop Environment(/Window Manager)
@@ -102,7 +103,7 @@ TODO:
 ### Notes
 * Look into auto-generating a plugin/module list via login shells to defer
    having to generate it with each interactive shell.
-  + Use CSC32 to see if config was modified, else ignore changes to kratos config
+  + Use CRC32 to see if config was modified, else ignore changes to kratos config
 * Defer additional checks to see if the TMP directory is configured
   + Once the TMP directory is create a file in the tmp directory and only
      configure if it doesn't exist
