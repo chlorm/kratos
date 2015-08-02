@@ -59,7 +59,8 @@ TODO:
   + [ ] Forward/Back directory history functions
 * [ ] Locale configuration
 * [ ] Prompt customization
-  + Allow L1,L2,R1,&R2 prompts (where applicable for given shells)
+  + ~~Allow L1,L2,R1,&R2 prompts (where applicable for given shells)~~
+  + Fixed, multi-purpose prompt with support for customizable colors
 * [ ] Auto configure terminal color support
 * [ ] Auto configure pager
   + [ ] Color support
