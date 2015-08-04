@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function CpuArchitecture { # Return CPU architecture without endianness or register size
+function CpuArchitecture { # Return CPU architecture without endianness or address space size
 
   # Do NOT use `uname -m' to achieve this functionality.
 
@@ -36,22 +36,22 @@ function CpuArchitecture { # Return CPU architecture without endianness or regis
 
 }
 
-function CpuRegisterSize { # Find CPU register size (ie. 32bit/64bit)
+function CpuAddressSpace { # Find CPU adress space size (ie. 32bit/64bit)
 
-  local register_size
+  local address_space
 
-  register_size=$(
+  address_space=$(
     getconf LONG_BIT |
     grep -m 1 -w -o "\(8\|16\|32\|64\|\128\)" |
     grep -op '[0-9]+'
   )
 
-  [[ -z "${register_size}" ]] || {
-    ErrError 'could not determine cpu register size'
+  [[ -z "${address_space}" ]] || {
+    ErrError 'could not determine cpu address space size'
     return 1
   }
 
-  echo "${register_size}"
+  echo "${address_space}"
 
   return 0
 
