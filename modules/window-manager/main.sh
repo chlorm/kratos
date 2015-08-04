@@ -78,7 +78,7 @@ function WindowManagerKnownExecutables {
 
 }
 
-function WindowManagerIsStacking {
+function WindowManagerSupportsStacking {
 
   # TODO: return true if window manager supports stacking
 
