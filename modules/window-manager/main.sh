@@ -33,7 +33,6 @@ function WindowManagerFindExecutable {
     'gnome3')
       echo "gnome-session" && return 0
       ;;
-    'i3')
     'kde')
       echo "startkde" && return 0
       ;;

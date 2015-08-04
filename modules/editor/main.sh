@@ -19,6 +19,7 @@ function EditorKnownExecutables {
 
   if [[ -n "${PREFERRED_EDITOR}" ]] ; then
     # find installed editors
+    echo
   fi
 
   echo "${Editor}"
