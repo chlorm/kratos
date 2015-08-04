@@ -150,52 +150,6 @@ dotfiles_update() { # Updates dotfiles and submodules
 
 }
 
-# TODO: Don't use $DISPLAY at install time to detect if the environment is graphical
-function KratosPreferredDeskenv {
-
-  for _DESKENV in "${DESKENVS_PREFERENCE[@]}" ; do
-    if PathHasBin "$(deskenvs_executable $DESKENV)" ; then
-      echo "PREFERRED_DE=$DESKENV" >> "$HOME/.local/share/kratos/preferences"
-      return 0
-    fi
-  done
-
-  ErrWarn "no preferred deskenvs found"
-
-  return 1
-
-}
-
-function KratosPreferredEditor {
-
-  for _EDITOR in "${EDITORS_PREFERENCE[@]}" ; do
-    if PathHasBin "$_EDITOR" ; then
-      echo "PREFERRED_EDITOR=\"$_EDITOR\"" >> "$HOME/.local/share/kratos/preferences"
-      return 0
-    fi
-  done
-
-  ErrWarn "no preferred editors found"
-
-  return 1
-
-}
-
-function KratosPreferredShell {
-
-  for _SHELL in "${SHELLS_PREFERENCE[@]}" ; do
-    if PathHasBin "$_SHELL" ; then
-      echo "PREFERRED_SHELL=\"$_SHELL\"" >> "$HOME/.local/share/kratos/preferences"
-      return 0
-    fi
-  done
-
-  ErrWarn "no preferred shells found"
-
-  return 1
-
-}
-
 function KratosLogo {
 
 cat <<'EOF'
@@ -302,10 +256,11 @@ function kratos {
         # Preference
         EnsureFileDestroy "${HOME}/.local/share/kratos/preferences"
         EnsureFileExists "${HOME}/.local/share/kratos/preferences"
-        KratosPreferredShell
-        KratosPreferredEditor
-        KratosPreferredDeskenv
+        ShellPreferred
+        EditorPreferred
+        WindowManagerPreferred
       fi
+
       symlink "${KRATOS_DIR}/rc/profile" "${HOME}/.profile"
 
       symlink "${KRATOS_DIR}/rc/bashrc" "${HOME}/.bashrc"
@@ -313,7 +268,6 @@ function kratos {
       symlink "${KRATOS_DIR}/rc/bash_logout" "${HOME}/.bash_logout"
 
       symlink "${KRATOS_DIR}/rc/kshrc" "${HOME}/.kshrc"
-      #symlink "${KRATOS_DIR}/rc/ksh_login" "${HOME}/.ksh_login"
 
       symlink "${KRATOS_DIR}/rc/zshrc" "${HOME}/.zshrc"
       symlink "${KRATOS_DIR}/rc/zprofile" "${HOME}/.zprofile"
@@ -322,10 +276,6 @@ function kratos {
       symlink "${KRATOS_DIR}/rc/xinitrc" "${HOME}/.xinitrc"
       symlink "${KRATOS_DIR}/rc/xprofile" "${HOME}/.xprofile"
       symlink "${KRATOS_DIR}/rc/xsession" "${HOME}/.xsession"
-
-      #symlink "${KRATOS_DIR}/systemd/kratos-init.service" "${HOME}/.config/systemd/user/kratos-init.service"
-
-      #eval . "${HOME}/.$(shell)rc"
       ;;
     'upgrade')
       ;;

@@ -7,6 +7,21 @@
 
 # http://en.wikipedia.org/wiki/Comparison_of_command_shells
 
+function ShellPreferred {
+
+  for _SHELL in "${SHELLS_PREFERENCE[@]}" ; do
+    if PathHasBin "$_SHELL" ; then
+      echo "PREFERRED_SHELL=\"$_SHELL\"" >> "$HOME/.local/share/kratos/preferences"
+      return 0
+    fi
+  done
+
+  ErrWarn "no preferred shells found"
+
+  return 1
+
+}
+
 function ShellTheme { # Setup the theme for the shell
 
   [[ "$(shell)" == 'fish' ]] && return 0

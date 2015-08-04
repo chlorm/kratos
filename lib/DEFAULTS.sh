@@ -19,17 +19,17 @@ KRATOS_CREATE_PROJECT_DIRECTORIES=true
 # ~/.local/share/trash/info
 KRATOS_CREATE_TRASH_DIRECTORIES=true
 
-# ~/.cache"       # XDG_CACHE_HOME
-# ~/.config"      # XDG_CONFIG_HOME
-# ~/.local/share" # XDG_DATA_HOME
-# ~/Desktop"      # XDG_DESKTOP_DIR
-# ~/Documents"    # XDG_DOCUMENTS_DIR
-# ~/Downloads"    # XDG_DOWNLOAD_DIR
-# ~/Music"        # XDG_MUSIC_DIR
-# ~/Pictures"     # XDG_PICTURES_DIR
-# ~/Share"        # XDG_PUBLICSHARE_DIR
-# ~/Templates"    # XDG_TEMPLATES_DIR
-# ~/Videos"       # XDG_VIDEOS_DIR
+# ~/.cache       # XDG_CACHE_HOME
+# ~/.config      # XDG_CONFIG_HOME
+# ~/.local/share # XDG_DATA_HOME
+# ~/Desktop      # XDG_DESKTOP_DIR
+# ~/Documents    # XDG_DOCUMENTS_DIR
+# ~/Downloads    # XDG_DOWNLOAD_DIR
+# ~/Music        # XDG_MUSIC_DIR
+# ~/Pictures     # XDG_PICTURES_DIR
+# ~/Share        # XDG_PUBLICSHARE_DIR
+# ~/Templates    # XDG_TEMPLATES_DIR
+# ~/Videos       # XDG_VIDEOS_DIR
 KRATOS_CREATE_XDG_DIRECTORIES=true
 
 # Go lang's $GOPATH
@@ -43,3 +43,38 @@ KRATOS_HIGH_DPI=false
 #  display to using a 4k at 13inch or other small screen sizes.  Would handle
 #  setting font size where applicable and could be tied into generated dotfiles.
 KRATOS_DPI_SCALE=1
+
+KRATOS_EDITOR_PREFERENCE=(
+  'vim'
+  'emacs'
+  'nano'
+  'vi'
+  'nvim'
+  'yi'
+)
+
+KRATOS_PAGER_PREFERENCE=(
+  'less'
+  'most'
+  'more'
+)
+
+# Only default to stacking window managers, expect users to not be familiar
+#  with tiling window managers
+# TODO: add versioning to stacking window managers
+KRATOS_WINDOW_MANAGER_PREFERENCE=(
+  'gnome3'
+  'cinnamon2'
+  'kde4'
+  'kde5'
+  'mate'
+  'xfce4'
+  'lxde'
+  'lxqt'
+  'enlightenment'
+  'budgie'
+  'deepin'
+  'hawaii'
+  'unity'
+  'pantheon'
+)

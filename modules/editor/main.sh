@@ -12,3 +12,31 @@
 #fi
 
 #export EDITOR
+
+function EditorKnownExecutables {
+
+  local Editor
+
+  if [[ -n "${PREFERRED_EDITOR}" ]] ; then
+    # find installed editors
+  fi
+
+  echo "${Editor}"
+
+}
+
+function EditorPreferred {
+
+  local PreferredEditor
+
+  for PreferredEditor in "${KRATOS_EDITOR_PREFERENCE[@]}" ; do
+    if PathHasBin "${PreferredEditor}" ; then
+      echo "KRATOS_PREFERRED_EDITOR=\"${PreferredEditor}\"" >> "${HOME}/.local/share/kratos/preferences"
+      return 0
+    fi
+  done
+
+  ErrWarn "no preferred editors found"
+  return 1
+
+}

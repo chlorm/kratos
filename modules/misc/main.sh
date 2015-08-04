@@ -10,8 +10,7 @@ function p_and_q {
 
   local STAT
 
-  STAT="${1}"
-  shift
+  STAT="${1}" ; shift
   echo $@
   exit $STAT
 
@@ -100,36 +99,6 @@ function dotfiles_dir {
 function kratos_dir {
 
   echo "$KRATOS_DIR" && return 0
-
-  return 1
-
-}
-
-function deskenvs_executable {
-
-  case "$1" in
-    'awesome')
-      echo "awesome" && return 0
-      ;;
-    'cinnamon')
-      echo "cinnamon-session" && return 0
-      ;;
-    'gnome3')
-      echo "gnome-session" && return 0
-      ;;
-    'i3')
-      echo "i3" && return 0
-      ;;
-    'kde')
-      echo "startkde" && return 0
-      ;;
-    'xfce')
-      echo "startxfce4" && return 0
-      ;;
-    'xmonad')
-      echo "xmonad" && return 0
-      ;;
-  esac
 
   return 1
 
