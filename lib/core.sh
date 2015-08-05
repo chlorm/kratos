@@ -642,6 +642,11 @@ function shell {
 
   LSHELL="$(ToLower "${LSHELL}")"
 
+  # HACK: Work around for cygwin shell detection
+  if [[ "$(OsKernel)" == 'cygwin' ]] ; then
+    LSHELL='bash'
+  fi
+
   echo "${LSHELL}"
 
 }
