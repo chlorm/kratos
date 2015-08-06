@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-export KRATOS_DIR="$(readlink -f "$(dirname "$(readlink -f "${0}")")")/"
+export KRATOS_DIR="$(readlink -f "$(dirname "$(readlink -f "${0}")")")"
 export DOTFILES_DIR="${HOME}/.dotfiles"
 
 if [ -z "$KRATOS_DIR" ] ; then
