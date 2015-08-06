@@ -13,7 +13,7 @@ function CpuArchitecture { # Return CPU architecture without endianness or addre
 
   case "$(OsKernel)" in
     'cygwin')
-      case "$(echo ${PROCESSOR_ARCHITECTURE})" in
+      case "${PROCESSOR_ARCHITECTURE}" in
         'AMD64')
           architecture='x86_64'
           ;;
