@@ -30,7 +30,7 @@ function CpuArchitecture { # Return CPU architecture without endianness or addre
     'linux')
       architecture="$(
         lscpu |
-        grep -m 1 -w -o "\(arm\|i686\|x86_64\)"
+        grep --max-count 1 --word-regexp --only-matching "\(arm\|i686\|x86_64\)"
       )"
       ;;
   esac
@@ -52,8 +52,8 @@ function CpuAddressSpace { # Find CPU adress space size (ie. 32bit/64bit)
 
   address_space=$(
     getconf LONG_BIT |
-    grep -m 1 -w -o "\(8\|16\|32\|64\|\128\)" |
-    grep -op '[0-9]+'
+    grep --max-count 1 --word-regexp --only-matching "\(8\|16\|32\|64\|\128\)" |
+    grep --only-matching -p '[0-9]+'
   )
 
   [[ -z "${address_space}" ]] || {
@@ -75,8 +75,8 @@ function CpuSockets {
     'linux')
       SOCKETS="$(
         lscpu |
-        grep -m 1 'Socket(s):' |
-        grep -oP "[0-9]+"
+        grep --max-count 1 'Socket(s):' |
+        grep --only-matching --perl-regexp "[0-9]+"
       )"
       ;;
   esac
@@ -103,21 +103,21 @@ function CpuPhysical { # Find number of physical cpu cores
     'linux')
       cpucores=$(
         lscpu |
-        grep -m 1 'Core(s) per socket:' |
-        grep -oP '[0-9]+'
+        grep --max-count 1 'Core(s) per socket:' |
+        grep --only-matching --perl-regexp '[0-9]+'
       )
       ;;
     'darwin')
       cpucores=$(
         sysctl hw |
-        grep -m 1 "hw.physicalcpu:" |
-        grep -oP '[0-9]+'
+        grep --max-count 1 "hw.physicalcpu:" |
+        grep --only-matching --perl-regexp '[0-9]+'
       )
       ;;
     'cygwin')
       cpucores=$(
         NUMBER_OF_PROCESSORS |
-        grep -oP '[0-9]+'
+        grep --only-matching --perl-regexp '[0-9]+'
       )
       ;;
   esac
@@ -146,8 +146,8 @@ function CpuLogical { # Find number of logical cpu cores
       # Finds number of logical threads per physical core
       cputhreads=$(
         lscpu |
-        grep -m 1 'Thread(s) per core:' |
-        grep -oP '[0-9]+'
+        grep --max-count 1 'Thread(s) per core:' |
+        grep --only-matching --perl-regexp '[0-9]+'
       )
       if [[ -n "${cputhreads}" ]] ; then
         # Convert to number of threads per cpu
@@ -157,8 +157,8 @@ function CpuLogical { # Find number of logical cpu cores
     'darwin')
       cputhreads=$(
         sysctl hw |
-        grep -m 1 "hw.logicalcpu:" |
-        grep -oP '[0-9]+'
+        grep --max-count 1 "hw.logicalcpu:" |
+        grep --only-matching --perl-regexp '[0-9]+'
       )
       ;;
     'cygwin')
@@ -415,11 +415,23 @@ function LoadAll {
 
 function OsKernel { # Find host os kernel
 
+  function OsKernelOstype {
+
+    echo "${OSTYPE}" > /dev/null 2>&1
+
+  }
+
+  function OsKernelUname {
+
+    uname -s 2> /dev/null
+
+  }
+
   local KERNEL
 
   KERNEL=$(
-    ToLower $(uname -s) $(echo ${OSTYPE}) |
-    grep -m 1 -w -o '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)'
+    ToLower "$(OsKernelOstype) $(OsKernelUname)" |
+    grep --max-count 1 --word-regexp --only-matching '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)'
   )
 
   if [[ -z "${KERNEL}" ]] ; then
@@ -437,7 +449,7 @@ function OsLinux { # Take first result of linux os name match
 
   function OsLinuxRelease { # Finds linux distro via /etc/*-release
 
-    cat $ROOT/etc/*-release 2> /dev/null
+    cat ${ROOT}/etc/*-release 2> /dev/null
 
   }
 
@@ -459,7 +471,7 @@ function OsLinux { # Take first result of linux os name match
 
   LINUX="$(
     ToLower "$(OsLinuxRelease) $(OsLinuxUname) $(OsLinuxLsb)" |
-    grep -m 1 -w -o '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)'
+    grep --max-count 1 --word-regexp --only-matching '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)'
   )"
 
   if [[ -z "${LINUX}" ]] ; then
@@ -525,11 +537,13 @@ function PathBin { # Finds the path to the binary
 
   case "$(shell)" in
     'bash')
-      type "${1}" | awk '{print $3 ; exit}'
+      type "${1}" |
+      awk '{print $3 ; exit}'
       return 0
       ;;
     'ksh'|'pdksh'|'zsh')
-      whence -p "${1}" | awk '{print $3 ; exit}'
+      whence -p "${1}" |
+      awk '{print $3 ; exit}'
       return 0
       ;;
   esac
