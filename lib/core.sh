@@ -12,6 +12,16 @@ function CpuArchitecture { # Return CPU architecture without endianness or addre
   local architecture
 
   case "$(OsKernel)" in
+    'cygwin')
+      case "$(echo ${PROCESSOR_ARCHITECTURE})" in
+        'AMD64')
+          architecture='x86_64'
+          ;;
+        'x86')
+          architecture='i686'
+          ;;
+      esac
+      ;;
     'darwin')
       # TODO: use sysctl on Darwin
       ErrError 'darwin support not implemented'
