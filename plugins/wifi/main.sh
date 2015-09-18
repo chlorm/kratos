@@ -12,7 +12,9 @@
 # Add wpa_supplicant support
 # Maybe convert wifi -> net (lan,wan,wlan, etc...)
 
-function WirelessInterface { # Find wireless interface name
+function WirelessInterface {
+
+  # Find wireless interface name
 
   nmcli d | awk '/802-11-wireless/ {print $1 ; exit}'
 

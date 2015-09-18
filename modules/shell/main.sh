@@ -22,7 +22,9 @@ function ShellPreferred {
 
 }
 
-function ShellTheme { # Setup the theme for the shell
+function ShellTheme {
+
+  # Setup the theme for the shell
 
   [[ "$(shell)" == 'fish' ]] && return 0
 
@@ -55,7 +57,9 @@ function ShellTheme { # Setup the theme for the shell
 
 }
 
-function ShellInit { # Initializes useful functions
+function ShellInit {
+
+  # Initializes useful functions
 
   alias root="SudoWrap su -"
   alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"

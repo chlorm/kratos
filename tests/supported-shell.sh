@@ -8,8 +8,9 @@
 # This should include tests for anything used that is not part of the POSIX spec
 # to test shell compatibility with Kratos.
 
-# BASH style arrays are used throughout Kratos
 function shell_array_test {
+
+  # BASH style arrays are used throughout Kratos
 
   local TEST_FOR_ARRAY_SUPPORT=('823')
 
@@ -22,9 +23,10 @@ function shell_array_test {
 }
 shell_array_test
 
-# Kratos uses the `function <function name>' method to declare functions
-# instead of the Bourne/POSIX `<function name>()' method
 function function_definition_test {
+
+  # Kratos uses the `function <function name>' method to declare functions
+  # instead of the Bourne/POSIX `<function name>()' method
 
   return 0
 

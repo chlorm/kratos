@@ -5,7 +5,9 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function PromptColor { # Get colors for the current shell
+function PromptColor {
+
+  # Get colors for the current shell
 
   if [[ "$(shell)" == 'zsh' ]] ; then
     echo -n '%{'
@@ -89,7 +91,9 @@ function PromptColor { # Get colors for the current shell
 
 }
 
-function PromptVcs { # Determine if the current directory is a vcs repo
+function PromptVcs {
+
+  # Determine if the current directory is a vcs repo
 
   if ${PathHasBinGIT} ; then
     if git status > /dev/null 2>&1 ; then
@@ -130,7 +134,9 @@ function PromptVcs { # Determine if the current directory is a vcs repo
 
 }
 
-function PromptVcsBranch { # Return current vcs branch
+function PromptVcsBranch {
+
+  # Return current vcs branch
 
 local branch
 
@@ -166,9 +172,11 @@ local branch
 
 }
 
-function PromptVcsDirty { # Append '*' if vcs branch is dirty
+function PromptVcsDirty {
 
-local vcsstatus
+  # Append '*' if vcs branch is dirty
+
+  local vcsstatus
 
   case "$(PromptVcs)" in
     'bzr')
@@ -202,7 +210,9 @@ local vcsstatus
 
 }
 
-function PromptConfigure { # Create prompt
+function PromptConfigure {
+
+  # Create prompt
 
   case "$(shell)" in
     'zsh') # Must use single quotes to delay evaluation

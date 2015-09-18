@@ -15,7 +15,9 @@ git_cd() {
 
 }
 
-git_cbr() { # Gets the current git branch
+git_cbr() {
+
+  # Gets the current git branch
 
   git_cd $1 || return 1
 
@@ -23,7 +25,9 @@ git_cbr() { # Gets the current git branch
 
 }
 
-git_pull() { # Updates the root git tree
+git_pull() {
+
+  # Updates the root git tree
 
   # Returns 2 if failed, 1 if updated, 0 if up-to-date
 
@@ -37,7 +41,9 @@ git_pull() { # Updates the root git tree
 
 }
 
-git_pull_nostat() { # Updates the root git tree and only returns >0 on error
+git_pull_nostat() {
+
+  # Updates the root git tree and only returns >0 on error
 
   git_pull $@
   case $? in
@@ -51,7 +57,9 @@ git_pull_nostat() { # Updates the root git tree and only returns >0 on error
 
 }
 
-git_sub_init() { # Initialize git submodules
+git_sub_init() {
+
+  # Initialize git submodules
 
   # Returns 2 if failed, 1 if initialized, 0 if up-to-date
 
@@ -78,7 +86,9 @@ git_sub_init_one() {
 }
 
 
-git_sub_pull() { # Update the submodules
+git_sub_pull() {
+
+  # Update the submodules
 
   # Returns 2 if failed, 1 if updated, 0 if up-to-date
 
@@ -90,7 +100,9 @@ git_sub_pull() { # Update the submodules
 
 }
 
-dotfiles_latest() { # Gets the latest version of the dotfiles
+dotfiles_latest() {
+
+  # Gets the latest version of the dotfiles
 
   # Returns 2 if failed, 1 if updated, 0 if up-to-date
 
@@ -135,7 +147,9 @@ dotfiles_latest() { # Gets the latest version of the dotfiles
 
 }
 
-dotfiles_update() { # Updates dotfiles and submodules
+dotfiles_update() {
+
+  # Updates dotfiles and submodules
 
   dotfiles_latest
   case $? in

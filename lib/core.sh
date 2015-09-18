@@ -5,7 +5,9 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function CpuArchitecture { # Return CPU architecture without endianness or address space size
+function CpuArchitecture {
+
+  # Return CPU architecture without endianness or address space size
 
   # Do NOT use `uname -m' to achieve this functionality.
 
@@ -46,7 +48,9 @@ function CpuArchitecture { # Return CPU architecture without endianness or addre
 
 }
 
-function CpuAddressSpace { # Find CPU adress space size (ie. 32bit/64bit)
+function CpuAddressSpace {
+
+  # Find CPU adress space size (ie. 32bit/64bit)
 
   local address_space
 
@@ -92,7 +96,9 @@ function CpuSockets {
 
 }
 
-function CpuPhysical { # Find number of physical cpu cores
+function CpuPhysical {
+
+  # Find number of physical cpu cores
 
   # Assumes all sockets are identical, only some arm platforms won't
   # work with this logic.
@@ -134,7 +140,9 @@ function CpuPhysical { # Find number of physical cpu cores
 
 }
 
-function CpuLogical { # Find number of logical cpu cores
+function CpuLogical {
+
+  # Find number of logical cpu cores
 
   # Assumes all sockets are identical, only some arm platforms won't
   # work with this logic
@@ -178,7 +186,9 @@ function CpuLogical { # Find number of logical cpu cores
 
 }
 
-function download { # Find download utility on system
+function download {
+
+  # Find download utility on system
 
   if PathHasBin 'curl' ; then
       curl -sOL $@ && return 0
@@ -305,7 +315,9 @@ function ErrWarn {
 
 }
 
-function IsRoot { # Determine if the user is root
+function IsRoot {
+
+  # Determine if the user is root
 
   [[ $(id -u) -eq 0 ]] || return 1
 
@@ -313,7 +325,9 @@ function IsRoot { # Determine if the user is root
 
 }
 
-function LoadInit { # Source Inits
+function LoadInit {
+
+  # Source Inits
 
   if [[ -n "$(echo "$1" | grep '\(~$\|^#\)')" ]] ; then
     return 0
@@ -328,7 +342,9 @@ function LoadInit { # Source Inits
 
 }
 
-function LoadModule { # Source Modules
+function LoadModule {
+
+  # Source Modules
 
   if [[ -n "$(echo "$1" | grep '\(~$\|^#\)')" ]] ; then
     return 0
@@ -413,7 +429,9 @@ function LoadAll {
 
 }
 
-function OsKernel { # Find host os kernel
+function OsKernel {
+
+  # Find host os kernel
 
   function OsKernelOstype {
 
@@ -445,21 +463,29 @@ function OsKernel { # Find host os kernel
 
 }
 
-function OsLinux { # Take first result of linux os name match
+function OsLinux {
 
-  function OsLinuxRelease { # Finds linux distro via /etc/*-release
+  # Take first result of linux os name match
+
+  function OsLinuxRelease {
+
+    # Finds linux distro via /etc/*-release
 
     cat ${ROOT}/etc/*-release 2> /dev/null
 
   }
 
-  function OsLinuxUname { # Finds linux distro via uname -a
+  function OsLinuxUname {
+
+    # Finds linux distro via uname -a
 
     uname -a 2> /dev/null
 
   }
 
-  function OsLinuxLsb { # Find linux distro via linux standard base
+  function OsLinuxLsb {
+
+    # Find linux distro via linux standard base
 
     lsb_release -a 2> /dev/null
 
@@ -507,7 +533,9 @@ function PasswordConfirmation {
 
 }
 
-function PathAdd { # Add direcory to $PATH
+function PathAdd {
+
+  # Add direcory to $PATH
 
   if [[ -z "$(echo "${PATH}" | grep "${1}" 2> /dev/null)" && -d "${1}" ]] ; then
     export PATH="${PATH}:${1}"
@@ -517,7 +545,9 @@ function PathAdd { # Add direcory to $PATH
 
 }
 
-function PathRemove { # Remove directory from $PATH
+function PathRemove {
+
+  # Remove directory from $PATH
 
   if [[ -n "$(echo "${PATH}" | grep "$1" 2> /dev/null)" ]] ; then
     export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`
@@ -527,7 +557,9 @@ function PathRemove { # Remove directory from $PATH
 
 }
 
-function PathBin { # Finds the path to the binary
+function PathBin {
+
+  # Finds the path to the binary
 
   if [[ $# -ne 1 ]] ; then
     return 2
@@ -552,7 +584,9 @@ function PathBin { # Finds the path to the binary
 
 }
 
-function PathBinAbs { # Resolves the absolute path of the binary
+function PathBinAbs {
+
+  # Resolves the absolute path of the binary
 
   local BIN
 
@@ -566,7 +600,9 @@ function PathBinAbs { # Resolves the absolute path of the binary
 
 }
 
-function PathHasBin { # Test to see if a binary exists in the path
+function PathHasBin {
+
+  # Test to see if a binary exists in the path
 
   [[ $# -ne 1 ]] && return 2
 
@@ -598,7 +634,9 @@ function PathHasBinErr {
 
 }
 
-function ProcExists { # Checks to see if the process is running
+function ProcExists {
+
+  # Checks to see if the process is running
 
   if [[ $# -ne 1 ]] ; then
     return 1
@@ -608,7 +646,9 @@ function ProcExists { # Checks to see if the process is running
 
 }
 
-function ProcPidFile { # Checks the pidfile to see if the process is running
+function ProcPidFile {
+
+  # Checks the pidfile to see if the process is running
 
   if [[ -f "${1}" ]] ; then
   	ProcExists "$(cat ${1} 2> /dev/null)"
@@ -616,7 +656,9 @@ function ProcPidFile { # Checks the pidfile to see if the process is running
 
 }
 
-function RunQuiet { # Start an application in the background
+function RunQuiet {
+
+  # Start an application in the background
 
   PathHasBin "${1}" || return 1
 
@@ -632,8 +674,9 @@ function RunQuiet { # Start an application in the background
 
 }
 
-# Returns the shell executing the current script
 function shell {
+
+  # Returns the shell executing the current script
 
   local LSHELL
   local LPROC
@@ -675,7 +718,9 @@ function shell {
 
 }
 
-function SudoWrap { # Wraps the command in sudo if sudo exists and runs it
+function SudoWrap {
+
+  # Wraps the command in sudo if sudo exists and runs it
 
   if PathHasBin 'sudo' ; then
     sudo $@
@@ -687,7 +732,9 @@ function SudoWrap { # Wraps the command in sudo if sudo exists and runs it
 
 }
 
-function StoreAsVar { # Stores the output of the command into a variable without a subshell
+function StoreAsVar {
+
+  # Stores the output of the command into a variable without a subshell
 
   local VAR
   local TMP
@@ -706,7 +753,9 @@ function StoreAsVar { # Stores the output of the command into a variable without
 
 }
 
-function symlink { # Create a symbolic link $1 -> $2
+function symlink {
+
+  # Create a symbolic link $1 -> $2
 
   EnsureDirExists "$(dirname "${2}")"
   if [[ "$(readlink -f "${2}")" != "${1}" ]] ; then
@@ -735,7 +784,9 @@ function ToUpper {
 
 }
 
-function YorN { # Ask a yes or no question
+function YorN {
+
+  # Ask a yes or no question
 
   local ANSWER
   local DEFAULT

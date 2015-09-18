@@ -5,13 +5,17 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function bat { # Use acpi if possible
+function bat {
+
+  # Use acpi if possible
 
   acpi -b 2> /dev/null || BatSys
 
 }
 
-function BatSys { # Gets the string representing the state of the batteries
+function BatSys {
+
+  # Gets the string representing the state of the batteries
 
   local BAT
   local BATS
