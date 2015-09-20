@@ -12,12 +12,15 @@ export DOTFILES_DIR="${HOME}/.dotfiles"
 if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   . "${KRATOS_DIR}/lib/core.sh"
   . "${KRATOS_DIR}/lib/DEFAULTS.sh"
-  [[ -f "${HOME}/.local/share/kratos/preferences" ]] && \
+  [[ -f "${HOME}/.local/share/kratos/preferences" ]] && {
     . "${HOME}/.local/share/kratos/preferences"
-  [[ -f "${HOME}/.local/share/kratos/is-installed" ]] && \
+  }
+  [[ -f "${HOME}/.local/share/kratos/is-installed" ]] && {
     . "${HOME}/.local/share/kratos/is-installed"
-  [[ -f "${HOME}/.config/kratos/config" ]] && \
+  }
+  [[ -f "${HOME}/.config/kratos/config" ]] && {
     . "${HOME}/.config/kratos/config"
+  }
 fi
 
 if [[ "${PREFERRED_SHELL}" != "$(shell)" && -n "${PREFERRED_SHELL}" ]] ; then
