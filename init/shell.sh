@@ -34,10 +34,8 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
 
   PathAdd "${HOME}/.bin"
 
-  ShellTmp
   ShellTheme
   ShellInit
-  PromptConfigure
 
   KRATOS_SHELL_INIT=true
 fi
