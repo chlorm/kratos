@@ -79,6 +79,10 @@ function EditorEnvVar {
     KRATOS_PREFERRED_EDITOR="$(EditorKnownExecutables)"
   fi
 
+  if [[ -z "${KRATOS_EDITOR_ARGS}" ]] ; then
+    KRATOS_EDITOR_ARGS="$(EditorDefaultArgs)"
+  fi
+
   export EDITOR="${KRATOS_PREFERRED_EDITOR} ${KRATOS_EDITOR_ARGS}"
 
 }
