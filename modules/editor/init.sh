@@ -6,3 +6,5 @@
 # the `LICENSE' file in the top level source directory.
 
 EditorEnvVar
+
+alias edit="${EDITOR}"

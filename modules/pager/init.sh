@@ -7,6 +7,7 @@
 
 # Support for colored manpages and maybe setting the system pager
 
+# TODO: make pager configurable (more/most/less)
 export MANPAGER='less'
 export PAGER='less'
 

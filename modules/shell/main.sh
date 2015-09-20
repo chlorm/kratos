@@ -10,18 +10,19 @@
 function ShellPreferred {
 
   for _SHELL in "${SHELLS_PREFERENCE[@]}" ; do
-    if PathHasBin "$_SHELL" ; then
-      echo "PREFERRED_SHELL=\"$_SHELL\"" >> "$HOME/.local/share/kratos/preferences"
+    if PathHasBin "${_SHELL}" ; then
+      echo "PREFERRED_SHELL=\"${_SHELL}\"" >> "$HOME/.local/share/kratos/preferences"
       return 0
     fi
   done
 
-  ErrWarn "no preferred shells found"
+  ErrWarn 'no preferred shells found'
 
   return 1
 
 }
 
+# Deprecated 
 function ShellTheme {
 
   # Setup the theme for the shell
@@ -57,43 +58,11 @@ function ShellTheme {
 
 }
 
+# Deprecated 
 function ShellInit {
 
-  # Initializes useful functions
+  export BLOCKSIZE='K'
 
-  alias root="SudoWrap su -"
-  alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
-  alias nixpaste="curl -F 'text=<-' http://nixpaste.noip.me"
-  #alias t='laptop_bat ; date'
-  alias youtube="youtube-dl --max-quality --no-check-certificate --prefer-insecure --console-title"
-  alias music="ncmpcpp"
-  alias tarxz="tar cjvf"
-  alias emacs="emacs -nw"
-  # Btrfs
-  alias defragmentroot="sudo btrfs filesystem defragment -r -v /"
-  alias defragmenthome="sudo btrfs filesystem defragment -r -v /home"
-  # Gentoo
-  if [[ "$(OsLinux)" == 'gentoo' ]] ; then
-    alias inst="sudo emerge --ask"
-    alias search="emerge --search"
-    alias uses="equery uses"
-    alias layup="sudo layman -S"
-  fi
-
-  # Environment Variables
-
-  if [[ "${PREFERED_EDITOR}" = 'emacs' ]] ; then
-    export EDITOR="emacs -nw"
-  else
-    export EDITOR="${PREFERED_EDITOR}"
-  fi
-  export BLOCKSIZE="K"
-  # Locale/UTF-8
-  export LANG=en_US.UTF-8
-  export LANGUAGE=en_US.UTF-8
-  export LC_ALL=en_US.UTF-8
-  export PERL_UTF8_LOCALE=1
-  export PERL_UNICODE=AS
   # Prevent GUI password dialog
   unset SSH_ASKPASS
 

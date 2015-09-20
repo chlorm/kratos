@@ -12,12 +12,12 @@ function WindowManagerPreferred {
 
   for window_manager in "${WINDOW_MANAGER_PREFERENCE[@]}" ; do
     if PathHasBin "$(window_manager_executable "${window_manager}")" ; then
-      echo "PREFERRED_WM=${window_manager}" >> "${HOME}/.local/share/kratos/preferences"
+      echo "PREFERRED_WM='${window_manager}'" >> "${HOME}/.local/share/kratos/preferences"
       return 0
     fi
   done
 
-  ErrWarn "no preferred deskenvs found"
+  ErrWarn 'no preferred deskenvs found'
   return 1
 
 }
@@ -26,11 +26,11 @@ function WindowManagerFindExecutable {
 
   # If a match isn't found it is assumed that ${1} is the executable name
 
-  case "$1" in
+  case "${1}" in
     'cinnamon')
       echo "cinnamon-session" && return 0
       ;;
-    'gnome3')
+    'gnome')
       echo "gnome-session" && return 0
       ;;
     'kde')
@@ -54,7 +54,8 @@ function WindowManagerKnownExecutables {
   local known_executables
 
   # Listed in order of preference
-  # Stacking WMs should be listed first, assume the user may be unfamiliar with tiling
+  # Stacking WMs should be listed first, assume the user may be unfamiliar
+  # with tiling
   known_executables=(
     'gnome-session'
     'cinnamon-session'
