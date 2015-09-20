@@ -241,7 +241,8 @@ function DotfilesHook {
             echo -ne "Installing: ${DOTFILE}"\\r
           fi
 
-          # TODO: add logic to prevent from following symlinked directory paths, may not be necessary
+          # TODO: add logic to prevent from following symlinked directory paths,
+          #       may not be necessary
           EnsureFileDestroy "${HOME}/.$(
                               echo "${DOTFILE}" |
                               sed -e "s|${DOTFILES_DIR}\/||"
