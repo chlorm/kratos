@@ -14,7 +14,7 @@
 . "$(readlink -f $(dirname $(readlink -f ${HOME}/.kshrc))/../)/init/shell.sh"
 
 # Load the local config
-if [ -f "${HOME}/.kshrc.local" ] ; then
+if [[ -f "${HOME}/.kshrc.local" ]] ; then
   . "${HOME}/.kshrc.local"
 fi
 

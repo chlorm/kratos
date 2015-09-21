@@ -10,12 +10,12 @@
 [[ -o interactive ]] || return
 
 setopt PROMPT_SUBST
-alias sudo="nocorrect sudo"
+alias sudo='nocorrect sudo'
 
 # Load shell configuration loader
 . "$(readlink -f $(dirname $(readlink -f ${HOME}/.zshrc))/../)/init/shell.sh"
 
 # Load the local config
-if [ -f "${HOME}/.zshrc.local" ] ; then
+if [[ -f "${HOME}/.zshrc.local" ]] ; then
   . "${HOME}/.zshrc.local"
 fi

@@ -13,7 +13,7 @@
 . "$(readlink -f $(dirname $(readlink -f ${HOME}/.zprofile))/../)/init/login.sh"
 
 # Load the local config
-if [ -f "${HOME}/.bash_login.local" ] ; then
+if [[ -f "${HOME}/.bash_login.local" ]] ; then
   . "${HOME}/.bash_login.local"
 fi
 

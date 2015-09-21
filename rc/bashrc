@@ -14,7 +14,7 @@
 . "$(readlink -f $(dirname $(readlink -f ${HOME}/.bashrc))/../)/init/shell.sh"
 
 # Load the local config
-if [ -f "${HOME}/.bashrc.local" ] ; then
+if [[ -f "${HOME}/.bashrc.local" ]] ; then
   . "${HOME}/.bashrc.local"
 fi
 
