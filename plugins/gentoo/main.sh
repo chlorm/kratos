@@ -4,3 +4,11 @@
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
+
+# Gentoo
+if [[ "$(OsLinux)" == 'gentoo' ]] ; then
+  alias inst="sudo emerge --ask"
+  alias search="emerge --search"
+  alias uses="equery uses"
+  alias layup="sudo layman -S"
+fi
