@@ -9,10 +9,8 @@ function HistoryShell {
 
   # Create the temporary history file for the shell
 
-  local TMP
-
-  if TMP=$(DirCache) ; then
-    export HISTFILE="${TMP}/history.$(shell)"
+  if [[ -d "${HOME}/.cache" ]] ; then
+    export HISTFILE="${HOME}/.cache/history.$(shell)"
     export HISTSIZE=10000
     export SAVEHIST=10000
   else
