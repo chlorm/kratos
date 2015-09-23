@@ -212,6 +212,15 @@ function PromptVcsDirty {
 
 function PromptConfigure {
 
+  # Setup Special Colors
+  if IsRoot ; then
+    NCOLOR="$(PromptColor cyan 0)"
+  else
+    NCOLOR="$(PromptColor white 1)"
+  fi
+
+  DCOLOR="$(PromptColor yellow 1)"
+
   # Create prompt
 
   case "$(shell)" in

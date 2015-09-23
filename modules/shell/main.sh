@@ -9,6 +9,8 @@
 
 function ShellPreferred {
 
+  local _SHELL
+
   for _SHELL in "${SHELLS_PREFERENCE[@]}" ; do
     if PathHasBin "${_SHELL}" ; then
       echo "PREFERRED_SHELL=\"${_SHELL}\"" >> "$HOME/.local/share/kratos/preferences"
@@ -19,41 +21,5 @@ function ShellPreferred {
   ErrWarn 'no preferred shells found'
 
   return 1
-
-}
-
-# Deprecated 
-function ShellTheme {
-
-  # Setup the theme for the shell
-
-  [[ "$(shell)" == 'fish' ]] && return 0
-
-  # Colors for LS
-  case "$(OsKernel)" in
-    'linux'|'cygwin')
-      eval "$(dircolors -b)"
-      alias ls='ls --color=auto'
-      ;;
-    'freebsd')
-      export CLICOLOR=1
-      export LSCOLORS='ExGxFxdxCxDhDxaBadaCeC'
-      ;;
-  esac
-
-  # 256 Colors in the Terminal
-#  if [ "$TERM" = "xterm" ] || [ "$TERM" = "rxvt-unicode-256color" ] ; then
-#    export TERM="xterm-256color"
-#    unset COLORTERM
-#  fi
-
-  # Setup Special Colors
-  if IsRoot ; then
-    NCOLOR="$(PromptColor cyan 0)"
-  else
-    NCOLOR="$(PromptColor white 1)"
-  fi
-
-  DCOLOR="$(PromptColor yellow 1)"
 
 }

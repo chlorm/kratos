@@ -14,9 +14,21 @@
 
 # if isTTY, then try fbterm else false
 
+# Colors for LS
+case "$(OsKernel)" in
+  'linux'|'cygwin')
+    eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    ;;
+  'freebsd')
+    export CLICOLOR=1
+    export LSCOLORS='ExGxFxdxCxDhDxaBadaCeC'
+    ;;
+esac
+
 function TermClrs {
 
-  if [ "${TERM}" == 'xterm' ] ; then
+  if [ "${TERM}" == 'xterm' ] || [ "$TERM" = "rxvt-unicode-256color" ] ; then
 
     # See if xterm supports 256 color
     if [ -n "${VTE_VERSION}" ] ; then
