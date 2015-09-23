@@ -29,8 +29,8 @@ if [[ "${PREFERRED_SHELL}" != "$(shell)" && -n "${PREFERRED_SHELL}" ]] ; then
 fi
 
 if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
-  LoadAll 'modules'
-  LoadAll 'plugins'
+  LoadAll 'main'
+  LoadAll 'init'
 
   PathAdd "${HOME}/.bin"
 

@@ -325,50 +325,20 @@ function IsRoot {
 
 }
 
-function LoadInit {
+function LoadOne {
 
   # Source Inits
 
-  if [[ -n "$(echo "$1" | grep '\(~$\|^#\)')" ]] ; then
+  if [[ -n "$(echo "${1}" | grep '\(~$\|^#\)')" ]] ; then
     return 0
   fi
 
   . "${1}" || {
-    ErrError "Failed to load init: ${1}"
+    ErrError "Failed to load: ${1}"
     return 1
   }
 
   return 0
-
-}
-
-function LoadModule {
-
-  # Source Modules
-
-  if [[ -n "$(echo "$1" | grep '\(~$\|^#\)')" ]] ; then
-    return 0
-  fi
-
-  . "${1}" || {
-    ErrError "Failed to load module: ${1}"
-    return 1
-  }
-
-  return 0
-
-}
-
-function LoadPlugin {
-
-  if [[ -n "$(echo "$1" | grep '\(~$\|^#\)')" ]] ; then
-    return 0
-  fi
-
-  . "${1}" || {
-    ErrError "Failed to load plugin: ${1}"
-    return 1
-  }
 
 }
 
@@ -376,53 +346,27 @@ function LoadAll {
 
   local INIT
   local INITS
-  local initExists
-  local KRATOS_MODULES
-  local MODULES
   local PLUGIN
-  local pluginExists
+  local pluginLoaderExists
 
   INITS=()
 
-  case "${1}" in
-    'modules')
-      KRATOS_MODULES=( $(
-        find "${KRATOS_DIR}/modules" -type f -name 'main.sh'
-      ) )
-      for MODULE in "${KRATOS_MODULES[@]}" ; do
-        if [[ -f "${MODULE}" ]] ; then
-          LoadModule "${MODULE}"
-          initExists="$(find $(dirname ${MODULE}) -type f -name 'init.sh')"
-          if [[ -f "${initExists}" ]] ; then
-            INITS+=( "${initExists}" )
-          fi
-        fi
-      done
-      ;;
-    'plugins')
-      for PLUGIN in "${KRATOS_PLUGINS[@]}" ; do
-        pluginExists="$(
-          find ${KRATOS_DIR}/plugins -type f -name 'main.sh' -iwholename "*${PLUGIN}*"
-        )"
-        if [[ -f "${pluginExists}" ]] ; then
-          LoadPlugin "${pluginExists}"
-          initExists="$(
-            find $(dirname ${pluginExists}) -type f -name 'init.sh'
-          )"
-          if [[ -f "${initExists}" ]] ; then
-            INITS+=( "${initExists}" )
-          fi
-        fi
-      done
-      ;;
-    *)
-      ErrError "unknown loader: \`${1}'"
-      return 1
-      ;;
-  esac
+  INITS+=(
+    # Modules
+    $(find "${KRATOS_DIR}/modules" -type f -name "${1}.sh")
+    # Active plugins
+    $(for PLUGIN in "${KRATOS_PLUGINS[@]}" ; do
+      pluginLoaderExists="$(
+        find ${KRATOS_DIR}/plugins -type f -name "${1}.sh" -iwholename "*${PLUGIN}*"
+      )"
+      if [[ -f "${pluginLoaderExists}" ]] ; then
+        echo "${pluginLoaderExists}"
+      fi
+    done)
+  )
 
   for INIT in "${INITS[@]}" ; do
-    LoadInit "${INIT}"
+    LoadOne "${INIT}"
   done
 
   return 0

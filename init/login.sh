@@ -11,3 +11,6 @@
 # - Tmp directory
 # - Create a method to determine if login.sh has been run, otherwise run it from
 #   init/shell.sh, before executing the contents of shell.sh
+
+LoadAll 'main'
+LoadAll 'login'
