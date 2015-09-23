@@ -7,6 +7,7 @@
 
 # TODO:
 # Figure out what should be spawned by login shells
-
-# TODO:
-# Check for Kratos and plugin updates
+# - Automatic Updater
+# - Tmp directory
+# - Create a method to determine if login.sh has been run, otherwise run it from
+#   init/shell.sh, before executing the contents of shell.sh
