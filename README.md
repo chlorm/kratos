@@ -108,7 +108,6 @@ TODO:
 * Defer additional checks to see if the TMP directory is configured
   + Once the TMP directory is create a file in the tmp directory and only
      configure if it doesn't exist
-* Get rid of ShellInit, this should be split into respective modules/plugins
 * Support for local config outside of dotfiles
 * Decide on variable casing scheme(camel vs. snake, etc...) (local vs. global
    variables)

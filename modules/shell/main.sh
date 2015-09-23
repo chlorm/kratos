@@ -57,13 +57,3 @@ function ShellTheme {
   DCOLOR="$(PromptColor yellow 1)"
 
 }
-
-# Deprecated 
-function ShellInit {
-
-  export BLOCKSIZE='K'
-
-  # Prevent GUI password dialog
-  unset SSH_ASKPASS
-
-}
