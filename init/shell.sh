@@ -34,7 +34,5 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
 
   PathAdd "${HOME}/.bin"
 
-  ShellTheme
-
   KRATOS_SHELL_INIT=true
 fi
