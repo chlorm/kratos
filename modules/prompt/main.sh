@@ -9,11 +9,7 @@ function PromptColor {
 
   # Get colors for the current shell
 
-  if [[ "$(shell)" == 'zsh' ]] ; then
-    echo -n '%{'
-  else
-    echo -n '\['
-  fi
+  echo -n '%{'
 
   case "${1}" in
     'black')
@@ -83,11 +79,7 @@ function PromptColor {
       ;;
   esac
 
-  if [[ "$(shell)" == 'zsh' ]] ; then
-    echo -n '%}'
-  else
-    echo -n '\]'
-  fi
+  echo -n '%}'
 
 }
 
@@ -95,9 +87,24 @@ function PromptVcs {
 
   # Determine if the current directory is a vcs repo
 
+  local vcs_is_repo
+  local vcs_branch
+  local vcs_status
+
   if ${PathHasBinGIT} ; then
-    if git status > /dev/null 2>&1 ; then
-      echo 'git'
+    if vcs_is_repo=$(git status 2>&1) ; then
+      vcs_branch="$(
+        echo "${vcs_is_repo}" |
+        grep -m 1 'On branch' |
+        awk '{for(i=3;i<=NF;++i)print $i}'
+      )"
+      vcs_status="$(
+        if [[ -z "$(echo $vcs_is_repo |
+          grep -m 1 -w -o 'working directory clean')" ]] ; then
+          echo "*"
+        fi
+      )"
+      echo -e "$(PromptColor green 0)git$(PromptColor black 1)∫$(PromptColor white 1)$vcs_branch$vcs_status"
       return 0
     fi
   fi
@@ -134,102 +141,20 @@ function PromptVcs {
 
 }
 
-function PromptVcsBranch {
-
-  # Return current vcs branch
-
-local branch
-
-  case "$(PromptVcs)" in
-    'bzr')
-      return 0
-      ;;
-    'cvs')
-      return 0
-      ;;
-    'darcs')
-      return 0
-      ;;
-    'git')
-      branch="$(
-        git branch --no-color 2> /dev/null |
-        sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(PromptVcsDirty)/"
-      )"
-      if [[ -n "${branch}" ]] ; then
-        echo "${branch}"
-      fi
-      return 0
-      ;;
-    'hg')
-      return 0
-      ;;
-    'svn')
-      return 0
-      ;;
-  esac
-
-  return 0
-
-}
-
-function PromptVcsDirty {
-
-  # Append '*' if vcs branch is dirty
-
-  local vcsstatus
-
-  case "$(PromptVcs)" in
-    'bzr')
-      return 0
-      ;;
-    'cvs')
-      return 0
-      ;;
-    'darcs')
-      return 0
-      ;;
-    'git')
-      vcsstatus="$(
-        git status 2> /dev/null |
-        grep -m 1 -w -o 'working directory clean'
-      )"
-      if [[ "${vcsstatus}" != 'working directory clean' ]] ; then
-        echo "*"
-      fi
-      return 0
-      ;;
-    'hg')
-      return 0
-      ;;
-    'svn')
-      return 0
-      ;;
-  esac
-
-  return 0
-
-}
-
 function PromptConfigure {
+
+  local NCOLOR
 
   # Setup Special Colors
   if IsRoot ; then
-    NCOLOR="$(PromptColor cyan 0)"
+    NCOLOR="$(PromptColor red 1)"
   else
-    NCOLOR="$(PromptColor white 1)"
+    NCOLOR="$(PromptColor green 0)"
   fi
-
-  DCOLOR="$(PromptColor yellow 1)"
 
   # Create prompt
 
-  case "$(shell)" in
-    'zsh') # Must use single quotes to delay evaluation
-      export PROMPT='$(PromptColor green 0)%n$(PromptColor black 1)@$(PromptColor white 1)%M$(PromptColor black 1)[$(PromptColor magenta 0)%~$(PromptColor black 1)]$(PromptColor green 0)$(PromptVcs)$(PromptColor black 1)$([ -z $(PromptVcs 2> /dev/null) ] || echo "∫")$(PromptColor white 1)$(PromptVcsBranch)$(PromptColor cyan 0)〉$(PromptColor reset)'
-      ;;
-    'bash')
-      export PS1="$(PromptColor green 0)\u$(PromptColor black 1)@$(PromptColor white 1)\h$(PromptColor black 1)[$(PromptColor magenta 0)\w$(PromptColor black 1)]$(PromptColor green 0)\$(PromptVcs)$(PromptColor black 1)\$([ -z \$(PromptVcs 2> /dev/null) ] || echo "∫")$(PromptColor white 1)\$(PromptVcsBranch)$(PromptColor cyan 0)〉$(PromptColor reset)"
-      ;;
-  esac
+  # Must use single quotes to delay evaluation
+  export PROMPT='$(PromptColor green 0)%n$(PromptColor black 1)@$(PromptColor white 1)%M$(PromptColor black 1)[$(PromptColor magenta 0)%~$(PromptColor black 1)]$(PromptVcs)$(PromptColor cyan 0)〉$(PromptColor reset)'
 
 }
