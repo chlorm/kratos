@@ -1,10 +1,10 @@
 Kratos
 ======
 
-A BASH/ZSH user environment configuration framework
+A ZSH user environment configuration framework
 
 ### Prerequisites
-* BASH >=3.1 or ZSH >=5
+* ZSH >=5 (untested on <5)
 * GIT >=2 (optional support for updating)
 
 ##### Recommended:
@@ -14,9 +14,9 @@ A BASH/ZSH user environment configuration framework
 * rsync
 
 ### Installation
-```
-git clone "https://github.com/chlorm/kratos.git" "$HOME/.kratos" && \
-cd $HOME/.kratos && ./bootstrap.sh
+```zsh
+git clone 'https://github.com/chlorm/kratos.git' "${HOME}/.kratos" && \
+cd "${HOME}/.kratos" && ./bootstrap.sh
 ```
 
 ### Dotfiles
@@ -31,7 +31,7 @@ TODO:
 
 ### Plugins
 Currently Kratos only supports internal vendored plugins.
-```bash
+```zsh
 plugins=(battery golang haskell)
 ```
 TODO:
