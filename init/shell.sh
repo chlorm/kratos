@@ -23,8 +23,8 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   }
 fi
 
-if [[ "${PREFERRED_SHELL}" != "$(shell)" && -n "${PREFERRED_SHELL}" ]] ; then
-  exec "${PREFERRED_SHELL}"
+if [[ "$(shell)" != 'zsh' ]] ; then
+  exec 'zsh' # add interactive flags
   exit $?
 fi
 
@@ -33,6 +33,8 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   LoadAll 'init'
 
   PathAdd "${HOME}/.bin"
+
+  KRATOS_CURRENT_SHELL="$(shell)"
 
   KRATOS_SHELL_INIT=true
 fi

@@ -272,22 +272,9 @@ function EnsureFileExists {
 
 function ErrCallStack {
 
-  case "$(shell)" in
-    'bash')
-      echo "${FUNCNAME[2]}"
-      return 0
-      ;;
-    'zsh')
-      echo "${funcstack[3]}"
-      return 0
-      ;;
-    *)
-      echo '???'
-      return 1
-      ;;
-  esac
+  echo "${funcstack[3]}"
 
-  return 1
+  return 0
 
 }
 
@@ -511,20 +498,10 @@ function PathBin {
 
   PathHasBin "${1}" > /dev/null 2>&1 || return 1
 
-  case "$(shell)" in
-    'bash')
-      type "${1}" |
-      awk '{print $3 ; exit}'
-      return 0
-      ;;
-    'ksh'|'pdksh'|'zsh')
-      whence -p "${1}" |
-      awk '{print $3 ; exit}'
-      return 0
-      ;;
-  esac
+  whence -p "${1}" |
+  awk '{print $3 ; exit}' || return 1
 
-  return 1
+  return 0
 
 }
 
@@ -550,18 +527,7 @@ function PathHasBin {
 
   [[ $# -ne 1 ]] && return 2
 
-  case "$(shell)" in
-    'bash')
-      type "${1}" > /dev/null 2>&1 || return 1
-      ;;
-    'ksh'|'pdksh'|'zsh')
-      whence -p "${1}" > /dev/null 2>&1 || return 1
-      ;;
-    *)
-      ErrError 'Not reporting a supported shell' "$(ErrCallStack)"
-      return 1
-      ;;
-  esac
+  whence -p "${1}" > /dev/null 2>&1 || return 1
 
   return 0
 
