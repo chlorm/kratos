@@ -193,7 +193,7 @@ function kratos {
 
       # Generate the pre-fligt checks files
       echo "Pre-flight checks: "
-      . "${KRATOS_DIR}/lib/pre-flight-checks.sh"
+      source "${KRATOS_DIR}/lib/pre-flight-checks.sh"
 
       KRATOS_PROJECT_DIRS=(
         "${HOME}/Projects"
@@ -270,9 +270,7 @@ function kratos {
         # Preference
         EnsureFileDestroy "${HOME}/.local/share/kratos/preferences"
         EnsureFileExists "${HOME}/.local/share/kratos/preferences"
-        ShellPreferred
         EditorPreferred
-        WindowManagerPreferred
       fi
 
       symlink "${KRATOS_DIR}/rc/profile" "${HOME}/.profile"
