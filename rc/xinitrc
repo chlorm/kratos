@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 
 # xinitrc start deskenv
 
@@ -18,5 +18,5 @@
 #export GPG_AGENT_INFO
 
 if [[ -f "${HOME}/.xsession" ]] ; then
-  . "${HOME}/.xsession"
+  source "${HOME}/.xsession"
 fi

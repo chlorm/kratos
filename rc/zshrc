@@ -9,7 +9,14 @@
 
 [[ -o interactive ]] || return
 
-setopt PROMPT_SUBST
+alias ebuild='nocorrect ebuild'
+alias gist='nocorrect gist'
+alias heroku='nocorrect heroku'
+alias hpodder='nocorrect hpodder'
+alias man='nocorrect man'
+alias mkdir='nocorrect mkdir'
+alias mv='nocorrect mv'
+alias mysql='nocorrect mysql'
 alias sudo='nocorrect sudo'
 
 # Load shell configuration loader
@@ -17,5 +24,35 @@ alias sudo='nocorrect sudo'
 
 # Load the local config
 if [[ -f "${HOME}/.zshrc.local" ]] ; then
-  . "${HOME}/.zshrc.local"
+  source "${HOME}/.zshrc.local"
 fi
+
+
+# ===== Completion 
+setopt always_to_end # When completing from the middle of a word, move the cursor to the end of the word    
+setopt auto_menu # show completion menu on successive tab press. needs unsetop menu_complete to work
+setopt auto_name_dirs # any parameter that is set to the absolute name of a directory immediately becomes a name for that directory
+setopt complete_in_word # Allow completion from within a word/phrase
+unsetopt menu_complete # do not autoselect the first completion entry
+
+
+# List jobs in long format
+setopt long_list_jobs
+
+# recognize comments
+#setopt interactivecomments
+
+
+# Prevent GUI password dialog
+unset SSH_ASKPASS
+
+
+# Load zsh-syntax-highlighting.
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Load zsh-autosuggestions.
+source ~/.zsh/zsh-autosuggestions/autosuggestions.zsh
+# Enable autosuggestions automatically.
+zle-line-init() {
+  zle autosuggest-start
+}
+zle -N zle-line-init

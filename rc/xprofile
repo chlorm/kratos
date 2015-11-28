@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 
 # Run anything before starting deskenv
 # Figuring out prefered deskenv and what deskenv are installed should be checked here
@@ -7,5 +7,5 @@
 [[ -f "${HOME}/.xprofile.local" ]] && . "${HOME}/.xprofile.local"
 
 if [[ -f "${HOME}/.xinitrc" ]] ; then
-  . "${HOME}/.xinitrc"
+  source "${HOME}/.xinitrc"
 fi

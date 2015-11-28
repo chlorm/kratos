@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 
 # This file is part of Kratos.
 # Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
