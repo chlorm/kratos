@@ -8,7 +8,7 @@
 function DotfilesPreGenerateHook {
 
   if [[ -f "${1}.generate-pre" ]] ; then
-    . "${1}.generate-pre" || {
+    source "${1}.generate-pre" || {
       ErrError "failed to source \`${1}.generate-pre'"
       return 1
     }
@@ -33,7 +33,7 @@ function DotfilesGenerateHook {
 function DotfilesPostGenerateHook {
 
   if [[ -f "${1}.generate-post" ]] ; then
-    . "${1}.generate-post" || {
+    source "${1}.generate-post" || {
       ErrError "failed to source \`${1}.generate-post'"
       return 1
     }
@@ -46,7 +46,7 @@ function DotfilesPostGenerateHook {
 function DotfilesPreInstallHook {
 
   if [[ -f "${1}.install-pre" ]] ; then
-    . "${1}.install-pre" || {
+    source "${1}.install-pre" || {
       ErrError "failed to source \`${1}.install-pre'"
       return 1
     }
@@ -59,7 +59,7 @@ function DotfilesPreInstallHook {
 function DotfilesInstallHook {
 
   if [[ -f "${1}.install" ]] ; then
-    . "${1}.install" || {
+    source "${1}.install" || {
       ErrError "failed to source \`${1}.install'"
       return 1
     }
@@ -72,7 +72,7 @@ function DotfilesInstallHook {
 function DotfilesPostInstallHook {
 
   if [[ -f "${1}.install-post" ]] ; then
-    . "${1}.install-post" || {
+    source "${1}.install-post" || {
       ErrError "failed to source \`${1}.install-post'"
       return 1
     }
@@ -85,7 +85,7 @@ function DotfilesPostInstallHook {
 function DotfilesPreUninstallHook {
 
   if [[ -f "${1}.uninstall-pre" ]] ; then
-    . "${1}.uninstall-pre" || {
+    source "${1}.uninstall-pre" || {
       ErrError "failed to source \`${1}.uninstall-pre'"
       return 1
     }
@@ -98,7 +98,7 @@ function DotfilesPreUninstallHook {
 function DotfilesUninstallHook {
 
   if [[ -f "${1}.uninstall" ]] ; then
-    . "${1}.uninstall" || {
+    source "${1}.uninstall" || {
       ErrError "failed to source \`${1}.uninstall'"
       return 1
     }
@@ -111,7 +111,7 @@ function DotfilesUninstallHook {
 function DotfilesPostUninstallHook {
 
   if [[ -f "${1}.uninstall-post" ]] ; then
-    . "${1}.uninstall-post" || {
+    source "${1}.uninstall-post" || {
       ErrError "failed to source \`${1}.uninstall-post'"
       return 1
     }
