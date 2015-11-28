@@ -152,7 +152,8 @@ function PromptConfigure {
     NCOLOR="$(PromptColor green 0)"
   fi
 
-  # Create prompt
+  # Allow evaluating functions within the prompt
+  setopt PROMPT_SUBST
 
   # Must use single quotes to delay evaluation
   export PROMPT='$(PromptColor green 0)%n$(PromptColor black 1)@$(PromptColor white 1)%M$(PromptColor black 1)[$(PromptColor magenta 0)%~$(PromptColor black 1)]$(PromptVcs)$(PromptColor cyan 0)〉$(PromptColor reset)'
