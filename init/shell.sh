@@ -10,16 +10,16 @@ export KRATOS_DIR="${HOME}/.kratos"
 export DOTFILES_DIR="${HOME}/.dotfiles"
 
 if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
-  . "${KRATOS_DIR}/lib/core.sh"
-  . "${KRATOS_DIR}/lib/DEFAULTS.sh"
+  source "${KRATOS_DIR}/lib/core.sh"
+  source "${KRATOS_DIR}/lib/DEFAULTS.sh"
   [[ -f "${HOME}/.local/share/kratos/preferences" ]] && {
-    . "${HOME}/.local/share/kratos/preferences"
+    source "${HOME}/.local/share/kratos/preferences"
   }
   [[ -f "${HOME}/.local/share/kratos/is-installed" ]] && {
-    . "${HOME}/.local/share/kratos/is-installed"
+    source "${HOME}/.local/share/kratos/is-installed"
   }
   [[ -f "${HOME}/.config/kratos/config" ]] && {
-    . "${HOME}/.config/kratos/config"
+    source "${HOME}/.config/kratos/config"
   }
 fi
 
@@ -34,6 +34,8 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
 
   PathAdd "${HOME}/.bin"
 
+  KRATOS_CURRENT_KERNEL="$(OsKernel)"
+  KRATOS_CURRENT_LINUX="$(OsLinux)"
   KRATOS_CURRENT_SHELL="$(shell)"
 
   KRATOS_SHELL_INIT=true
