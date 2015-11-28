@@ -76,6 +76,9 @@ function CpuSockets {
   local SOCKETS
 
   case "$(OsKernel)" in
+    'darwin')
+      SOCKETS=1
+      ;;
     'linux')
       SOCKETS="$(
         lscpu |
@@ -85,10 +88,10 @@ function CpuSockets {
       ;;
   esac
 
-  [[ ${SOCKETS} -ge 1 ]] || {
+  if [[ ! ${SOCKETS} -ge 1 ]] ; then
     # Assume a socket exists even if it fails to find any
     SOCKETS=1
-  }
+  fi
 
   echo "${SOCKETS}" && return 0
 
@@ -168,9 +171,6 @@ function CpuLogical {
         grep --max-count 1 "hw.logicalcpu:" |
         grep --only-matching --perl-regexp '[0-9]+'
       )
-      ;;
-    'cygwin')
-      cputhreads=''
       ;;
   esac
 
@@ -314,13 +314,13 @@ function IsRoot {
 
 function LoadOne {
 
-  # Source Inits
+  # Source specified init file
 
   if [[ -n "$(echo "${1}" | grep '\(~$\|^#\)')" ]] ; then
     return 0
   fi
 
-  . "${1}" || {
+  source "${1}" || {
     ErrError "Failed to load: ${1}"
     return 1
   }
@@ -330,6 +330,8 @@ function LoadOne {
 }
 
 function LoadAll {
+
+  # Load all of specified init type
 
   local INIT
   local INITS
@@ -344,7 +346,8 @@ function LoadAll {
     # Active plugins
     $(for PLUGIN in "${KRATOS_PLUGINS[@]}" ; do
       pluginLoaderExists="$(
-        find ${KRATOS_DIR}/plugins -type f -name "${1}.sh" -iwholename "*${PLUGIN}*"
+        find ${KRATOS_DIR}/plugins \
+          -type f -name "${1}.sh" -iwholename "*${PLUGIN}*"
       )"
       if [[ -f "${pluginLoaderExists}" ]] ; then
         echo "${pluginLoaderExists}"
@@ -380,7 +383,8 @@ function OsKernel {
 
   KERNEL=$(
     ToLower "$(OsKernelOstype) $(OsKernelUname)" |
-    grep --max-count 1 --word-regexp --only-matching '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)'
+    grep --max-count 1 --word-regexp --only-matching \
+      '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)'
   )
 
   if [[ -z "${KERNEL}" ]] ; then
@@ -428,7 +432,8 @@ function OsLinux {
 
   LINUX="$(
     ToLower "$(OsLinuxRelease) $(OsLinuxUname) $(OsLinuxLsb)" |
-    grep --max-count 1 --word-regexp --only-matching '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)'
+    grep --max-count 1 --word-regexp --only-matching \
+      '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)'
   )"
 
   if [[ -z "${LINUX}" ]] ; then
@@ -480,7 +485,7 @@ function PathRemove {
 
   # Remove directory from $PATH
 
-  if [[ -n "$(echo "${PATH}" | grep "$1" 2> /dev/null)" ]] ; then
+  if [[ -n "$(echo "${PATH}" | grep "${1}" 2> /dev/null)" ]] ; then
     export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`
   fi
 
@@ -612,17 +617,23 @@ function shell {
   fi
 
   # Resolve symlinked shells
-  LSHELL="$(basename "$(readlink -f "$(PathBinAbs "${LSHELL}")")")"
+  LSHELL="$(
+    basename "$(
+      readlink -f "$(
+        PathBinAbs "${LSHELL}"
+      )"
+    )"
+  )"
 
   # Remove appended major version
-  LSHELL="$(echo "${LSHELL}" | sed 's/^\([a-z]*\).*/\1/')"
+  LSHELL="$(
+    echo "${LSHELL}" |
+    sed 's/^\([a-z]*\).*/\1/'
+  )"
 
-  LSHELL="$(ToLower "${LSHELL}")"
-
-  # HACK: Work around for cygwin shell detection
-  if [[ "$(OsKernel)" == 'cygwin' ]] ; then
-    LSHELL='bash'
-  fi
+  LSHELL="$(
+    ToLower "${LSHELL}"
+  )"
 
   echo "${LSHELL}"
 
@@ -686,11 +697,15 @@ function ToLower {
 
   echo $@ | tr '[A-Z]' '[a-z]'
 
+  return 0
+
 }
 
 function ToUpper {
 
   echo $@ | tr '[a-z]' '[A-Z]'
+
+  return 0
 
 }
 
