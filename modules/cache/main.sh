@@ -24,7 +24,8 @@ function DirCache { # Get the path to the temporary directory
 
   for DIR in "${CACHEDIRS[@]}" ; do
 
-    if [[ -n "$(mount | grep '\(tmpfs\|ramfs\)' | grep "${DIR}" 2> /dev/null)" ]] ; then
+    if [[ -n "$(mount | grep '\(tmpfs\|ramfs\)' |
+                grep "${DIR}" 2> /dev/null)" ]] ; then
       CACHEDIR="${DIR}/${USER}"
       break
     fi
@@ -41,12 +42,12 @@ function DirCache { # Get the path to the temporary directory
     chmod 0700 "${CACHEDIR}" || return 1
   fi
 
+  EnsureDirDestroy "${HOME}/.cache" || return 1
+
   symlink "${CACHEDIR}" "${HOME}/.cache" || return 1
 
   # Create dotfiles session directory
-  if [[ ! -d "${CACHEDIR}/dotfiles" ]] ; then
-    mkdir -p "${CACHEDIR}/dotfiles" || return 1
-  fi
+  EnsureDirExists "${CACHEDIR}/dotfiles" || return 1
 
   return 0
 
