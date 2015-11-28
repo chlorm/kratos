@@ -60,23 +60,3 @@ KRATOS_PAGER_PREFERENCE=(
   'most'
   'more'
 )
-
-# Only default to stacking window managers, expect users to not be familiar
-#  with tiling window managers
-# TODO: add versioning to stacking window managers
-KRATOS_WINDOW_MANAGER_PREFERENCE=(
-  'gnome3'
-  'cinnamon2'
-  'kde4'
-  'kde5'
-  'mate'
-  'xfce4'
-  'lxde'
-  'lxqt'
-  'enlightenment'
-  'budgie'
-  'deepin'
-  'hawaii'
-  'unity'
-  'pantheon'
-)
