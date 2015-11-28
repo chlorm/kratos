@@ -8,16 +8,22 @@ A ZSH user environment configuration framework
 * GIT >=2 (optional support for updating)
 
 ##### Recommended:
-* Linux (Support for other platforms is a bit more hit and miss at the moment)
 * gpg-agent
 * openssl
 * rsync
 
 ### Installation
 ```zsh
-git clone 'https://github.com/chlorm/kratos.git' "${HOME}/.kratos" && \
-cd "${HOME}/.kratos" && ./bootstrap.sh
+git clone 'https://github.com/chlorm/kratos.git' "${HOME}/.kratos"
+cd "${HOME}/.kratos"
+zsh ./bootstrap.sh
 ```
+
+### Design
+* Must not require ROOT (e.g. no changing the users shell, installing
+    packages or any other bad practices)
+* Must NOT hardcode paths such as `/usr/bin`.  The location of binaries on a
+  system must not be assumed.
 
 ### Dotfiles
 Kratos has builtin support for installing user's config files.
@@ -59,12 +65,11 @@ TODO:
   + [ ] Forward/Back directory history functions
 * [ ] Locale configuration
 * [ ] Prompt customization
-  + ~~Allow L1,L2,R1,&R2 prompts (where applicable for given shells)~~
-  + Fixed, multi-purpose prompt with support for customizable colors
+  + Allow L1,L2,R1,&R2 prompts (where applicable for given shells)
 * [ ] Auto configure terminal color support
 * [ ] Auto configure pager
   + [ ] Color support
-* [x] TMP directory configuration
+* [x] ~/.cache directory configuration
   + [ ] tmpfs fallback solution
 * [ ] Autostarting preferred Desktop Environment(/Window Manager)
 * [ ] Auto configure user agent (ssh-agent/gpg-agent)
@@ -109,5 +114,3 @@ TODO:
   + Once the TMP directory is create a file in the tmp directory and only
      configure if it doesn't exist
 * Support for local config outside of dotfiles
-* Decide on variable casing scheme(camel vs. snake, etc...) (local vs. global
-   variables)
