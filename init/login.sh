@@ -12,5 +12,23 @@
 # - Create a method to determine if login.sh has been run, otherwise run it from
 #   init/shell.sh, before executing the contents of shell.sh
 
+# Initalize shell configuration
+export KRATOS_DIR="${HOME}/.kratos"
+export DOTFILES_DIR="${HOME}/.dotfiles"
+
+if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
+  source "${KRATOS_DIR}/lib/core.sh"
+  source "${KRATOS_DIR}/lib/DEFAULTS.sh"
+  [[ -f "${HOME}/.local/share/kratos/preferences" ]] && {
+    source "${HOME}/.local/share/kratos/preferences"
+  }
+  [[ -f "${HOME}/.local/share/kratos/is-installed" ]] && {
+    source "${HOME}/.local/share/kratos/is-installed"
+  }
+  [[ -f "${HOME}/.config/kratos/config" ]] && {
+    source "${HOME}/.config/kratos/config"
+  }
+fi
+
 LoadAll 'main'
 LoadAll 'login'
