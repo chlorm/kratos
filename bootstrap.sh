@@ -8,24 +8,18 @@
 export KRATOS_DIR="$(readlink -f "$(dirname "$(readlink -f "${0}")")")"
 export DOTFILES_DIR="${HOME}/.dotfiles"
 
-if [ -z "$KRATOS_DIR" ] ; then
+if [[ -z "$KRATOS_DIR" ]] ; then
   echo "ERROR: kratos remote repo origin is not set"
   exit 1
 fi
 
-. "${KRATOS_DIR}/lib/core.sh"
+source "${KRATOS_DIR}/init/shell.sh"
 
 LoadAll 'modules' || exit 1
 
-# TODO: make sure shell is supported before continuing if it hasn't failed
-#  before this point.  Spawn one if it isn't.
-
-# TODO: Add check for supported shell as default shell and change it if not.
-
 # TODO: Check for previous Kratos installation, and test installation if
-#  found for errors.
+#  one exists for errors.
 
-#PathHasBinErr '/usr/bin/env' || exit 1
 PathHasBinErr 'git' || exit 1
 # TODO: Make sure git is at least version 2.0.
 
