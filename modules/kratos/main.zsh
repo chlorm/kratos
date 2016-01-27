@@ -193,7 +193,7 @@ function kratos {
 
       # Generate the pre-fligt checks files
       echo "Pre-flight checks: "
-      source "${KRATOS_DIR}/lib/pre-flight-checks.sh"
+      source "${KRATOS_DIR}/lib/pre-flight-checks.zsh"
 
       KRATOS_PROJECT_DIRS=(
         "${HOME}/Projects"

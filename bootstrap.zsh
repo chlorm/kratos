@@ -13,7 +13,7 @@ if [[ -z "$KRATOS_DIR" ]] ; then
   exit 1
 fi
 
-source "${KRATOS_DIR}/init/shell.sh"
+source "${KRATOS_DIR}/init/shell.zsh"
 
 LoadAll 'modules' || exit 1
 

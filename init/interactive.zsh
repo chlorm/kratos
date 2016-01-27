@@ -10,8 +10,8 @@ export KRATOS_DIR="${HOME}/.kratos"
 export DOTFILES_DIR="${HOME}/.dotfiles"
 
 if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
-  source "${KRATOS_DIR}/lib/core.sh"
-  source "${KRATOS_DIR}/lib/DEFAULTS.sh"
+  source "${KRATOS_DIR}/lib/core.zsh"
+  source "${KRATOS_DIR}/lib/DEFAULTS.zsh"
   [[ -f "${HOME}/.local/share/kratos/preferences" ]] && {
     source "${HOME}/.local/share/kratos/preferences"
   }

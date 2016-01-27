@@ -10,4 +10,4 @@
 # Test for a login shell
 shopt -q login_shell || return
 
-source "$(readlink -f $(dirname $(readlink -f ${HOME}/.bash_profile))/../)/init/login.sh"
+source "$(readlink -f $(dirname $(readlink -f ${HOME}/.bash_profile))/../)/init/login.zsh"

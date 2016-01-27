@@ -10,7 +10,7 @@
 # Test for a login shell
 [[ -o login ]] || return
 
-source "$(readlink -f $(dirname $(readlink -f ${HOME}/.zprofile))/../)/init/login.sh"
+source "$(readlink -f $(dirname $(readlink -f ${HOME}/.zprofile))/../)/init/login.zsh"
 
 # Load the local config
 if [[ -f "${HOME}/.bash_login.local" ]] ; then

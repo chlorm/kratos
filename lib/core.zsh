@@ -342,12 +342,12 @@ function LoadAll {
 
   INITS+=(
     # Modules
-    $(find "${KRATOS_DIR}/modules" -type f -name "${1}.sh")
+    $(find "${KRATOS_DIR}/modules" -type f -name "${1}.zsh")
     # Active plugins
     $(for PLUGIN in "${KRATOS_PLUGINS[@]}" ; do
       pluginLoaderExists="$(
         find ${KRATOS_DIR}/plugins \
-          -type f -name "${1}.sh" -iwholename "*${PLUGIN}*"
+          -type f -name "${1}.zsh" -iwholename "*${PLUGIN}*"
       )"
       if [[ -f "${pluginLoaderExists}" ]] ; then
         echo "${pluginLoaderExists}"
