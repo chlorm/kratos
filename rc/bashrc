@@ -11,4 +11,4 @@
 [[ $- == *i* ]] || return
 
 # Load shell configuration loader
-source "$(readlink -f $(dirname $(readlink -f ${HOME}/.bashrc))/../)/init/interactive.sh"
+source "$(readlink -f $(dirname $(readlink -f ${HOME}/.bashrc))/../)/init/interactive.zsh"
