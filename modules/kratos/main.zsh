@@ -277,17 +277,12 @@ function kratos {
 
       symlink "${KRATOS_DIR}/rc/bashrc" "${HOME}/.bashrc"
       symlink "${KRATOS_DIR}/rc/bash_profile" "${HOME}/.bash_profile"
-      symlink "${KRATOS_DIR}/rc/bash_logout" "${HOME}/.bash_logout"
 
       symlink "${KRATOS_DIR}/rc/kshrc" "${HOME}/.kshrc"
 
       symlink "${KRATOS_DIR}/rc/zshrc" "${HOME}/.zshrc"
       symlink "${KRATOS_DIR}/rc/zprofile" "${HOME}/.zprofile"
       symlink "${KRATOS_DIR}/rc/zlogout" "${HOME}/.zlogout"
-
-      symlink "${KRATOS_DIR}/rc/xinitrc" "${HOME}/.xinitrc"
-      symlink "${KRATOS_DIR}/rc/xprofile" "${HOME}/.xprofile"
-      symlink "${KRATOS_DIR}/rc/xsession" "${HOME}/.xsession"
       ;;
     'upgrade')
       ;;
