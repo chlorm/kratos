@@ -433,7 +433,7 @@ function OsLinux {
   LINUX="$(
     ToLower "$(OsLinuxRelease) $(OsLinuxUname) $(OsLinuxLsb)" |
     grep --max-count 1 --word-regexp --only-matching \
-      '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|ubuntu\)'
+      '\(arch\|centos\|debian\|fedora\|gentoo\|opensuse\|red\ hat\|suse\|triton\|ubuntu\)'
   )"
 
   if [[ -z "${LINUX}" ]] ; then

@@ -54,7 +54,7 @@ function PkgMgr {
           return 0
           ;;
 
-        'nixos') # Nix
+        'triton') # Nix
           PathHasBinErr 'nix-env' || return 1
           PathHasBinErr 'nixos-rebuild' || return 1
           PathHasBinErr 'nix-collect-garbage' || return 1
