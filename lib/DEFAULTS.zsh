@@ -45,6 +45,7 @@ KRATOS_HIGH_DPI=false
 KRATOS_DPI_SCALE=1
 
 KRATOS_EDITOR_PREFERENCE=(
+  'atom'
   'subl'
   'sublime'
   'vim'
