@@ -87,6 +87,6 @@ function EditorEnvVar {
     KRATOS_EDITOR_ARGS="$(EditorDefaultArgs)"
   fi
 
-  export EDITOR="${KRATOS_PREFERRED_EDITOR} ${KRATOS_EDITOR_ARGS}"
+  export EDITOR="${KRATOS_PREFERRED_EDITOR}${KRATOS_EDITOR_ARGS:+ ${KRATOS_EDITOR_ARGS}}"
 
 }
