@@ -26,8 +26,7 @@ function CpuArchitecture {
       ;;
     'darwin')
       # TODO: use sysctl on Darwin
-      ErrError 'darwin support not implemented'
-      return 1
+      architecture='x86_64'
       ;;
     'linux')
       architecture="$(
