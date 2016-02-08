@@ -281,9 +281,9 @@ function ErrCallStack {
 function ErrError {
 
   if [[ -n "${2}" ]] ; then
-    echo "Kratos: ERROR in \`${2}': ${1}"
+    echo "Kratos: ERROR in \`${2}': ${1}" > /dev/stderr
   else
-    echo "Kratos: ERROR in \`$(ErrCallStack)': ${1}"
+    echo "Kratos: ERROR in \`$(ErrCallStack)': ${1}" > /dev/stderr
   fi
 
   return 0
@@ -293,9 +293,9 @@ function ErrError {
 function ErrWarn {
 
   if [[ -n "${2}" ]] ; then
-    echo "Kratos: WARNING in \`${2}': ${1}"
+    echo "Kratos: WARNING in \`${2}': ${1}" > /dev/stderr
   else
-    echo "Kratos: WARNING in \`$(ErrCallStack)': ${1}"
+    echo "Kratos: WARNING in \`$(ErrCallStack)': ${1}" > /dev/stderr
   fi
 
   return 0
