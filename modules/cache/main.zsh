@@ -9,45 +9,45 @@
 # + Add a fallback to use the ~/.cache directory and delete the directory on logout
 # + Only setup tmp.dir during init, add function for returning the current tmp.dir
 
-function DirCache { # Get the path to the temporary directory
+function dir_cache { # Get the path to the temporary directory
 
-  local DIR
-  local CACHEDIR
-  local CACHEDIRS
+  local Dir
+  local CacheDir
+  local CacheDirs
 
-  CACHEDIRS=(
+  CacheDirs=(
     "${ROOT}/dev/shm"
     "${ROOT}/run/shm"
     "${ROOT}/tmp"
     "${ROOT}/var/tmp"
   )
 
-  for DIR in "${CACHEDIRS[@]}" ; do
+  for Dir in "${CacheDirs[@]}" ; do
 
     if [[ -n "$(mount | grep '\(tmpfs\|ramfs\)' |
-                grep "${DIR}" 2> /dev/null)" ]] ; then
-      CACHEDIR="${DIR}/${USER}"
+                grep "${Dir}" 2> /dev/null)" ]] ; then
+      CacheDir="${Dir}/${USER}"
       break
     fi
 
   done
 
-  if [[ -z "${CACHEDIR}" ]] ; then
-    ErrError 'Failed to find a tmp directory'
+  if [[ -z "${CacheDir}" ]] ; then
+    err_error 'Failed to find a tmp directory'
     return 1
   fi
 
-  if [[ ! -d "${CACHEDIR}" ]] ; then
-    EnsureDirExists "${CACHEDIR}" || return 1
-    chmod 0700 "${CACHEDIR}" || return 1
+  if [[ ! -d "${CacheDir}" ]] ; then
+    ensure_dir_exists "${CacheDir}" || return 1
+    chmod 0700 "${CacheDir}" || return 1
   fi
 
-  EnsureDirDestroy "${HOME}/.cache" || return 1
+  ensure_dir_destroy "${HOME}/.cache" || return 1
 
-  symlink "${CACHEDIR}" "${HOME}/.cache" || return 1
+  symlink "${CacheDir}" "${HOME}/.cache" || return 1
 
   # Create dotfiles session directory
-  EnsureDirExists "${CACHEDIR}/dotfiles" || return 1
+  ensure_dir_exists "${CacheDir}/dotfiles" || return 1
 
   return 0
 

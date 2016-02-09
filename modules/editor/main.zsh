@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function EditorKnownExecutables {
+function editor_known_executables {
 
   local Bin
   local Bins
@@ -27,18 +27,18 @@ function EditorKnownExecutables {
   if [[ -n "${PREFERRED_EDITOR}" ]] ; then
     # find installed editors
     for Bin in "${Bins[@]}" ; do
-      if PathHasBin "${Bin}" ; then
-        echo "${BIN}"
+      if path_has_bin "${Bin}" ; then
+        echo "${Bin}"
       fi
     done
   fi
 
-  ErrError 'no editors installed'
+  err_error 'no editors installed'
   return 1
 
 }
 
-function EditorDefaultArgs {
+function editor_default_args {
 
   local DefaultArgs
   local Editor
@@ -46,7 +46,7 @@ function EditorDefaultArgs {
   if [[ -n "${KRATOS_PREFERRED_EDITOR}" ]] ; then
     Editor="${KRATOS_PREFERRED_EDITOR}"
   else
-    Editor="$(EditorKnownExecutables)"
+    Editor="$(editor_known_executables)"
   fi
 
   if [[ "${Editor}" == 'atom' ]] ; then
@@ -61,13 +61,14 @@ function EditorDefaultArgs {
 
 }
 
-function EditorPreferred {
+function editor_preferred {
 
   local PreferredEditor
 
   for PreferredEditor in "${KRATOS_EDITOR_PREFERENCE[@]}" ; do
     if PathHasBin "${PreferredEditor}" ; then
-      echo "KRATOS_PREFERRED_EDITOR=\"${PreferredEditor}\"" >> "${HOME}/.local/share/kratos/preferences"
+      echo "KRATOS_PREFERRED_EDITOR=\"${PreferredEditor}\"" >> \
+        "${HOME}/.local/share/kratos/preferences"
       return 0
     fi
   done
@@ -77,14 +78,14 @@ function EditorPreferred {
 
 }
 
-function EditorEnvVar {
+function editor_env_var {
 
   if [[ -z "${KRATOS_PREFERRED_EDITOR}" ]] ; then
-    KRATOS_PREFERRED_EDITOR="$(EditorKnownExecutables)"
+    KRATOS_PREFERRED_EDITOR="$(editor_known_executables)"
   fi
 
   if [[ -z "${KRATOS_EDITOR_ARGS}" ]] ; then
-    KRATOS_EDITOR_ARGS="$(EditorDefaultArgs)"
+    KRATOS_EDITOR_ARGS="$(editor_default_args)"
   fi
 
   export EDITOR="${KRATOS_PREFERRED_EDITOR}${KRATOS_EDITOR_ARGS:+ ${KRATOS_EDITOR_ARGS}}"

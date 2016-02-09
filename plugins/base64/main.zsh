@@ -8,7 +8,7 @@
 function encode64 {
 
   [[ -n ${1+x} ]] || {
-    ErrError 'no input'
+    err_error 'no input'
     return 1
   }
 
@@ -19,7 +19,7 @@ function encode64 {
 function decode64 {
 
   [[ -n ${1+x} ]] || {
-    ErrError 'no input'
+    err_error 'no input'
     return 1
   }
 

@@ -12,7 +12,7 @@
 # Add wpa_supplicant support
 # Maybe convert wifi -> net (lan,wan,wlan, etc...)
 
-function WirelessInterface {
+function wireless_interface {
 
   # Find wireless interface name
 
@@ -20,7 +20,7 @@ function WirelessInterface {
 
 }
 
-function WifiUsage {
+function wifi_usage {
 
 cat <<EOF
 Wifi is a wrapper for nmcli.
@@ -45,15 +45,15 @@ EOF
 
 function wifi {
 
-  local PASS
-  local SSID
+  local Pass
+  local Ssid
 
   ${PathHasBinNMCLI} || return 1
 
   case "${1}" in
     '')
-      WifiUsage
-      ErrError 'no input provided'
+      wifi_usage
+      err_error 'no input provided'
       ;;
     'list') # List saved connections
       nmcli d wifi list
@@ -63,30 +63,30 @@ function wifi {
       ;;
     'add') # Add a saved connection
       shift
-      PASS="${2}"
-      SSID="${1}"
+      Pass="${2}"
+      Ssid="${1}"
       # If no password is provided, assume one is not needed
       if [[ -n "${2}" ]] ; then
-        PASS="password ${2}"
+        Pass="password ${2}"
       fi
       # Add connection
-      nmcli d wifi connect "${SSID}" ${PASS} iface "$(WirelessInterface)" name "${SSID}" || {
-        ErrError "connecting to ${SSID}"
+      nmcli d wifi connect "${Ssid}" ${Pass} iface "$(wireless_interface)" name "${Ssid}" || {
+        ErrError "connecting to ${Ssid}"
         return 1
       }
       ;;
     'connect') # Connect to a saved connection
       shift
-      SSID="${1}"
-      nmcli c up id "${SSID}"
+      Ssid="${1}"
+      nmcli c up id "${Ssid}"
       ;;
     'disconnect') # Disconnect from current wireless network
-      nmcli d disconnect iface "$(WirelessInterface)"
+      nmcli d disconnect iface "$(wireless_interface)"
       ;;
     'remove') # Remove a saved connection
       shift
-      SSID="${1}"
-      nmcli c delete id "${SSID}"
+      Ssid="${1}"
+      nmcli c delete id "${Ssid}"
       ;;
     'status') # List active connections if any
       nmcli g status
@@ -98,11 +98,11 @@ function wifi {
       nmcli r wifi off
       ;;
     '-h'|'--help'|'help')
-      WifiUsage
+      wifi_usage
       ;;
     *)
-      WifiUsage
-      ErrError "invalid option: $@"
+      wifi_usage
+      err_error "invalid option: $@"
       ;;
 
   esac

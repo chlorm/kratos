@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function HaskellDirs {
+function haskell_dirs {
 
   case "$(OsKernel)" in
     'darwin')
@@ -20,14 +20,14 @@ function HaskellDirs {
 
 }
 
-function HaskellBinPath {
+function haskell_bin_path {
 
-  case "$(OsKernel)" in
+  case "$(os_kernel)" in
     'darwin')
-      PathAdd "${HOME}/Library/Haskell/bin" || return 1
+      path_add "${HOME}/Library/Haskell/bin" || return 1
       ;;
     *)
-      PathAdd "${HOME}/.cabal/bin" || return 1
+      path_add "${HOME}/.cabal/bin" || return 1
       ;;
   esac
 

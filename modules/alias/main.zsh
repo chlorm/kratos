@@ -9,7 +9,7 @@
 
 alias proj="cd ${HOME}/Projects"
 
-alias root="SudoWrap su -"
+alias root="sudo_wrap su -"
 alias nixpaste="curl -F 'text=<-' http://nixpaste.noip.me"
 alias youtube="youtube-dl --max-quality --no-check-certificate --prefer-insecure --console-title"
 alias music="ncmpcpp"

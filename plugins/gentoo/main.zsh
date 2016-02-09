@@ -6,7 +6,7 @@
 # the `LICENSE' file in the top level source directory.
 
 # Gentoo
-if [[ "$(OsLinux)" == 'gentoo' ]] ; then
+if [[ "$(os_linux)" == 'gentoo' ]] ; then
   alias inst="sudo emerge --ask"
   alias search="emerge --search"
   alias uses="equery uses"

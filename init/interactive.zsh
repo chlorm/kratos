@@ -29,13 +29,13 @@ if [[ "$(shell)" != 'zsh' ]] ; then
 fi
 
 if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
-  LoadAll 'main'
-  LoadAll 'init'
+  load_all 'main'
+  load_all 'init'
 
-  PathAdd "${HOME}/.bin"
+  path_add "${HOME}/.bin"
 
-  KRATOS_CURRENT_KERNEL="$(OsKernel)"
-  KRATOS_CURRENT_LINUX="$(OsLinux)"
+  KRATOS_CURRENT_KERNEL="$(os_kernel)"
+  KRATOS_CURRENT_LINUX="$(os_linux)"
   KRATOS_CURRENT_SHELL="$(shell)"
 
   KRATOS_SHELL_INIT=true

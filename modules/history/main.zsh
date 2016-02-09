@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function HistoryShell {
+function history_shell {
 
   # Create the temporary history file for the shell
 
@@ -19,23 +19,24 @@ function HistoryShell {
     export SAVEHIST=0
   fi
 
-  case "$(shell)" in
-    'bash'|'ksh'|'pdksh')
-      shopt -s histappend
-      ;;
-    'zsh')
-    	setopt append_history
-      ;;
-  esac
+  setopt append_history
 
 }
 
 # Show history
 case "${HIST_STAMPS}" in
-  'mm/dd/yyyy') alias history='fc -fl 1' ;;
-  'dd.mm.yyyy') alias history='fc -El 1' ;;
-  'yyyy-mm-dd') alias history='fc -il 1' ;;
-  *) alias history='fc -l 1' ;;
+  'mm/dd/yyyy')
+    alias history='fc -fl 1'
+    ;;
+  'dd.mm.yyyy')
+    alias history='fc -El 1'
+    ;;
+  'yyyy-mm-dd')
+    alias history='fc -il 1'
+    ;;
+  *)
+    alias history='fc -l 1'
+    ;;
 esac
 
 setopt append_history

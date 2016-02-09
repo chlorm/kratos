@@ -12,7 +12,7 @@
 # + Maybe rename to alevel/alev, more agnostic of input and output devices
 #    or create seperate utility for handling input devices
 
-function VolUsage {
+function vol_usage {
 
 cat <<EOF
 vol is a wrapper for pactl/pacmd
@@ -29,42 +29,42 @@ EOF
 
 }
 
-function ActiveSoundCard {
+function active_sound_card {
 
-  local soundCard
+  local SoundCard
 
-  soundCard=$(
+  SoundCard=$(
     pactl list sinks |
     grep --before-context=1 "State: RUNNING" |
     awk -F'[^0-9]*' '/Sink\ \#/ {print $2 ; exit}'
   )
 
   # If no active sound card is found fallback to the default
-  [ -z "${soundCard}" ] && {
-    soundCard=$(
+  [ -z "${SoundCard}" ] && {
+    SoundCard=$(
       pacmd list-sinks |
       grep -m 1 "* index: " |
       grep -o '[0-9]*'
     )
   }
 
-  [ -z "${soundCard}" ] && {
-    ErrError "failed to obtain sound card"
+  [ -z "${SoundCard}" ] && {
+    err_error "failed to obtain sound card"
     return 1
   }
 
-  echo "${soundCard}"
+  echo "${SoundCard}"
 
   return 0
 
 }
 
-function VolCurrent {
+function vol_current {
 
   pactl list sinks |
-  grep --after-context=9 "Sink #$(ActiveSoundCard)" |
-  grep "Volume:" |
-  awk '/[^0-9]*\%/ {print $5 ; exit}'
+    grep --after-context=9 "Sink #$(active_sound_card)" |
+    grep "Volume:" |
+    awk '/[^0-9]*\%/ {print $5 ; exit}'
 
 }
 
@@ -77,32 +77,32 @@ function vol {
   # Parse Arguments
   case "${1}" in
     '')
-      echo "Volume: $(VolCurrent)"
+      echo "Volume: $(vol_current)"
       ;;
     [U,u]|[U,u][P,p])
-      pactl set-sink-volume $(ActiveSoundCard) -- "+5%"
+      pactl set-sink-volume $(active_sound_card) -- "+5%"
       ;;
     [D,d]|[D,d][O,o][W,w][N,n])
-      pactl set-sink-volume $(ActiveSoundCard) -- "-5%"
+      pactl set-sink-volume $(active_sound_card) -- "-5%"
       ;;
     [M,m]|[M,m][U,u][T,t][E,e])
-      pactl set-sink-mute $(ActiveSoundCard) toggle
+      pactl set-sink-mute $(active_sound_card) toggle
       ;;
     [L,l]|[L,l][I,i][S,s][T,t])
       pactl list sinks | grep "Sink #\|alsa.mixer_name"
       ;;
     '--help')
-      VolUsage
+      vol_usage
       return 0
       ;;
     *)
       case $1 in
         [0-9]|[1-9][0-9]|1[0-4][0-9]|150)
-          pactl set-sink-volume $(ActiveSoundCard) -- "${1}%"
+          pactl set-sink-volume $(active_sound_card) -- "${1}%"
           ;;
         *)
-          VolUsage
-          ErrError 'must be an integer between 0 and 150'
+          vol_usage
+          err_error 'must be an integer between 0 and 150'
           return 1
           ;;
       esac

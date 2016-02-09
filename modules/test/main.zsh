@@ -1,6 +1,6 @@
 asdf() {
 
-  PathHasBinErr 'asdff'
+  path_has_bin_err 'asdff'
 }
 
 spin() {

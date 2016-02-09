@@ -15,7 +15,7 @@
 # if isTTY, then try fbterm else false
 
 # Colors for LS
-case "$(OsKernel)" in
+case "$(os_kernel)" in
   'linux'|'cygwin')
     eval "$(dircolors -b)"
     alias ls='ls --color=auto'
@@ -26,12 +26,12 @@ case "$(OsKernel)" in
     ;;
 esac
 
-function TermClrs {
+function term_clrs {
 
-  if [ "${TERM}" == 'xterm' ] || [ "$TERM" = "rxvt-unicode-256color" ] ; then
+  if [[ "${TERM}" == 'xterm' || "${TERM}" == 'rxvt-unicode-256color' ]] ; then
 
     # See if xterm supports 256 color
-    if [ -n "${VTE_VERSION}" ] ; then
+    if [[ -n "${VTE_VERSION}" ]] ; then
       export TERM='xterm-256color'
     fi
 
@@ -40,7 +40,7 @@ function TermClrs {
 }
 
 # TODO: add mapped color codes for 8, 16, & 88
-function ColorConvert {
+function color_convert {
 
   # ColorConvert <256-color-code> <terminal-supported-colors>
 

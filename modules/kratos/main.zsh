@@ -164,7 +164,7 @@ dotfiles_update() {
 
 }
 
-function KratosLogo {
+function kratos_logo {
 
 cat <<'EOF'
 
@@ -182,31 +182,34 @@ EOF
 
 function kratos {
 
-  local DIR
-  local KRATOS_CREATE_DIRS
+  local Dir
+  local KratosCreateDirs
+  local KratosProjectDirs
+  local KratosTrashDirs
+  local KratosXdgDirs
 
-  KRATOS_CREATE_DIRS=()
+  KratosCreateDirs=()
 
   case "${1}" in
     'update')
-      KratosLogo
+      kratos_logo
 
       # Generate the pre-fligt checks files
       echo "Pre-flight checks: "
       source "${KRATOS_DIR}/lib/pre-flight-checks.zsh"
 
-      KRATOS_PROJECT_DIRS=(
+      KratosProjectDirs=(
         "${HOME}/Projects"
       )
 
       # Freedesktop trash directories
-      KRATOS_TRASH_DIRS=(
+      KratosTrashDirs=(
         "${HOME}/.local/share/trash/info"
         "${HOME}/.local/share/trash/files"
       )
 
       # XDG freedesktop directories
-      KRATOS_XDG_DIRS=(
+      KratosXdgDirs=(
         "${HOME}/.cache" # XDG_CACHE_HOME
         "${HOME}/.config" # XDG_CONFIG_HOME
         "${HOME}/.local/share" # XDG_DATA_HOME
@@ -221,30 +224,30 @@ function kratos {
       )
 
       if [[ ${#KRATOS_CREATE_CUSTOM_DIRECTOIES[@]} -ge 1 ]] ; then
-        KRATOS_CREATE_DIRS+=( ${KRATOS_CREATE_CUSTOM_DIRECTOIES[@]} )
+        KratosCreateDirs+=( ${KRATOS_CREATE_CUSTOM_DIRECTOIES[@]} )
       fi
 
       if ${KRATOS_CREATE_PROJECT_DIRECTORIES} ; then
-        KRATOS_CREATE_DIRS+=( ${KRATOS_PROJECT_DIRS[@]} )
+        KratosCreateDirs+=( ${KratosProjectDirs[@]} )
       fi
 
       if ${KRATOS_CREATE_TRASH_DIRECTORIES} ; then
-        KRATOS_CREATE_DIRS+=( ${KRATOS_TRASH_DIRS[@]} )
+        KratosCreateDirs+=( ${KratosTrashDirs[@]} )
       fi
 
       if ${KRATOS_CREATE_XDG_DIRECTORIES} ; then
-        KRATOS_CREATE_DIRS+=( ${KRATOS_XDG_DIRS[@]} )
+        KratosCreateDirs+=( ${KratosXdgDirs[@]} )
       fi
 
-      KRATOS_CREATE_DIRS+=( "${HOME}/.local/share/kratos" )
+      KratosCreateDirs+=( "${HOME}/.local/share/kratos" )
 
       echo -ne "Updating directories: "
-      for DIR in ${KRATOS_CREATE_DIRS[@]} ; do
-        if [[ ! -d "${DIR}" ]] ; then
-          echo -ne "Creating directory: ${DIR}"\\r
+      for Dir in ${KratosCreateDirs[@]} ; do
+        if [[ ! -d "${Dir}" ]] ; then
+          echo -ne "Creating directory: ${Dir}"\\r
         fi
-        EnsureDirExists "${DIR}" || {
-          ErrError "failed to create directory: ${DIR}"
+        ensure_dir_exists "${Dir}" || {
+          err_error "failed to create directory: ${Dir}"
           return 1
         }
       done
@@ -260,7 +263,7 @@ function kratos {
       # TODO: Only run if module is enabled
       echo -n "Updating dotfiles: "
       echo
-      DotfilesHook || exit 1
+      dotfiles_hook || exit 1
       echo -ne ''\\r
       echo "Success"
 
@@ -268,9 +271,9 @@ function kratos {
       if [[ -f "${HOME}/.config/kratos/config" ]] ; then
         . "${HOME}/.config/kratos/config"
         # Preference
-        EnsureFileDestroy "${HOME}/.local/share/kratos/preferences"
-        EnsureFileExists "${HOME}/.local/share/kratos/preferences"
-        EditorPreferred
+        ensure_file_destroy "${HOME}/.local/share/kratos/preferences"
+        ensure_file_exists "${HOME}/.local/share/kratos/preferences"
+        editor_preferred
       fi
 
       symlink "${KRATOS_DIR}/rc/profile" "${HOME}/.profile"

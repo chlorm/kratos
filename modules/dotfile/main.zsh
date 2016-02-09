@@ -5,11 +5,11 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function DotfilesPreGenerateHook {
+function dotfiles_pre_generate_hook {
 
   if [[ -f "${1}.generate-pre" ]] ; then
     source "${1}.generate-pre" || {
-      ErrError "failed to source \`${1}.generate-pre'"
+      err_error "failed to source \`${1}.generate-pre'"
       return 1
     }
   fi
@@ -18,7 +18,7 @@ function DotfilesPreGenerateHook {
 
 }
 
-function DotfilesGenerateHook {
+function dotfiles_generate_hook {
 
   if [[ -f "${1}.generate" ]] ; then
     # TODO:
@@ -30,11 +30,11 @@ function DotfilesGenerateHook {
 
 }
 
-function DotfilesPostGenerateHook {
+function dotfiles_post_generate_hook {
 
   if [[ -f "${1}.generate-post" ]] ; then
     source "${1}.generate-post" || {
-      ErrError "failed to source \`${1}.generate-post'"
+      err_error "failed to source \`${1}.generate-post'"
       return 1
     }
   fi
@@ -43,11 +43,11 @@ function DotfilesPostGenerateHook {
 
 }
 
-function DotfilesPreInstallHook {
+function dotfiles_pre_install_hook {
 
   if [[ -f "${1}.install-pre" ]] ; then
     source "${1}.install-pre" || {
-      ErrError "failed to source \`${1}.install-pre'"
+      err_error "failed to source \`${1}.install-pre'"
       return 1
     }
   fi
@@ -56,11 +56,11 @@ function DotfilesPreInstallHook {
 
 }
 
-function DotfilesInstallHook {
+function dotfiles_install_hook {
 
   if [[ -f "${1}.install" ]] ; then
     source "${1}.install" || {
-      ErrError "failed to source \`${1}.install'"
+      err_error "failed to source \`${1}.install'"
       return 1
     }
   fi
@@ -69,11 +69,11 @@ function DotfilesInstallHook {
 
 }
 
-function DotfilesPostInstallHook {
+function dotfiles_post_install_hook {
 
   if [[ -f "${1}.install-post" ]] ; then
     source "${1}.install-post" || {
-      ErrError "failed to source \`${1}.install-post'"
+      err_error "failed to source \`${1}.install-post'"
       return 1
     }
   fi
@@ -82,11 +82,11 @@ function DotfilesPostInstallHook {
 
 }
 
-function DotfilesPreUninstallHook {
+function dotfiles_pre_uninstall_hook {
 
   if [[ -f "${1}.uninstall-pre" ]] ; then
     source "${1}.uninstall-pre" || {
-      ErrError "failed to source \`${1}.uninstall-pre'"
+      err_error "failed to source \`${1}.uninstall-pre'"
       return 1
     }
   fi
@@ -95,11 +95,11 @@ function DotfilesPreUninstallHook {
 
 }
 
-function DotfilesUninstallHook {
+function dotfiles_uninstall_hook {
 
   if [[ -f "${1}.uninstall" ]] ; then
     source "${1}.uninstall" || {
-      ErrError "failed to source \`${1}.uninstall'"
+      err_error "failed to source \`${1}.uninstall'"
       return 1
     }
   fi
@@ -108,11 +108,11 @@ function DotfilesUninstallHook {
 
 }
 
-function DotfilesPostUninstallHook {
+function dotfiles_post_uninstall_hook {
 
   if [[ -f "${1}.uninstall-post" ]] ; then
     source "${1}.uninstall-post" || {
-      ErrError "failed to source \`${1}.uninstall-post'"
+      err_error "failed to source \`${1}.uninstall-post'"
       return 1
     }
   fi
@@ -121,7 +121,7 @@ function DotfilesPostUninstallHook {
 
 }
 
-function DotfilesSystemdHook {
+function dotfiles_systemd_hook {
 
   # Find type for symlinking
 
@@ -136,55 +136,55 @@ function DotfilesSystemdHook {
 
 function DotfilesHook {
 
-  local DOTFILE
-  local DOTFILES
-  local UNINSTALL
+  local Dotfile
+  local Dotfiles
+  local Uninstall
   #local DONT_SYM_ITEM
-  local IGNORE_ITEM
-  local IGNORE_LIST
-  local IGNORE_STATUS
+  local IgnoreItem
+  local IgnoreList
+  local IgnoreStatus
 
-  UNINSTALL=false
+  Uninstall=false
   if [[ "${1}" == 'uninstall' ]] ; then
-    UNINSTALL=true
+    Uninstall=true
   fi
 
   #local DONT_SYM_LIST=($(cat "${DOTFILES_DIR}/.kratosdontsym"))
 
-  DOTFILES=()
+  Dotfiles=()
   # Respect filenames with spaces
   while read -rd '' ; do
-    DOTFILES+=(
+    Dotfiles+=(
       "${REPLY}"
     )
   done < <(find ${DOTFILES_DIR} -type f -not -iwholename '*.git*' -print0)
 
-  IGNORE_LIST=()
+  IgnoreList=()
   if [[ -f "${DOTFILES_DIR}/.kratosignore" ]] ; then
-    IGNORE_LIST+=(
+    IgnoreList+=(
       $(cat "${DOTFILES_DIR}/.kratosignore")
     )
   fi
   # TODO: Add systemd support
-  IGNORE_LIST+=(
+  IgnoreList+=(
     "${HOME}/.config/systemd"
   )
 
-  for DOTFILE in "${DOTFILES[@]}" ; do
+  for Dotfile in "${Dotfiles[@]}" ; do
 
     # Catch potential errors where paths are split into multiple array elements
     #  caused by spaces in the path.
-    if [[ -n ${DOTFILE} && ! -e ${DOTFILE} ]] ; then
-      ErrWarn "invalid file: ${DOTFILE}"
+    if [[ -n ${Dotfile} && ! -e ${Dotfile} ]] ; then
+      err_warn "invalid file: ${Dotfile}"
     fi
 
     # Ignore hidden files
-    [[ "$(basename "${DOTFILE}")" =~ "^\." ]] && continue
+    [[ "$(basename "${Dotfile}")" =~ "^\." ]] && continue
     # Make sure file exists
-    [[ -e "${DOTFILE}" ]] || continue
+    [[ -e "${Dotfile}" ]] || continue
 
     # Ignore kratos hooks
-    case "${DOTFILE##*.}" in
+    case "${Dotfile##*.}" in
       'install-pre'|'install'|'install-post'|\
       'generate-pre'|'generate-post'|\
       'uninstall-pre'|'uninstall'|'uninstall-post')
@@ -193,74 +193,74 @@ function DotfilesHook {
     esac
 
     # Respect .kratosignore
-    IGNORE_STATUS=false
-    for IGNORE_ITEM in "${IGNORE_LIST[@]}" ; do
+    IgnoreStatus=false
+    for IgnoreItem in "${IgnoreList[@]}" ; do
       # Respect ignoring files within ignore directories
-      if [[ -n "$(echo "${DOTFILE}" | grep "${IGNORE_ITEM}")" ]] ; then
-        IGNORE_STATUS=true
+      if [[ -n "$(echo "${Dotfile}" | grep "${IgnoreItem}")" ]] ; then
+        IgnoreStatus=true
         break
       fi
     done
-    if ${IGNORE_STATUS} ; then
+    if ${IgnoreStatus} ; then
       continue
     fi
 
     # PRE-(Un)Install
-    if ${UNINSTALL} ; then
-      DotfilesPreUninstallHook "${DOTFILE}" || return 1
+    if ${Uninstall} ; then
+      dotfiles_pre_uninstall_hook "${Dotfile}" || return 1
     else
-      DotfilesPreInstallHook "${DOTFILE}" || return 1
+      dotfiles_pre_install_hook "${Dotfile}" || return 1
     fi
 
     # (Un)Install
-    if ${UNINSTALL} ; then
-      if [[ -f "${DOTFILE}.uninstall" ]] ; then
-        DotfilesUninstallHook "${DOTFILE}" || return 1
+    if ${Uninstall} ; then
+      if [[ -f "${Dotfile}.uninstall" ]] ; then
+        dotfiles_uninstall_hook "${Dotfile}" || return 1
       else
         echo "uninstall"
       fi
     else
-      if [[ -f "{DOTFILE}.install" ]] ; then
-        DotfilesInstallHook "${DOTFILE}" || return 1
+      if [[ -f "{Dotfile}.install" ]] ; then
+        dotfiles_install_hook "${Dotfile}" || return 1
       else
 
         # TODO: add loop for .kratosdontsym
 
         # TODO: Add DotfilesPreGenerateHook & DotfilesPostGenerateHook
 
-        if [[ "${DOTFILE##*.}" == 'generate' ]] ; then
-          DotfilesPreGenerateHook "${DOTFILE}" || return 1
-          DotfilesGenerateHook "${DOTFILE}" || return 1
-          DotfilesPostGenerateHook "${DOTFILE}" || return 1
-        elif [[ -n "$(echo "${DOTFILE}" | grep "config/systemd/user")" ]] ; then
-          DotfilesSystemdHook "${DOTFILE}" || return 1
+        if [[ "${Dotfile##*.}" == 'generate' ]] ; then
+          dotfiles_pre_generate_hook "${Dotfile}" || return 1
+          dotfiles_generate_hook "${Dotfile}" || return 1
+          dotfiles_post_generate_hook "${Dotfile}" || return 1
+        elif [[ -n "$(echo "${Dotfile}" | grep "config/systemd/user")" ]] ; then
+          dotfiles_systemd_hook "${Dotfile}" || return 1
         else
-          if [[ -e "${HOME}/.$(echo "${DOTFILE}" | sed -e "s|${DOTFILES_DIR}\/||")" ]] ; then
-            echo -ne "Updating: ${DOTFILE}"\\r
+          if [[ -e "${HOME}/.$(echo "${Dotfile}" | sed -e "s|${DOTFILES_DIR}\/||")" ]] ; then
+            echo -ne "Updating: ${Dotfile}"\\r
           else
-            echo -ne "Installing: ${DOTFILE}"\\r
+            echo -ne "Installing: ${Dotfile}"\\r
           fi
 
           # TODO: add logic to prevent from following symlinked directory paths,
           #       may not be necessary
-          EnsureFileDestroy "${HOME}/.$(
-                              echo "${DOTFILE}" |
+          ensure_file_destroy "${HOME}/.$(
+                              echo "${Dotfile}" |
                               sed -e "s|${DOTFILES_DIR}\/||"
                             )" || {
-            ErrError "failed to remove: ${HOME}/.$(
-                       echo "${DOTFILE}" |
+            err_error "failed to remove: ${HOME}/.$(
+                       echo "${Dotfile}" |
                        sed -e "s|${DOTFILES_DIR}\/||"
                      )"
             return 1
           }
 
           # Symlink DOTFILE
-          symlink "${DOTFILE}" "${HOME}/.$(
-                    echo "${DOTFILE}" |
+          symlink "${Dotfile}" "${HOME}/.$(
+                    echo "${Dotfile}" |
                     sed -e "s|${DOTFILES_DIR}\/||"
                   )" || {
-            ErrError "failed to symlink \`${DOTFILE}' to \`${HOME}/.$(
-                       echo "${DOTFILE}" |
+            err_error "failed to symlink \`${Dotfile}' to \`${HOME}/.$(
+                       echo "${Dotfile}" |
                        sed -e "s|${DOTFILES_DIR}\/||"
                      )'"
             return 1
@@ -270,10 +270,10 @@ function DotfilesHook {
     fi
 
     # POST-(Un)Install
-    if ${UNINSTALL} ; then
-      DotfilesPostUninstallHook "${DOTFILE}" || return 1
+    if ${Uninstall} ; then
+      dotfiles_post_uninstall_hook "${Dotfile}" || return 1
     else
-      DotfilesPostInstallHook "${DOTFILE}" || return 1
+      dotfiles_post_install_hook "${Dotfile}" || return 1
     fi
 
   done

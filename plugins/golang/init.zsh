@@ -7,11 +7,11 @@
 
 if ${PathHasBinGO} ; then
 
-  GoLangDirs
+  golang_dirs
 
   # Add Go bin/ directory to $PATH
-  GoLangBinPath
+  golang_bin_path
 
-  GoLangGoPath
+  golang_gopath
 
 fi

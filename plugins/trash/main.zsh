@@ -26,7 +26,7 @@
 #Path=[orginal path including the orginal filename]
 #DeletionDate=[ISO 8601 compliant date and time]
 
-function TrashUsage {
+function trash_usage {
 
 cat <<EOF
 usage info will go here
@@ -40,8 +40,8 @@ function trash {
   [ -z "$1" ] && { echo "ERROR: no input provided" ; return 1 ; }
 
   # Make sure necessary directories exist before continuing
-  exist -dc "$DIR_TRASH_FILES" || return 1
-  exist -dc "$DIR_TRASH_INFO" || return 1
+  ensure_dir_exists "$DIR_TRASH_FILES" || return 1
+  ensure_dir_exists "$DIR_TRASH_INFO" || return 1
 
     case $1 in
 
@@ -63,25 +63,25 @@ function trash {
         # TODO: add total file count and size to deletion prompt
         # TODO: make an optional verbose flag
 
-        totalTrashSize="0"
-        totalTrashFiles="0"
+        TotalTrashSize="0"
+        TotalTrashFiles="0"
 
-        for trashinfo in "$DIR_TRASH_INFO"; do
+        for TrashInfo in "$DIR_TRASH_INFO"; do
           # Get filename INCOMPLETE
-          findFileName=$(ls -al .trashinfo | awk -F " " '{ print $5 }')
+          FindFileName=$(ls -al .trashinfo | awk -F " " '{ print $5 }')
           # remove trashinfo extension
           # if -f file exists
           if [ -f fileExists ]; then
             # Get filesize INCOMPLETE
-            findFileSize=$(ls -al .trashinfo | awk -F " " '{ print $9 }')
+            FindFileSize=$(ls -al .trashinfo | awk -F " " '{ print $9 }')
             # Add filesize to total
-            totalTrashSize=$(( $findFileSize + $totalTrashSize ))
+            TotalTrashSize=$(( $FindFileSize + $TotalTrashSize ))
             # Add one to file counter
-            totalTrashfiles=$(( 1 + $totalTrashFiles ))
+            TotalTrashfiles=$(( 1 + $TotalTrashFiles ))
           fi
         done
         # Convert totalTrashSize to a human readable format (Kb/Mb/Gb/Tb)INCOMPLETE
-        totalTrashSize="incomplete"
+        TotalTrashSize="incomplete"
 
         # Ask user if they want to delete xfiles to free up xspace
         echo "Are you sure you want to permanently delete $totalTrashfiles($totalTrashSize) (Y/N)"

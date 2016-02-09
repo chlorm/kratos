@@ -7,9 +7,9 @@
 
 if ${PathHasBinGHC} ; then
 
-  HaskellDirs
+  haskell_dirs
 
   # Add haskell bin/ directory to $PATH
-  HaskellBinPath
+  haskell_bin_path
 
 fi

@@ -5,181 +5,181 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function CpuArchitecture {
+function cpu_architecture {
 
   # Return CPU architecture without endianness or address space size
 
   # Do NOT use `uname -m' to achieve this functionality.
 
-  local architecture
+  local Architecture
 
-  case "$(OsKernel)" in
+  case "$(os_kernel)" in
     'cygwin')
       case "${PROCESSOR_ARCHITECTURE}" in
         'AMD64')
-          architecture='x86_64'
+          Architecture='x86_64'
           ;;
         'x86')
-          architecture='i686'
+          Architecture='i686'
           ;;
       esac
       ;;
     'darwin')
       # TODO: use sysctl on Darwin
-      architecture='x86_64'
+      Architecture='x86_64'
       ;;
     'linux')
-      architecture="$(
+      Architecture="$(
         lscpu |
         grep --max-count 1 --word-regexp --only-matching "\(arm\|i686\|x86_64\)"
       )"
       ;;
   esac
 
-  if [[ -z "${architecture}" ]] ; then
-    ErrError 'failed to detect cpu architecture'
+  if [[ -z "${Architecture}" ]] ; then
+    err_error 'failed to detect cpu architecture'
     return 1
   fi
 
-  echo "${architecture}" && return 0
-
-  return 1
-
-}
-
-function CpuAddressSpace {
-
-  # Find CPU adress space size (ie. 32bit/64bit)
-
-  local address_space
-
-  address_space=$(
-    getconf LONG_BIT |
-    grep --max-count 1 --word-regexp --only-matching "\(8\|16\|32\|64\|\128\)" |
-    grep --only-matching -p '[0-9]+'
-  )
-
-  [[ -z "${address_space}" ]] || {
-    ErrError 'could not determine cpu address space size'
-    return 1
-  }
-
-  echo "${address_space}"
+  echo "${Architecture}"
 
   return 0
 
 }
 
-function CpuSockets {
+function cpu_address_space {
 
-  local SOCKETS
+  # Find CPU adress space size (ie. 32bit/64bit)
 
-  case "$(OsKernel)" in
-    'darwin')
-      SOCKETS=1
-      ;;
-    'linux')
-      SOCKETS="$(
-        lscpu |
-        grep --max-count 1 'Socket(s):' |
-        grep --only-matching --perl-regexp "[0-9]+"
-      )"
-      ;;
-  esac
+  local AddressSpace
 
-  if [[ ! ${SOCKETS} -ge 1 ]] ; then
-    # Assume a socket exists even if it fails to find any
-    SOCKETS=1
-  fi
+  AddressSpace=$(
+    getconf LONG_BIT |
+    grep --max-count 1 --word-regexp --only-matching "\(8\|16\|32\|64\|\128\)" |
+    grep --only-matching -p '[0-9]+'
+  ) || return 1
 
-  echo "${SOCKETS}" && return 0
+  [[ -z "${AddressSpace}" ]] || {
+    err_error 'could not determine cpu address space size'
+    return 1
+  }
 
-  return 1
+  echo "${AddressSpace}"
+
+  return 0
 
 }
 
-function CpuPhysical {
+function cpu_sockets {
+
+  local Sockets
+
+  case "$(os_kernel)" in
+    'darwin')
+      Sockets=1
+      ;;
+    'linux')
+      Sockets="$(
+        lscpu |
+        grep --max-count 1 'Socket(s):' |
+        grep --only-matching --perl-regexp "[0-9]+"
+      )" || return 1
+      ;;
+  esac
+
+  if [[ ! ${Sockets} -ge 1 ]] ; then
+    # Assume a socket exists even if it fails to find any
+    Sockets=1
+  fi
+
+  echo "${Sockets}"
+
+  return 0
+
+}
+
+function cpu_physical {
 
   # Find number of physical cpu cores
 
   # Assumes all sockets are identical, only some arm platforms won't
   # work with this logic.
 
-  local cpucores
+  local CpuCores
 
-  case "$(OsKernel)" in
+  case "$(os_kernel)" in
     'linux')
-      cpucores=$(
+      CpuCores=$(
         lscpu |
         grep --max-count 1 'Core(s) per socket:' |
         grep --only-matching --perl-regexp '[0-9]+'
-      )
+      ) || return 1
       ;;
     'darwin')
-      cpucores=$(
+      CpuCores=$(
         sysctl hw |
         grep --max-count 1 "hw.physicalcpu:" |
         grep --only-matching --perl-regexp '[0-9]+'
-      )
+      ) || return 1
       ;;
     'cygwin')
-      cpucores=$(
+      CpuCores=$(
         NUMBER_OF_PROCESSORS |
         grep --only-matching --perl-regexp '[0-9]+'
-      )
+      ) || return 1
       ;;
   esac
 
-  if [[ -z "${cpucores}" ]] ; then
-    cpucores=1
+  if [[ -z "${CpuCores}" ]] ; then
+    CpuCores=1
   else
-    cpucores=$(($cpucores * $(CpuSockets)))
+    CpuCores=$(( ${CpuCores} * $(cpu_sockets) ))
   fi
 
-  echo "$cpucores"
+  echo "${CpuCores}"
 
   return 0
 
 }
 
-function CpuLogical {
+function cpu_logical {
 
   # Find number of logical cpu cores
 
   # Assumes all sockets are identical, only some arm platforms won't
   # work with this logic
 
-  local cputhreads
+  local CpuThreads
 
-  case $(OsKernel) in
+  case $(os_kernel) in
     'linux'|'freebsd')
       # Finds number of logical threads per physical core
-      cputhreads=$(
+      CpuThreads=$(
         lscpu |
         grep --max-count 1 'Thread(s) per core:' |
         grep --only-matching --perl-regexp '[0-9]+'
-      )
-      if [[ -n "${cputhreads}" ]] ; then
+      ) || return 1
+      if [[ -n "${CpuThreads}" ]] ; then
         # Convert to number of threads per cpu
-        cputhreads=$((${cputhreads} * $(CpuPhysical)))
+        CpuThreads=$(( ${CpuThreads} * $(cpu_physical) ))
       fi
       ;;
     'darwin')
-      cputhreads=$(
+      CpuThreads=$(
         sysctl hw |
         grep --max-count 1 "hw.logicalcpu:" |
         grep --only-matching --perl-regexp '[0-9]+'
-      )
+      ) || return 1
       ;;
   esac
 
-  if [[ -z "${cputhreads}" ]] ; then
-    cputhreads=$(CpuPhysical)
+  if [[ -z "${CpuThreads}" ]] ; then
+    CpuThreads=$(cpu_physical)
   else
-    cputhreads=$((${cputhreads} * $(CpuSockets)))
+    CpuThreads=$(( ${CpuThreads} * $(cpu_sockets) ))
   fi
 
-  echo "${cputhreads}"
+  echo "${CpuThreads}"
 
   return 0
 
@@ -189,23 +189,23 @@ function download {
 
   # Find download utility on system
 
-  if PathHasBin 'curl' ; then
+  if path_has_bin 'curl' ; then
       curl -sOL $@ && return 0
-  elif PathHasBin 'wget' ; then
+  elif path_has_bin 'wget' ; then
       wget $@ && return 0
-  elif PathHasBin 'fetch' ; then
+  elif path_has_bin 'fetch' ; then
       fetch $@ && return 0
   else
-    ErrError 'no download utility found'
+    err_error 'no download utility found'
     return 1
   fi
 
-  ErrError 'unable to download file'
+  err_error 'unable to download file'
   return 1
 
 }
 
-function EnsureDirDestroy {
+function ensure_dir_destroy {
 
   while [ "${1}" ] ; do
     # Make sure directory is not a symlink
@@ -221,7 +221,7 @@ function EnsureDirDestroy {
 
 }
 
-function EnsureDirExists {
+function ensure_dir_exists {
 
   while [ "${1}" ] ; do
     # Make sure directory is not a symlink
@@ -237,7 +237,7 @@ function EnsureDirExists {
 
 }
 
-function EnsureFileDestroy {
+function ensure_file_destroy {
 
   while [ "${1}" ] ; do
     # Make sure file is not a symlink
@@ -253,7 +253,7 @@ function EnsureFileDestroy {
 
 }
 
-function EnsureFileExists {
+function ensure_file_exists {
 
   while [ "${1}" ] ; do
     # Make sure file is not a symlink
@@ -269,7 +269,7 @@ function EnsureFileExists {
 
 }
 
-function ErrCallStack {
+function err_call_stack {
 
   echo "${funcstack[3]}"
 
@@ -277,31 +277,31 @@ function ErrCallStack {
 
 }
 
-function ErrError {
+function err_error {
 
   if [[ -n "${2}" ]] ; then
     echo "Kratos: ERROR in \`${2}': ${1}" > /dev/stderr
   else
-    echo "Kratos: ERROR in \`$(ErrCallStack)': ${1}" > /dev/stderr
+    echo "Kratos: ERROR in \`$(err_call_stack)': ${1}" > /dev/stderr
   fi
 
   return 0
 
 }
 
-function ErrWarn {
+function err_warn {
 
   if [[ -n "${2}" ]] ; then
     echo "Kratos: WARNING in \`${2}': ${1}" > /dev/stderr
   else
-    echo "Kratos: WARNING in \`$(ErrCallStack)': ${1}" > /dev/stderr
+    echo "Kratos: WARNING in \`$(err_call_stack)': ${1}" > /dev/stderr
   fi
 
   return 0
 
 }
 
-function IsRoot {
+function is_root {
 
   # Determine if the user is root
 
@@ -311,7 +311,7 @@ function IsRoot {
 
 }
 
-function LoadOne {
+function load_one {
 
   # Source specified init file
 
@@ -320,7 +320,7 @@ function LoadOne {
   fi
 
   source "${1}" || {
-    ErrError "Failed to load: ${1}"
+    err_error "Failed to load: ${1}"
     return 1
   }
 
@@ -328,80 +328,78 @@ function LoadOne {
 
 }
 
-function LoadAll {
+function load_all {
 
   # Load all of specified init type
 
-  local INIT
-  local INITS
-  local PLUGIN
-  local pluginLoaderExists
+  local Init
+  local Inits
+  local Plugin
+  local PluginLoaderExists
 
-  INITS=()
-
-  INITS+=(
+  Inits=(
     # Modules
     $(find "${KRATOS_DIR}/modules" -type f -name "${1}.zsh")
     # Active plugins
-    $(for PLUGIN in "${KRATOS_PLUGINS[@]}" ; do
-      pluginLoaderExists="$(
+    $(for Plugin in "${KRATOS_PLUGINS[@]}" ; do
+      PluginLoaderExists="$(
         find ${KRATOS_DIR}/plugins \
-          -type f -name "${1}.zsh" -iwholename "*${PLUGIN}*"
+          -type f -name "${1}.zsh" -iwholename "*${Plugin}*"
       )"
-      if [[ -f "${pluginLoaderExists}" ]] ; then
-        echo "${pluginLoaderExists}"
+      if [[ -f "${PluginLoaderExists}" ]] ; then
+        echo "${PluginLoaderExists}"
       fi
     done)
   )
 
-  for INIT in "${INITS[@]}" ; do
-    LoadOne "${INIT}"
+  for Init in "${Inits[@]}" ; do
+    load_one "${Init}"
   done
 
   return 0
 
 }
 
-function OsKernel {
+function os_kernel {
 
   # Find host os kernel
 
-  function OsKernelOstype {
+  function os_kernel_ostype {
 
     echo "${OSTYPE}" > /dev/null 2>&1
 
   }
 
-  function OsKernelUname {
+  function os_kernel_uname {
 
     uname -s 2> /dev/null
 
   }
 
-  local KERNEL
+  local Kernel
 
-  KERNEL=$(
-    ToLower "$(OsKernelOstype) $(OsKernelUname)" |
+  Kernel=$(
+    to_lower "$(os_kernel_ostype) $(os_kernel_uname)" |
     grep --max-count 1 --word-regexp --only-matching \
-      '\(cygwin\|darwin\|dragonfly\|freebsd\|linux\|netbsd\|openbsd\)'
+      '\(cygwin\|darwin\|freebsd\|linux\)'
   )
 
-  if [[ -z "${KERNEL}" ]] ; then
-    ErrError 'not a supported operating system'
+  if [[ -z "${Kernel}" ]] ; then
+    err_error 'not a supported operating system'
     return 1
   fi
 
-  echo "${KERNEL}"
+  echo "${Kernel}"
 
   return 0
 
 }
 
-function OsLinux {
+function os_linux {
 
   # Take first result of linux os name match
 
-  function OsLinuxRelease {
+  function os_linux_release {
 
     # Finds linux distro via /etc/*-release
 
@@ -409,7 +407,7 @@ function OsLinux {
 
   }
 
-  function OsLinuxUname {
+  function os_linux_uname {
 
     # Finds linux distro via uname -a
 
@@ -417,7 +415,7 @@ function OsLinux {
 
   }
 
-  function OsLinuxLsb {
+  function os_linux_lsb {
 
     # Find linux distro via linux standard base
 
@@ -425,50 +423,50 @@ function OsLinux {
 
   }
 
-  [ "$(OsKernel)" = 'linux' ] || return 1
+  [[ "$(os_kernel)" == 'linux' ]] || return 1
 
-  local LINUX
+  local Linux
 
-  LINUX="$(
-    ToLower "$(OsLinuxRelease) $(OsLinuxUname) $(OsLinuxLsb)" |
+  Linux="$(
+    to_lower "$(os_linux_release) $(os_linux_uname) $(os_linux_lsb)" |
     grep --max-count 1 --word-regexp --only-matching \
       '\(arch\|centos\|debian\|fedora\|gentoo\|opensuse\|red\ hat\|suse\|triton\|ubuntu\)'
   )"
 
-  if [[ -z "${LINUX}" ]] ; then
-    ErrError 'not a supported linux operating system'
+  if [[ -z "${Linux}" ]] ; then
+    err_error "not a supported linux operating system: ${Linux}"
     return 1
   fi
 
-  echo "${LINUX}"
+  echo "${Linux}"
 
   return 0
 
 }
 
-function PasswordConfirmation {
+function password_confirmation {
 
-  local PASS1
-  local PASS2
+  local Pass1
+  local Pass2
 
   while true ; do
-    read -s -p "Password: " PASS1
+    read -s -p "Password: " Pass1
     echo
-    read -s -p "Confirm: " PASS2
+    read -s -p "Confirm: " Pass2
     echo
-    if [[ "${PASS1}" == "${PASS2}" ]] ; then
+    if [[ "${Pass1}" == "${Pass2}" ]] ; then
       break
     fi
     echo "WARNING: passwords do not match, try again"
   done
 
-  echo "${PASS1}" > /dev/null 2>&1 && return 0
+  echo "${Pass1}" > /dev/null 2>&1 && return 0
 
   return 1
 
 }
 
-function PathAdd {
+function path_add {
 
   # Add direcory to $PATH
 
@@ -480,7 +478,7 @@ function PathAdd {
 
 }
 
-function PathRemove {
+function path_remove {
 
   # Remove directory from $PATH
 
@@ -492,7 +490,7 @@ function PathRemove {
 
 }
 
-function PathBin {
+function path_bin {
 
   # Finds the path to the binary
 
@@ -500,32 +498,32 @@ function PathBin {
     return 2
   fi
 
-  PathHasBin "${1}" > /dev/null 2>&1 || return 1
+  path_has_bin "${1}" > /dev/null 2>&1 || return 1
 
   whence -p "${1}" |
-  awk '{print $3 ; exit}' || return 1
+  awk '{ print $3 ; exit }' || return 1
 
   return 0
 
 }
 
-function PathBinAbs {
+function path_bin_abs {
 
   # Resolves the absolute path of the binary
 
-  local BIN
+  local Bin
 
-  BIN="$(whereis -b ${1} 2> /dev/null | awk '{print $2 ; exit}')"
+  Bin="$(whereis -b ${1} 2> /dev/null | awk '{ print $2 ; exit }')"
 
-  [[ -n "${BIN}" ]] || return 1
+  [[ -n "${Bin}" ]] || return 1
 
-  echo "${BIN}"
+  echo "${Bin}"
 
   return 0
 
 }
 
-function PathHasBin {
+function path_has_bin {
 
   # Test to see if a binary exists in the path
 
@@ -537,10 +535,10 @@ function PathHasBin {
 
 }
 
-function PathHasBinErr {
+function path_has_bin_err {
 
-  PathHasBin "${1}" || {
-    ErrError "\`${1}' is not installed" "$(ErrCallStack)"
+  path_has_bin "${1}" || {
+    err_error "\`${1}' is not installed" "$(err_call_stack)"
     return 1
   }
 
@@ -548,7 +546,7 @@ function PathHasBinErr {
 
 }
 
-function ProcExists {
+function proc_exists {
 
   # Checks to see if the process is running
 
@@ -556,31 +554,31 @@ function ProcExists {
     return 1
   fi
 
-  kill -0 "$1" > /dev/null 2>&1
+  kill -0 "${1}" > /dev/null 2>&1
 
 }
 
-function ProcPidFile {
+function proc_pid_file {
 
   # Checks the pidfile to see if the process is running
 
   if [[ -f "${1}" ]] ; then
-  	ProcExists "$(cat ${1} 2> /dev/null)"
+  	proc_exists "$(cat ${1} 2> /dev/null)"
   fi
 
 }
 
-function RunQuiet {
+function run_quiet {
 
   # Start an application in the background
 
-  PathHasBin "${1}" || return 1
+  path_has_bin "${1}" || return 1
 
-  local PID
+  local Pid
 
-  PID="$(pgrep ${1})"
+  Pid="$(pgrep ${1})"
 
-  if [[ -z "${PID}" ]] ; then
+  if [[ -z "${Pid}" ]] ; then
   	$@ > /dev/null 2>&1 || return 1
   fi
 
@@ -592,57 +590,57 @@ function shell {
 
   # Returns the shell executing the current script
 
-  local LSHELL
-  local LPROC
+  local Lshell
+  local Lproc
 
-  LPROC="$(ps hp $$ | grep "$$")"
+  Lproc="$(ps hp $$ | grep "$$")"
 
   # Workaround for su spawned shells
-  if [[ -n "$(echo "${LPROC}" | grep '\-su')" ]] ; then
-    LSHELL="$(
+  if [[ -n "$(echo "${Lproc}" | grep '\-su')" ]] ; then
+    Lshell="$(
       basename "$(
-        echo "${LPROC}" |
+        echo "${Lproc}" |
         sed 's/^.*(\([^)]*\)).*$/\1/'
       )"
     )"
   else
-    LSHELL="$(
+    Lshell="$(
       basename "$(
-        echo "${LPROC}" |
+        echo "${Lproc}" |
         sed 's/-//' |
-        awk '{print $5 ; exit}'
+        awk '{ print $5 ; exit }'
       )"
     )"
   fi
 
   # Resolve symlinked shells
-  LSHELL="$(
+  Lshell="$(
     basename "$(
       readlink -f "$(
-        PathBinAbs "${LSHELL}"
+        path_bin_abs "${Lshell}"
       )"
     )"
   )"
 
   # Remove appended major version
-  LSHELL="$(
-    echo "${LSHELL}" |
+  Lshell="$(
+    echo "${Lshell}" |
     sed 's/^\([a-z]*\).*/\1/'
   )"
 
-  LSHELL="$(
-    ToLower "${LSHELL}"
+  Lshell="$(
+    to_lower "${Lshell}"
   )"
 
-  echo "${LSHELL}"
+  echo "${Lshell}"
 
 }
 
-function SudoWrap {
+function sudo_wrap {
 
   # Wraps the command in sudo if sudo exists and runs it
 
-  if PathHasBin 'sudo' ; then
+  if path_has_bin 'sudo' ; then
     sudo $@
   else
     $@
@@ -652,24 +650,24 @@ function SudoWrap {
 
 }
 
-function StoreAsVar {
+function store_as_var {
 
   # Stores the output of the command into a variable without a subshell
 
-  local VAR
-  local TMP
-  local RET
+  local Var
+  local Tmp
+  local Ret
 
-  VAR="${1}" ; shift
-  TMP="$(mktemp 2> /dev/null)" || {
-    TMP="$(mktemp -t tmp 2> /dev/null)" || return 128
+  Var="${1}" ; shift
+  Tmp="$(mktemp 2> /dev/null)" || {
+    Tmp="$(mktemp -t tmp 2> /dev/null)" || return 128
   }
-  $@ > "${TMP}"
-  RET=$?
-  read "${VAR}" < "${TMP}"
-  rm "${TMP}"
+  $@ > "${Tmp}"
+  Ret=$?
+  read "${Var}" < "${Tmp}"
+  rm "${Tmp}"
 
-  return ${RET}
+  return ${Ret}
 
 }
 
@@ -677,13 +675,13 @@ function symlink {
 
   # Create a symbolic link $1 -> $2
 
-  EnsureDirExists "$(dirname "${2}")"
+  ensure_dir_exists "$(dirname "${2}")"
   if [[ "$(readlink -f "${2}")" != "${1}" ]] ; then
     rm -rf "${2}"
     if [[ -e "${1}" ]] ; then
       ln -sf "${1}" "${2}" || return 1
     else
-      ErrError "file does not exist: \`${1}'"
+      err_error "file does not exist: \`${1}'"
       return 1
     fi
   fi
@@ -692,7 +690,7 @@ function symlink {
 
 }
 
-function ToLower {
+function to_lower {
 
   echo $@ | tr '[A-Z]' '[a-z]'
 
@@ -700,7 +698,7 @@ function ToLower {
 
 }
 
-function ToUpper {
+function to_upper {
 
   echo $@ | tr '[a-z]' '[A-Z]'
 
@@ -708,44 +706,44 @@ function ToUpper {
 
 }
 
-function YorN {
+function y_or_n {
 
   # Ask a yes or no question
 
-  local ANSWER
-  local DEFAULT
-  local PROMPT
+  local Answer
+  local Default
+  local Prompt
 
-  DEFAULT=2
+  Default=2
 
   case "${2}" in
     '')
-      DEFAULT=2
-      PROMPT='(y/n)'
+      Default=2
+      Prompt='(y/n)'
       ;;
     'y')
-      DEFAULT=0
-      PROMPT='(Y/n)'
+      Default=0
+      Prompt='(Y/n)'
       ;;
     'n')
-      DEFAULT=1
-      PROMPT='(y/N)'
+      Default=1
+      Prompt='(y/N)'
       ;;
     *)
-      DEFAULT=2
-      PROMPT='(y/n)'
+      Default=2
+      Prompt='(y/n)'
       ;;
   esac
 
   while true ; do
-    read -p "${1} ${PROMPT}: " ANSWER
+    read -p "${1} ${Prompt}: " Answer
 
-    ANSWER="$(ToLower ${ANSWER})"
+    Answer="$(to_lower ${Answer})"
 
-    case "${ANSWER}" in
+    case "${Answer}" in
       '')
-        if [ ! ${DEFAULT} -eq 2 ] ; then
-          return ${DEFAULT}
+        if [ ! ${Default} -eq 2 ] ; then
+          return ${Default}
         fi
         ;;
       'y'|'yes')

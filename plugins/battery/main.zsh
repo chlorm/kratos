@@ -13,36 +13,39 @@ function bat {
 
 }
 
-function BatSys {
+function bat_sys {
 
   # Gets the string representing the state of the batteries
 
-  local BAT
-  local BATS
+  local Bat
+  local Bats
 
-  [ -d "${ROOT}/sys/class/power_supply" ] || return 1
+  [[ -d "${ROOT}/sys/class/power_supply" ]] || return 1
 
-  BATS=($(ls "${ROOT}/sys/class/power_supply" | grep "^BAT"))
+  Bats=($(
+    ls "${ROOT}/sys/class/power_supply" |
+      grep "^BAT"
+  ))
 
-  for BAT in "${BATS[@]}" ; do
-    BatOne "${BAT}"
+  for Bat in "${Bats[@]}" ; do
+    bat_one "${Bat}"
   done
 
 }
 
-function BatOne {
+function bat_one {
 
-  local BAT_DIR
-  local B
-  local NOW
-  local FULL
+  local BatDir
+  local BatStatus
+  local Now
+  local Full
 
-  BAT_DIR="${ROOT}/sys/class/power_supply/$1"
-  B=="$(cat "${BAT_DIR}/status" 2> /dev/null)"
+  BatDir="${ROOT}/sys/class/power_supply/$1"
+  BatStatus="$(cat "${BatDir}/status" 2> /dev/null)"
 
   echo -n "${1}: "
 
-  case "${B}" in
+  case "${BatStatus}" in
     Charging)
       echo -n "↑"
       ;;
@@ -54,8 +57,16 @@ function BatOne {
       ;;
   esac
 
-  NOW="$(cat "${BAT_DIR}"/charge_now 2> /dev/null || cat "${BAT_DIR}"/energy_now 2> /dev/null || echo -1)"
-  FULL="$(cat "${BAT_DIR}"/charge_full 2> /dev/null || cat "${BAT_DIR}"/energy_full 2> /dev/null || echo 1)"
-  echo "$(expr ${NOW} \* 100 / $FULL)%"
+  Now="$(
+    cat "${BatDir}"/charge_now 2> /dev/null || \
+    cat "${BatDir}"/energy_now 2> /dev/null || \
+    echo -1
+  )"
+  Full="$(
+    cat "${BatDir}"/charge_full 2> /dev/null || \
+    cat "${BatDir}"/energy_full 2> /dev/null || \
+    echo 1
+  )"
+  echo "$(expr ${Now} \* 100 / $Full)%"
 
 }

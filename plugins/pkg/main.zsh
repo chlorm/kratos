@@ -7,7 +7,7 @@
 
 # Add search, list, query, upgrade, info, history support
 
-function PkgUsage {
+function pkg_usage {
 
 cat <<EOF
 Pkg is an abstraction layer for system package managers.
@@ -24,82 +24,68 @@ EOF
 
 }
 
-function PkgMgr {
+function pkg_mgr {
 
-  case "$(OsKernel)" in
-
+  case "$(os_kernel)" in
     'cygwin')
       # ??? chloclatey
-      ErrError 'not supported'
+      err_error 'not supported'
       ;;
-
     'darwin')
       # ??? homebrew
-      ErrError 'not supported'
+      err_error 'not supported'
       ;;
-
     'freebsd') # Ports
-      PathHasBinErr 'portmaster' || return 1
-      PathHasBinErr 'portsnap' || return 1
+      path_has_bin_err 'portmaster' || return 1
+      path_has_bin_err 'portsnap' || return 1
       echo 'ports'
       return 0
       ;;
-
     'linux')
-      case "$(OsLinux)" in
-
+      case "$(os_linux)" in
         'Debian'|'Ubuntu') # Apt
-          PathHasBinErr 'apt-get' || return 1
+          path_has_bin_err 'apt-get' || return 1
           echo 'apt'
           return 0
           ;;
-
         'triton') # Nix
-          PathHasBinErr 'nix-env' || return 1
-          PathHasBinErr 'nixos-rebuild' || return 1
-          PathHasBinErr 'nix-collect-garbage' || return 1
-          PathHasBinErr 'nix-channel' || return 1
+          path_has_bin_err 'nix-env' || return 1
+          path_has_bin_err 'nixos-rebuild' || return 1
+          path_has_bin_err 'nix-collect-garbage' || return 1
+          path_has_bin_err 'nix-channel' || return 1
           echo 'nix'
           return 0
           ;;
-
         'arch') # Pacman
-          PathHasBinErr 'pacman' || return 1
+          path_has_bin_err 'pacman' || return 1
           echo 'pacman'
           return 0
           ;;
-
         'gentoo') # Portage
-          PathHasBinErr 'emerge' || return 1
+          path_has_bin_err 'emerge' || return 1
           echo 'portage'
           return 0
           ;;
-
         'centos'|'fedora'|'red hat') # Red Hat
-          PathHasBinErr 'yum' || return 1
+          path_has_bin_err 'yum' || return 1
           echo 'rpm'
           return 0
           ;;
-
         'suse') # Yast, not sure about this cluster fuck
-          PathHasBinErr 'zypper' || return 1
+          path_has_bin_err 'zypper' || return 1
           echo 'yast'
           return 0
           ;;
-
         *)
-          ErrError 'not a suppoted linux distro'
+          err_error 'not a suppoted linux distro'
           return 1
           ;;
-
       esac
       ;;
-
     *)
-      ErrError 'not a supported base OS'
+      err_error 'not a supported base OS'
       return 1
       ;;
-
   esac
 
 }
@@ -107,30 +93,30 @@ function PkgMgr {
 function pkg {
   case "${1}" in
     '')
-      ErrError 'no input provided'
+      err_error 'no input provided'
       ;;
     'clean')
-      case "$(PkgMgr)" in
+      case "$(pkg_mgr)" in
         'apt-get')
-          ErrError 'unsupported action'
+          err_error 'unsupported action'
           ;;
         'nix')
-          SudoWrap nix-collect-garbage -d
+          sudo_wrap nix-collect-garbage -d
           return $?
           ;;
         'pacman')
-          [[ -n "$(pacman -Qqdt)" ]] && SudoWrap pacman -Rns $(pacman -Qqdt)
+          [[ -n "$(pacman -Qqdt)" ]] && sudo_wrap pacman -Rns $(pacman -Qqdt)
           return $?
           ;;
         'portage')
-          SudoWrap emerge --depclean && SudoWrap emerge @preserved-rebuild
+          sudo_wrap emerge --depclean && sudo_wrap emerge @preserved-rebuild
           return $?
           ;;
         'rpm')
-          ErrError 'unsupported action'
+          err_error 'unsupported action'
           ;;
         'yast')
-          ErrError 'unsupported action'
+          err_error 'unsupported action'
           ;;
         *)
           return 1
@@ -138,10 +124,10 @@ function pkg {
       esac
       ;;
     'install')
-      case "$(PkgMgr)" in
+      case "$(pkg_mgr)" in
         'apt')
           shift
-          SudoWrap apt-get install $@
+          sudo_wrap apt-get install $@
           return $?
           ;;
         'nix')
@@ -151,27 +137,27 @@ function pkg {
           ;;
         'pacman')
           shift
-          SudoWrap pacman -S $@
+          sudo_wrap pacman -S $@
           return $?
           ;;
         'portage')
           shift
-          SudoWrap emerge --with-bdeps=y $@
+          sudo_wrap emerge --with-bdeps=y $@
           return $?
           ;;
         'ports')
           shift
-          SudoWrap portmaster -yBd $@
+          sudo_wrap portmaster -yBd $@
           return $?
           ;;
         'rpm')
           shift
-          SudoWrap yum install $@
+          sudo_wrap yum install $@
           return $?
           ;;
         'yast')
           shift
-          SudoWrap zypper
+          sudo_wrap zypper
           return $?
           ;;
         *)
@@ -180,38 +166,38 @@ function pkg {
       esac
       ;;
     'uninstall')
-      case "$(PkgMgr)" in
+      case "$(pkg_mgr)" in
         'ports')
           shift
-          SudoWrap portmaster -esdy $@
+          sudo_wrap portmaster -esdy $@
           return $?
           ;;
         'apt')
           shift
-          SudoWrap apt-get purge $@
+          sudo_wrap apt-get purge $@
           return $?
           ;;
         'nix')
-          ErrError 'unsupported action'
+          err_error 'unsupported action'
           ;;
         'pacman')
           shift
-          SudoWrap pacman -Rsdc $@
+          sudo_wrap pacman -Rsdc $@
           return $?
           ;;
         'portage')
           shift
-          SudoWrap emerge --unmerge $@
+          sudo_wrap emerge --unmerge $@
           return $?
           ;;
         'rpm')
           shift
-          SudoWrap yum install $@
+          sudo_wrap yum install $@
           return $?
           ;;
         'yast')
           shift
-          SudoWrap zypper $@
+          sudo_wrap zypper $@
           return $?
           ;;
         *)
@@ -220,39 +206,39 @@ function pkg {
       esac
       ;;
     'update')
-      case "$(PkgMgr)" in
+      case "$(pkg_mgr)" in
         'ports')
-            SudoWrap portsnap fetch || return $?
-            SudoWrap portsnap update || return $?
-            SudoWrap portmaster -ayBd
+            sudo_wrap portsnap fetch || return $?
+            sudo_wrap portsnap update || return $?
+            sudo_wrap portmaster -ayBd
             return $?
           ;;
         'apt')
-          SudoWrap apt-get update || return $?
-          SudoWrap apt-get dist-upgrade
+          sudo_wrap apt-get update || return $?
+          sudo_wrap apt-get dist-upgrade
           return $?
           ;;
         'nix')
-          SudoWrap nix-channel --update || return $?
-          SudoWrap nixos-rebuild boot
+          sudo_wrap nix-channel --update || return $?
+          sudo_wrap nixos-rebuild boot
           return $?
           ;;
         'pacman')
-          SudoWrap pacman -Syu
+          sudo_wrap pacman -Syu
           return $?
           ;;
         'portage')
-          SudoWrap emerge --sync || return $?
-          SudoWrap emerge --keep-going --update --deep --with-bdeps=y --newuse @world
+          sudo_wrap emerge --sync || return $?
+          sudo_wrap emerge --keep-going --update --deep --with-bdeps=y --newuse @world
           return $?
           ;;
         'rpm')
-          SudoWrap yum update
+          sudo_wrap yum update
           return $?
           ;;
         'yast')
-          SudoWrap zypper refresh || return $?
-          SudoWrap zypper update
+          sudo_wrap zypper refresh || return $?
+          sudo_wrap zypper update
           return $?
           ;;
         *)
@@ -261,12 +247,12 @@ function pkg {
       esac
       ;;
     '-h'|'--help'|'help')
-      PkgUsage
+      pkg_usage
       return 0
       ;;
     *)
-      PkgUsage
-      ErrError "Invalid option: $1"
+      pkg_usage
+      err_error "Invalid option: $1"
       return 1
       ;;
   esac

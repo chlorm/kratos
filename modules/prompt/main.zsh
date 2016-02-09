@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function PromptColor {
+function prompt_color {
 
   # Get colors for the current shell
 
@@ -83,28 +83,28 @@ function PromptColor {
 
 }
 
-function PromptVcs {
+function prompt_vcs {
 
   # Determine if the current directory is a vcs repo
 
-  local vcs_is_repo
-  local vcs_branch
-  local vcs_status
+  local VcsIsRepo
+  local VcsBranch
+  local VcsStatus
 
   if ${PathHasBinGIT} ; then
-    if vcs_is_repo=$(git status 2>&1) ; then
-      vcs_branch="$(
-        echo "${vcs_is_repo}" |
+    if VcsIsRepo=$(git status 2>&1) ; then
+      VcsBranch="$(
+        echo "${VcsIsRepo}" |
         grep -m 1 'On branch' |
         awk '{for(i=3;i<=NF;++i)print $i}'
       )"
-      vcs_status="$(
-        if [[ -z "$(echo $vcs_is_repo |
+      VcsStatus="$(
+        if [[ -z "$(echo ${VcsIsRepo} |
           grep -m 1 -w -o 'working directory clean')" ]] ; then
           echo "*"
         fi
       )"
-      echo -e "$(PromptColor green 0)git$(PromptColor black 1)∫$(PromptColor white 1)$vcs_branch$vcs_status"
+      echo -e "$(prompt_color green 0)git$(prompt_color black 1)∫$(prompt_color white 1)${VcsBranch}${VcsStatus}"
       return 0
     fi
   fi
@@ -141,21 +141,21 @@ function PromptVcs {
 
 }
 
-function PromptConfigure {
+function prompt_configure {
 
-  local NCOLOR
+  local Ncolor
 
   # Setup Special Colors
-  if IsRoot ; then
-    NCOLOR="$(PromptColor red 1)"
+  if is_root ; then
+    Ncolor="$(prompt_color red 1)"
   else
-    NCOLOR="$(PromptColor green 0)"
+    Ncolor="$(prompt_color green 0)"
   fi
 
   # Allow evaluating functions within the prompt
   setopt PROMPT_SUBST
 
   # Must use single quotes to delay evaluation
-  export PROMPT='$(PromptColor green 0)%n$(PromptColor black 1)@$(PromptColor white 1)%M$(PromptColor black 1)[$(PromptColor magenta 0)%~$(PromptColor black 1)]$(PromptVcs)$(PromptColor cyan 0)〉$(PromptColor reset)'
+  export PROMPT='$(prompt_color green 0)%n$(prompt_color black 1)@$(prompt_color white 1)%M$(prompt_color black 1)[$(prompt_color magenta 0)%~$(prompt_color black 1)]$(prompt_vcs)$(prompt_color cyan 0)〉$(prompt_color reset)'
 
 }
