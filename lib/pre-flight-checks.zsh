@@ -1,11 +1,11 @@
 
-function path_has_installed {
+KRATOS::Lib:path.has_installed {
 
   echo "PathHasBin$(
-      to_upper "${1}" |
+      KRATOS::Lib:to_upper "${1}" |
       sed -e 's/-/_/'
     )=$(
-      if path_has_bin "${1}" ; then
+      if KRATOS::Lib:path.has_bin "${1}" ; then
         echo 'true'
       else
         echo 'false'

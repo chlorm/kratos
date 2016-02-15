@@ -1,16 +1,27 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function history_shell {
+setopt append_history
+setopt extended_history
+setopt hist_expire_dups_first
+# ignore duplication command history list
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_verify
+setopt inc_append_history
+# share command history data
+setopt share_history
+
+KRATOS::Modules:history.shell() {
 
   # Create the temporary history file for the shell
 
   if [[ -d "${HOME}/.cache" ]] ; then
-    export HISTFILE="${HOME}/.cache/history.$(shell)"
+    export HISTFILE="${HOME}/.cache/history.${SHELL}"
     export HISTSIZE=10000
     export SAVEHIST=10000
   else
@@ -39,20 +50,9 @@ case "${HIST_STAMPS}" in
     ;;
 esac
 
-setopt append_history
-setopt extended_history
-setopt hist_expire_dups_first
-setopt hist_ignore_dups # ignore duplication command history list
-setopt hist_ignore_space
-setopt hist_verify
-setopt inc_append_history
-setopt share_history # share command history data
 
-alias h='history'
+KRATOS::Modules:history.command() {
 
-# Not sure what this crap does
-function hs {
   history | grep "$*"
-}
 
-alias hsi='hs -i'
+}

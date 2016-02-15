@@ -5,4 +5,5 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-KRATOS::Modules:prompt.configure
+# Configure a user cache directory
+KRATOS::Modules:cache.directory

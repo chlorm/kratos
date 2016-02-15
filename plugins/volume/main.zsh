@@ -1,5 +1,5 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
@@ -12,7 +12,7 @@
 # + Maybe rename to alevel/alev, more agnostic of input and output devices
 #    or create seperate utility for handling input devices
 
-function vol_usage {
+KRATOS::Plugins:vol.usage() {
 
 cat <<EOF
 vol is a wrapper for pactl/pacmd
@@ -29,7 +29,7 @@ EOF
 
 }
 
-function active_sound_card {
+KRATOS::Plugins:vol.active_sound_card() {
 
   local SoundCard
 
@@ -49,7 +49,7 @@ function active_sound_card {
   }
 
   [ -z "${SoundCard}" ] && {
-    err_error "failed to obtain sound card"
+    KRATOS::Lib:err.error "failed to obtain sound card"
     return 1
   }
 
@@ -59,16 +59,16 @@ function active_sound_card {
 
 }
 
-function vol_current {
+KRATOS::Plugins:vol.current() {
 
   pactl list sinks |
-    grep --after-context=9 "Sink #$(active_sound_card)" |
+    grep --after-context=9 "Sink #$(KRATOS::Plugins:vol.active_sound_card)" |
     grep "Volume:" |
     awk '/[^0-9]*\%/ {print $5 ; exit}'
 
 }
 
-function vol {
+KRATOS::Plugins:vol.command() {
 
   # If 'pactl' is not installed, be done now
   ${PathHasBinPACMD} || return 1
@@ -77,32 +77,33 @@ function vol {
   # Parse Arguments
   case "${1}" in
     '')
-      echo "Volume: $(vol_current)"
+      echo "Volume: $(KRATOS::Plugins:vol.current)"
       ;;
     [U,u]|[U,u][P,p])
-      pactl set-sink-volume $(active_sound_card) -- "+5%"
+      pactl set-sink-volume $(KRATOS::Plugins:vol.active_sound_card) -- "+5%"
       ;;
     [D,d]|[D,d][O,o][W,w][N,n])
-      pactl set-sink-volume $(active_sound_card) -- "-5%"
+      pactl set-sink-volume $(KRATOS::Plugins:vol.active_sound_card) -- "-5%"
       ;;
     [M,m]|[M,m][U,u][T,t][E,e])
-      pactl set-sink-mute $(active_sound_card) toggle
+      pactl set-sink-mute $(KRATOS::Plugins:vol.active_sound_card) toggle
       ;;
     [L,l]|[L,l][I,i][S,s][T,t])
       pactl list sinks | grep "Sink #\|alsa.mixer_name"
       ;;
     '--help')
-      vol_usage
+      KRATOS::Plugins:vol.usage
       return 0
       ;;
     *)
       case $1 in
         [0-9]|[1-9][0-9]|1[0-4][0-9]|150)
-          pactl set-sink-volume $(active_sound_card) -- "${1}%"
+          pactl \
+            set-sink-volume $(KRATOS::Plugins:vol.active_sound_card) -- "${1}%"
           ;;
         *)
           vol_usage
-          err_error 'must be an integer between 0 and 150'
+          KRATOS::Lib:err.error 'must be an integer between 0 and 150'
           return 1
           ;;
       esac

@@ -5,11 +5,11 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function archive_usage {
+KRATOS::Plugins:archive.usage() {
   echo
 }
 
-function archive {
+KRATOS::Plugins:archive.command() {
 
   case "$1" in
     '-c')
@@ -22,69 +22,69 @@ function archive {
 
 }
 
-function archive_extract {
+KRATOS::Plugins:archive.extract() {
   if [[ -z "$1" ]] ; then
-    err_error "no input provided"
+    KRATOS::Lib:err.error "no input provided"
     exit 1
   elif [[ -f "$1" ]] ; then
     case "$1" in
       *'.tar')
-        PathHasBinErr tar || return 1
+        KRATOS::Lib:path.has_bin tar || return 1
         tar xf "$1"
         ;;
       *'.tar.bz2')
-        PathHasBinErr tar || return 1
+        KRATOS::Lib:path.has_bin tar tar || return 1
         tar xjf "$1"
         ;;
       *'.tbz2')
-        PathHasBinErr tar || return 1
+        KRATOS::Lib:path.has_bin tar tar || return 1
         tar xjf "$1"
         ;;
       *'.bz2')
-        PathHasBinErr bunzip2 || return 1
+        KRATOS::Lib:path.has_bin tar bunzip2 || return 1
         bunzip2 "$1"
         ;;
       *'.tar.gz')
-        PathHasBinErr tar || return 1
+        KRATOS::Lib:path.has_bin tar tar || return 1
         tar xzf "$1"
         ;;
       *'.tgz')
-        PathHasBinErr tar || return 1
+        KRATOS::Lib:path.has_bin tar tar || return 1
         tar xzf "$1"
         ;;
       *'.gz')
-        PathHasBinErr gunzip || return 1
+        KRATOS::Lib:path.has_bin tar gunzip || return 1
         gunzip "$1"
         ;;
       *'.tar.xz')
-        PathHasBinErr tar || return 1
+        KRATOS::Lib:path.has_bin tar tar || return 1
         tar xJf "$1"
         ;;
       *'.txz')
-        PathHasBinErr tar || return 1
+        KRATOS::Lib:path.has_bin tar tar || return 1
         tar xJf "$1"
         ;;
       *'.rar')
-        PathHasBinErr unrar || return 1
+        KRATOS::Lib:path.has_bin tar unrar || return 1
         unrar e "$1"
         ;;
       *'.zip')
-        PathHasBinErr unzip || return 1
+        KRATOS::Lib:path.has_bin tar unzip || return 1
         unzip "$1"
         ;;
       *'.Z')
-        PathHasBinErr uncompress || return 1
+        KRATOS::Lib:path.has_bin tar uncompress || return 1
         uncompress "$1"
         ;;
       *'.7z')
-        PathHasBinErr 7z || return 1
+        KRATOS::Lib:path.has_bin tar 7z || return 1
         7z x "$1"
         ;;
       *)
-        ErrError "'$1' is not a supported file type"
+        KRATOS::Lib:err.error "'$1' is not a supported file type"
         ;;
       esac
   else
-      ErrError "'$1' is not a file"
+      KRATOS::Lib:err.error "'$1' is not a file"
   fi
 }

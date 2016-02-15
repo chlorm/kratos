@@ -1,5 +1,5 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
@@ -12,7 +12,7 @@
 # Add wpa_supplicant support
 # Maybe convert wifi -> net (lan,wan,wlan, etc...)
 
-function wireless_interface {
+KRATOS::Plugins:wifi.interface() {
 
   # Find wireless interface name
 
@@ -20,7 +20,7 @@ function wireless_interface {
 
 }
 
-function wifi_usage {
+KRATOS::Plugins:wifi.usage() {
 
 cat <<EOF
 Wifi is a wrapper for nmcli.
@@ -43,7 +43,7 @@ EOF
 
 }
 
-function wifi {
+KRATOS::Plugins:wifi.command() {
 
   local Pass
   local Ssid
@@ -52,8 +52,8 @@ function wifi {
 
   case "${1}" in
     '')
-      wifi_usage
-      err_error 'no input provided'
+      KRATOS::Plugins:wifi.usage
+      KRATOS::Lib:err.error 'no input provided'
       ;;
     'list') # List saved connections
       nmcli d wifi list
@@ -70,10 +70,14 @@ function wifi {
         Pass="password ${2}"
       fi
       # Add connection
-      nmcli d wifi connect "${Ssid}" ${Pass} iface "$(wireless_interface)" name "${Ssid}" || {
-        ErrError "connecting to ${Ssid}"
-        return 1
-      }
+      nmcli
+        d wifi \
+        connect "${Ssid}" ${Pass} \
+        iface "$(KRATOS::Plugins:wifi.interface)" \
+        name "${Ssid}" || {
+          KRATOS::Lib:err.error "connecting to ${Ssid}"
+          return 1
+        }
       ;;
     'connect') # Connect to a saved connection
       shift
@@ -81,7 +85,7 @@ function wifi {
       nmcli c up id "${Ssid}"
       ;;
     'disconnect') # Disconnect from current wireless network
-      nmcli d disconnect iface "$(wireless_interface)"
+      nmcli d disconnect iface "$(KRATOS::Plugins:wifi.interface)"
       ;;
     'remove') # Remove a saved connection
       shift
@@ -98,11 +102,11 @@ function wifi {
       nmcli r wifi off
       ;;
     '-h'|'--help'|'help')
-      wifi_usage
+      KRATOS::Plugins:wifi.usage
       ;;
     *)
-      wifi_usage
-      err_error "invalid option: $@"
+      KRATOS::Plugins:wifi.usage
+      KRATOS::Lib:err.error "invalid option: $@"
       ;;
 
   esac

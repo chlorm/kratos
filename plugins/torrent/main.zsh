@@ -1,5 +1,5 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
@@ -9,7 +9,7 @@
 # Algorithm borrowed from http://wiki.rtorrent.org/MagnetUri and adapted to work with zsh.
 #
 
-function magnet2torrent {
+KRATOS::Plugins:torrent.magnet2torrent() {
 
   local InfoHash
   local Filename
@@ -23,7 +23,7 @@ function magnet2torrent {
   if [[ "${1}" =~ xt=urn:btih:([^\&/]+) ]] ; then
     InfoHash="${match[1]}"
   else
-    err_error 'no info hash found'
+    KRATOS::Lib:err.error 'no info hash found'
     return 1
   fi
 

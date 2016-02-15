@@ -1,5 +1,5 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
@@ -7,7 +7,7 @@
 
 export BLOCKSIZE='K'
 
-function p_and_q {
+KRATOS::Modules:misc.p_and_q() {
 
   local STAT
 
@@ -17,7 +17,7 @@ function p_and_q {
 
 }
 
-function termclr {
+KRATOS::Modules:misc.termclr() {
 
   case "$1" in
     'black')
@@ -86,21 +86,5 @@ function termclr {
       echo -n '\e[0m'
       ;;
   esac
-
-}
-
-function dotfiles_dir {
-
-  echo "$DOTFILES_DIR" && return 0
-
-  return 1
-
-}
-
-function kratos_dir {
-
-  echo "$KRATOS_DIR" && return 0
-
-  return 1
 
 }

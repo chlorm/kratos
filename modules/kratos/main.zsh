@@ -1,170 +1,11 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-git_cd() {
-
-  if [ -z "$1" ] ; then
-    cd "$KRATOS_DIR"
-  else
-    cd "$1"
-  fi
-
-}
-
-git_cbr() {
-
-  # Gets the current git branch
-
-  git_cd $1 || return 1
-
-  git rev-parse --abbrev-ref HEAD 2> /dev/null
-
-}
-
-git_pull() {
-
-  # Updates the root git tree
-
-  # Returns 2 if failed, 1 if updated, 0 if up-to-date
-
-  git_cd $1 || return 2
-
-  git reset --hard > /dev/null 2>&1
-
-  STR="$(git pull origin "$(git_cbr $1)" 2>&1)" || return 2
-
-  [ "$(echo "$STR" | grep 'Already up-to-date.')" != "" ]
-
-}
-
-git_pull_nostat() {
-
-  # Updates the root git tree and only returns >0 on error
-
-  git_pull $@
-  case $? in
-    2)
-      return 1
-      ;;
-    1)
-      echo "Updated"
-      ;;
-  esac
-
-}
-
-git_sub_init() {
-
-  # Initialize git submodules
-
-  # Returns 2 if failed, 1 if initialized, 0 if up-to-date
-
-  local ACUM
-
-  ACUM=0
-
-  git_cd $1 || return 2
-
-  array_from_str SUBS "$(git submodule status --recursive | grep -ve "([^)]*)" | awk '{print $2}')"
-
-  array_forall SUBS git_sub_init_one || return 2
-
-  return $ACUM
-
-}
-
-git_sub_init_one() {
-
-  git submodule -q update --init --recursive "$1" || return 1
-
-  ACUM=1
-
-}
-
-
-git_sub_pull() {
-
-  # Update the submodules
-
-  # Returns 2 if failed, 1 if updated, 0 if up-to-date
-
-  git_cd $1 || return 2
-
-  STR="$(git submodule -q foreach --recursive "\"$KRATOS_DIR/bin/run\" git_pull_nostat .")" || return 2
-
-  [ "$(echo "$STR" | grep 'Updated')" = "" ]
-
-}
-
-dotfiles_latest() {
-
-  # Gets the latest version of the dotfiles
-
-  # Returns 2 if failed, 1 if updated, 0 if up-to-date
-
-  local ACUM
-
-  ACUM=0
-
-  git_pull
-  case $? in
-    2)
-      ErrError "Failed to update the configuration directory"
-      return 2
-      ;;
-    1)
-      ACUM=1
-      ;;
-  esac
-
-  git_sub_init
-  case $? in
-    2)
-      ErrError "Failed to initialize configuration submodules"
-      return 2
-      ;;
-    1)
-      ACUM=1
-      ;;
-  esac
-
-  git_sub_pull
-  case $? in
-    2)
-      ErrError "Failed to update configuration submodules"
-      return 2
-      ;;
-    1)
-      ACUM=1
-      ;;
-  esac
-
-  return $ACUM
-
-}
-
-dotfiles_update() {
-
-  # Updates dotfiles and submodules
-
-  dotfiles_latest
-  case $? in
-    2)
-      return 2
-      ;;
-    1)
-      reload_all
-      dotfiles_install
-      ;;
-  esac
-
-}
-
-function kratos_logo {
+KRATOS::Modules:kratos.logo() {
 
 cat <<'EOF'
 
@@ -180,7 +21,7 @@ EOF
 
 }
 
-function kratos {
+KRATOS::Modules:kratos.command() {
 
   local Dir
   local KratosCreateDirs
@@ -192,7 +33,7 @@ function kratos {
 
   case "${1}" in
     'update')
-      kratos_logo
+      KRATOS::Modules:kratos.logo
 
       # Generate the pre-fligt checks files
       echo "Pre-flight checks: "
@@ -246,8 +87,8 @@ function kratos {
         if [[ ! -d "${Dir}" ]] ; then
           echo -ne "Creating directory: ${Dir}"\\r
         fi
-        ensure_dir_exists "${Dir}" || {
-          err_error "failed to create directory: ${Dir}"
+        KRATOS::Lib:ensure.dir_exists "${Dir}" || {
+          KRATOS::Lib:err.error "failed to create directory: ${Dir}"
           return 1
         }
       done
@@ -263,7 +104,7 @@ function kratos {
       # TODO: Only run if module is enabled
       echo -n "Updating dotfiles: "
       echo
-      dotfiles_hook || exit 1
+      KRATOS::Modules:dotfiles.hook || exit 1
       echo -ne ''\\r
       echo "Success"
 
@@ -271,21 +112,21 @@ function kratos {
       if [[ -f "${HOME}/.config/kratos/config" ]] ; then
         . "${HOME}/.config/kratos/config"
         # Preference
-        ensure_file_destroy "${HOME}/.local/share/kratos/preferences"
-        ensure_file_exists "${HOME}/.local/share/kratos/preferences"
-        editor_preferred
+        KRATOS::Lib:ensure.file_destroy "${HOME}/.local/share/kratos/preferences"
+        KRATOS::Lib:ensure.file_exists "${HOME}/.local/share/kratos/preferences"
+        KRATOS::Modules:editor.preferred
       fi
 
-      symlink "${KRATOS_DIR}/rc/profile" "${HOME}/.profile"
+      KRATOS::Lib:symlink "${KRATOS_DIR}/rc/profile" "${HOME}/.profile"
 
-      symlink "${KRATOS_DIR}/rc/bashrc" "${HOME}/.bashrc"
-      symlink "${KRATOS_DIR}/rc/bash_profile" "${HOME}/.bash_profile"
+      KRATOS::Lib:symlink "${KRATOS_DIR}/rc/bashrc" "${HOME}/.bashrc"
+      KRATOS::Lib:symlink "${KRATOS_DIR}/rc/bash_profile" "${HOME}/.bash_profile"
 
-      symlink "${KRATOS_DIR}/rc/kshrc" "${HOME}/.kshrc"
+      KRATOS::Lib:symlink "${KRATOS_DIR}/rc/kshrc" "${HOME}/.kshrc"
 
-      symlink "${KRATOS_DIR}/rc/zshrc" "${HOME}/.zshrc"
-      symlink "${KRATOS_DIR}/rc/zprofile" "${HOME}/.zprofile"
-      symlink "${KRATOS_DIR}/rc/zlogout" "${HOME}/.zlogout"
+      KRATOS::Lib:symlink "${KRATOS_DIR}/rc/zshrc" "${HOME}/.zshrc"
+      KRATOS::Lib:symlink "${KRATOS_DIR}/rc/zprofile" "${HOME}/.zprofile"
+      KRATOS::Lib:symlink "${KRATOS_DIR}/rc/zlogout" "${HOME}/.zlogout"
       ;;
     'upgrade')
       ;;

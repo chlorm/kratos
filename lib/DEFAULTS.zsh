@@ -32,6 +32,8 @@ KRATOS_CREATE_TRASH_DIRECTORIES=true
 # ~/Videos       # XDG_VIDEOS_DIR
 KRATOS_CREATE_XDG_DIRECTORIES=true
 
+KRATOS_DOTFILES_DIRECTORY="${HOME}/.local/share/dotfiles"
+
 # Go lang's $GOPATH
 KRATOS_GOPATH="${HOME}/Projects/go"
 

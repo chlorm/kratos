@@ -1,5 +1,5 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
@@ -7,11 +7,10 @@
 
 if ${PathHasBinGO} ; then
 
-  golang_dirs
+  KRATOS::Plugins:golang.directories
 
-  # Add Go bin/ directory to $PATH
-  golang_bin_path
+  KRATOS::Plugins:golang.bin_path
 
-  golang_gopath
+  KRATOS::Plugins:golang.gopath
 
 fi

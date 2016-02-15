@@ -23,20 +23,20 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   }
 fi
 
-if [[ "$(shell)" != 'zsh' ]] ; then
+if [[ "$(KRATOS::Lib:shell)" != 'zsh' ]] ; then
   exec 'zsh' # add interactive flags
   exit $?
 fi
 
 if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
-  load_all 'main'
-  load_all 'init'
+  KRATOS::Lib:load.all 'main'
+  KRATOS::Lib:load.all 'init'
 
-  path_add "${HOME}/.bin"
+  KRATOS::Lib:path.add "${HOME}/.bin"
 
-  KRATOS_CURRENT_KERNEL="$(os_kernel)"
-  KRATOS_CURRENT_LINUX="$(os_linux)"
-  KRATOS_CURRENT_SHELL="$(shell)"
+  KRATOS_CURRENT_KERNEL="$(KRATOS::Lib:os.kernel)"
+  KRATOS_CURRENT_LINUX="$(KRATOS::Lib:os.linux)"
+  KRATOS_CURRENT_SHELL="$(KRATOS::Lib:shell)"
 
   KRATOS_SHELL_INIT=true
 fi

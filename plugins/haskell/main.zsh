@@ -1,13 +1,13 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function haskell_dirs {
+KRATOS::Plugins:haskell.directories() {
 
-  case "$(OsKernel)" in
+  case "$(KRATOS::Lib:os.kernel)" in
     'darwin')
       EnsureDirExists "${HOME}/Library/Haskell/bin" || return 1
       ;;
@@ -20,9 +20,9 @@ function haskell_dirs {
 
 }
 
-function haskell_bin_path {
+KRATOS::Plugins:haskell.bin_path() {
 
-  case "$(os_kernel)" in
+  case "$(KRATOS::Lib:os.kernel)" in
     'darwin')
       path_add "${HOME}/Library/Haskell/bin" || return 1
       ;;

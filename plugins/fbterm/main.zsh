@@ -5,9 +5,9 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function fbterm_tty {
+KRATOS::Plugins:fbterm.tty() {
 
-  path_has_bin 'fdterm' || return 0
+  KRATOS::Lib:path.has_bin 'fdterm' || return 0
 
   if [[ "$(tty | grep -o '/dev/tty')" == '/dev/tty' ]] ; then
     fbterm || return 1

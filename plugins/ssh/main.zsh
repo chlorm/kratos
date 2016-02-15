@@ -1,11 +1,11 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function ssh_auto {
+KRATOS::Plugins:ssh.auto() {
 
   local Key
   local PopKeys
@@ -16,16 +16,16 @@ function ssh_auto {
   ${PathHasBinOPENSSL} || return 1
 
   # Makes sure the ssh directory exists
-  ensure_dir_exists "${HOME}/.ssh" || return 1
+  KRATOS::Lib:ensure.dir_exists "${HOME}/.ssh" || return 1
 
   # Makes sure the client configuration is installed
   [[ -f "${HOME}/.ssh/config" ]] || return 1
 
   ssh-keygen -H > /dev/null 2>&1 || return 1
-  ensure_file_destroy "${HOME}/.ssh/known_hosts.old" || return 1
+  KRATOS::Lib:ensure.file_destroy "${HOME}/.ssh/known_hosts.old" || return 1
 
   # Populates the authorized_keys file
-  ensure_file_destroy "${HOME}/.ssh/authorized_keys" || return 1
+  KRATOS::Lib:ensure.file_destroy "${HOME}/.ssh/authorized_keys" || return 1
   PopKeys=($(
     find ${DOTFILES_DIR}/ssh -type f |
       grep -v 'config$' |

@@ -1,11 +1,11 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function prompt_color {
+KRATOS::Modules:prompt.color() {
 
   # Get colors for the current shell
 
@@ -83,7 +83,7 @@ function prompt_color {
 
 }
 
-function prompt_vcs {
+KRATOS::Modules:prompt.vcs() {
 
   # Determine if the current directory is a vcs repo
 
@@ -104,7 +104,7 @@ function prompt_vcs {
           echo "*"
         fi
       )"
-      echo -e "$(prompt_color green 0)git$(prompt_color black 1)∫$(prompt_color white 1)${VcsBranch}${VcsStatus}"
+      echo -e "$(KRATOS::Modules:prompt.color green 0)git$(KRATOS::Modules:prompt.color black 1)∫$(KRATOS::Modules:prompt.color white 1)${VcsBranch}${VcsStatus}"
       return 0
     fi
   fi
@@ -141,21 +141,21 @@ function prompt_vcs {
 
 }
 
-function prompt_configure {
+KRATOS::Modules:prompt.configure() {
 
   local Ncolor
 
   # Setup Special Colors
-  if is_root ; then
-    Ncolor="$(prompt_color red 1)"
+  if KRATOS::Lib:is_root ; then
+    Ncolor="$(KRATOS::Modules:prompt.color red 1)"
   else
-    Ncolor="$(prompt_color green 0)"
+    Ncolor="$(KRATOS::Modules:prompt.color green 0)"
   fi
 
   # Allow evaluating functions within the prompt
   setopt PROMPT_SUBST
 
   # Must use single quotes to delay evaluation
-  export PROMPT='$(prompt_color green 0)%n$(prompt_color black 1)@$(prompt_color white 1)%M$(prompt_color black 1)[$(prompt_color magenta 0)%~$(prompt_color black 1)]$(prompt_vcs)$(prompt_color cyan 0)〉$(prompt_color reset)'
+  export PROMPT='$(KRATOS::Modules:prompt.color green 0)%n$(KRATOS::Modules:prompt.color black 1)@$(KRATOS::Modules:prompt.color white 1)%M$(KRATOS::Modules:prompt.color black 1)[$(KRATOS::Modules:prompt.color magenta 0)%~$(KRATOS::Modules:prompt.color black 1)]$(KRATOS::Modules:prompt.vcs)$(KRATOS::Modules:prompt.color cyan 0)〉$(KRATOS::Modules:prompt.color reset)'
 
 }

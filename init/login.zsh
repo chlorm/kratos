@@ -30,5 +30,5 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   }
 fi
 
-load_all 'main'
-load_all 'login'
+KRATOS::Lib:load.all 'main'
+KRATOS::Lib:load.all 'login'

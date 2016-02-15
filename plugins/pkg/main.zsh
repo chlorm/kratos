@@ -1,5 +1,5 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
@@ -7,7 +7,7 @@
 
 # Add search, list, query, upgrade, info, history support
 
-function pkg_usage {
+KRATOS::Plugins:pkg.usage() {
 
 cat <<EOF
 Pkg is an abstraction layer for system package managers.
@@ -24,84 +24,84 @@ EOF
 
 }
 
-function pkg_mgr {
+KRATOS::Plugins:pkg.mgr() {
 
-  case "$(os_kernel)" in
+  case "$(KRATOS::Lib:os.kernel)" in
     'cygwin')
       # ??? chloclatey
-      err_error 'not supported'
+      KRATOS::Lib:err.error 'not supported'
       ;;
     'darwin')
       # ??? homebrew
-      err_error 'not supported'
+      KRATOS::Lib:err.error 'not supported'
       ;;
     'freebsd') # Ports
-      path_has_bin_err 'portmaster' || return 1
-      path_has_bin_err 'portsnap' || return 1
+      KRATOS::Lib:path.has_bin 'portmaster' || return 1
+      KRATOS::Lib:path.has_bin 'portsnap' || return 1
       echo 'ports'
       return 0
       ;;
     'linux')
-      case "$(os_linux)" in
+      case "$(KRATOS::Lib:os.linux)" in
         'Debian'|'Ubuntu') # Apt
-          path_has_bin_err 'apt-get' || return 1
+          KRATOS::Lib:path.has_bin 'apt-get' || return 1
           echo 'apt'
           return 0
           ;;
         'triton') # Nix
-          path_has_bin_err 'nix-env' || return 1
-          path_has_bin_err 'nixos-rebuild' || return 1
-          path_has_bin_err 'nix-collect-garbage' || return 1
-          path_has_bin_err 'nix-channel' || return 1
+          KRATOS::Lib:path.has_bin 'nix-env' || return 1
+          KRATOS::Lib:path.has_bin 'nixos-rebuild' || return 1
+          KRATOS::Lib:path.has_bin 'nix-collect-garbage' || return 1
+          KRATOS::Lib:path.has_bin 'nix-channel' || return 1
           echo 'nix'
           return 0
           ;;
         'arch') # Pacman
-          path_has_bin_err 'pacman' || return 1
+          KRATOS::Lib:path.has_bin 'pacman' || return 1
           echo 'pacman'
           return 0
           ;;
         'gentoo') # Portage
-          path_has_bin_err 'emerge' || return 1
+          KRATOS::Lib:path.has_bin 'emerge' || return 1
           echo 'portage'
           return 0
           ;;
         'centos'|'fedora'|'red hat') # Red Hat
-          path_has_bin_err 'yum' || return 1
+          KRATOS::Lib:path.has_bin 'yum' || return 1
           echo 'rpm'
           return 0
           ;;
         'suse') # Yast, not sure about this cluster fuck
-          path_has_bin_err 'zypper' || return 1
+          KRATOS::Lib:path.has_bin 'zypper' || return 1
           echo 'yast'
           return 0
           ;;
         *)
-          err_error 'not a suppoted linux distro'
+          KRATOS::Lib:err.error 'not a suppoted linux distro'
           return 1
           ;;
       esac
       ;;
     *)
-      err_error 'not a supported base OS'
+      KRATOS::Lib:err.error 'not a supported base OS'
       return 1
       ;;
   esac
 
 }
 
-function pkg {
+KRATOS::Plugins:pkg.command() {
   case "${1}" in
     '')
-      err_error 'no input provided'
+      KRATOS::Lib:err.error 'no input provided'
       ;;
     'clean')
-      case "$(pkg_mgr)" in
+      case "$(KRATOS::Plugins:pkg.mgr)" in
         'apt-get')
-          err_error 'unsupported action'
+          KRATOS::Lib:err.error 'unsupported action'
           ;;
         'nix')
-          sudo_wrap nix-collect-garbage -d
+          KRATOS::Lib:sudo_wrap nix-collect-garbage -d
           return $?
           ;;
         'pacman')
@@ -109,14 +109,14 @@ function pkg {
           return $?
           ;;
         'portage')
-          sudo_wrap emerge --depclean && sudo_wrap emerge @preserved-rebuild
+          KRATOS::Lib:sudo_wrap emerge --depclean && sudo_wrap emerge @preserved-rebuild
           return $?
           ;;
         'rpm')
-          err_error 'unsupported action'
+          KRATOS::Lib:err.error 'unsupported action'
           ;;
         'yast')
-          err_error 'unsupported action'
+          KRATOS::Lib:err.error 'unsupported action'
           ;;
         *)
           return 1
@@ -124,10 +124,10 @@ function pkg {
       esac
       ;;
     'install')
-      case "$(pkg_mgr)" in
+      case "$(KRATOS::Plugins:pkg.mgr)" in
         'apt')
           shift
-          sudo_wrap apt-get install $@
+          KRATOS::Lib:sudo_wrap apt-get install $@
           return $?
           ;;
         'nix')
@@ -137,27 +137,27 @@ function pkg {
           ;;
         'pacman')
           shift
-          sudo_wrap pacman -S $@
+          KRATOS::Lib:sudo_wrap pacman -S $@
           return $?
           ;;
         'portage')
           shift
-          sudo_wrap emerge --with-bdeps=y $@
+          KRATOS::Lib:sudo_wrap emerge --with-bdeps=y $@
           return $?
           ;;
         'ports')
           shift
-          sudo_wrap portmaster -yBd $@
+          KRATOS::Lib:sudo_wrap portmaster -yBd $@
           return $?
           ;;
         'rpm')
           shift
-          sudo_wrap yum install $@
+          KRATOS::Lib:sudo_wrap yum install $@
           return $?
           ;;
         'yast')
           shift
-          sudo_wrap zypper
+          KRATOS::Lib:sudo_wrap zypper
           return $?
           ;;
         *)
@@ -166,38 +166,38 @@ function pkg {
       esac
       ;;
     'uninstall')
-      case "$(pkg_mgr)" in
+      case "$(KRATOS::Plugins:pkg.mgr)" in
         'ports')
           shift
-          sudo_wrap portmaster -esdy $@
+          KRATOS::Lib:sudo_wrap portmaster -esdy $@
           return $?
           ;;
         'apt')
           shift
-          sudo_wrap apt-get purge $@
+          KRATOS::Lib:sudo_wrap apt-get purge $@
           return $?
           ;;
         'nix')
-          err_error 'unsupported action'
+          KRATOS::Lib:err.error 'unsupported action'
           ;;
         'pacman')
           shift
-          sudo_wrap pacman -Rsdc $@
+          KRATOS::Lib:sudo_wrap pacman -Rsdc $@
           return $?
           ;;
         'portage')
           shift
-          sudo_wrap emerge --unmerge $@
+          KRATOS::Lib:sudo_wrap emerge --unmerge $@
           return $?
           ;;
         'rpm')
           shift
-          sudo_wrap yum install $@
+          KRATOS::Lib:sudo_wrap yum install $@
           return $?
           ;;
         'yast')
           shift
-          sudo_wrap zypper $@
+          KRATOS::Lib:sudo_wrap zypper $@
           return $?
           ;;
         *)
@@ -206,39 +206,39 @@ function pkg {
       esac
       ;;
     'update')
-      case "$(pkg_mgr)" in
+      case "$(KRATOS::Plugins:pkg.mgr)" in
         'ports')
-            sudo_wrap portsnap fetch || return $?
-            sudo_wrap portsnap update || return $?
-            sudo_wrap portmaster -ayBd
+            KRATOS::Lib:sudo_wrap portsnap fetch || return $?
+            KRATOS::Lib:sudo_wrap portsnap update || return $?
+            KRATOS::Lib:sudo_wrap portmaster -ayBd
             return $?
           ;;
         'apt')
-          sudo_wrap apt-get update || return $?
-          sudo_wrap apt-get dist-upgrade
+          KRATOS::Lib:sudo_wrap apt-get update || return $?
+          KRATOS::Lib:sudo_wrap apt-get dist-upgrade
           return $?
           ;;
         'nix')
-          sudo_wrap nix-channel --update || return $?
-          sudo_wrap nixos-rebuild boot
+          KRATOS::Lib:sudo_wrap nix-channel --update || return $?
+          KRATOS::Lib:sudo_wrap nixos-rebuild boot
           return $?
           ;;
         'pacman')
-          sudo_wrap pacman -Syu
+          KRATOS::Lib:sudo_wrap pacman -Syu
           return $?
           ;;
         'portage')
-          sudo_wrap emerge --sync || return $?
-          sudo_wrap emerge --keep-going --update --deep --with-bdeps=y --newuse @world
+          KRATOS::Lib:sudo_wrap emerge --sync || return $?
+          KRATOS::Lib:sudo_wrap emerge --keep-going --update --deep --with-bdeps=y --newuse @world
           return $?
           ;;
         'rpm')
-          sudo_wrap yum update
+          KRATOS::Lib:sudo_wrap yum update
           return $?
           ;;
         'yast')
-          sudo_wrap zypper refresh || return $?
-          sudo_wrap zypper update
+          KRATOS::Lib:sudo_wrap zypper refresh || return $?
+          KRATOS::Lib:sudo_wrap zypper update
           return $?
           ;;
         *)
@@ -247,12 +247,12 @@ function pkg {
       esac
       ;;
     '-h'|'--help'|'help')
-      pkg_usage
+      KRATOS::Plugins:pkg.usage
       return 0
       ;;
     *)
-      pkg_usage
-      err_error "Invalid option: $1"
+      KRATOS::Plugins:pkg.usage
+      KRATOS::Lib:err.error "Invalid option: $1"
       return 1
       ;;
   esac

@@ -15,7 +15,7 @@
 # if isTTY, then try fbterm else false
 
 # Colors for LS
-case "$(os_kernel)" in
+case "$(KRATOS::Lib:os.kernel)" in
   'linux'|'cygwin')
     eval "$(dircolors -b)"
     alias ls='ls --color=auto'
@@ -26,7 +26,7 @@ case "$(os_kernel)" in
     ;;
 esac
 
-function term_clrs {
+KRATOS::Lib:color.term_clrs() {
 
   if [[ "${TERM}" == 'xterm' || "${TERM}" == 'rxvt-unicode-256color' ]] ; then
 
@@ -40,7 +40,7 @@ function term_clrs {
 }
 
 # TODO: add mapped color codes for 8, 16, & 88
-function color_convert {
+KRATOS::Lib:color.convert() {
 
   # ColorConvert <256-color-code> <terminal-supported-colors>
 

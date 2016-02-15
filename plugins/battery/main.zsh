@@ -1,19 +1,19 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-function bat {
+KRATOS::Plugins:battery.acpi() {
 
   # Use acpi if possible
 
-  acpi -b 2> /dev/null || BatSys
+  acpi -b 2> /dev/null || KRATOS::Plugins:battery.sys
 
 }
 
-function bat_sys {
+KRATOS::Plugins:battery.sys() {
 
   # Gets the string representing the state of the batteries
 
@@ -28,12 +28,12 @@ function bat_sys {
   ))
 
   for Bat in "${Bats[@]}" ; do
-    bat_one "${Bat}"
+    KRATOS::Plugins:battery.one "${Bat}"
   done
 
 }
 
-function bat_one {
+KRATOS::Plugins:battery.one() {
 
   local BatDir
   local BatStatus
