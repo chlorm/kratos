@@ -173,11 +173,11 @@ KRATOS::Lib:cpu.logical() {
 
 # Find download utility on system
 KRATOS::Lib:download() {
-  if path_has_bin 'curl' ; then
+  if KRATOS::Lib:path.has_bin 'curl' ; then
       curl -sOL $@ && return 0
-  elif path_has_bin 'wget' ; then
+  elif KRATOS::Lib:path.has_bin 'wget' ; then
       wget $@ && return 0
-  elif path_has_bin 'fetch' ; then
+  elif KRATOS::Lib:path.has_bin 'fetch' ; then
       fetch $@ && return 0
   else
     KRATOS::Lib:err.error 'no download utility found'
