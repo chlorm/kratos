@@ -6,11 +6,9 @@
 # the `LICENSE' file in the top level source directory.
 
 if ${PathHasBinGO} ; then
-
   KRATOS::Plugins:golang.directories
 
   KRATOS::Plugins:golang.bin_path
 
   KRATOS::Plugins:golang.gopath
-
 fi

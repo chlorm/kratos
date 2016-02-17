@@ -8,17 +8,14 @@
 export BLOCKSIZE='K'
 
 KRATOS::Modules:misc.p_and_q() {
-
   local STAT
 
   STAT="${1}" ; shift
   echo $@
   exit $STAT
-
 }
 
 KRATOS::Modules:misc.termclr() {
-
   case "$1" in
     'black')
       if [ "$2" -eq 0 ] ; then
@@ -86,5 +83,4 @@ KRATOS::Modules:misc.termclr() {
       echo -n '\e[0m'
       ;;
   esac
-
 }

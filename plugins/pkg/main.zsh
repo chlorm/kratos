@@ -8,7 +8,6 @@
 # Add search, list, query, upgrade, info, history support
 
 KRATOS::Plugins:pkg.usage() {
-
 cat <<EOF
 Pkg is an abstraction layer for system package managers.
 
@@ -22,10 +21,10 @@ Usage: pkg UTILITY [OPTIONS]
 
 EOF
 
+return 0
 }
 
 KRATOS::Plugins:pkg.mgr() {
-
   case "$(KRATOS::Lib:os.kernel)" in
     'cygwin')
       # ??? chloclatey
@@ -87,7 +86,6 @@ KRATOS::Plugins:pkg.mgr() {
       return 1
       ;;
   esac
-
 }
 
 KRATOS::Plugins:pkg.command() {

@@ -5,10 +5,8 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
+# Return CPU architecture without endianness or address space size
 KRATOS::Lib:cpu.architecture() {
-
-  # Return CPU architecture without endianness or address space size
-
   # Do NOT use `uname -m' to achieve this functionality.
 
   local Architecture
@@ -44,13 +42,10 @@ KRATOS::Lib:cpu.architecture() {
   echo "${Architecture}"
 
   return 0
-
 }
 
+# Find CPU adress space size (ie. 32bit/64bit)
 KRATOS::Lib:cpu.address_space() {
-
-  # Find CPU adress space size (ie. 32bit/64bit)
-
   local AddressSpace
 
   AddressSpace=$(
@@ -67,11 +62,9 @@ KRATOS::Lib:cpu.address_space() {
   echo "${AddressSpace}"
 
   return 0
-
 }
 
 KRATOS::Lib:cpu.sockets() {
-
   local Sockets
 
   case "$(KRATOS::Lib:os.kernel)" in
@@ -95,13 +88,10 @@ KRATOS::Lib:cpu.sockets() {
   echo "${Sockets}"
 
   return 0
-
 }
 
+# Find number of physical cpu cores
 KRATOS::Lib:cpu.physical() {
-
-  # Find number of physical cpu cores
-
   # Assumes all sockets are identical, only some arm platforms
   # won't work with this logic.
 
@@ -139,13 +129,10 @@ KRATOS::Lib:cpu.physical() {
   echo "${CpuCores}"
 
   return 0
-
 }
 
+# Find number of logical cpu cores
 KRATOS::Lib:cpu.logical() {
-
-  # Find number of logical cpu cores
-
   # Assumes all sockets are identical, only some arm platforms won't
   # work with this logic
 
@@ -182,13 +169,10 @@ KRATOS::Lib:cpu.logical() {
   echo "${CpuThreads}"
 
   return 0
-
 }
 
+# Find download utility on system
 KRATOS::Lib:download() {
-
-  # Find download utility on system
-
   if path_has_bin 'curl' ; then
       curl -sOL $@ && return 0
   elif path_has_bin 'wget' ; then
@@ -202,11 +186,9 @@ KRATOS::Lib:download() {
 
   KRATOS::Lib:err.error 'unable to download file'
   return 1
-
 }
 
 KRATOS::Lib:ensure.dir_destroy() {
-
   while [ "${1}" ] ; do
     # Make sure directory is not a symlink
     if [[ -L "${1}" ]] ; then
@@ -218,11 +200,9 @@ KRATOS::Lib:ensure.dir_destroy() {
     fi
     shift
   done
-
 }
 
 KRATOS::Lib:ensure.dir_exists() {
-
   while [ "${1}" ] ; do
     # Make sure directory is not a symlink
     if [[ -L "${1}" ]] ; then
@@ -234,11 +214,9 @@ KRATOS::Lib:ensure.dir_exists() {
     fi
     shift
   done
-
 }
 
 KRATOS::Lib:ensure.file_destroy() {
-
   while [ "${1}" ] ; do
     # Make sure file is not a symlink
     if [[ -L "${1}" ]] ; then
@@ -250,11 +228,9 @@ KRATOS::Lib:ensure.file_destroy() {
     fi
     shift
   done
-
 }
 
 KRATOS::Lib:ensure.file_exists() {
-
   while [ "${1}" ] ; do
     # Make sure file is not a symlink
     if [[ -L "${1}" ]] ; then
@@ -266,19 +242,15 @@ KRATOS::Lib:ensure.file_exists() {
     fi
     shift
   done
-
 }
 
 KRATOS::Lib:err.call_stack() {
-
   echo "${funcstack[3]}"
 
   return 0
-
 }
 
 KRATOS::Lib:err.error() {
-
   if [[ -n "${2}" ]] ; then
     echo "Kratos: ERROR in \`${2}': ${1}" > /dev/stderr
   else
@@ -286,11 +258,9 @@ KRATOS::Lib:err.error() {
   fi
 
   return 0
-
 }
 
 KRATOS::Lib:err.warn() {
-
   if [[ -n "${2}" ]] ; then
     echo "Kratos: WARNING in \`${2}': ${1}" > /dev/stderr
   else
@@ -298,23 +268,17 @@ KRATOS::Lib:err.warn() {
   fi
 
   return 0
-
 }
 
+# Determine if the user is root
 KRATOS::Lib:is_root() {
-
-  # Determine if the user is root
-
   [[ $(id -u) -eq 0 ]] || return 1
 
   return 0
-
 }
 
+# Source specified init file
 KRATOS::Lib:load.one() {
-
-  # Source specified init file
-
   if [[ -n "$(echo "${1}" | grep '\(~$\|^#\)')" ]] ; then
     return 0
   fi
@@ -325,13 +289,10 @@ KRATOS::Lib:load.one() {
   }
 
   return 0
-
 }
 
+# Load all of specified init type
 KRATOS::Lib:load.all() {
-
-  # Load all of specified init type
-
   local Init
   local Inits
   local Plugin
@@ -357,23 +318,16 @@ KRATOS::Lib:load.all() {
   done
 
   return 0
-
 }
 
+# Find host os kernel
 KRATOS::Lib:os.kernel() {
-
-  # Find host os kernel
-
   KRATOS::Lib:os.kernel_ostype() {
-
     echo "${OSTYPE}" > /dev/null 2>&1
-
   }
 
   KRATOS::Lib:os.kernel_uname() {
-
     uname -s 2> /dev/null
-
   }
 
   local Kernel
@@ -392,35 +346,23 @@ KRATOS::Lib:os.kernel() {
   echo "${Kernel}"
 
   return 0
-
 }
 
+# Take first result of linux os name match
 KRATOS::Lib:os.linux() {
-
-  # Take first result of linux os name match
-
   KRATOS::Lib:os.linux_release() {
-
     # Finds linux distro via /etc/*-release
-
     cat ${ROOT}/etc/*-release 2> /dev/null
-
   }
 
   KRATOS::Lib:os.linux_uname() {
-
     # Finds linux distro via uname -a
-
     uname -a 2> /dev/null
-
   }
 
   KRATOS::Lib:os.linux_lsb() {
-
     # Find linux distro via linux standard base
-
     lsb_release -a 2> /dev/null
-
   }
 
   [[ "$(KRATOS::Lib:os.kernel)" == 'linux' ]] || return 1
@@ -441,11 +383,9 @@ KRATOS::Lib:os.linux() {
   echo "${Linux}"
 
   return 0
-
 }
 
 KRATOS::Lib:password_confirmation() {
-
   local Pass1
   local Pass2
 
@@ -463,37 +403,28 @@ KRATOS::Lib:password_confirmation() {
   echo "${Pass1}" > /dev/null 2>&1 && return 0
 
   return 1
-
 }
 
+# Add direcory to $PATH
 KRATOS::Lib:path.add() {
-
-  # Add direcory to $PATH
-
   if [[ -z "$(echo "${PATH}" | grep "${1}" 2> /dev/null)" && -d "${1}" ]] ; then
     export PATH="${PATH}:${1}"
   fi
 
   return 0
-
 }
 
+# Remove directory from $PATH
 KRATOS::Lib:path.remove() {
-
-  # Remove directory from $PATH
-
   if [[ -n "$(echo "${PATH}" | grep "${1}" 2> /dev/null)" ]] ; then
     export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`
   fi
 
   return 0
-
 }
 
+# Finds the path to the binary
 KRATOS::Lib:bin.path() {
-
-  # Finds the path to the binary
-
   if [[ $# -ne 1 ]] ; then
     return 2
   fi
@@ -504,13 +435,10 @@ KRATOS::Lib:bin.path() {
   awk '{ print $3 ; exit }' || return 1
 
   return 0
-
 }
 
+# Resolves the absolute path of the binary
 KRATOS::Lib:bin.abs_path() {
-
-  # Resolves the absolute path of the binary
-
   local Bin
 
   Bin="$(whereis -b ${1} 2> /dev/null | awk '{ print $2 ; exit }')"
@@ -520,13 +448,10 @@ KRATOS::Lib:bin.abs_path() {
   echo "${Bin}"
 
   return 0
-
 }
 
+# Test to see if a binary exists in the path
 KRATOS::Lib:path.has_bin() {
-
-  # Test to see if a binary exists in the path
-
   [[ $# -ne 1 ]] && return 2
 
   whence -p "${1}" > /dev/null 2>&1 || {
@@ -535,35 +460,26 @@ KRATOS::Lib:path.has_bin() {
   }
 
   return 0
-
 }
 
+# Checks to see if the process is running
 KRATOS::Lib:proc.exists() {
-
-  # Checks to see if the process is running
-
   if [[ $# -ne 1 ]] ; then
     return 1
   fi
 
   kill -0 "${1}" > /dev/null 2>&1
-
 }
 
+# Checks the pidfile to see if the process is running
 KRATOS::Lib:proc.pid_file() {
-
-  # Checks the pidfile to see if the process is running
-
   if [[ -f "${1}" ]] ; then
   	KRATOS::Lib:proc.exists "$(cat ${1} 2> /dev/null)"
   fi
-
 }
 
+# Start an application in the background
 KRATOS::Lib:run_quiet() {
-
-  # Start an application in the background
-
   KRATOS::Lib:path.has_bin "${1}" || return 1
 
   local Pid
@@ -575,13 +491,10 @@ KRATOS::Lib:run_quiet() {
   fi
 
   return 0
-
 }
 
+# Returns the shell executing the current script
 KRATOS::Lib:shell() {
-
-  # Returns the shell executing the current script
-
   local Lshell
   local Lproc
 
@@ -625,13 +538,10 @@ KRATOS::Lib:shell() {
   )"
 
   echo "${Lshell}"
-
 }
 
+# Wraps the command in sudo if sudo exists and runs it
 KRATOS::Lib:sudo_wrap() {
-
-  # Wraps the command in sudo if sudo exists and runs it
-
   if KRATOS::Lib:path.has_bin 'sudo' ; then
     sudo $@
   else
@@ -639,13 +549,10 @@ KRATOS::Lib:sudo_wrap() {
   fi
 
   return 0
-
 }
 
+# Stores the output of the command into a variable without a subshell
 KRATOS::Lib:store_as_var() {
-
-  # Stores the output of the command into a variable without a subshell
-
   local Var
   local Tmp
   local Ret
@@ -660,13 +567,10 @@ KRATOS::Lib:store_as_var() {
   rm "${Tmp}"
 
   return ${Ret}
-
 }
 
+# Create a symbolic link $1 -> $2
 KRATOS::Lib:symlink() {
-
-  # Create a symbolic link $1 -> $2
-
   KRATOS::Lib:ensure.dir_exists "$(dirname "${2}")"
   if [[ "$(readlink -f "${2}")" != "${1}" ]] ; then
     rm -rf "${2}"
@@ -679,29 +583,22 @@ KRATOS::Lib:symlink() {
   fi
 
   return 0
-
 }
 
 KRATOS::Lib:to_lower() {
-
   echo $@ | tr '[A-Z]' '[a-z]'
 
   return 0
-
 }
 
 KRATOS::Lib:to_upper() {
-
   echo $@ | tr '[a-z]' '[A-Z]'
 
   return 0
-
 }
 
+# Ask a yes or no question
 KRATOS::Lib:y_or_n() {
-
-  # Ask a yes or no question
-
   local Answer
   local Default
   local Prompt
@@ -750,5 +647,4 @@ KRATOS::Lib:y_or_n() {
   done
 
   return 2
-
 }

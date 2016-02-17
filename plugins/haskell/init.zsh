@@ -6,10 +6,8 @@
 # the `LICENSE' file in the top level source directory.
 
 if ${PathHasBinGHC} ; then
-
   KRATOS::Plugins:haskell.directories
 
   # Add haskell bin/ directory to $PATH
   KRATOS::Plugins:haskell.bin_path
-
 fi

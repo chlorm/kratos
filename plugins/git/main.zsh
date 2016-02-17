@@ -25,7 +25,6 @@
 # remote branch
 
 KRATOS::Plugins:git.branch() {
-
   local Branch
   local GitStatus
 
@@ -40,11 +39,9 @@ KRATOS::Plugins:git.branch() {
   echo "${Branch}"
 
   return 0
-
 }
 
 KRATOS::Plugins:git.status() {
-
   local GitStatus
   local Status
 
@@ -61,5 +58,4 @@ KRATOS::Plugins:git.status() {
   echo "${Status}"
 
   return 0
-
 }

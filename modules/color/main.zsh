@@ -27,21 +27,16 @@ case "$(KRATOS::Lib:os.kernel)" in
 esac
 
 KRATOS::Lib:color.term_clrs() {
-
   if [[ "${TERM}" == 'xterm' || "${TERM}" == 'rxvt-unicode-256color' ]] ; then
-
     # See if xterm supports 256 color
     if [[ -n "${VTE_VERSION}" ]] ; then
       export TERM='xterm-256color'
     fi
-
   fi
-
 }
 
 # TODO: add mapped color codes for 8, 16, & 88
 KRATOS::Lib:color.convert() {
-
   # ColorConvert <256-color-code> <terminal-supported-colors>
 
   # Catch errors
@@ -2117,5 +2112,4 @@ KRATOS::Lib:color.convert() {
   esac
 
   return 0
-
 }

@@ -12,17 +12,13 @@
 # Add wpa_supplicant support
 # Maybe convert wifi -> net (lan,wan,wlan, etc...)
 
+# Find wireless interface name
 KRATOS::Plugins:wifi.interface() {
-
-  # Find wireless interface name
-
   nmcli d | awk '/802-11-wireless/ {print $1 ; exit}'
-
 }
 
 KRATOS::Plugins:wifi.usage() {
-
-cat <<EOF
+cat <<'EOF'
 Wifi is a wrapper for nmcli.
 
 Usage: wifi UTILITY [OPTIONS]
@@ -40,11 +36,9 @@ Usage: wifi UTILITY [OPTIONS]
 EOF
 
   return 0
-
 }
 
 KRATOS::Plugins:wifi.command() {
-
   local Pass
   local Ssid
 
@@ -108,7 +102,5 @@ KRATOS::Plugins:wifi.command() {
       KRATOS::Plugins:wifi.usage
       KRATOS::Lib:err.error "invalid option: $@"
       ;;
-
   esac
-
 }

@@ -10,7 +10,6 @@
 # + Only setup tmp.dir during init, add function for returning the current tmp.dir
 
 KRATOS::Modules:cache.directory() { # Get the path to the temporary directory
-
   local Dir
   local CacheDir
   local CacheDirs
@@ -50,5 +49,4 @@ KRATOS::Modules:cache.directory() { # Get the path to the temporary directory
   KRATOS::Lib:ensure.dir_exists "${CacheDir}/dotfiles" || return 1
 
   return 0
-
 }

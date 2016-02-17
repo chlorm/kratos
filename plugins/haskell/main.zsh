@@ -6,7 +6,6 @@
 # the `LICENSE' file in the top level source directory.
 
 KRATOS::Plugins:haskell.directories() {
-
   case "$(KRATOS::Lib:os.kernel)" in
     'darwin')
       EnsureDirExists "${HOME}/Library/Haskell/bin" || return 1
@@ -17,11 +16,9 @@ KRATOS::Plugins:haskell.directories() {
   esac
 
   return 0
-
 }
 
 KRATOS::Plugins:haskell.bin_path() {
-
   case "$(KRATOS::Lib:os.kernel)" in
     'darwin')
       path_add "${HOME}/Library/Haskell/bin" || return 1
@@ -32,5 +29,4 @@ KRATOS::Plugins:haskell.bin_path() {
   esac
 
   return 0
-
 }

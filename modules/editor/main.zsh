@@ -6,7 +6,6 @@
 # the `LICENSE' file in the top level source directory.
 
 KRATOS::Modules:editor.known_executables() {
-
   local Bin
   local Bins
   local Editor
@@ -35,11 +34,9 @@ KRATOS::Modules:editor.known_executables() {
 
   KRATOS::Lib:err.error 'no editors installed'
   return 1
-
 }
 
 KRATOS::Modules:editor.default_args() {
-
   local DefaultArgs
   local Editor
 
@@ -58,11 +55,9 @@ KRATOS::Modules:editor.default_args() {
   fi
 
   return 0
-
 }
 
 KRATOS::Modules:editor.preferred() {
-
   local PreferredEditor
 
   for PreferredEditor in "${KRATOS_EDITOR_PREFERENCE[@]}" ; do
@@ -75,11 +70,9 @@ KRATOS::Modules:editor.preferred() {
 
   ErrWarn 'no preferred editors found'
   return 1
-
 }
 
 KRATOS::Modules:editor.env_var() {
-
   if [[ -z "${KRATOS_PREFERRED_EDITOR}" ]] ; then
     KRATOS_PREFERRED_EDITOR="$(KRATOS::Modules:editor.known_executables)"
   fi
@@ -89,5 +82,4 @@ KRATOS::Modules:editor.env_var() {
   fi
 
   export EDITOR="${KRATOS_PREFERRED_EDITOR}${KRATOS_EDITOR_ARGS:+ ${KRATOS_EDITOR_ARGS}}"
-
 }

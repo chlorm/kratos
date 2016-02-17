@@ -6,7 +6,6 @@
 # the `LICENSE' file in the top level source directory.
 
 KRATOS::Modules:dotfiles.pre_generate_hook() {
-
   if [[ -f "${1}.generate-pre" ]] ; then
     source "${1}.generate-pre" || {
       KRATOS::Lib:err.error "failed to source \`${1}.generate-pre'"
@@ -15,11 +14,9 @@ KRATOS::Modules:dotfiles.pre_generate_hook() {
   fi
 
   return 0
-
 }
 
 KRATOS::Modules:dotfiles.generate_hook() {
-
   if [[ -f "${1}.generate" ]] ; then
     # TODO:
     # Needs to parse file and replace variable, but not shell style variables
@@ -27,11 +24,9 @@ KRATOS::Modules:dotfiles.generate_hook() {
   fi
 
   return 0
-
 }
 
 KRATOS::Modules:dotfiles.post_generate_hook() {
-
   if [[ -f "${1}.generate-post" ]] ; then
     source "${1}.generate-post" || {
       KRATOS::Lib:err.error "failed to source \`${1}.generate-post'"
@@ -40,11 +35,9 @@ KRATOS::Modules:dotfiles.post_generate_hook() {
   fi
 
   return 0
-
 }
 
 KRATOS::Modules:dotfiles.pre_install_hook() {
-
   if [[ -f "${1}.install-pre" ]] ; then
     source "${1}.install-pre" || {
       KRATOS::Lib:err.error "failed to source \`${1}.install-pre'"
@@ -53,11 +46,9 @@ KRATOS::Modules:dotfiles.pre_install_hook() {
   fi
 
   return 0
-
 }
 
 KRATOS::Modules:dotfiles.install_hook() {
-
   if [[ -f "${1}.install" ]] ; then
     source "${1}.install" || {
       KRATOS::Lib:err.error "failed to source \`${1}.install'"
@@ -66,11 +57,9 @@ KRATOS::Modules:dotfiles.install_hook() {
   fi
 
   return 0
-
 }
 
 KRATOS::Modules:dotfiles.post_install_hook() {
-
   if [[ -f "${1}.install-post" ]] ; then
     source "${1}.install-post" || {
       KRATOS::Lib:err.error "failed to source \`${1}.install-post'"
@@ -79,11 +68,9 @@ KRATOS::Modules:dotfiles.post_install_hook() {
   fi
 
   return 0
-
 }
 
 KRATOS::Modules:dotfiles.pre_uninstall_hook() {
-
   if [[ -f "${1}.uninstall-pre" ]] ; then
     source "${1}.uninstall-pre" || {
       KRATOS::Lib:err.error "failed to source \`${1}.uninstall-pre'"
@@ -92,11 +79,9 @@ KRATOS::Modules:dotfiles.pre_uninstall_hook() {
   fi
 
   return 0
-
 }
 
 KRATOS::Modules:dotfiles.uninstall_hook() {
-
   if [[ -f "${1}.uninstall" ]] ; then
     source "${1}.uninstall" || {
       KRATOS::Lib:err.error "failed to source \`${1}.uninstall'"
@@ -105,11 +90,9 @@ KRATOS::Modules:dotfiles.uninstall_hook() {
   fi
 
   return 0
-
 }
 
 KRATOS::Modules:dotfiles.post_uninstall_hook() {
-
   if [[ -f "${1}.uninstall-post" ]] ; then
     source "${1}.uninstall-post" || {
       KRATOS::Lib:err.error "failed to source \`${1}.uninstall-post'"
@@ -118,11 +101,9 @@ KRATOS::Modules:dotfiles.post_uninstall_hook() {
   fi
 
   return 0
-
 }
 
 KRATOS::Modules:dotfiles.systemd_hook() {
-
   # Find type for symlinking
 
   local TYPE
@@ -131,11 +112,9 @@ KRATOS::Modules:dotfiles.systemd_hook() {
   #symlink "${1}" "${HOME}/.config/systemd/user/${TYPE}.target.wants/$(basename "${DOTFILE}")"
 
   return 0
-
 }
 
 KRATOS::Modules:dotfiles.hook() {
-
   local Dotfile
   local Dotfiles
   local Uninstall
@@ -278,5 +257,4 @@ KRATOS::Modules:dotfiles.hook() {
     fi
 
   done
-
 }

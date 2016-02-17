@@ -10,7 +10,6 @@ KRATOS::Plugins:archive.usage() {
 }
 
 KRATOS::Plugins:archive.command() {
-
   case "$1" in
     '-c')
       ;;
@@ -19,7 +18,6 @@ KRATOS::Plugins:archive.command() {
     '-l')
       ;;
   esac
-
 }
 
 KRATOS::Plugins:archive.extract() {

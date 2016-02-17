@@ -10,7 +10,6 @@
 #
 
 KRATOS::Plugins:torrent.magnet2torrent() {
-
   local InfoHash
   local Filename
 
@@ -37,5 +36,4 @@ KRATOS::Plugins:torrent.magnet2torrent() {
   echo "d10:magnet-uri${#1}:${1}e" > "${Filename}.torrent"
 
   return 0
-
 }

@@ -16,10 +16,8 @@ setopt inc_append_history
 # share command history data
 setopt share_history
 
+# Create the temporary history file for the shell
 KRATOS::Modules:history.shell() {
-
-  # Create the temporary history file for the shell
-
   if [[ -d "${HOME}/.cache" ]] ; then
     export HISTFILE="${HOME}/.cache/history.${SHELL}"
     export HISTSIZE=10000
@@ -31,7 +29,6 @@ KRATOS::Modules:history.shell() {
   fi
 
   setopt append_history
-
 }
 
 # Show history
@@ -52,7 +49,5 @@ esac
 
 
 KRATOS::Modules:history.command() {
-
   history | grep "$*"
-
 }

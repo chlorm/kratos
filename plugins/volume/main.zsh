@@ -13,7 +13,6 @@
 #    or create seperate utility for handling input devices
 
 KRATOS::Plugins:vol.usage() {
-
 cat <<EOF
 vol is a wrapper for pactl/pacmd
 
@@ -27,10 +26,10 @@ Usage: vol [integer/option]"
 
 EOF
 
+return 0
 }
 
 KRATOS::Plugins:vol.active_sound_card() {
-
   local SoundCard
 
   SoundCard=$(
@@ -56,20 +55,16 @@ KRATOS::Plugins:vol.active_sound_card() {
   echo "${SoundCard}"
 
   return 0
-
 }
 
 KRATOS::Plugins:vol.current() {
-
   pactl list sinks |
     grep --after-context=9 "Sink #$(KRATOS::Plugins:vol.active_sound_card)" |
     grep "Volume:" |
     awk '/[^0-9]*\%/ {print $5 ; exit}'
-
 }
 
 KRATOS::Plugins:vol.command() {
-
   # If 'pactl' is not installed, be done now
   ${PathHasBinPACMD} || return 1
   ${PathHasBinPACTL} || return 1
@@ -109,5 +104,4 @@ KRATOS::Plugins:vol.command() {
       esac
       ;;
   esac
-
 }

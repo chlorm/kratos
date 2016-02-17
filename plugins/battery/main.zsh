@@ -6,17 +6,13 @@
 # the `LICENSE' file in the top level source directory.
 
 KRATOS::Plugins:battery.acpi() {
-
   # Use acpi if possible
 
   acpi -b 2> /dev/null || KRATOS::Plugins:battery.sys
-
 }
 
+# Gets the string representing the state of the batteries
 KRATOS::Plugins:battery.sys() {
-
-  # Gets the string representing the state of the batteries
-
   local Bat
   local Bats
 
@@ -30,11 +26,9 @@ KRATOS::Plugins:battery.sys() {
   for Bat in "${Bats[@]}" ; do
     KRATOS::Plugins:battery.one "${Bat}"
   done
-
 }
 
 KRATOS::Plugins:battery.one() {
-
   local BatDir
   local BatStatus
   local Now
@@ -68,5 +62,4 @@ KRATOS::Plugins:battery.one() {
     echo 1
   )"
   echo "$(expr ${Now} \* 100 / $Full)%"
-
 }

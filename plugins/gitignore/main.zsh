@@ -6,9 +6,7 @@
 # the `LICENSE' file in the top level source directory.
 
 function gitignore {
-
   download "https://www.gitignore.io/api/$1"
-
 }
 
 #_gitignoreio_get_command_list() {

@@ -6,7 +6,6 @@
 # the `LICENSE' file in the top level source directory.
 
 KRATOS::Plugins:ssh.auto() {
-
   local Key
   local PopKeys
   local Pass
@@ -50,5 +49,4 @@ KRATOS::Plugins:ssh.auto() {
   ssh-add "${HOME}/.ssh/id_rsa" > /dev/null 2>&1 || return 1
 
   return 0
-
 }

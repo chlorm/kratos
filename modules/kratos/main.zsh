@@ -6,7 +6,6 @@
 # the `LICENSE' file in the top level source directory.
 
 KRATOS::Modules:kratos.logo() {
-
 cat <<'EOF'
 
   oooo    oooo                        .
@@ -18,11 +17,9 @@ cat <<'EOF'
   o888o  o888o d888b    `Y888""8o   "888" `Y8bod8P' 8""888P'
 
 EOF
-
 }
 
 KRATOS::Modules:kratos.command() {
-
   local Dir
   local KratosCreateDirs
   local KratosProjectDirs
@@ -132,5 +129,4 @@ KRATOS::Modules:kratos.command() {
       ;;
     #'uninstall'
   esac
-
 }

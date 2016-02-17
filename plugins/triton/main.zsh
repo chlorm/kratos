@@ -6,7 +6,6 @@
 # the `LICENSE' file in the top level source directory.
 
 function triton_clear_env {
-
   # Clear environment variables in user environment used
   # by Triton's makeWrapper.
 
@@ -18,5 +17,4 @@ function triton_clear_env {
   unset GSETTINGS_SCHEMAS_PATH
   unset XDG_DATA_DIRS
   unset XDG_ICON_DIRS
-
 }

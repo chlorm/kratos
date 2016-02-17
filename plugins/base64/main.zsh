@@ -6,23 +6,19 @@
 # the `LICENSE' file in the top level source directory.
 
 KRATOS::Plugins:base64.encode() {
-
   [[ -n ${1+x} ]] || {
     KRATOS::Lib:err.error 'no input'
     return 1
   }
 
   echo -n ${1} | base64
-
 }
 
 KRATOS::Plugins:base64.decode() {
-
   [[ -n ${1+x} ]] || {
     KRATOS::Lib:err.error 'no input'
     return 1
   }
 
   echo -n ${1} | base64 --decode
-
 }

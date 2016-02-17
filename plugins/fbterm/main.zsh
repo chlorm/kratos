@@ -6,7 +6,6 @@
 # the `LICENSE' file in the top level source directory.
 
 KRATOS::Plugins:fbterm.tty() {
-
   KRATOS::Lib:path.has_bin 'fdterm' || return 0
 
   if [[ "$(tty | grep -o '/dev/tty')" == '/dev/tty' ]] ; then
@@ -15,5 +14,4 @@ KRATOS::Plugins:fbterm.tty() {
   fi
 
   return 0
-
 }

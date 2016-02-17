@@ -5,10 +5,8 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
+# Get colors for the current shell
 KRATOS::Modules:prompt.color() {
-
-  # Get colors for the current shell
-
   echo -n '%{'
 
   case "${1}" in
@@ -80,13 +78,10 @@ KRATOS::Modules:prompt.color() {
   esac
 
   echo -n '%}'
-
 }
 
+# Determine if the current directory is a vcs repo
 KRATOS::Modules:prompt.vcs() {
-
-  # Determine if the current directory is a vcs repo
-
   local VcsIsRepo
   local VcsBranch
   local VcsStatus
@@ -138,11 +133,9 @@ KRATOS::Modules:prompt.vcs() {
   # TODO: Add fossil support
 
   return 0
-
 }
 
 KRATOS::Modules:prompt.configure() {
-
   local Ncolor
 
   # Setup Special Colors
@@ -157,5 +150,4 @@ KRATOS::Modules:prompt.configure() {
 
   # Must use single quotes to delay evaluation
   export PROMPT='$(KRATOS::Modules:prompt.color green 0)%n$(KRATOS::Modules:prompt.color black 1)@$(KRATOS::Modules:prompt.color white 1)%M$(KRATOS::Modules:prompt.color black 1)[$(KRATOS::Modules:prompt.color magenta 0)%~$(KRATOS::Modules:prompt.color black 1)]$(KRATOS::Modules:prompt.vcs)$(KRATOS::Modules:prompt.color cyan 0)〉$(KRATOS::Modules:prompt.color reset)'
-
 }

@@ -6,17 +6,14 @@
 # the `LICENSE' file in the top level source directory.
 
 KRATOS::Plugins:golang.directories() {
-
   KRATOS::Lib:ensure.dir_exists "${KRATOS_GOPATH}/bin" || return 1
   KRATOS::Lib:ensure.dir_exists "${KRATOS_GOPATH}/pkg" || return 1
   KRATOS::Lib:ensure.dir_exists "${KRATOS_GOPATH}/src" || return 1
 
   return 0
-
 }
 
 KRATOS::Plugins:golang.bin_path() {
-
   # Add Go bin/ directory to $PATH
 
   if [[ -n "${GOPATH}" && "${GOPATH}" != "${KRATOS_GOPATH}" ]] ; then
@@ -36,11 +33,9 @@ KRATOS::Plugins:golang.bin_path() {
   fi
 
   return 0
-
 }
 
 KRATOS::Plugins:golang.gopath() {
-
   if [[ -n "${GOPATH}" ]] ; then
     # TODO: add tests to make sure dirs in $GOPATH exist
     export GOPATH="${GOPATH}"
@@ -49,5 +44,4 @@ KRATOS::Plugins:golang.gopath() {
   fi
 
   return 0
-
 }
