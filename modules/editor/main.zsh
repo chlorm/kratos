@@ -46,13 +46,17 @@ KRATOS::Modules:editor.default_args() {
     Editor="$(KRATOS::Modules:editor.known_executables)"
   fi
 
-  if [[ "${Editor}" == 'atom' ]] ; then
-    echo '--wait'
-  elif [[ "${Editor}" == 'subl' || "${Editor}" == 'sublime' ]] ; then
-    echo '-n -w'
-  elif [[ "${Editor}" == 'emacs' ]] ; then
-    echo '-nw'
-  fi
+  case "${Editor}" in
+    'atom')
+      echo '--wait'
+      ;;
+    'emacs')
+      echo '-nw'
+      ;;
+    'subl'|'sublime'|'sublime_text'|'sublime-text')
+      echo '-n -w'
+      ;;
+  esac
 
   return 0
 }
