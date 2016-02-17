@@ -65,14 +65,14 @@ KRATOS::Modules:editor.preferred() {
   local PreferredEditor
 
   for PreferredEditor in "${KRATOS_EDITOR_PREFERENCE[@]}" ; do
-    if PathHasBin "${PreferredEditor}" ; then
+    if KRATOS::Lib:path.has_bin "${PreferredEditor}" ; then
       echo "KRATOS_PREFERRED_EDITOR=\"${PreferredEditor}\"" >> \
         "${HOME}/.local/share/kratos/preferences"
       return 0
     fi
   done
 
-  ErrWarn 'no preferred editors found'
+  KRATOS::Lib:err.warn 'no preferred editors found'
   return 1
 }
 
