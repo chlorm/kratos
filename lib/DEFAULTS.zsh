@@ -1,5 +1,5 @@
 # This file is part of Kratos.
-# Copyright (c) 2014-2015, Cody Opel <codyopel@gmail.com>.
+# Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
 # Use of this source code is governed by the terms of the
 # BSD-3 license.  A copy of the license can be found in
@@ -7,7 +7,11 @@
 
 # WARNING: enabling the auto updater with destroy any local changes in both your
 # dotfiles and kratos repo, this is not recommended.
-KRATOS_AUTO_UPDATER=false
+KRATOS_UPDATER_AUTO=false
+# Enable updating dotfiles git repository with kratos updater.
+# WARNING: if both auto updates and dotfiles are enabled it will also
+# automatically update dotfiles and wipe any local uncommited changes.
+KRATOS_UPDATER_DOTFILES=true
 
 # Add user specified directories to this array in your local config
 KRATOS_CREATE_CUSTOM_DIRECTOIES=()
