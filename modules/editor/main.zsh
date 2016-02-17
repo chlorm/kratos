@@ -12,14 +12,14 @@ KRATOS::Modules:editor.known_executables() {
 
   Bins=(
     'atom'
+    'emacs'
+    'mg'
     'subl'
     'sublime'
-    'vim'
-    'mg'
-    'emacs'
     'nano'
     'nvim'
     'vi'
+    'vim'
     'yi'
   )
 
