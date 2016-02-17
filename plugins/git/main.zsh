@@ -5,6 +5,25 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
+# untracked files
+# additions
+# deletions
+# modifications
+# read to commit
+# tag
+# branch
+# rebase
+# stash
+# detached head
+# sha1
+# diverged
+# commits behind
+# commits ahead
+# can push
+# working copy / remotes
+# local branch
+# remote branch
+
 KRATOS::Plugins:git.branch() {
 
   local Branch
@@ -31,9 +50,10 @@ KRATOS::Plugins:git.status() {
 
   GitStatus="$(git status 2>&1)" || return 1
 
+  GitStatus="$(echo ${GitStatus} | grep -m 1 -w -o 'working directory clean')"
+
   Status="$(
-    if [[ -z "$(echo ${GitStatus} |
-      grep -m 1 -w -o 'working directory clean')" ]] ; then
+    if [[ -z "${GitStatus}" ]] ; then
       echo "*"
     fi
   )"

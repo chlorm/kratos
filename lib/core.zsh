@@ -102,8 +102,8 @@ KRATOS::Lib:cpu.physical() {
 
   # Find number of physical cpu cores
 
-  # Assumes all sockets are identical, only some arm platforms won't
-  # work with this logic.
+  # Assumes all sockets are identical, only some arm platforms
+  # won't work with this logic.
 
   local CpuCores
 
