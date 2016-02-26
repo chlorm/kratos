@@ -23,14 +23,13 @@ KRATOS::Modules:editor.known_executables() {
     'yi'
   )
 
-  if [[ -n "${PREFERRED_EDITOR}" ]] ; then
-    # find installed editors
-    for Bin in "${Bins[@]}" ; do
-      if KRATOS::Lib:path.has_bin "${Bin}" ; then
-        echo "${Bin}"
-      fi
-    done
-  fi
+  # find installed editors
+  for Bin in "${Bins[@]}" ; do
+    KRATOS::Lib:path.has_bin "${Bin}" && {
+      echo "${Bin}"
+      return 0
+    }
+  done
 
   KRATOS::Lib:err.error 'no editors installed'
   return 1
