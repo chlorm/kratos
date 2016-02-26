@@ -293,6 +293,8 @@ KRATOS::Lib:load.one() {
 
 # Load all of specified init type
 KRATOS::Lib:load.all() {
+  local Completion
+  local Completions
   local Init
   local Inits
   local Plugin
@@ -312,6 +314,25 @@ KRATOS::Lib:load.all() {
       fi
     done)
   )
+
+  unset Plugin
+  # Find module completions
+  Completions=($(find "${KRATOS_DIR}/modules" -type f -name "_*"))
+  # Find plugin completions
+  for Plugin in "${KRATOS_PLUGINS[@]}" ; do
+    Completions+=($(
+      find ${KRATOS_DIR}/plugins \
+        -type f -name "_*" -iwholename "*${Plugin}*" -print0
+    ))
+    for Completion in "${Completions[@]}" ; do
+      if [[ -f "${Completion}" ]] ; then
+        fpath+=("$(dirname "${Completion}")")
+      fi
+    done
+    unset Completion
+    unset Completions
+    Completions=()
+  done
 
   for Init in "${Inits[@]}" ; do
     KRATOS::Lib:load.one "${Init}"
