@@ -6,4 +6,4 @@
 # the `LICENSE' file in the top level source directory.
 
 # Configure a user cache directory
-KRATOS::Modules:cache.directory
+KRATOS::Modules:cache.mount

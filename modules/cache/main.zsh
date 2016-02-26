@@ -5,13 +5,9 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-# TODO:
-# + Add a fallback to use the ~/.cache directory and delete the directory on logout
-# + Only setup tmp.dir during init, add function for returning the current tmp.dir
-
-KRATOS::Modules:cache.directory() { # Get the path to the temporary directory
+# Get the path to the temporary directory
+KRATOS::Modules:cache.find() {
   local Dir
-  local CacheDir
   local CacheDirs
 
   CacheDirs=(
@@ -22,18 +18,25 @@ KRATOS::Modules:cache.directory() { # Get the path to the temporary directory
   )
 
   for Dir in "${CacheDirs[@]}" ; do
-
     if [[ -n "$(mount | grep '\(tmpfs\|ramfs\)' |
                 grep "${Dir}" 2> /dev/null)" ]] ; then
-      CacheDir="${Dir}/${USER}"
-      break
+      echo "${Dir}/${USER}"
+      return 0
     fi
-
   done
 
+  KRATOS::Lib:err.error 'could not find tmpfs'
+  return 1
+}
+
+KRATOS::Modules:cache.mount() {
+  local CacheDir
+
+  CacheDir="$(KRATOS::Modules:cache.find)"
+
+  # Fallback to a local directory if tmpfs is not found.
   if [[ -z "${CacheDir}" ]] ; then
-    KRATOS::Lib:err.error 'Failed to find a tmp directory'
-    return 1
+    CacheDir="${HOME}/.cache"
   fi
 
   if [[ ! -d "${CacheDir}" ]] ; then
@@ -41,12 +44,16 @@ KRATOS::Modules:cache.directory() { # Get the path to the temporary directory
     chmod 0700 "${CacheDir}" || return 1
   fi
 
-  KRATOS::Lib:ensure.dir_destroy "${HOME}/.cache" || return 1
+  # Make sure to wipe the cache directory incase it was not previously
+  # on tmpfs.
+  if [[ "${CacheDir}" != "${HOME}/.cache" ]] ; then
+    KRATOS::Lib:ensure.dir_destroy "${HOME}/.cache" || return 1
+  fi
 
-  KRATOS::Lib:symlink "${CacheDir}" "${HOME}/.cache" || return 1
-
-  # Create dotfiles session directory
-  KRATOS::Lib:ensure.dir_exists "${CacheDir}/dotfiles" || return 1
+  # Make sure the symlink still points to the correct location.
+  if [[ "${CacheDir}" != "${HOME}/.cache" ]] ; then
+    KRATOS::Lib:symlink "${CacheDir}" "${HOME}/.cache" || return 1
+  fi
 
   return 0
 }
