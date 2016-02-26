@@ -47,13 +47,13 @@ KRATOS::Modules:editor.default_args() {
 
   case "${Editor}" in
     'atom')
-      echo '--wait'
+      echo '--new-window --wait'
       ;;
     'emacs')
-      echo '-nw'
+      echo '--no-window-system'
       ;;
     'subl'|'sublime'|'sublime_text'|'sublime-text')
-      echo '-n -w'
+      echo '--new-window --wait'
       ;;
   esac
 
