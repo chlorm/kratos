@@ -408,7 +408,7 @@ KRATOS::Lib:os.linux() {
   Linux="$(
     KRATOS::Lib:to_lower "$(KRATOS::Lib:os.linux_release) $(KRATOS::Lib:os.linux_uname) $(KRATOS::Lib:os.linux_lsb)" |
     grep --max-count 1 --word-regexp --only-matching \
-      '\(arch\|centos\|debian\|fedora\|gentoo\|opensuse\|red\ hat\|suse\|triton\|ubuntu\)'
+      '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|triton\|ubuntu\)'
   )"
 
   if [[ -z "${Linux}" ]] ; then
