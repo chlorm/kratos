@@ -338,6 +338,10 @@ KRATOS::Lib:load.all() {
       Completions=()
     done
 
+    # Color scheme
+    KRATOS::Lib:load.one \
+      "${KRATOS_DIR}/themes/color-schemes/${KRATOS_COLOR_SCHEME}.color-scheme.zsh"
+
     # Prompt theme
     KRATOS::Lib:load.one \
       "${KRATOS_DIR}/themes/prompts/${KRATOS_PROMPT}.prompt.zsh"

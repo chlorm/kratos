@@ -38,6 +38,9 @@ KRATOS_CREATE_XDG_DIRECTORIES=true
 
 KRATOS_DOTFILES_DIRECTORY="${HOME}/.local/share/dotfiles"
 
+# Default color scheme
+KRATOS_COLOR_SCHEME='monokai'
+
 # Default prompt theme
 KRATOS_PROMPT='kratos'
 
