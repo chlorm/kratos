@@ -5,15 +5,15 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-KRATOS_COLOR_1='272822' # Black #
-KRATOS_COLOR_2='f92672' # Red #
-KRATOS_COLOR_3='a6e22e' # Green #
-KRATOS_COLOR_4='e6db74' # Yellow #
+KRATOS_COLOR_1='272822' # Black
+KRATOS_COLOR_2='f92672' # Red
+KRATOS_COLOR_3='a6e22e' # Green
+KRATOS_COLOR_4='e6db74' # Yellow
 KRATOS_COLOR_5='2196e8' # Blue
-KRATOS_COLOR_6='ae81ff' # Magenta #
-KRATOS_COLOR_7='66d9ef' # Cyan #
-KRATOS_COLOR_8='f8f8f2' # Light gray #
-KRATOS_COLOR_9='75715e' # Dark gray #
+KRATOS_COLOR_6='ae81ff' # Magenta
+KRATOS_COLOR_7='66d9ef' # Cyan
+KRATOS_COLOR_8='f8f8f2' # Light gray
+KRATOS_COLOR_9='75715e' # Dark gray
 KRATOS_COLOR_10="${KRATOS_COLOR_2}" # Light red
 KRATOS_COLOR_11="${KRATOS_COLOR_3}" # Light green
 KRATOS_COLOR_12="${KRATOS_COLOR_4}" # Light yellow
