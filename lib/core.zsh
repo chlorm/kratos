@@ -294,9 +294,9 @@ KRATOS::Lib:load.one() {
 # Load all of specified init type
 KRATOS::Lib:load.all() {
   local Completion
-  local Completions
+  local -a Completions
   local Init
-  local Inits
+  local -a Inits
   local Plugin
   local PluginLoaderExists
 
@@ -326,7 +326,8 @@ KRATOS::Lib:load.all() {
     ))
     for Completion in "${Completions[@]}" ; do
       if [[ -f "${Completion}" ]] ; then
-        fpath+=("$(dirname "${Completion}")")
+        # Appending to the array (e.g. +=) breaks fpath
+        fpath=("$(dirname "${Completion}")" $fpath)
       fi
     done
     unset Completion
