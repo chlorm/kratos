@@ -315,25 +315,28 @@ KRATOS::Lib:load.all() {
     done)
   )
 
-  unset Plugin
-  # Find module completions
-  Completions=($(find "${KRATOS_DIR}/modules" -type f -name "_*"))
-  # Find plugin completions
-  for Plugin in "${KRATOS_PLUGINS[@]}" ; do
-    Completions+=($(
-      find ${KRATOS_DIR}/plugins \
-        -type f -name "_*" -iwholename "*${Plugin}*" -print0
-    ))
-    for Completion in "${Completions[@]}" ; do
-      if [[ -f "${Completion}" ]] ; then
-        # Appending to the array (e.g. +=) breaks fpath
-        fpath=("$(dirname "${Completion}")" $fpath)
-      fi
+  # Only load for completions for interactive shells
+  if [[ "${1}" == 'init' ]] ; then
+    unset Plugin
+    # Find module completions
+    Completions=($(find "${KRATOS_DIR}/modules" -type f -name "_*"))
+    # Find plugin completions
+    for Plugin in "${KRATOS_PLUGINS[@]}" ; do
+      Completions+=($(
+        find ${KRATOS_DIR}/plugins \
+          -type f -name "_*" -iwholename "*${Plugin}*" -print0
+      ))
+      for Completion in "${Completions[@]}" ; do
+        if [[ -f "${Completion}" ]] ; then
+          # Appending to the array (e.g. +=) breaks fpath
+          fpath=("$(dirname "${Completion}")" $fpath)
+        fi
+      done
+      unset Completion
+      unset Completions
+      Completions=()
     done
-    unset Completion
-    unset Completions
-    Completions=()
-  done
+  fi
 
   for Init in "${Inits[@]}" ; do
     KRATOS::Lib:load.one "${Init}"
