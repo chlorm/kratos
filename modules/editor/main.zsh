@@ -7,7 +7,7 @@
 
 KRATOS::Modules:editor.known_executables() {
   local Bin
-  local Bins
+  local -a Bins
   local Editor
 
   Bins=(

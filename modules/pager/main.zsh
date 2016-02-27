@@ -7,7 +7,7 @@
 
 KRATOS::Modules:pager.known_executables() {
   local Bin
-  local Bins
+  local -a Bins
   local Pager
 
   Bins=(

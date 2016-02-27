@@ -21,10 +21,10 @@ EOF
 
 KRATOS::Modules:kratos.command() {
   local Dir
-  local KratosCreateDirs
-  local KratosProjectDirs
-  local KratosTrashDirs
-  local KratosXdgDirs
+  local -a KratosCreateDirs
+  local -a KratosProjectDirs
+  local -a KratosTrashDirs
+  local -a KratosXdgDirs
 
   KratosCreateDirs=()
 

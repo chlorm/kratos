@@ -116,11 +116,11 @@ KRATOS::Modules:dotfiles.systemd_hook() {
 
 KRATOS::Modules:dotfiles.hook() {
   local Dotfile
-  local Dotfiles
+  local -a Dotfiles
   local Uninstall
   #local DONT_SYM_ITEM
   local IgnoreItem
-  local IgnoreList
+  local -a IgnoreList
   local IgnoreStatus
 
   Uninstall=false
@@ -164,9 +164,14 @@ KRATOS::Modules:dotfiles.hook() {
 
     # Ignore kratos hooks
     case "${Dotfile##*.}" in
-      'install-pre'|'install'|'install-post'|\
-      'generate-pre'|'generate-post'|\
-      'uninstall-pre'|'uninstall'|'uninstall-post')
+      'install-pre'|\
+      'install'|\
+      'install-post'|\
+      'generate-pre'|\
+      'generate-post'|\
+      'uninstall-pre'|\
+      'uninstall'|\
+      'uninstall-post')
         continue
         ;;
     esac
@@ -223,26 +228,30 @@ KRATOS::Modules:dotfiles.hook() {
 
           # TODO: add logic to prevent from following symlinked directory paths,
           #       may not be necessary
-          KRATOS::Lib:ensure.file_destroy "${HOME}/.$(
-                              echo "${Dotfile}" |
-                              sed -e "s|${DOTFILES_DIR}\/||"
-                            )" || {
-            KRATOS::Lib:err.error "failed to remove: ${HOME}/.$(
-                       echo "${Dotfile}" |
-                       sed -e "s|${DOTFILES_DIR}\/||"
-                     )"
+          KRATOS::Lib:ensure.file_destroy \
+            "${HOME}/.$(
+                echo "${Dotfile}" |
+                  sed -e "s|${DOTFILES_DIR}\/||"
+            )" || {
+            KRATOS::Lib:err.error \
+              "failed to remove: ${HOME}/.$(
+                echo "${Dotfile}" |
+                  sed -e "s|${DOTFILES_DIR}\/||"
+              )"
             return 1
           }
 
           # Symlink DOTFILE
-          KRATOS::Lib:symlink "${Dotfile}" "${HOME}/.$(
-                    echo "${Dotfile}" |
-                    sed -e "s|${DOTFILES_DIR}\/||"
-                  )" || {
-            KRATOS::Lib:err.error "failed to symlink \`${Dotfile}' to \`${HOME}/.$(
-                       echo "${Dotfile}" |
-                       sed -e "s|${DOTFILES_DIR}\/||"
-                     )'"
+          KRATOS::Lib:symlink \
+            "${Dotfile}" "${HOME}/.$(
+                echo "${Dotfile}" |
+                  sed -e "s|${DOTFILES_DIR}\/||"
+            )" || {
+            KRATOS::Lib:err.error \
+              "failed to symlink \`${Dotfile}' to \`${HOME}/.$(
+                echo "${Dotfile}" |
+                sed -e "s|${DOTFILES_DIR}\/||"
+              )'"
             return 1
           }
         fi
