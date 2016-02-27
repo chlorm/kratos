@@ -315,8 +315,9 @@ KRATOS::Lib:load.all() {
     done)
   )
 
-  # Only load for completions for interactive shells
+  # Interactive shells
   if [[ "${1}" == 'init' ]] ; then
+    # Completions
     unset Plugin
     # Find module completions
     Completions=($(find "${KRATOS_DIR}/modules" -type f -name "_*"))
@@ -336,7 +337,13 @@ KRATOS::Lib:load.all() {
       unset Completions
       Completions=()
     done
+
+    # Prompt theme
+    KRATOS::Lib:load.one \
+      "${KRATOS_DIR}/themes/prompts/${KRATOS_PROMPT}.prompt.zsh"
   fi
+
+
 
   for Init in "${Inits[@]}" ; do
     KRATOS::Lib:load.one "${Init}"

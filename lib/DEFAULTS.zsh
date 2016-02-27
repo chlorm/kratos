@@ -38,6 +38,9 @@ KRATOS_CREATE_XDG_DIRECTORIES=true
 
 KRATOS_DOTFILES_DIRECTORY="${HOME}/.local/share/dotfiles"
 
+# Default prompt theme
+KRATOS_PROMPT='kratos'
+
 # Go lang's $GOPATH
 KRATOS_GOPATH="${HOME}/Projects/go"
 

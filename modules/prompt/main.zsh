@@ -149,5 +149,10 @@ KRATOS::Modules:prompt.configure() {
   setopt PROMPT_SUBST
 
   # Must use single quotes to delay evaluation
-  export PROMPT='$(KRATOS::Modules:prompt.color green 0)%n$(KRATOS::Modules:prompt.color black 1)@$(KRATOS::Modules:prompt.color white 1)%M$(KRATOS::Modules:prompt.color black 1)[$(KRATOS::Modules:prompt.color magenta 0)%~$(KRATOS::Modules:prompt.color black 1)]$(KRATOS::Modules:prompt.vcs)$(KRATOS::Modules:prompt.color cyan 0)〉$(KRATOS::Modules:prompt.color reset)'
+  eval export PROMPT='${KRATOS_PROMPT_1}'
+  eval export PROMPT2='${KRATOS_PROMPT_2}'
+  eval export PROMPT3='${KRATOS_PROMPT_3}'
+  eval export PROMPT4='${KRATOS_PROMPT_4}'
+  eval export RPROMPT='${KRATOS_RPROMPT_1}'
+  eval export RPROMPT2='${KRATOS_RPROMPT_2}'
 }
