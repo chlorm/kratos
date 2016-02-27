@@ -30,7 +30,7 @@ fi
 
 if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   KRATOS::Lib:load.all 'main'
-  KRATOS::Lib:load.all 'init'
+  KRATOS::Lib:load.all 'interactive'
 
   KRATOS::Lib:path.add "${HOME}/.bin"
 

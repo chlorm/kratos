@@ -316,7 +316,7 @@ KRATOS::Lib:load.all() {
   )
 
   # Interactive shells
-  if [[ "${1}" == 'init' ]] ; then
+  if [[ "${1}" == 'interactive' ]] ; then
     # Completions
     unset Plugin
     # Find module completions
