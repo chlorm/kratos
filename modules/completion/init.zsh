@@ -22,5 +22,7 @@ unsetopt menu_complete
 autoload -U compinit
 compinit
 
+# Only show menu if 2 or more results exist.
 zstyle ':completion:*' menu select=2
+# Reload all completions incase there are changes
 zstyle ':completion:*' rehash true
