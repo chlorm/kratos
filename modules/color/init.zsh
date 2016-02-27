@@ -5,4 +5,6 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
+KRATOS::Modules:color.ls
+
 KRATOS::Modules:color.set_scheme
