@@ -5,6 +5,8 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
+# http://www.monokai.nl/blog/2006/07/15/textmate-color-theme/
+
 KRATOS_COLOR_1='272822' # Black
 KRATOS_COLOR_2='f92672' # Red
 KRATOS_COLOR_3='a6e22e' # Green
