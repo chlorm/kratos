@@ -63,6 +63,7 @@ KRATOS::Modules:prompt.vcs() {
       VcsBranch="$(
         echo "${VcsIsRepo}" |
         grep -m 1 'On branch' |
+        # fixes branch names with spaces
         awk '{for(i=3;i<=NF;++i)print $i}'
       )"
       VcsStatus="$(
@@ -112,9 +113,9 @@ KRATOS::Modules:prompt.configure() {
 
   # Setup Special Colors
   if KRATOS::Lib:is_root ; then
-    Ncolor="$(KRATOS::Modules:prompt.color red 1)"
+    Ncolor="$(KRATOS::Modules:prompt.color_wrapped bold)$(KRATOS::Modules:prompt.color_wrapped f2)"
   else
-    Ncolor="$(KRATOS::Modules:prompt.color green 0)"
+    Ncolor="$(KRATOS::Modules:prompt.color_wrapped 3)"
   fi
 
   # Allow evaluating functions within the prompt
