@@ -30,5 +30,10 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   }
 fi
 
+if [[ "$(KRATOS::Lib:shell)" != 'zsh' ]] ; then
+  exec 'zsh' # add interactive flags
+  exit $?
+fi
+
 KRATOS::Lib:load.all 'main'
 KRATOS::Lib:load.all 'login'
