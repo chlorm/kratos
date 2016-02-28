@@ -15,12 +15,9 @@ fi
 
 source "${KRATOS_DIR}/init/interactive.zsh"
 
-KRATOS::Lib:load.all 'modules' || exit 1
+KRATOS::Lib:load.all 'main' || exit 1
 
 # TODO: Check for previous Kratos installation, and test installation if
 #  one exists for errors.
-
-KRATOS::Lib:path.has_bin 'git' || exit 1
-# TODO: Make sure git is at least version 2.0.
 
 KRATOS::Modules:kratos.command 'update'
