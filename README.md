@@ -30,26 +30,26 @@ documentation incomplete
 ```
 
 ### Plugins
-+ ##### Vendored
++ Vendored
 ```zsh
 plugins=(battery golang haskell)
 ```
-+ ##### Local
++ Local
 ```
 Not implemented yet
 ```
-+ ##### Remote
++ Remote
 ```
 Not implemented yet
 ```
 
 ### Themes
-+ ##### Vendored
++ Vendored
 ```zsh
 KRATOS_COLOR_SCHEME='monokai'
 KRATOS_PROMPT='kratos'
 ```
-+ ##### Local / Dotfiles
++ Local / Dotfiles
 ```
 Not implemented yet
 ```
