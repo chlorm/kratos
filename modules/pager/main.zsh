@@ -71,20 +71,59 @@ KRATOS::Modules:pager.env_var() {
       #LESSSEPARATOR
       #LESSUTFBINFMT
       unset LESS_IS_MORE # disabled
-      # TODO: use native kratos implementation, not tput
-      export LESS_TERMCAP_mb=$(tput bold; tput setaf 2) # green
-      export LESS_TERMCAP_md=$(tput bold; tput setaf 6) # cyan
-      export LESS_TERMCAP_me=$(tput sgr0)
-      export LESS_TERMCAP_so=$(tput bold; tput setaf 3; tput setab 4) # yellow on blue
-      export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
-      export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7) # white
-      export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
-      export LESS_TERMCAP_mr=$(tput rev)
-      export LESS_TERMCAP_mh=$(tput dim)
-      export LESS_TERMCAP_ZN=$(tput ssubm)
-      export LESS_TERMCAP_ZV=$(tput rsubm)
-      export LESS_TERMCAP_ZO=$(tput ssupm)
-      export LESS_TERMCAP_ZW=$(tput rsupm)
+
+      # Blink (& fg color)
+      export LESS_TERMCAP_mb="$(
+        printf "${KCLR_BLINK}"
+        printf "${KRATOS_FG_COLOR_3}"
+      )"
+      # Bold (& fg color)
+      export LESS_TERMCAP_md="$(
+        printf "${KCLR_BOLD}"
+        printf "${KCLR_FG_7}"
+      )"
+      # Reset bold, blink, and underline (& fg color)
+      export LESS_TERMCAP_me=$(
+        printf "${KCLR_RESET_BOLD}"
+        printf "${KCLR_RESET_BLINK}"
+        printf "${KCLR_RESET_UNDERLINE}"
+        printf "${KCLR_FG_RESET}"
+      )
+      # Standout (& fg color & bg color)
+      export LESS_TERMCAP_so=$(
+        printf "${KCLR_BOLD}"
+        printf "${KCLR_FG_8}"
+        printf "${KCLR_BG_2}"
+      )
+      # Stop standout
+      export LESS_TERMCAP_se=$(
+        printf "${KCLR_RESET_BOLD}"
+        printf "${KCLR_FG_RESET}"
+        printf "${KCLR_BG_RESET}"
+      )
+      # Bold & underline (& fg color)
+      export LESS_TERMCAP_us=$(
+        printf "${KCLR_BOLD}"
+        printf "${KCLR_UNDERLINE}"
+        printf "${KCLR_FG_4}"
+      )
+      # Stop underline
+      export LESS_TERMCAP_ue=$(
+        printf "${KCLR_RESET_BOLD}"
+        printf "${KCLR_RESET_UNDERLINE}"
+        printf "${KCLR_FG_RESET}"
+      )
+      # Invert foreground & background
+      export LESS_TERMCAP_mr=$(
+        printf "${KCLR_INVERT}"
+      )
+      # Dim
+      export LESS_TERMCAP_mh=$(
+        printf "${KCLR_DIM}"
+      )
+
+      # some terminals don't understand SGR escape sequences
+      export GROFF_NO_SGR=1
       ;;
   esac
 
