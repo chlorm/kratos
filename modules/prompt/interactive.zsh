@@ -5,4 +5,6 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
+alias kprmt='KRATOS::Modules:prompt.color_wrapped'
+
 KRATOS::Modules:prompt.configure

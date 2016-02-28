@@ -5,78 +5,50 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-# Get colors for the current shell
-KRATOS::Modules:prompt.color() {
+# Wrap ANSI color codes in ZSH %{%} escape sequences
+KRATOS::Modules:prompt.color_wrapped() {
   echo -n '%{'
-
   case "${1}" in
-    'black')
-      if [ ${2} -eq 0 ] ; then
-        echo -n '\e[0;30m'
-      else
-        echo -n '\e[1;30m'
-      fi
-      ;;
-    'blue')
-      if [ ${2} -eq 0 ] ; then
-        echo -n '\e[0;34m'
-      else
-        echo -n '\e[1;34m'
-      fi
-      ;;
-    'cyan')
-      if [ ${2} -eq 0 ] ; then
-        echo -n '\e[0;36m'
-      else
-        echo -n '\e[1;36m'
-      fi
-      ;;
-    'green')
-      if [ ${2} -eq 0 ] ; then
-        echo -n '\e[0;38;5;154m'
-      else
-        echo -n '\e[1;38;5;154m'
-      fi
-      ;;
-    'magenta')
-      if [ "$2" -eq "0" ] ; then
-        echo -n '\e[0;38;5;161m'
-      else
-        echo -n '\e[1;38;5;161m'
-      fi
-      ;;
-    'red')
-      if [ "$2" -eq "0" ] ; then
-        echo -n '\e[0;31m'
-      else
-        echo -n '\e[1;31m'
-      fi
-      ;;
-    'white')
-      if [ "$2" -eq "0" ] ; then
-        echo -n '\e[0;37m'
-      else
-        echo -n '\e[1;37m'
-      fi
-      ;;
-    'yellow')
-      if [ "$2" -eq "0" ] ; then
-        echo -n '\e[0;33m'
-      else
-        echo -n '\e[1;33m'
-      fi
-      ;;
-    'underline')
-      echo -n '\e[4m'
-      ;;
-    'reset')
-      echo -n '\e[0m'
-      ;;
-    *)
-      echo -n '\e[0m'
-      ;;
+    f1) echo -n "${KCLR_FG_1}" ;;
+    f2) echo -n "${KCLR_FG_2}" ;;
+    f3) echo -n "${KCLR_FG_3}" ;;
+    f4) echo -n "${KCLR_FG_4}" ;;
+    f5) echo -n "${KCLR_FG_5}" ;;
+    f6) echo -n "${KCLR_FG_6}" ;;
+    f7) echo -n "${KCLR_FG_7}" ;;
+    f8) echo -n "${KCLR_FG_8}" ;;
+    f9) echo -n "${KCLR_FG_9}" ;;
+    f10) echo -n "${KCLR_FG_10}" ;;
+    f11) echo -n "${KCLR_FG_11}" ;;
+    f12) echo -n "${KCLR_FG_12}" ;;
+    f13) echo -n "${KCLR_FG_13}" ;;
+    f14) echo -n "${KCLR_FG_14}" ;;
+    f15) echo -n "${KCLR_FG_15}" ;;
+    f16) echo -n "${KCLR_FG_16}" ;;
+    b1) echo -n "${KCLR_BG_1}" ;;
+    b2) echo -n "${KCLR_BG_2}" ;;
+    b3) echo -n "${KCLR_BG_3}" ;;
+    b4) echo -n "${KCLR_BG_4}" ;;
+    b5) echo -n "${KCLR_BG_5}" ;;
+    b6) echo -n "${KCLR_BG_6}" ;;
+    b7) echo -n "${KCLR_BG_7}" ;;
+    b8) echo -n "${KCLR_BG_8}" ;;
+    b9) echo -n "${KCLR_BG_9}" ;;
+    b10) echo -n "${KCLR_BG_10}" ;;
+    b11) echo -n "${KCLR_BG_11}" ;;
+    b12) echo -n "${KCLR_BG_12}" ;;
+    b13) echo -n "${KCLR_BG_13}" ;;
+    b14) echo -n "${KCLR_BG_14}" ;;
+    b15) echo -n "${KCLR_BG_15}" ;;
+    b16) echo -n "${KCLR_BG_16}" ;;
+    bold) echo -n "${KCLR_BOLD}" ;;
+    dim) echo -n "${KCLR_DIM}" ;;
+    underline) echo -n "${KCLR_UNDERLINE}" ;;
+    blink) echo -n "${KCLR_BLINK}" ;;
+    invert) echo -n "${KCLR_INVERT}" ;;
+    hidden) echo -n "${KCLR_HIDDEN}" ;;
+    reset) echo -n "${KCLR_RESET}" ;;
   esac
-
   echo -n '%}'
 }
 
@@ -99,7 +71,7 @@ KRATOS::Modules:prompt.vcs() {
           echo "*"
         fi
       )"
-      echo -e "$(KRATOS::Modules:prompt.color green 0)git$(KRATOS::Modules:prompt.color black 1)∫$(KRATOS::Modules:prompt.color white 1)${VcsBranch}${VcsStatus}"
+      echo -e "$(kprmt f3)git$(kprmt bold)$(kprmt f1)∫$(kprmt f16)${VcsBranch}${VcsStatus}$(kprmt reset)"
       return 0
     fi
   fi
