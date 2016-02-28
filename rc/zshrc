@@ -9,6 +9,7 @@
 
 [[ -o interactive ]] || return
 
+# FIXME
 alias ebuild='nocorrect ebuild'
 alias gist='nocorrect gist'
 alias heroku='nocorrect heroku'
@@ -37,13 +38,19 @@ setopt interactivecomments
 # Prevent GUI password dialog
 unset SSH_ASKPASS
 
+# FIXME
+if [[ -d "${HOME}/.zsh/zsh-syntax-highlighting" ]] ; then
+  # Load zsh-syntax-highlighting.
+  source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 
-# Load zsh-syntax-highlighting.
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# Load zsh-autosuggestions.
-source ~/.zsh/zsh-autosuggestions/autosuggestions.zsh
-# Enable autosuggestions automatically.
-zle-line-init() {
-  zle autosuggest-start
-}
-zle -N zle-line-init
+# FIXME
+if [[ -d "${HOME}/.zsh/zsh-autosuggestions" ]] ; then
+  # Load zsh-autosuggestions.
+  source ~/.zsh/zsh-autosuggestions/autosuggestions.zsh
+  # Enable autosuggestions automatically.
+  zle-line-init() {
+    zle autosuggest-start
+  }
+  zle -N zle-line-init
+fi
