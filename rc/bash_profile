@@ -10,6 +10,5 @@
 # Test for a login shell
 shopt -q login_shell || return
 
-export KRATOS_IS_LOGIN_SHELL=true
-exec zsh --interactive
+exec zsh --login 2>&-
 exit $?

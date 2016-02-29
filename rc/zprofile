@@ -11,5 +11,3 @@
 [[ -o login ]] || return
 
 export KRATOS_IS_LOGIN_SHELL=true
-exec zsh --interactive
-exit $?

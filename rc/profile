@@ -7,6 +7,5 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-export KRATOS_IS_LOGIN_SHELL=true
-exec zsh --interactive
+exec zsh --login 2>&-
 exit $?
