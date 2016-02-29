@@ -5,6 +5,53 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
+# Determine if the current directory is a vcs repo
+KRATOS::Prompts:kratos.vcs() {
+  local VcsIsRepo
+  local VcsBranch
+  local VcsStatus
+
+  if ${PathHasBinGIT} ; then
+    if VcsIsRepo=$(git status 2>&1) ; then
+      VcsBranch="$(
+        echo "${VcsIsRepo}" |
+        grep -m 1 'On branch' |
+        # fixes branch names with spaces
+        awk '{for(i=3;i<=NF;++i)print $i}'
+      )"
+      VcsStatus="$(
+        if [[ -z "$(echo ${VcsIsRepo} |
+          grep -m 1 -w -o 'working directory clean')" ]] ; then
+          echo "*"
+        fi
+      )"
+      echo -e "$(kprmt f11)git$(kprmt bold)$(kprmt f1)∫$(kprmt f16)${VcsBranch}${VcsStatus}$(kprmt reset)"
+    fi
+  fi
+
+  #  if hg status > /dev/null 2>&1 ; then
+  #    echo "hg"
+  #    return 0
+  #  fi
+
+  #  if bzr root > /dev/null 2>&1 ; then
+  #    echo "bzr"
+  #    return 0
+  #  fi
+
+  #  if svn info > /dev/null 2>&1 ; then
+  #    echo "svn"
+  #    return 0
+  #  fi
+
+  #  if cvs status > /dev/null 2>&1 ; then
+  #    echo "cvs"
+  #    return 0
+  #  fi
+
+  return 0
+}
+
 if [[ -n "${SSH_CLIENT}" ]] ; then
   KratosPromptSsh='f10'
 else
@@ -15,5 +62,5 @@ KRATOS_PROMPT_1='$(kprmt f11)%n$(kprmt bold)$(kprmt f1)@$(kprmt bold)$(kprmt ${K
 KRATOS_PROMPT_2=''
 KRATOS_PROMPT_3=''
 KRATOS_PROMPT_4=''
-KRATOS_RPROMPT_1='$(KRATOS::Modules:prompt.vcs)'
+KRATOS_RPROMPT_1='$(KRATOS::Prompts:kratos.vcs)'
 KRATOS_RPROMPT_2=''
