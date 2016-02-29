@@ -7,7 +7,5 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-# TODO: rewrite only contain supported shell check and spawn supported shell if not
-
-exec 'zsh' # add interactive flags
+exec zsh --login
 exit $?
