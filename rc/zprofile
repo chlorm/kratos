@@ -10,13 +10,6 @@
 # Test for a login shell
 [[ -o login ]] || return
 
-source "$(readlink -f $(dirname $(readlink -f ${HOME}/.zprofile))/../)/init/login.zsh"
-
-# Load the local config
-if [[ -f "${HOME}/.bash_login.local" ]] ; then
-  source "${HOME}/.bash_login.local"
-fi
-
-if [[ -o interactive ]] ; then
-  source "${HOME}/.zshrc"
-fi
+export KRATOS_IS_LOGIN_SHELL=true
+exec zsh --interactive
+exit $?

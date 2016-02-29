@@ -5,13 +5,6 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-# TODO:
-# Figure out what should be spawned by login shells
-# - Automatic Updater
-# - Tmp directory
-# - Create a method to determine if login.sh has been run, otherwise run it from
-#   init/shell.sh, before executing the contents of shell.sh
-
 # Initalize shell configuration
 export KRATOS_DIR="${HOME}/.kratos"
 export DOTFILES_DIR="${HOME}/.dotfiles"
@@ -35,5 +28,16 @@ if [[ "$(KRATOS::Lib:shell)" != 'zsh' ]] ; then
   exit $?
 fi
 
-KRATOS::Lib:load.all 'main'
-KRATOS::Lib:load.all 'login'
+if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
+  KRATOS::Lib:load.all 'main'
+  [[ ${KRATOS_IS_LOGIN_SHELL} ]] && KRATOS::Lib:load.all 'login'
+  [[ -o interactive ]] && KRATOS::Lib:load.all 'interactive'
+
+  KRATOS::Lib:path.add "${HOME}/.bin"
+
+  KRATOS_CURRENT_KERNEL="$(KRATOS::Lib:os.kernel)"
+  KRATOS_CURRENT_LINUX="$(KRATOS::Lib:os.linux)"
+  KRATOS_CURRENT_SHELL="$(KRATOS::Lib:shell)"
+
+  KRATOS_SHELL_INIT=true
+fi
