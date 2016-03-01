@@ -475,26 +475,15 @@ KRATOS::Lib:bin.path() {
 
 # Resolves the absolute path of the binary
 KRATOS::Lib:bin.abs_path() {
-	local IFS
-	local Path
   local PossiblePath
-  local SaveIfs
 
-  SaveIfs=${IFS}
-  IFS=:
-
-  # Break path into seperate strings, only bash works without this hack
-	Path=($(echo "${PATH}"))
-
-  for PossiblePath in ${Path[@]} ; do
+  for PossiblePath in ${(s,:,)PATH} ; do
     PossiblePath="$(readlink -f "${PossiblePath}/${1}")"
     if test -e "${PossiblePath}" ; then
       echo "${PossiblePath}"
-      IFS=${SaveIfs}
       return 0
     fi
   done
-  IFS=${SaveIfs}
 
   return 1
 }
