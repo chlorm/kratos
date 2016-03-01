@@ -8,10 +8,10 @@
 KRATOS::Plugins:haskell.directories() {
   case "$(KRATOS::Lib:os.kernel)" in
     'darwin')
-      EnsureDirExists "${HOME}/Library/Haskell/bin" || return 1
+      KRATOS::Lib:ensure.dir_exists "${HOME}/Library/Haskell/bin" || return 1
       ;;
     *)
-      EnsureDirExists "${HOME}/.cabal/bin" || return 1
+      KRATOS::Lib:ensure.dir_exists "${HOME}/.cabal/bin" || return 1
       ;;
   esac
 
@@ -21,10 +21,10 @@ KRATOS::Plugins:haskell.directories() {
 KRATOS::Plugins:haskell.bin_path() {
   case "$(KRATOS::Lib:os.kernel)" in
     'darwin')
-      path_add "${HOME}/Library/Haskell/bin" || return 1
+      KRATOS::Lib:path.add "${HOME}/Library/Haskell/bin" || return 1
       ;;
     *)
-      path_add "${HOME}/.cabal/bin" || return 1
+      KRATOS::Lib:path.add "${HOME}/.cabal/bin" || return 1
       ;;
   esac
 
