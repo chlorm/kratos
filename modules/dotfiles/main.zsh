@@ -230,8 +230,8 @@ KRATOS::Modules:dotfiles.hook() {
           #       may not be necessary
           KRATOS::Lib:ensure.file_destroy \
             "${HOME}/.$(
-                echo "${Dotfile}" |
-                  sed -e "s|${DOTFILES_DIR}\/||"
+              echo "${Dotfile}" |
+                sed -e "s|${DOTFILES_DIR}\/||"
             )" || {
             KRATOS::Lib:err.error \
               "failed to remove: ${HOME}/.$(
@@ -244,13 +244,13 @@ KRATOS::Modules:dotfiles.hook() {
           # Symlink DOTFILE
           KRATOS::Lib:symlink \
             "${Dotfile}" "${HOME}/.$(
-                echo "${Dotfile}" |
-                  sed -e "s|${DOTFILES_DIR}\/||"
+              echo "${Dotfile}" |
+                sed -e "s|${DOTFILES_DIR}\/||"
             )" || {
             KRATOS::Lib:err.error \
               "failed to symlink \`${Dotfile}' to \`${HOME}/.$(
                 echo "${Dotfile}" |
-                sed -e "s|${DOTFILES_DIR}\/||"
+                  sed -e "s|${DOTFILES_DIR}\/||"
               )'"
             return 1
           }
