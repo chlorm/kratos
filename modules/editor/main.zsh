@@ -85,4 +85,5 @@ KRATOS::Modules:editor.env_var() {
   fi
 
   export EDITOR="${KRATOS_PREFERRED_EDITOR}${KRATOS_EDITOR_ARGS:+ ${KRATOS_EDITOR_ARGS}}"
+  export VISUAL="${EDITOR}"
 }
