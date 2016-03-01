@@ -369,9 +369,11 @@ KRATOS::Lib:os.kernel() {
   local Kernel
 
   Kernel=$(
-    KRATOS::Lib:to_lower "$(KRATOS::Lib:os.kernel_ostype) $(KRATOS::Lib:os.kernel_uname)" |
-    grep --max-count 1 --word-regexp --only-matching \
-      '\(cygwin\|darwin\|freebsd\|linux\)'
+    KRATOS::Lib:to_lower "
+      $(KRATOS::Lib:os.kernel_ostype)
+      $(KRATOS::Lib:os.kernel_uname)" |
+      grep --max-count 1 --word-regexp --only-matching \
+        '\(cygwin\|darwin\|freebsd\|linux\)'
   )
 
   if [[ -z "${Kernel}" ]] ; then
@@ -406,9 +408,12 @@ KRATOS::Lib:os.linux() {
   local Linux
 
   Linux="$(
-    KRATOS::Lib:to_lower "$(KRATOS::Lib:os.linux_release) $(KRATOS::Lib:os.linux_uname) $(KRATOS::Lib:os.linux_lsb)" |
-    grep --max-count 1 --word-regexp --only-matching \
-      '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|triton\|ubuntu\)'
+    KRATOS::Lib:to_lower "
+      $(KRATOS::Lib:os.linux_release)
+      $(KRATOS::Lib:os.linux_uname)
+      $(KRATOS::Lib:os.linux_lsb)" |
+      grep --max-count 1 --word-regexp --only-matching \
+        '\(arch\|centos\|debian\|fedora\|gentoo\|nixos\|opensuse\|red\ hat\|suse\|triton\|ubuntu\)'
   )"
 
   if [[ -z "${Linux}" ]] ; then
