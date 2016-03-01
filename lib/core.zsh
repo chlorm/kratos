@@ -487,7 +487,7 @@ KRATOS::Lib:bin.abs_path() {
 	Path=($(echo "${PATH}"))
 
   for PossiblePath in ${Path[@]} ; do
-		PossiblePath="$(readlink -f "${PossiblePath}/${1}")"
+    PossiblePath="$(readlink -f "${PossiblePath}/${1}")"
     if test -e "${PossiblePath}" ; then
       echo "${PossiblePath}"
       IFS=${SaveIfs}
