@@ -24,7 +24,7 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
 fi
 
 if [[ "$(KRATOS::Lib:shell)" != 'zsh' ]] ; then
-  exec zsh --interactive 2>&-
+  exec zsh --interactive
   exit $?
 fi
 

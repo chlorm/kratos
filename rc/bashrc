@@ -10,5 +10,5 @@
 # Test for an interactive shell
 [[ $- == *i* ]] || return
 
-exec zsh --interactive 2>&-
+exec zsh --interactive
 exit $?
