@@ -475,15 +475,28 @@ KRATOS::Lib:bin.path() {
 
 # Resolves the absolute path of the binary
 KRATOS::Lib:bin.abs_path() {
-  local Bin
+	local IFS
+	local Path
+  local PossiblePath
+  local SaveIfs
 
-  Bin="$(whereis -b ${1} 2> /dev/null | awk '{ print $2 ; exit }')"
+  SaveIfs=${IFS}
+  IFS=:
 
-  [[ -n "${Bin}" ]] || return 1
+  # Break path into seperate strings, only bash works without this hack
+	Path=($(echo "${PATH}"))
 
-  echo "${Bin}"
+  for PossiblePath in ${Path[@]} ; do
+		PossiblePath="$(readlink -f "${PossiblePath}/${1}")"
+    if test -e "${PossiblePath}" ; then
+      echo "${PossiblePath}"
+      IFS=${SaveIfs}
+      return 0
+    fi
+  done
+  IFS=${SaveIfs}
 
-  return 0
+  return 1
 }
 
 # Test to see if a binary exists in the path
@@ -557,9 +570,7 @@ KRATOS::Lib:shell() {
   # Resolve symlinked shells
   Lshell="$(
     basename "$(
-      readlink -f "$(
-        KRATOS::Lib:bin.abs_path "${Lshell}"
-      )"
+      KRATOS::Lib:bin.abs_path "${Lshell}"
     )"
   )"
 
