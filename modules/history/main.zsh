@@ -5,17 +5,6 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-setopt append_history
-setopt extended_history
-setopt hist_expire_dups_first
-# ignore duplication command history list
-setopt hist_ignore_dups
-setopt hist_ignore_space
-setopt hist_verify
-setopt inc_append_history
-# share command history data
-setopt share_history
-
 # Create the temporary history file for the shell
 KRATOS::Modules:history.shell() {
   if [[ -d "${HOME}/.cache" ]] ; then
@@ -29,6 +18,15 @@ KRATOS::Modules:history.shell() {
   fi
 
   setopt append_history
+  setopt extended_history
+  setopt hist_expire_dups_first
+  # ignore duplication command history list
+  setopt hist_ignore_dups
+  setopt hist_ignore_space
+  setopt hist_verify
+  setopt inc_append_history
+  # share command history data
+  setopt share_history
 }
 
 # Show history
