@@ -44,7 +44,7 @@ KRATOS::Lib:cpu.architecture() {
   return 0
 }
 
-# Find CPU adress space size (ie. 32bit/64bit)
+# Find CPU address space size (ie. 32bit/64bit)
 KRATOS::Lib:cpu.address_space() {
   local AddressSpace
 
@@ -389,12 +389,12 @@ KRATOS::Lib:os.kernel() {
 # Take first result of linux os name match
 KRATOS::Lib:os.linux() {
   KRATOS::Lib:os.linux_release() {
-    # Finds linux distro via /etc/*-release
+    # Find linux distro via /etc/*-release
     cat ${ROOT}/etc/*-release 2> /dev/null
   }
 
   KRATOS::Lib:os.linux_uname() {
-    # Finds linux distro via uname -a
+    # Find linux distro via uname -a
     uname -a 2> /dev/null
   }
 
@@ -473,12 +473,12 @@ KRATOS::Lib:bin.path() {
   KRATOS::Lib:path.has_bin "${1}" > /dev/null 2>&1 || return 1
 
   whence -p "${1}" |
-  awk '{ print $3 ; exit }' || return 1
+    awk '{ print $3 ; exit }' || return 1
 
   return 0
 }
 
-# Resolves the absolute path of the binary
+# Resolves the absolute path of a binary
 KRATOS::Lib:bin.abs_path() {
   local PossiblePath
 
@@ -523,9 +523,9 @@ KRATOS::Lib:proc.pid_file() {
 
 # Start an application in the background
 KRATOS::Lib:run_quiet() {
-  KRATOS::Lib:path.has_bin "${1}" || return 1
-
   local Pid
+
+  KRATOS::Lib:path.has_bin "${1}" || return 1
 
   Pid="$(pgrep ${1})"
 
@@ -571,7 +571,7 @@ KRATOS::Lib:shell() {
   # Remove appended major version
   Lshell="$(
     echo "${Lshell}" |
-    sed 's/^\([a-z]*\).*/\1/'
+      sed 's/^\([a-z]*\).*/\1/'
   )"
 
   Lshell="$(
