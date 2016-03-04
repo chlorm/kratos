@@ -13,11 +13,16 @@ if [[ -z "$KRATOS_DIR" ]] ; then
   exit 1
 fi
 
-source "${KRATOS_DIR}/init/init.zsh"
+source "${KRATOS_DIR}/init/init.zsh" || exit 1
 
 KRATOS::Lib:load.all 'main' || exit 1
 
 # TODO: Check for previous Kratos installation, and test installation if
 #  one exists for errors.
 
-KRATOS::Modules:kratos.command 'update'
+KRATOS::Modules:kratos.command 'update' || exit 1
+
+if type > /dev/null ; then
+  exec zsh --interactive
+  exit $?
+fi
