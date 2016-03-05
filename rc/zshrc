@@ -27,30 +27,3 @@ alias sudo='nocorrect sudo'
 if [[ -f "${HOME}/.zshrc.local" ]] ; then
   source "${HOME}/.zshrc.local"
 fi
-
-# List jobs in long format
-setopt long_list_jobs
-
-# recognize comments
-setopt interactivecomments
-
-
-# Prevent GUI password dialog
-unset SSH_ASKPASS
-
-# FIXME
-if [[ -d "${HOME}/.zsh/zsh-syntax-highlighting" ]] ; then
-  # Load zsh-syntax-highlighting.
-  source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
-
-# FIXME
-if [[ -d "${HOME}/.zsh/zsh-autosuggestions" ]] ; then
-  # Load zsh-autosuggestions.
-  source ~/.zsh/zsh-autosuggestions/autosuggestions.zsh
-  # Enable autosuggestions automatically.
-  zle-line-init() {
-    zle autosuggest-start
-  }
-  zle -N zle-line-init
-fi
