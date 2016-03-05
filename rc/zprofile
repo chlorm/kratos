@@ -11,3 +11,8 @@
 [[ -o login ]] || return
 
 export KRATOS_IS_LOGIN_SHELL=true
+
+# Load the local config
+if [[ -f "${HOME}/.zshrc.local" ]] ; then
+  source "${HOME}/.zprofile.local"
+fi
