@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-alias btrfs-defrag='KRATOS::Lib:sudo_wrap btrfs filesystem defragment -r -v -c lzo'
+alias btrfs-defrag='KRATOS::Lib:sudo_wrap btrfs filesystem defragment -r -v -clzo'
 alias btrfs-errors='KRATOS::Plugins:btrfs.list-errors'
-alias btrfs-scrub='KRATOS::Lib:sudo_wrap btrfs scrub start'
+alias btrfs-scrub='KRATOS::Lib:sudo_wrap btrfs scrub start -c3 -n7'
 alias btrfs-status='KRATOS::Lib:sudo_wrap btrfs scrub status'
