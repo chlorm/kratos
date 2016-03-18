@@ -118,7 +118,6 @@ KRATOS::Modules:dotfiles.hook() {
   local Dotfile
   local -a Dotfiles
   local Uninstall
-  #local DONT_SYM_ITEM
   local IgnoreItem
   local -a IgnoreList
   local IgnoreStatus
@@ -127,8 +126,6 @@ KRATOS::Modules:dotfiles.hook() {
   if [[ "${1}" == 'uninstall' ]] ; then
     Uninstall=true
   fi
-
-  #local DONT_SYM_LIST=($(cat "${DOTFILES_DIR}/.kratosdontsym"))
 
   Dotfiles=()
   # Respect filenames with spaces
@@ -148,6 +145,13 @@ KRATOS::Modules:dotfiles.hook() {
   IgnoreList+=(
     "${HOME}/.config/systemd"
   )
+
+  # Respect .kratosignore file
+  if [[ -f "${DOTFILES_DIR}/.kratosignore" ]] ; then
+    IgnoreList+=($(
+      cat "${DOTFILES_DIR}/.kratosignore"
+    ))
+  fi
 
   for Dotfile in "${Dotfiles[@]}" ; do
 
