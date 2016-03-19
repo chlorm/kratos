@@ -45,6 +45,8 @@ fi
 
 if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   KRATOS::Lib:load.all 'main'
+  # This is a bit of a hacky lock file implementation, but
+  # guarantees that it is portable.
   if [[ ! -f "${HOME}/.cache/KRATOS_START" ]] ; then
     KRATOS::Lib:load.all 'start'
     touch "${HOME}/.cache/KRATOS_START"
