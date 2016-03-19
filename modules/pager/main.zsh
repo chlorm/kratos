@@ -52,24 +52,6 @@ KRATOS::Modules:pager.env_var() {
     'less')
       export LESS='--RAW-CONTROL-CHARS'
       export LESSCHARSET='utf-8'
-      #LESSANSIENDCHARS
-      #LESSANSIMIDCHARS
-      #LESSBINFMT
-      #LESSCHARDEF
-      #LESSCHARSET
-      #LESSCLOSE
-      #LESSECHO
-      #LESSEDIT
-      #LESSGLOBALTAGS
-      #LESSHISTFILE
-      #LESSKEY
-      #LESSKEY_SYSTEM
-      #LESSMETACHARS
-      #LESSMETAESCAPE
-      #LESSOPEN
-      #LESSSECURE
-      #LESSSEPARATOR
-      #LESSUTFBINFMT
       unset LESS_IS_MORE # disabled
 
       # Blink (& fg color)
