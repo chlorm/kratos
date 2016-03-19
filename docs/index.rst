@@ -4,3 +4,4 @@ Kratos Documentation
    :maxdepth: 2
 
    introduction
+   modules/index
