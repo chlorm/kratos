@@ -47,9 +47,7 @@ KRATOS::Plugins:ssh.authorized_keys() {
   # Populates the authorized_keys file
   KRATOS::Lib:ensure.file_destroy "${HOME}/.ssh/authorized_keys" || return 1
   PopKeys=($(
-    find ${DOTFILES_DIR}/ssh/authorized-keys -type f |
-      grep -v 'config$' |
-      grep '.pub$'
+    find ${DOTFILES_DIR}/ssh/authorized-keys -type f -name '*.pub'
   )) || return 1
   if [[ ${#PopKeys[@]} -ge 1 ]] ; then
     for Key in "${PopKeys[@]}" ; do
