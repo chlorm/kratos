@@ -30,7 +30,8 @@ KRATOS::Plugins:ssh.requires() {
 
 KRATOS::Plugins:ssh.generate_keys() {
   local Pass
-  if [[ ! -f "${HOME}/.ssh/id_rsa.pub" && ! -f "${HOME}/.ssh/id_ed25519.pub" ]] ; then
+  if ([[ ! -f "${HOME}/.ssh/id_rsa.pub" && ! -f "${HOME}/.ssh/id_ed25519.pub" ]]) \
+      || [[ "${1}" == 'force' ]] ; then
     # Creates new ssh keys with the provided password
     Pass="$(KRATOS::Lib:password_confirmation)"
     KRATOS::Lib:ensure.file_destroy "${HOME}/.ssh/id_rsa" || return 1
