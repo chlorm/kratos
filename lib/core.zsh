@@ -50,8 +50,8 @@ KRATOS::Lib:cpu.address_space() {
 
   AddressSpace=$(
     getconf LONG_BIT |
-    grep --max-count 1 --word-regexp --only-matching "\(8\|16\|32\|64\|\128\)" |
-    grep --only-matching -p '[0-9]+'
+      grep --max-count 1 --word-regexp --only-matching "\(8\|16\|32\|64\|\128\)" |
+      grep --only-matching -p '[0-9]+'
   ) || return 1
 
   [[ -z "${AddressSpace}" ]] || {
@@ -74,8 +74,8 @@ KRATOS::Lib:cpu.sockets() {
     'linux')
       Sockets="$(
         lscpu |
-        grep --max-count 1 'Socket(s):' |
-        grep --only-matching --perl-regexp "[0-9]+"
+          grep --max-count 1 'Socket(s):' |
+          grep --only-matching --perl-regexp "[0-9]+"
       )" || return 1
       ;;
   esac
@@ -101,21 +101,21 @@ KRATOS::Lib:cpu.physical() {
     'linux')
       CpuCores=$(
         lscpu |
-        grep --max-count 1 'Core(s) per socket:' |
-        grep --only-matching --perl-regexp '[0-9]+'
+          grep --max-count 1 'Core(s) per socket:' |
+          grep --only-matching --perl-regexp '[0-9]+'
       ) || return 1
       ;;
     'darwin')
       CpuCores=$(
         sysctl hw |
-        grep --max-count 1 "hw.physicalcpu:" |
-        grep --only-matching --perl-regexp '[0-9]+'
+          grep --max-count 1 "hw.physicalcpu:" |
+          grep --only-matching --perl-regexp '[0-9]+'
       ) || return 1
       ;;
     'cygwin')
       CpuCores=$(
         NUMBER_OF_PROCESSORS |
-        grep --only-matching --perl-regexp '[0-9]+'
+          grep --only-matching --perl-regexp '[0-9]+'
       ) || return 1
       ;;
   esac
@@ -143,8 +143,8 @@ KRATOS::Lib:cpu.logical() {
       # Finds number of logical threads per physical core
       CpuThreads=$(
         lscpu |
-        grep --max-count 1 'Thread(s) per core:' |
-        grep --only-matching --perl-regexp '[0-9]+'
+          grep --max-count 1 'Thread(s) per core:' |
+          grep --only-matching --perl-regexp '[0-9]+'
       ) || return 1
       if [[ -n "${CpuThreads}" ]] ; then
         # Convert to number of threads per cpu
@@ -154,8 +154,8 @@ KRATOS::Lib:cpu.logical() {
     'darwin')
       CpuThreads=$(
         sysctl hw |
-        grep --max-count 1 "hw.logicalcpu:" |
-        grep --only-matching --perl-regexp '[0-9]+'
+          grep --max-count 1 "hw.logicalcpu:" |
+          grep --only-matching --perl-regexp '[0-9]+'
       ) || return 1
       ;;
   esac
