@@ -39,6 +39,9 @@ KRATOS::Modules:cache.mount() {
     CacheDir="${HOME}/.cache"
   fi
 
+  # Make sure cache is cleared on start
+  KRATOS::Lib:ensure.dir_destroy "${HOME}/.cache"
+
   if [[ ! -d "${CacheDir}" ]] ; then
     KRATOS::Lib:ensure.dir_exists "${CacheDir}" || return 1
     chmod 0700 "${CacheDir}" || return 1

@@ -30,6 +30,10 @@ fi
 
 if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   KRATOS::Lib:load.all 'main'
+  if [[ -f "${HOME}/.cache/KRATOS_START" ]] ; then
+    KRATOS::Lib:load.all 'start'
+    touch "${HOME}/.cache/KRATOS_START"
+  fi
   [[ ${KRATOS_IS_LOGIN_SHELL} ]] && KRATOS::Lib:load.all 'login'
   [[ -o interactive ]] && KRATOS::Lib:load.all 'interactive'
 
