@@ -212,8 +212,6 @@ KRATOS::Modules:dotfiles.hook() {
         KRATOS::Modules:dotfiles.install_hook "${Dotfile}" || return 1
       else
 
-        # TODO: add loop for .kratosdontsym
-
         # TODO: Add DotfilesPreGenerateHook & DotfilesPostGenerateHook
 
         if [[ "${Dotfile##*.}" == 'generate' ]] ; then
@@ -223,11 +221,9 @@ KRATOS::Modules:dotfiles.hook() {
         elif [[ -n "$(echo "${Dotfile}" | grep "config/systemd/user")" ]] ; then
           KRATOS::Modules:dotfiles.systemd_hook "${Dotfile}" || return 1
         else
-          if [[ -e "${HOME}/.$(echo "${Dotfile}" | \
+          if [[ ! -e "${HOME}/.$(echo "${Dotfile}" | \
                    sed -e "s|${DOTFILES_DIR}\/||")" ]] ; then
-            echo -ne "Updating: ${Dotfile}"\\r
-          else
-            echo -ne "Installing: ${Dotfile}"\\r
+            printf "Installing: ${Dotfile}"\\n
           fi
 
           # TODO: add logic to prevent from following symlinked directory paths,

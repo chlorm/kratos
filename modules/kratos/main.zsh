@@ -30,10 +30,7 @@ KRATOS::Modules:kratos.command() {
 
   case "${1}" in
     'update')
-      KRATOS::Modules:kratos.logo
-
       # Generate the pre-fligt checks files
-      echo "Pre-flight checks: "
       source "${KRATOS_DIR}/lib/pre-flight-checks.zsh"
 
       KratosProjectDirs=(
@@ -80,17 +77,12 @@ KRATOS::Modules:kratos.command() {
 
       KratosCreateDirs+=( "${HOME}/.local/share/kratos" )
 
-      echo -ne "Updating directories: "
       for Dir in ${KratosCreateDirs[@]} ; do
-        if [[ ! -d "${Dir}" ]] ; then
-          echo -ne "Creating directory: ${Dir}"\\r
-        fi
         KRATOS::Lib:ensure.dir_exists "${Dir}" || {
           KRATOS::Lib:err.error "failed to create directory: ${Dir}"
           return 1
         }
       done
-      echo "Success"
 
       #git remote set-url origin "$DOTFILES_REPO"
       #git remote set-url --push origin "$DOTFILES_REPO"
@@ -100,15 +92,11 @@ KRATOS::Modules:kratos.command() {
 
       # Install dotfiles
       # TODO: Only run if module is enabled
-      echo -n "Updating dotfiles: "
-      echo
-      KRATOS::Modules:dotfiles.hook || exit 1
-      echo -ne ''\\r
-      echo "Success"
+      KRATOS::Modules:dotfiles.hook || return 1
 
       # Load settings
       if [[ -f "${HOME}/.config/kratos/config" ]] ; then
-        . "${HOME}/.config/kratos/config"
+        source "${HOME}/.config/kratos/config"
         # Preference
         KRATOS::Lib:ensure.file_destroy "${HOME}/.local/share/kratos/preferences"
         KRATOS::Lib:ensure.file_exists "${HOME}/.local/share/kratos/preferences"
