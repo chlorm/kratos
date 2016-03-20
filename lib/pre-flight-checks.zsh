@@ -10,7 +10,7 @@ KRATOS::Lib:path.has_installed() {
       KRATOS::Lib:to_upper "${1}" |
       sed -e 's/-/_/'
     )=$(
-      if KRATOS::Lib:path.has_bin "${1}" ; then
+      if KRATOS::Lib:path.has_bin "${1}" 2> /dev/null ; then
         echo 'true'
       else
         echo 'false'
