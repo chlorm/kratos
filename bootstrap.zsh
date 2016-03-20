@@ -22,7 +22,7 @@ KRATOS::Lib:load.all 'main' || exit 1
 
 KRATOS::Modules:kratos.command 'update' || exit 1
 
-if type > /dev/null ; then
+if type zsh > /dev/null ; then
   exec zsh --interactive
   exit $?
 fi
