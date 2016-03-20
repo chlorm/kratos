@@ -48,7 +48,8 @@ KRATOS::Modules:kratos.command() {
 
       # XDG freedesktop directories
       KratosXdgDirs=(
-        "${HOME}/.cache" # XDG_CACHE_HOME
+        # Handled by the cache module
+        #"${HOME}/.cache" # XDG_CACHE_HOME
         "${HOME}/.config" # XDG_CONFIG_HOME
         "${HOME}/.local/share" # XDG_DATA_HOME
         "${HOME}/Desktop" # XDG_DESKTOP_DIR
