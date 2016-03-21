@@ -7,12 +7,12 @@ Aliases
 
 btrfs-defrag
 ------------
-   * Usage
+   - Usage
       .. code-block:: shell
 
          $ btrfs-defrag <path>
 
-   * Actual command
+   - Actual command
 
       .. code-block:: shell
 
@@ -20,25 +20,25 @@ btrfs-defrag
 
 btrfs-errors
 ------------
-   * Usage
+   - Usage
       .. code-block:: shell
 
          $ btrfs-errors
 
-   * Actual command
+   - Actual command
 
       .. code-block:: shell
 
-         dmesg | grep "checksum error at"
+         $ dmesg | grep "checksum error at"
 
 btrfs-scrub
 ------------
-   * Usage
+   - Usage
       .. code-block:: shell
 
          $ btrfs-scrub <path>
 
-   * Actual command
+   - Actual command
 
       .. code-block:: shell
 
@@ -46,12 +46,12 @@ btrfs-scrub
 
 btrfs-status
 ------------
-   * Usage
+   - Usage
       .. code-block:: shell
 
          $ btrfs-status <path>
 
-   * Actual command
+   - Actual command
 
       .. code-block:: shell
 
