@@ -1,7 +1,8 @@
 =======
 Plugins
 =======
-.. toxtree::
+
+.. toctree::
    archive
    base64
    battery
