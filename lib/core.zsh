@@ -171,6 +171,12 @@ KRATOS::Lib:cpu.logical() {
   return 0
 }
 
+KRATOS::Lib:debug() {
+  echo "${@}" >&2
+
+  return 0
+}
+
 # Find download utility on system
 KRATOS::Lib:download() {
   if KRATOS::Lib:path.has_bin 'curl' ; then
@@ -300,20 +306,24 @@ KRATOS::Lib:load.all() {
   local Plugin
   local PluginLoaderExists
 
-  Inits=(
-    # Modules
-    $(find "${KRATOS_DIR}/modules" -type f -name "${1}.zsh")
-    # Active plugins
-    $(for Plugin in "${KRATOS_PLUGINS[@]}" ; do
-      PluginLoaderExists="$(
-        find ${KRATOS_DIR}/plugins \
-          -type f -name "${1}.zsh" -iwholename "*${Plugin}*"
-      )"
-      if [[ -f "${PluginLoaderExists}" ]] ; then
-        echo "${PluginLoaderExists}"
-      fi
-    done)
-  )
+  if [[ -f "${HOME}/.cache/kratos/cache-init-${1}" ]] ; then
+    source "${HOME}/.cache/kratos/cache-init-${1}"
+  else
+    Inits=(
+      # Modules
+      $(find "${KRATOS_DIR}/modules" -type f -name "${1}.zsh")
+      # Active plugins
+      $(for Plugin in "${KRATOS_PLUGINS[@]}" ; do
+        PluginLoaderExists="$(
+          find ${KRATOS_DIR}/plugins \
+            -type f -name "${1}.zsh" -iwholename "*${Plugin}*"
+        )"
+        if [[ -f "${PluginLoaderExists}" ]] ; then
+          echo "${PluginLoaderExists}"
+        fi
+      done)
+    )
+  fi
 
   # Interactive shells
   if [[ "${1}" == 'interactive' ]] ; then
@@ -347,11 +357,15 @@ KRATOS::Lib:load.all() {
       "${KRATOS_DIR}/themes/prompts/${KRATOS_PROMPT}.prompt.zsh"
   fi
 
-
-
   for Init in "${Inits[@]}" ; do
     KRATOS::Lib:load.one "${Init}"
   done
+
+  # Cache inits for subsequent runs to prevent unnecessary forking
+  if [[ -d "${HOME}/.cache/kratos" && \
+      ! -f "${HOME}/.cache/kratos/cache-init-${1}" ]] ; then
+    echo "Inits=(${Inits[@]})" > "${HOME}/.cache/kratos/cache-init-${1}"
+  fi
 
   return 0
 }
