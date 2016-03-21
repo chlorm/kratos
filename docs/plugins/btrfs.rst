@@ -8,6 +8,7 @@ Aliases
 btrfs-defrag
 ------------
    - Usage
+
       .. code-block:: shell
 
          $ btrfs-defrag <path>
@@ -21,6 +22,7 @@ btrfs-defrag
 btrfs-errors
 ------------
    - Usage
+
       .. code-block:: shell
 
          $ btrfs-errors
@@ -34,6 +36,7 @@ btrfs-errors
 btrfs-scrub
 ------------
    - Usage
+
       .. code-block:: shell
 
          $ btrfs-scrub <path>
@@ -47,6 +50,7 @@ btrfs-scrub
 btrfs-status
 ------------
    - Usage
+
       .. code-block:: shell
 
          $ btrfs-status <path>
