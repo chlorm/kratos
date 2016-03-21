@@ -9,7 +9,7 @@
 
 [[ -o interactive ]] || return
 
-# FIXME
+# FIXME: move somewhere else
 alias ebuild='nocorrect ebuild'
 alias gist='nocorrect gist'
 alias heroku='nocorrect heroku'
@@ -36,6 +36,9 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   [[ -f "${HOME}/.config/kratos/config" ]] && {
     source "${HOME}/.config/kratos/config"
   }
+  [[ -f "${HOME}/.cache/kratos/cache-rc" ]] && {
+    source "${HOME}/.cache/kratos/cache-rc"
+  }
 fi
 
 if [[ "$(KRATOS::Lib:shell)" != 'zsh' ]] && type zsh > /dev/null ; then
@@ -56,9 +59,23 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
 
   KRATOS::Lib:path.add "${HOME}/.bin"
 
-  KRATOS_CURRENT_KERNEL="$(KRATOS::Lib:os.kernel)"
-  KRATOS_CURRENT_LINUX="$(KRATOS::Lib:os.linux)"
-  KRATOS_CURRENT_SHELL="$(KRATOS::Lib:shell)"
+  if [[ ! -f "${HOME}/.cache/kratos/cache-rc" ]] ; then
+    KRATOS_CURRENT_KERNEL="$(KRATOS::Lib:os.kernel)"
+    KRATOS_CURRENT_LINUX="$(KRATOS::Lib:os.linux)"
+    KRATOS_CURRENT_SHELL="$(KRATOS::Lib:shell)"
+  fi
+
+  # Cache rc startup calls to prevent unnecessary forking
+  if [[ -d "${HOME}/.cache/kratos" && \
+        ! -f "${HOME}/.cache/kratos/cache-rc" ]] ; then
+    KRATOS::Lib:ensure.file_exists "${HOME}/.cache/kratos/cache-rc"
+    echo "KRATOS_CURRENT_KERNEL='$(KRATOS::Lib:os.kernel)'" > \
+      "${HOME}/.cache/kratos/cache-rc"
+    echo "KRATOS_CURRENT_LINUX='$(KRATOS::Lib:os.linux)'" > \
+      "${HOME}/.cache/kratos/cache-rc"
+    echo "KRATOS_CURRENT_SHELL='$(KRATOS::Lib:shell)'" > \
+      "${HOME}/.cache/kratos/cache-rc"
+  fi
 
   KRATOS_SHELL_INIT=true
 fi
