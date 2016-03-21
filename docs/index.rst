@@ -7,4 +7,5 @@ Kratos Documentation
    install
    lib
    modules/index
+   plugins/index
    uninstall
