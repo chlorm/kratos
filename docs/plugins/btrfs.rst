@@ -16,10 +16,10 @@ btrfs-status
    * Usage
       .. code-block:: shell
 
-      $ btrfs-status <path>
+         $ btrfs-status <path>
 
    * Actual command
 
       .. code-block:: shell
 
-      btrfs scrub status
+         btrfs scrub status
