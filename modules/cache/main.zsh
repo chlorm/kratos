@@ -58,5 +58,8 @@ KRATOS::Modules:cache.mount() {
     KRATOS::Lib:symlink "${CacheDir}" "${HOME}/.cache" || return 1
   fi
 
+  # Create the kratos tmp directory
+  KRATOS::Lib:ensure.dir_exists "${HOME}/.cache/kratos"
+
   return 0
 }
