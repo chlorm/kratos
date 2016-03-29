@@ -197,7 +197,7 @@ KRATOS::Modules:dotfiles.hook() {
     if ${Uninstall} ; then
       KRATOS::Modules:dotfiles.pre_uninstall_hook "${Dotfile}" || return 1
     else
-      KRATOS::Modules:dotfiles.install_hook "${Dotfile}" || return 1
+      KRATOS::Modules:dotfiles.pre_install_hook "${Dotfile}" || return 1
     fi
 
     # (Un)Install
