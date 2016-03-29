@@ -208,7 +208,7 @@ KRATOS::Modules:dotfiles.hook() {
         echo "uninstall"
       fi
     else
-      if [[ -f "{Dotfile}.install" ]] ; then
+      if [[ -f "${Dotfile}.install" ]] ; then
         KRATOS::Modules:dotfiles.install_hook "${Dotfile}" || return 1
       else
 
