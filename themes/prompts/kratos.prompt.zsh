@@ -10,14 +10,20 @@ KRATOS::Prompts:kratos.vcs() {
   local VcsIsRepo
   local VcsBranch
   local VcsStatus
+  local VcsCheckout
 
   if ${PathHasBinGIT} ; then
     if VcsIsRepo=$(git status 2>&1) ; then
-      VcsBranch="$(
+      VcsCheckoutBranch="$(
         echo "${VcsIsRepo}" |
-        grep -m 1 'On branch' |
-        # fixes branch names with spaces
-        awk '{for(i=3;i<=NF;++i)print $i}'
+          grep -m 1 'On branch' |
+          # fixes branch names with spaces
+          awk '{for(i=3;i<=NF;++i)print $i}'
+      )"
+      VcsCheckoutCommit="$(
+        echo "${VcsIsRepo}" |
+          grep -m 1 'HEAD detached at' |
+          awk '{print $4 ; exit}'
       )"
       VcsStatus="$(
         if [[ -z "$(echo ${VcsIsRepo} |
@@ -25,7 +31,12 @@ KRATOS::Prompts:kratos.vcs() {
           echo "*"
         fi
       )"
-      echo -e "$(kprmt f11)git$(kprmt bold)$(kprmt f1)∫$(kprmt f16)${VcsBranch}${VcsStatus}$(kprmt reset)"
+      if [[ -n "${VcsCheckoutCommit}" ]] ; then
+        VcsCheckout="$(kprmt underline)${VcsCheckoutCommit}$(kprmt reset)"
+      else
+        VcsCheckout="${VcsCheckoutBranch}"
+      fi
+      echo -e "$(kprmt f11)git$(kprmt bold)$(kprmt f1)∫$(kprmt f16)${VcsCheckout}${VcsStatus}$(kprmt reset)"
     fi
   fi
 
