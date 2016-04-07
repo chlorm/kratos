@@ -8,7 +8,7 @@
 # Create the temporary history file for the shell
 KRATOS::Modules:history.shell() {
   if [[ -d "${HOME}/.cache" ]] ; then
-    export HISTFILE="${HOME}/.cache/history.zsh"
+    export HISTFILE="${HOME}/.cache/kratos/history.zsh"
     export HISTSIZE=10000
     export SAVEHIST=10000
   else

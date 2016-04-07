@@ -50,9 +50,12 @@ if [[ -z ${KRATOS_SHELL_INIT+x} ]] ; then
   KRATOS::Lib:load.all 'main'
   # This is a bit of a hacky lock file implementation, but
   # guarantees that it is portable.
-  if [[ ! -f "${HOME}/.cache/KRATOS_START" ]] ; then
+  if [[ ! -f "${HOME}/.cache/kratos/KRATOS_START" ]] ; then
     KRATOS::Lib:load.all 'start'
-    touch "${HOME}/.cache/KRATOS_START"
+    if [[ -d "${HOME}/.cache" ]] ; then
+      KRATOS::Lib:ensure.dir_exists "${HOME}/.cache/kratos"
+      touch "${HOME}/.cache/kratos/KRATOS_START"
+    fi
   fi
   [[ ${KRATOS_IS_LOGIN_SHELL} ]] && KRATOS::Lib:load.all 'login'
   [[ -o interactive ]] && KRATOS::Lib:load.all 'interactive'
