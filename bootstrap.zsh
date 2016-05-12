@@ -13,7 +13,8 @@ if [[ -z "$KRATOS_DIR" ]] ; then
   exit 1
 fi
 
-source "${KRATOS_DIR}/init/init.zsh" || exit 1
+source "${KRATOS_DIR}/lib/core.zsh"
+source "${KRATOS_DIR}/lib/DEFAULTS.zsh"
 
 KRATOS::Lib:load.all 'main' || exit 1
 
