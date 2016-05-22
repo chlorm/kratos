@@ -69,9 +69,9 @@ else
   KratosPromptSsh='f16'
 fi
 
-KRATOS_PROMPT_1='$(kprmt f11)%n$(kprmt bold)$(kprmt f1)@$(kprmt bold)$(kprmt ${KratosPromptSsh})%M$(kprmt f1)[$(kprmt reset)$(kprmt f2)%~$(kprmt bold)$(kprmt f1)]$(kprmt f7)〉$(kprmt reset)'
+KRATOS_PROMPT_1='$(kprmt f11)%n$(kprmt bold)$(kprmt f1)@$(kprmt bold)$(kprmt ${KratosPromptSsh})%M$(kprmt f1)[$(kprmt reset)$(kprmt f2)%~$(kprmt bold)$(kprmt f1)]$(KRATOS::Prompts:kratos.vcs)$(kprmt f7)〉$(kprmt reset)'
 KRATOS_PROMPT_2=''
 KRATOS_PROMPT_3=''
 KRATOS_PROMPT_4=''
-KRATOS_RPROMPT_1='$(KRATOS::Prompts:kratos.vcs)'
+KRATOS_RPROMPT_1=''
 KRATOS_RPROMPT_2=''
