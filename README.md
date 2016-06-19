@@ -1,22 +1,22 @@
 Kratos
 ======
 
-A ZSH user environment configuration framework
+A user environment configuration framework
 
 # Installation
 
 ### Prerequisites
-* zsh >=5 (untested on <5)
+* bash >=4.2+
 * Linux, FreeBSD (will work on other platforms, however it is untested)
 
 ### Recommended:
 * git >=2 (optional support for updating)
 
 ### Install
-```zsh
+```bash
 git clone 'https://github.com/chlorm/kratos.git' "${HOME}/.kratos"
 cd "${HOME}/.kratos"
-zsh ./bootstrap.zsh
+bash ./bootstrap.bash
 ```
 
 # Configuration
@@ -45,7 +45,7 @@ Not implemented yet
 
 ### Themes
 + Vendored
-```zsh
+```bash
 KRATOS_COLOR_SCHEME='monokai'
 KRATOS_PROMPT='kratos'
 ```

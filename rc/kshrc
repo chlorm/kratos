@@ -10,9 +10,9 @@
 # Test for an interactive shell
 [[ $- == *i* ]] || return
 
-# Prevent attempts to spawn zsh if it doesn't exist, this makes
+# Prevent attempts to spawn bash if it doesn't exist, this makes
 # accessing a shell from the user's account impossible.
-if type zsh > /dev/null ; then
-  exec zsh --interactive
+if type bash > /dev/null ; then
+  exec bash -i
   exit $?
 fi

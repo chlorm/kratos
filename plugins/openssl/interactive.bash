@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 # This file is part of Kratos.
 # Copyright (c) 2014-2016, Cody Opel <codyopel@gmail.com>.
 #
@@ -7,9 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-# Prevent attempts to spawn bash if it doesn't exist, this makes
-# accessing a shell from the user's account impossible.
-if type bash > /dev/null ; then
-  exec bash --login
-  exit $?
-fi
+alias md5='Openssl::Md5'
+alias sha1='Openssl::Sha1'
+alias sha256='Openssl::Sha256'
+alias sha512='Openssl::Sha512'
