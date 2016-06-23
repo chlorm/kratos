@@ -78,7 +78,7 @@ if [ -z ${KRATOS_SHELL_INIT+x} ] ; then
 
   if [ ! -f "${HOME}/.cache/kratos/cache-rc" ] ; then
     KRATOS_CURRENT_KERNEL="$(OS::Kernel)"
-    KRATOS_CURRENT_LINUX="$(OS::Linux)"
+    KRATOS_CURRENT_LINUX="$(OS::Linux || true)"
     KRATOS_CURRENT_SHELL="$(shell)"
   fi
 
@@ -86,9 +86,9 @@ if [ -z ${KRATOS_SHELL_INIT+x} ] ; then
   if [ -d "${HOME}/.cache/kratos" ] && \
      [ ! -f "${HOME}/.cache/kratos/cache-rc" ] ; then
     File::Create "${HOME}/.cache/kratos/cache-rc"
-    echo "KRATOS_CURRENT_KERNEL='$(KRATOS::Lib:os.kernel)'" > \
+    echo "KRATOS_CURRENT_KERNEL='$(OS::Kernel)'" > \
       "${HOME}/.cache/kratos/cache-rc"
-    echo "KRATOS_CURRENT_LINUX='$(KRATOS::Lib:os.linux)'" > \
+    echo "KRATOS_CURRENT_LINUX='$(OS::Linux || true)'" > \
       "${HOME}/.cache/kratos/cache-rc"
     echo "KRATOS_CURRENT_SHELL='$(shell)'" > \
       "${HOME}/.cache/kratos/cache-rc"
