@@ -20,10 +20,20 @@ export KRATOS_DIR="${HOME}/.kratos"
 export DOTFILES_DIR="${HOME}/.dotfiles"
 
 if [ -z ${KRATOS_SHELL_INIT+x} ] ; then
-  if type 'lib-bash' 2> /dev/null ; then
+  if [ -f "${KRATOS_DIR}/vendor/lib-bash/src/share/lib-bash/lib.bash" ] ; then
+    source "${KRATOS_DIR}/vendor/lib-bash/src/share/lib-bash/lib.bash"
+  elif
+    pushd "${KRATOS_DIR}"
+      git submodule update --init --recursive
+    popd ; then
+    source "${KRATOS_DIR}/vendor/lib-bash/src/share/lib-bash/lib.bash"
+  elif type 'lib-bash' ; then
     source "$(lib-bash)"
   else
-    source "${KRATOS_DIR}/vendor/lib-bash/src/share/lib-bash/lib.bash"
+    # TODO: test this to make sure user can fallback to regular shell if
+    #       lib-bash is unavailable
+    exec bash -i --noprofile --norc
+    exit $?
   fi
   source "${KRATOS_DIR}/lib/core.bash"
   source "${KRATOS_DIR}/lib/DEFAULTS.bash"
