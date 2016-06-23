@@ -79,7 +79,8 @@ if [ -z ${KRATOS_SHELL_INIT+x} ] ; then
   if [ ! -f "${HOME}/.cache/kratos/cache-rc" ] ; then
     KRATOS_CURRENT_KERNEL="$(OS::Kernel)"
     KRATOS_CURRENT_LINUX="$(OS::Linux || true)"
-    KRATOS_CURRENT_SHELL="$(shell)"
+    # DEPRECATED
+    KRATOS_CURRENT_SHELL='bash'
   fi
 
   # Cache rc startup calls to prevent unnecessary forking
@@ -90,7 +91,8 @@ if [ -z ${KRATOS_SHELL_INIT+x} ] ; then
       "${HOME}/.cache/kratos/cache-rc"
     echo "KRATOS_CURRENT_LINUX='$(OS::Linux || true)'" > \
       "${HOME}/.cache/kratos/cache-rc"
-    echo "KRATOS_CURRENT_SHELL='$(shell)'" > \
+    # DEPRECATED
+    echo "KRATOS_CURRENT_SHELL='bash'" > \
       "${HOME}/.cache/kratos/cache-rc"
   fi
 
