@@ -5,4 +5,4 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-alias wifi='KRATOS::Plugins:wifi.command'
+alias wifi='Wifi::Command'

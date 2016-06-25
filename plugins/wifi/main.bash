@@ -14,7 +14,7 @@
 
 # Find wireless interface name
 Wifi::Interface() {
-  nmcli d | awk '/802-11-wireless/ {print $1 ; exit}'
+  nmcli d | awk '/wifi/ {print $1 ; exit}'
 }
 
 Wifi::Usage() {
@@ -42,12 +42,13 @@ Wifi::Command() {
   local Pass
   local Ssid
 
-  ${PathHasBinNMCLI} || return 1
+  ${PathHasBinNMCLI}
 
   case "${1}" in
     '')
       Wifi::Usage
-      Error::Message 'no input provided'
+      Debug::Message 'error' 'no input provided'
+      return 1
       ;;
     'list') # List saved connections
       nmcli d wifi list
@@ -60,16 +61,16 @@ Wifi::Command() {
       Pass="${2}"
       Ssid="${1}"
       # If no password is provided, assume one is not needed
-      if [[ -n "${2}" ]] ; then
+      if [ -n "${2}" ] ; then
         Pass="password ${2}"
       fi
       # Add connection
-      nmcli
+      nmcli \
         d wifi \
         connect "${Ssid}" ${Pass} \
-        iface "$(Wifi::Interface)" \
+        ifname "$(Wifi::Interface)" \
         name "${Ssid}" || {
-          Error::Message "connecting to ${Ssid}"
+          Debug::Message 'error' "connecting to ${Ssid}"
           return 1
         }
       ;;
@@ -100,7 +101,7 @@ Wifi::Command() {
       ;;
     *)
       Wifi::Usage
-      Error::Message "invalid option: $@"
+      Debug::Message 'error' "invalid option: $@"
       ;;
   esac
 }
