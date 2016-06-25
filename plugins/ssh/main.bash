@@ -15,7 +15,7 @@ SSH::Auto() {
   ssh-add "${HOME}/.ssh/id_rsa" > /dev/null 2>&1
 }
 
-SSH::requires() {
+SSH::Requires() {
   # Makes sure the ssh directory exists
   Directory::Create "${HOME}/.ssh"
   # Makes sure the client configuration is installed
@@ -25,7 +25,7 @@ SSH::requires() {
   ${PathHasBinOPENSSL}
 }
 
-SSH::generate_keys() {
+SSH::GenerateKeys() {
   local Pass
   if ([ ! -f "${HOME}/.ssh/id_rsa.pub" ] && \
       [ ! -f "${HOME}/.ssh/id_ed25519.pub" ]) || \
@@ -39,7 +39,7 @@ SSH::generate_keys() {
   fi
 }
 
-SSH::authorized_keys() {
+SSH::AuthorizedKeys() {
   local Key
   local PopKeys
   # Populates the authorized_keys file
@@ -54,7 +54,7 @@ SSH::authorized_keys() {
   fi
 }
 
-SSH::known_hosts() {
+SSH::KnownHosts() {
   ssh-keygen -H > /dev/null 2>&1
   File::Remove "${HOME}/.ssh/known_hosts.old"
 }
