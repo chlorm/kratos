@@ -8,7 +8,7 @@
 Battery::Acpi() {
   # Use acpi if possible
 
-  acpi -b 2> /dev/null || Battery::Sys
+  acpi -b 2>&- || Battery::Sys
 }
 
 # Gets the string representing the state of the batteries
@@ -35,7 +35,7 @@ Battery::One() {
   local Full
 
   BatDir="${ROOT}/sys/class/power_supply/$1"
-  BatStatus="$(cat "${BatDir}/status" 2> /dev/null)"
+  BatStatus="$(cat "${BatDir}/status" 2>&-)"
 
   echo -n "${1}: "
 
@@ -52,13 +52,13 @@ Battery::One() {
   esac
 
   Now="$(
-    cat "${BatDir}"/charge_now 2> /dev/null || \
-    cat "${BatDir}"/energy_now 2> /dev/null || \
+    cat "${BatDir}"/charge_now 2>&- || \
+    cat "${BatDir}"/energy_now 2>&- || \
     echo -1
   )"
   Full="$(
-    cat "${BatDir}"/charge_full 2> /dev/null || \
-    cat "${BatDir}"/energy_full 2> /dev/null || \
+    cat "${BatDir}"/charge_full 2>&- || \
+    cat "${BatDir}"/energy_full 2>&- || \
     echo 1
   )"
   echo "$(expr ${Now} \* 100 / $Full)%"

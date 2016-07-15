@@ -74,11 +74,11 @@ Editor::Preferred() {
 }
 
 Editor::EnvVar() {
-  if [[ -z "${KRATOS_PREFERRED_EDITOR}" ]] ; then
+  if [ -z "${KRATOS_PREFERRED_EDITOR}" ] ; then
     KRATOS_PREFERRED_EDITOR="$(Editor::KnownExecutables)"
   fi
 
-  if [[ -z "${KRATOS_EDITOR_ARGS}" ]] ; then
+  if [ -z "${KRATOS_EDITOR_ARGS}" ] ; then
     KRATOS_EDITOR_ARGS="$(Editor::DefaultArgs)"
   fi
 

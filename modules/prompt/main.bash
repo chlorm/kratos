@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-# Wrap ANSI color codes in ZSH %{%} escape sequences
+# Wrap ANSI color codes in BASH \[\] escape sequences
 Prompt::ColorWrapped() {
   echo -n '\['
   case "${1}" in

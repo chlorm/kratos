@@ -93,7 +93,7 @@ UserAgent::PcscDriver() {
   # find installed editors
   for PcscPath in "${PcscPaths[@]}" ; do
     PcscInPath="$(
-      find "${PcscPath}" -name libpcsclite.so\* 2> /dev/null |
+      find "${PcscPath}" -name libpcsclite.so\* 2>&- |
         head -n 1
     )"
     if [ -n "${PcscPath}" ] ; then
@@ -150,8 +150,6 @@ UserAgent::DefaultArgs() {
       echo '--daemon --enable-ssh-support'
       ;;
   esac
-
-  return 0
 }
 
 UserAgent::Command() {
@@ -188,8 +186,8 @@ UserAgent::Proper() {
   UserAgent="${1}"
 
   if [ ! -f "${HOME}/.cache/kratos/user_agent" ] ; then
-    killall ssh-agent 2> /dev/null
-    killall gpg-agent 2> /dev/null
+    killall ssh-agent 2>&-
+    killall gpg-agent 2>&-
     unset SSH_AGENT_PID
     unset SSH_AUTH_SOCK
     UserAgent::Command
@@ -200,14 +198,14 @@ UserAgent::Proper() {
     export GNOME_KEYRING_PID
   else
     CurrentUserAgent="$(
-      cat "${HOME}/.cache/kratos/user_agent" 2> /dev/null |
+      cat "${HOME}/.cache/kratos/user_agent" 2>&- |
         awk '{ print $1 ; exit }' |
-        xargs basename 2> /dev/null
+        xargs basename 2>&-
     )"
     ProperUserAgent="$(
       echo "${UserAgent}" |
         awk '{ print $1 ; exit }' |
-        xargs basename 2> /dev/null
+        xargs basename 2>&-
     )"
     if [[ -n "${CurrentUserAgent}" && \
           "${CurrentUserAgent}" != "${ProperUserAgent}" ]] ; then
@@ -225,7 +223,7 @@ UserAgent::Auto() {
   UserAgent::Proper || return 1
 
   # Make sure a user-agent was started
-  if ssh-add -L 2> /dev/null ; then
+  if ssh-add -L 2>&- ; then
     return 0
   else
     return 1

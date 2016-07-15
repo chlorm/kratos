@@ -12,55 +12,55 @@ Archive::Extract() {
   elif [ -f "$@" ] ; then
     case "$@" in
       *'.tar')
-        Path::Check tar
+        Path::Check 'tar'
         tar xvf "$@"
         ;;
       *'.tar.bz2')
-        Path::Check tar
+        Path::Check 'tar'
         tar xjvf "$@"
         ;;
       *'.tbz2')
-        Path::Check tar
+        Path::Check 'tar'
         tar xjvf "$@"
         ;;
       *'.bz2')
-        Path::Check bunzip2
+        Path::Check 'bunzip2'
         bunzip2 "$@"
         ;;
       *'.tar.gz')
-        Path::Check tar
+        Path::Check 'tar'
         tar xzvf "$@"
         ;;
       *'.tgz')
-        Path::Check tar
+        Path::Check 'tar'
         tar xzvf "$@"
         ;;
       *'.gz')
-        Path::Check gunzip
+        Path::Check 'gunzip'
         gunzip "$@"
         ;;
       *'.tar.xz')
-        Path::Check tar
+        Path::Check 'tar'
         tar xJvf "$@"
         ;;
       *'.txz')
-        Path::Check tar
+        Path::Check 'tar'
         tar xJvf "$@"
         ;;
       *'.rar')
-        Path::Check unrar
+        Path::Check 'unrar'
         unrar e "$@"
         ;;
       *'.zip')
-        Path::Check unzip
+        Path::Check 'unzip'
         unzip "$@"
         ;;
       *'.Z')
-        Path::Check uncompress
+        Path::Check 'uncompress'
         uncompress "$@"
         ;;
       *'.7z')
-        Path::Check 7z
+        Path::Check '7z'
         7z x "$@"
         ;;
       *)

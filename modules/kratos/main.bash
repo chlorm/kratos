@@ -89,7 +89,7 @@ Kratos::Command() {
 
       # Install dotfiles
       # TODO: Only run if module is enabled
-      Dotfiles::Hook || return 1
+      Dotfiles::Hook
 
       # Load settings
       if [ -f "${HOME}/.config/kratos/config" ] ; then
