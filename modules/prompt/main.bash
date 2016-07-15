@@ -64,9 +64,6 @@ Prompt::Configure() {
     Ncolor="$(Prompt::ColorWrapped 3)"
   fi
 
-  # Allow evaluating functions within the prompt
-  ###setopt PROMPT_SUBST
-
   # Must use single quotes to delay evaluation
   eval export PS1="${KRATOS_PROMPT_1}"
   export PS2="${KRATOS_PROMPT_2}"

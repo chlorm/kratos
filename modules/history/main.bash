@@ -16,17 +16,6 @@ History::Shell() {
     export HISTSIZE=0
     export SAVEHIST=0
   fi
-
-  ###setopt append_history
-  ###setopt extended_history
-  ###setopt hist_expire_dups_first
-  # ignore duplication command history list
-  ###setopt hist_ignore_dups
-  ###setopt hist_ignore_space
-  ###setopt hist_verify
-  ###setopt inc_append_history
-  # share command history data
-  ###setopt share_history
 }
 
 History::Command() {
