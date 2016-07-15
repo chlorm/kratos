@@ -128,7 +128,7 @@ Dotfiles::Hook() {
     # Catch potential errors where paths are split into multiple array elements
     #  caused by spaces in the path.
     if [[ -n ${Dotfile} && ! -e ${Dotfile} ]] ; then
-      Error::Message "invalid file: ${Dotfile}"
+      Debug::Message 'error' "invalid file: ${Dotfile}"
     fi
 
     # Ignore hidden files

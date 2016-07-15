@@ -71,8 +71,6 @@ Color::LS() {
       export LSCOLORS='ExGxFxdxCxDhDxaBadaCeC'
       ;;
   esac
-
-  return 0
 }
 
 # TODO: fix this shit
@@ -83,8 +81,6 @@ Color::Term() {
       export TERM='xterm-256color'
     fi
   fi
-
-  return 0
 }
 
 Color::SetColorScheme() {
@@ -97,6 +93,4 @@ Color::SetColorScheme() {
     i=$(( ${i} - 1 ))
     printf "\033]4;${i};rgb:${Current}\033\\" || return 1
   done
-
-  return 0
 }

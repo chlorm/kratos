@@ -48,7 +48,6 @@ Wifi::Command() {
     '')
       Wifi::Usage
       Debug::Message 'error' 'no input provided'
-      return 1
       ;;
     'list') # List saved connections
       nmcli d wifi list

@@ -6,19 +6,19 @@
 # the `LICENSE' file in the top level source directory.
 
 Base64::Encode() {
-  [ -n ${1+x} ] || {
-    Error::Message 'no input'
+  if [ -z "${@}" ] ; then
+    Debug::Message 'error' 'no input'
     return 1
-  }
+  fi
 
-  echo -n ${1} | base64
+  echo -n "${@}" | base64
 }
 
 Base64::Decode() {
-  [ -n ${1+x} ] || {
-    Error::Message 'no input'
+  if [ -z "${@}" ] ; then
+    Debug::Message 'error' 'no input'
     return 1
-  }
+  fi
 
-  echo -n ${1} | base64 --decode
+  echo -n "${@}" | base64 --decode
 }

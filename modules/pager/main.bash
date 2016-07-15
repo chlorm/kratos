@@ -24,7 +24,7 @@ Pager::KnownExecutables() {
     }
   done
 
-  Error::Message 'no pagers installed'
+  Debug::Message 'error' 'no pagers installed'
   return 1
 }
 
@@ -39,7 +39,7 @@ Pager::Preferred() {
     fi
   done
 
-  Error::Message 'no preferred pager found'
+  Debug::Message 'error' 'no preferred pager found'
   return 1
 }
 

@@ -25,7 +25,7 @@ Cache::Find() {
     fi
   done
 
-  Error::Message 'could not find tmpfs'
+  Debug::Message 'error' 'could not find tmpfs'
   return 1
 }
 

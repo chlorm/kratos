@@ -18,13 +18,13 @@ Golang::BinPath() {
     # TODO: sanitize $GOPATH in case it contains multiple PATHs
     # Output paths to an array and iterate throught the array elements
     Path::Add "${GOPATH}/bin" || {
-      Error::Message 'failed to configure $GOPATH'
+      Debug::Message 'error' 'failed to configure $GOPATH'
       return 1
     }
     export GOPATH="${GOPATH}"
   elif [ -d "${KRATOS_GOPATH}/bin" ] ; then
     Path::Add "${KRATOS_GOPATH}/bin" || {
-      Error::Message 'failed to configure $GOPATH'
+      Debug::Message 'error' 'failed to configure $GOPATH'
       return 1
     }
     export GOPATH="${KRATOS_GOPATH}"

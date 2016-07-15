@@ -13,12 +13,12 @@ Torrent::Magnet2Torrent() {
   local InfoHash
   local Filename
 
-  String::NotNull "${@}"
+  Var::Type.string "${@}"
 
   if [[ "${1}" =~ xt=urn:btih:([^\&/]+) ]] ; then
     InfoHash="${match[1]}"
   else
-    Error::Message 'no info hash found'
+    Debug::Message 'error' 'no info hash found'
     return 1
   fi
 

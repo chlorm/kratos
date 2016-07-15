@@ -46,7 +46,7 @@ Volume::ActiveSoundCard() {
   fi
 
   if [ -z "${SoundCard}" ] ; then
-    Error::Message 'failed to obtain sound card'
+    Debug::Message 'error' 'failed to obtain sound card'
     return 1
   fi
 
@@ -87,14 +87,14 @@ Volume::Command() {
       return 0
       ;;
     *)
-      case $1 in
+      case ${1} in
         # 0-150
         [0-9]|[1-9][0-9]|1[0-4][0-9]|150)
           pactl set-sink-volume $(Volume::ActiveSoundCard) -- "${1}%"
           ;;
         *)
           Volume::Usage
-          Error::Message 'must be an integer between 0 and 150'
+          Debug::Message 'error' 'must be an integer between 0 and 150'
           return 1
           ;;
       esac

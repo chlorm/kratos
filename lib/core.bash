@@ -12,7 +12,7 @@ Loader::One() {
   fi
 
   source "${1}" || {
-    Error::Message "Failed to load: ${1}"
+    Debug::Message 'error' "Failed to load: ${1}"
     return 1
   }
 }

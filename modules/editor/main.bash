@@ -31,7 +31,7 @@ Editor::KnownExecutables() {
     fi
   done
 
-  Error::Message 'no editors installed'
+  Debug::Message 'error' 'no editors installed'
   return 1
 }
 
@@ -56,8 +56,6 @@ Editor::DefaultArgs() {
       echo '--new-window --wait'
       ;;
   esac
-
-  return 0
 }
 
 Editor::Preferred() {
@@ -71,7 +69,7 @@ Editor::Preferred() {
     fi
   done
 
-  Error::Message 'no preferred editors found'
+  Debug::Message 'error' 'no preferred editors found'
   return 1
 }
 

@@ -37,11 +37,11 @@ EOF
 function trash {
 
   # Check for input
-  [ -z "$1" ] && { echo "ERROR: no input provided" ; return 1 ; }
+  [ -z "$1" ] && { Debug::Message 'error' "no input provided" ; return 1 ; }
 
   # Make sure necessary directories exist before continuing
-  ensure_dir_exists "$DIR_TRASH_FILES" || return 1
-  ensure_dir_exists "$DIR_TRASH_INFO" || return 1
+  Directory::Create "$DIR_TRASH_FILES" || return 1
+  Directory::Create "$DIR_TRASH_INFO" || return 1
 
     case $1 in
 

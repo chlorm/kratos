@@ -7,7 +7,7 @@
 
 Archive::Extract() {
   if [ -z "$@" ] ; then
-    Error::Message 'no input provided'
+    Debug::Message 'error' 'no input provided'
     return 1
   elif [ -f "$@" ] ; then
     case "$@" in
@@ -64,10 +64,10 @@ Archive::Extract() {
         7z x "$@"
         ;;
       *)
-        Error::Message "'$@' is not a supported file type"
+        Debug::Message 'error' "'$@' is not a supported file type"
         ;;
       esac
   else
-      Error::Message "'$@' is not a file"
+      Debug::Message 'error' "'$@' is not a file"
   fi
 }

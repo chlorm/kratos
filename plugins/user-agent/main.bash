@@ -28,10 +28,8 @@ UserAgent::KnownExecutables() {
     fi
   done
 
-  Error::Message 'no user agent installed'
+  Debug::Message 'error' 'no user agent installed'
   return 1
-
-  return 0
 }
 
 # Find preferred user-agent if one is available
@@ -48,7 +46,7 @@ UserAgent::Preferred() {
     done
   fi
 
-  Error::Message 'no preferred user agent found'
+  Debug::Message 'error' 'no preferred user agent found'
   return 1
 }
 
@@ -72,7 +70,7 @@ UserAgent::PinentryExecutables() {
     fi
   done
 
-  Error::Message 'no pinentry program installed'
+  Debug::Message 'error' 'no pinentry program installed'
   return 1
 }
 
@@ -104,10 +102,8 @@ UserAgent::PcscDriver() {
     fi
   done
 
-  Error::Message 'no pcsc driver installed'
+  Debug::Message 'error' 'no pcsc driver installed'
   return 1
-
-  return 0
 }
 
 # Build gpg-agent configuration
