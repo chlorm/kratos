@@ -51,7 +51,9 @@ if [ -z ${KRATOS_SHELL_INIT+x} ] ; then
   fi
 fi
 
-if [ "$(shell)" != 'bash' ] && type bash > /dev/null ; then
+# The function `shell` should fail to return anything on most shells other
+# than bash.
+if [ "$(shell || true)" != 'bash' ] && type bash > /dev/null ; then
   exec bash -i
   exit $?
 fi
