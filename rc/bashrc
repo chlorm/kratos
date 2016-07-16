@@ -107,4 +107,4 @@ if [ -f "${HOME}/.bashrc.local" ] ; then
 fi
 
 # Disable errexit for interactive shells once initialized
-set +e
+set +o errexit
