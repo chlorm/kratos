@@ -9,7 +9,7 @@
 
 [[ $- == *i* ]] || return
 
-set -o errexit
+#set -o errexit
 set -o errtrace
 set -o functrace
 ###set -o nounset
