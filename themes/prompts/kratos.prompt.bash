@@ -63,13 +63,7 @@ Prompts::Kratos.vcs() {
   return 0
 }
 
-if [ -n "${SSH_CLIENT}" ] ; then
-  KratosPromptSsh='f10'
-else
-  KratosPromptSsh='f16'
-fi
-
-KRATOS_PROMPT_1='$(kprmt f11)\\u$(kprmt bold)$(kprmt f1)@$(kprmt bold)$(kprmt ${KratosPromptSsh})\\H$(kprmt f1)[$(kprmt reset)$(kprmt f2)\\w$(kprmt bold)$(kprmt f1)]$(Prompts::Kratos.vcs)$(kprmt f7)〉$(kprmt reset)'
+KRATOS_PROMPT_1='$(kprmt f11)\\u$(kprmt bold)$(kprmt f1)@$(kprmt bold)$(kprmt ${SSH_CLIENT:+f10}${SSH_CLIENT:-f16})\\H$(kprmt f1)[$(kprmt reset)$(kprmt f2)\\w$(kprmt bold)$(kprmt f1)]$(Prompts::Kratos.vcs)$(kprmt f7)〉$(kprmt reset)'
 KRATOS_PROMPT_2=''
 KRATOS_PROMPT_3=''
 KRATOS_PROMPT_4=''
