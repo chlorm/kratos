@@ -16,6 +16,7 @@ set -o functrace
 set -o pipefail
 
 # Initalize shell configuration
+export KRATOS_IS_LOGIN_SHELL="${KRATOS_IS_LOGIN_SHELL:-false}"
 export KRATOS_DIR="${HOME}/.kratos"
 export DOTFILES_DIR="${HOME}/.dotfiles"
 
