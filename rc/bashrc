@@ -109,3 +109,4 @@ fi
 
 # Disable errexit for interactive shells once initialized
 set +o errexit
+set +o nounset
