@@ -7,7 +7,7 @@
 
 Base64::Encode() {
   if [ -z "${@}" ] ; then
-    Debug::Message 'error' 'no input'
+    Log::Message 'error' 'no input'
     return 1
   fi
 
@@ -16,7 +16,7 @@ Base64::Encode() {
 
 Base64::Decode() {
   if [ -z "${@}" ] ; then
-    Debug::Message 'error' 'no input'
+    Log::Message 'error' 'no input'
     return 1
   fi
 

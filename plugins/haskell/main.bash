@@ -6,7 +6,7 @@
 # the `LICENSE' file in the top level source directory.
 
 KRATOS::Plugins:haskell.directories() {
-  case "$(KRATOS::Lib:os.kernel)" in
+  case "$(OS::Kernel)" in
     'darwin')
       Directory::Create "${HOME}/Library/Haskell/bin"
       ;;
@@ -17,7 +17,7 @@ KRATOS::Plugins:haskell.directories() {
 }
 
 KRATOS::Plugins:haskell.bin_path() {
-  case "$(KRATOS::Lib:os.kernel)" in
+  case "$(OS::Kernel)" in
     'darwin')
       Path::Add "${HOME}/Library/Haskell/bin"
       ;;

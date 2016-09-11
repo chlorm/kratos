@@ -28,7 +28,7 @@ UserAgent::KnownExecutables() {
     fi
   done
 
-  Debug::Message 'error' 'no user agent installed'
+  Log::Message 'error' 'no user agent installed'
   return 1
 }
 
@@ -46,7 +46,7 @@ UserAgent::Preferred() {
     done
   fi
 
-  Debug::Message 'error' 'no preferred user agent found'
+  Log::Message 'error' 'no preferred user agent found'
   return 1
 }
 
@@ -70,7 +70,7 @@ UserAgent::PinentryExecutables() {
     fi
   done
 
-  Debug::Message 'error' 'no pinentry program installed'
+  Log::Message 'error' 'no pinentry program installed'
   return 1
 }
 
@@ -102,7 +102,7 @@ UserAgent::PcscDriver() {
     fi
   done
 
-  Debug::Message 'error' 'no pcsc driver installed'
+  Log::Message 'error' 'no pcsc driver installed'
   return 1
 }
 

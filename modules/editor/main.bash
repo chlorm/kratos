@@ -31,7 +31,7 @@ Editor::KnownExecutables() {
     fi
   done
 
-  Debug::Message 'error' 'no editors installed'
+  Log::Message 'error' 'no editors installed'
   return 1
 }
 
@@ -69,7 +69,7 @@ Editor::Preferred() {
     fi
   done
 
-  Debug::Message 'error' 'no preferred editors found'
+  Log::Message 'error' 'no preferred editors found'
   return 1
 }
 

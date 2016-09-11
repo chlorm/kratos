@@ -47,7 +47,7 @@ Wifi::Command() {
   case "${1}" in
     '')
       Wifi::Usage
-      Debug::Message 'error' 'no input provided'
+      Log::Message 'error' 'no input provided'
       ;;
     'list') # List saved connections
       nmcli d wifi list
@@ -69,7 +69,7 @@ Wifi::Command() {
         connect "${Ssid}" ${Pass} \
         ifname "$(Wifi::Interface)" \
         name "${Ssid}" || {
-          Debug::Message 'error' "connecting to ${Ssid}"
+          Log::Message 'error' "connecting to ${Ssid}"
           return 1
         }
       ;;
@@ -100,7 +100,7 @@ Wifi::Command() {
       ;;
     *)
       Wifi::Usage
-      Debug::Message 'error' "invalid option: $@"
+      Log::Message 'error' "invalid option: $@"
       ;;
   esac
 }

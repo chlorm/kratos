@@ -46,7 +46,7 @@ Volume::ActiveSoundCard() {
   fi
 
   if [ -z "${SoundCard}" ] ; then
-    Debug::Message 'error' 'failed to obtain sound card'
+    Log::Message 'error' 'failed to obtain sound card'
     return 1
   fi
 
@@ -94,7 +94,7 @@ Volume::Command() {
           ;;
         *)
           Volume::Usage
-          Debug::Message 'error' 'must be an integer between 0 and 150'
+          Log::Message 'error' 'must be an integer between 0 and 150'
           return 1
           ;;
       esac

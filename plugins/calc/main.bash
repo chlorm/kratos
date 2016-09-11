@@ -6,7 +6,7 @@
 # the `LICENSE' file in the top level source directory.
 
 KRATOS::Plugins:calc.command() {
-  KRATOS::Lib:path.has_bin 'bc'
+  Path::Check 'bc'
 
   echo "$@" | bc -l
 }

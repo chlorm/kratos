@@ -26,11 +26,11 @@ Pkg::Mgr() {
   case "$(OS::Kernel)" in
     'cygwin')
       # ??? chloclatey
-      Debug::Message 'error' 'not supported'
+      Log::Message 'error' 'not supported'
       ;;
     'darwin')
       # ??? homebrew
-      Debug::Message 'error' 'not supported'
+      Log::Message 'error' 'not supported'
       ;;
     'freebsd') # Ports
       Path::Check 'portmaster' || return 1
@@ -74,13 +74,13 @@ Pkg::Mgr() {
           return 0
           ;;
         *)
-          Debug::Message 'error' 'not a suppoted linux distro'
+          Log::Message 'error' 'not a suppoted linux distro'
           return 1
           ;;
       esac
       ;;
     *)
-      Debug::Message 'error' 'not a supported base OS'
+      Log::Message 'error' 'not a supported base OS'
       return 1
       ;;
   esac
@@ -89,12 +89,12 @@ Pkg::Mgr() {
 Pkg::Command() {
   case "${1}" in
     '')
-      Debug::Message 'error' 'no input provided'
+      Log::Message 'error' 'no input provided'
       ;;
     'clean')
       case "$(Pkg::Mgr)" in
         'apt-get')
-          Debug::Message 'error' 'unsupported action'
+          Log::Message 'error' 'unsupported action'
           ;;
         'nix')
           KRATOS::Lib:sudo_wrap nix-collect-garbage -d
@@ -109,10 +109,10 @@ Pkg::Command() {
           return $?
           ;;
         'rpm')
-          Debug::Message 'error' 'unsupported action'
+          Log::Message 'error' 'unsupported action'
           ;;
         'yast')
-          Debug::Message 'error' 'unsupported action'
+          Log::Message 'error' 'unsupported action'
           ;;
         *)
           return 1
@@ -174,7 +174,7 @@ Pkg::Command() {
           return $?
           ;;
         'nix')
-          Debug::Message 'error' 'unsupported action'
+          Log::Message 'error' 'unsupported action'
           ;;
         'pacman')
           shift
@@ -248,7 +248,7 @@ Pkg::Command() {
       ;;
     *)
       Pkg::Usage
-      Debug::Message 'error' "Invalid option: $1"
+      Log::Message 'error' "Invalid option: $1"
       return 1
       ;;
   esac
