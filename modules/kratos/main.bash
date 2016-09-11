@@ -33,9 +33,7 @@ Kratos::Command() {
       # Generate the pre-fligt checks files
       source "${KRATOS_DIR}/lib/pre-flight-checks.bash"
 
-      KratosProjectDirs=(
-        "${HOME}/Projects"
-      )
+      KratosProjectDirs=("${HOME}/Projects")
 
       # Freedesktop trash directories
       KratosTrashDirs=(

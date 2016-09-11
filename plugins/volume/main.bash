@@ -40,10 +40,11 @@ Volume::ActiveSoundCard() {
   if [ -z "${SoundCard}" ] ; then
     SoundCard=$(
       pacmd list-sinks |
-        grep -m 1 "* index: " |
-        grep -o '[0-9]*'
+        grep -m 1 "* index: "
     )
   fi
+
+  SoundCard="${SoundCard//[^0-9]/}"
 
   if [ -z "${SoundCard}" ] ; then
     Log::Message 'error' 'failed to obtain sound card'

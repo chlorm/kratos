@@ -26,8 +26,7 @@ Editor::KnownExecutables() {
   # find installed editors
   for Bin in "${Bins[@]}" ; do
     if Path::Check "${Bin}" ; then
-      echo "${Bin}"
-      return 0
+      echo "${Bin}" ; return 0
     fi
   done
 
@@ -46,12 +45,8 @@ Editor::DefaultArgs() {
   fi
 
   case "${Editor}" in
-    'atom')
-      echo '--new-window --wait'
-      ;;
-    'emacs')
-      echo '--no-window-system'
-      ;;
+    'atom') echo '--new-window --wait' ;;
+    'emacs') echo '--no-window-system' ;;
     'subl'|'sublime'|'sublime_text'|'sublime-text')
       echo '--new-window --wait'
       ;;

@@ -5,23 +5,17 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-Battery::Acpi() {
-  # Use acpi if possible
-
-  acpi -b 2>&- || Battery::Sys
-}
+# Use acpi if possible
+Battery::Acpi() { acpi -b 2>&- || Battery::Sys ; }
 
 # Gets the string representing the state of the batteries
 Battery::Sys() {
   local Bat
-  local Bats
+  local -a Bats
 
   [ -d "${ROOT}/sys/class/power_supply" ]
 
-  Bats=($(
-    ls "${ROOT}/sys/class/power_supply" |
-      grep "^BAT"
-  ))
+  Bats=($(ls "${ROOT}/sys/class/power_supply" | grep "^BAT"))
 
   for Bat in "${Bats[@]}" ; do
     Battery::One "${Bat}"
@@ -29,26 +23,17 @@ Battery::Sys() {
 }
 
 Battery::One() {
-  local BatDir
-  local BatStatus
-  local Now
-  local Full
+  local -r BatDir="${ROOT}/sys/class/power_supply/${1}"
+  local BatStatus Now Full
 
-  BatDir="${ROOT}/sys/class/power_supply/$1"
   BatStatus="$(cat "${BatDir}/status" 2>&-)"
 
   echo -n "${1}: "
 
   case "${BatStatus}" in
-    Charging)
-      echo -n "↑"
-      ;;
-    Discharging)
-      echo -n "↓"
-      ;;
-    *)
-      echo -n "⚡"
-      ;;
+    Charging) echo -n "↑" ;;
+    Discharging) echo -n "↓" ;;
+    *) echo -n "⚡" ;;
   esac
 
   Now="$(

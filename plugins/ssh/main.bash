@@ -41,7 +41,7 @@ SSH::GenerateKeys() {
 
 SSH::AuthorizedKeys() {
   local Key
-  local PopKeys
+  local -a PopKeys
   # Populates the authorized_keys file
   File::Remove "${HOME}/.ssh/authorized_keys"
   PopKeys=($(

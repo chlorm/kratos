@@ -25,12 +25,11 @@ function Triton::RemoveReferences {
 
   [ -d "${SearchPath}" ]
 
-  find -L "${SearchPath}" -xtype l -name "result*" |
   while read Path ; do
     PathDir="$(dirname "${Path}")"
     if [ -f "${PathDir}/.git/config" ] && \
        [ -n "$(cat ${PathDir}/.git/config | grep 'triton')" ] ; then
       rm "${Path}"
     fi
-  done
+  done < <(find -L "${SearchPath}" -xtype l -name "result*")
 }

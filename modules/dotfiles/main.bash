@@ -15,7 +15,7 @@ Dotfiles::GenerateHook() {
   if [ -f "${1}.generate" ] ; then
     # TODO:
     # Needs to parse file and replace variable, but not shell style variables
-    echo
+    :
   fi
 }
 
@@ -29,48 +29,36 @@ Dotfiles::InstallHook.pre() {
   if [ -f "${1}.install-pre" ] ; then
     source "${1}.install-pre"
   fi
-
-  return 0
 }
 
 Dotfiles::InstallHook() {
   if [ -f "${1}.install" ] ; then
     source "${1}.install"
   fi
-
-  return 0
 }
 
 Dotfiles::InstallHook.post() {
   if [ -f "${1}.install-post" ] ; then
     source "${1}.install-post"
   fi
-
-  return 0
 }
 
 Dotfiles::UninstallHook.pre() {
   if [ -f "${1}.uninstall-pre" ] ; then
     source "${1}.uninstall-pre"
   fi
-
-  return 0
 }
 
 Dotfiles::UninstallHook() {
   if [ -f "${1}.uninstall" ] ; then
     source "${1}.uninstall"
   fi
-
-  return 0
 }
 
 Dotfiles::UninstallHook.post() {
   if [ -f "${1}.uninstall-post" ] ; then
     source "${1}.uninstall-post"
   fi
-
-  return 0
 }
 
 Dotfiles::SystemdHook() {
@@ -100,27 +88,19 @@ Dotfiles::Hook() {
   Dotfiles=()
   # Respect filenames with spaces
   while read -rd '' ; do
-    Dotfiles+=(
-      "${REPLY}"
-    )
+    Dotfiles+=("${REPLY}")
   done < <(find ${DOTFILES_DIR} -type f -not -iwholename '*.git*' -print0)
 
   IgnoreList=()
   if [[ -f "${DOTFILES_DIR}/.kratosignore" ]] ; then
-    IgnoreList+=(
-      $(cat "${DOTFILES_DIR}/.kratosignore")
-    )
+    IgnoreList+=($(cat "${DOTFILES_DIR}/.kratosignore"))
   fi
   # TODO: Add systemd support
-  IgnoreList+=(
-    "${HOME}/.config/systemd"
-  )
+  IgnoreList+=("${HOME}/.config/systemd")
 
   # Respect .kratosignore file
   if [ -f "${DOTFILES_DIR}/.kratosignore" ] ; then
-    IgnoreList+=($(
-      cat "${DOTFILES_DIR}/.kratosignore"
-    ))
+    IgnoreList+=($(cat "${DOTFILES_DIR}/.kratosignore"))
   fi
 
   for Dotfile in "${Dotfiles[@]}" ; do
@@ -203,16 +183,12 @@ Dotfiles::Hook() {
           # TODO: add logic to prevent from following symlinked directory paths,
           #       may not be necessary
           File::Remove \
-            "${HOME}/.$(
-              echo "${Dotfile}" |
-                sed -e "s|${DOTFILES_DIR}\/||"
-            )"
+            "${HOME}/.$(echo "${Dotfile}" | sed -e "s|${DOTFILES_DIR}\/||")"
 
           # Symlink DOTFILE
           Symlink::Create \
             "${Dotfile}" "${HOME}/.$(
-              echo "${Dotfile}" |
-                sed -e "s|${DOTFILES_DIR}\/||"
+              echo "${Dotfile}" | sed -e "s|${DOTFILES_DIR}\/||"
             )"
         fi
       fi

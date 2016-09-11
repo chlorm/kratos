@@ -7,8 +7,7 @@
 
 Path::IsInstalled() {
   echo "PathHasBin$(
-      String::UpperCase "${1}" |
-      sed -e 's/-/_/'
+      String::UpperCase "${1}" | sed -e 's/-/_/'
     )=$(
       if Path::Check "${1}" ; then
         echo 'true'

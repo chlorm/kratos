@@ -15,15 +15,10 @@ Prompts::Kratos.vcs() {
   if ${PathHasBinGIT} ; then
     if VcsIsRepo=$(git status 2>&1) ; then
       VcsCheckoutBranch="$(
-        echo "${VcsIsRepo}" |
-          grep -m 1 'On branch' |
-          # fixes branch names with spaces
-          awk '{for(i=3;i<=NF;++i)print $i}'
+        echo "${VcsIsRepo}" | awk '/On branch/ {for(i=3;i<=NF;++i)print $i}'
       )"
       VcsCheckoutCommit="$(
-        echo "${VcsIsRepo}" |
-          grep -m 1 'HEAD detached at' |
-          awk '{print $4 ; exit}'
+        echo "${VcsIsRepo}" | awk '/HEAD detached at/ {print $4 ; exit}'
       )"
       VcsStatus="$(
         if [ -z "$(echo ${VcsIsRepo} |
@@ -36,7 +31,7 @@ Prompts::Kratos.vcs() {
       else
         VcsCheckout="${VcsCheckoutBranch}"
       fi
-      echo -e "$(kprmt f11)git$(kprmt bold)$(kprmt f1)∫$(kprmt f16)${VcsCheckout}${VcsStatus}$(kprmt reset)"
+      echo -e "${KCLR_FG_11}git$(kprmt bold)$(kprmt f1)∫$(kprmt f16)${VcsCheckout}${VcsStatus}$(kprmt reset)"
     fi
   fi
 
@@ -63,7 +58,7 @@ Prompts::Kratos.vcs() {
   return 0
 }
 
-KRATOS_PROMPT_1='$(kprmt f11)\\u$(kprmt bold)$(kprmt f1)@$(kprmt bold)$(kprmt ${SSH_CLIENT:+f10}${SSH_CLIENT:-f16})\\H$(kprmt f1)[$(kprmt reset)$(kprmt f2)\\w$(kprmt bold)$(kprmt f1)]$(Prompts::Kratos.vcs)$(kprmt f7)〉$(kprmt reset)'
+KRATOS_PROMPT_1='$(kprmt f11)\\u$(kprmt bold)$(kprmt f1)@$(kprmt bold)$(kprmt ${SSH_CLIENT:+f10}${SSH_CLIENT:-f16})\\H$(kprmt f1)[$(kprmt reset)$(kprmt f2)\\w$(kprmt bold)$(kprmt f1)]\\$(Prompts::Kratos.vcs)$(kprmt f7)〉$(kprmt reset)'
 KRATOS_PROMPT_2=''
 KRATOS_PROMPT_3=''
 KRATOS_PROMPT_4=''

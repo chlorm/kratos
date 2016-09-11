@@ -12,7 +12,7 @@ Loader::One() {
   fi
 
   source "${1}" || {
-    Debug::Message 'error' "Failed to load: ${1}"
+    Log::Message 'error' "Failed to load: ${1}"
     return 1
   }
 }
@@ -23,8 +23,7 @@ Loader::All() {
   local -a Completions
   local Init
   local -a Inits
-  local Plugin
-  local PluginLoaderExists
+  local Plugin PluginLoaderExists
 
   if [ -f "${HOME}/.cache/kratos/cache-init-${1}" ] ; then
     source "${HOME}/.cache/kratos/cache-init-${1}"
@@ -90,53 +89,30 @@ Loader::All() {
 
 # Returns the shell executing the current script
 shell() {
-  local Lshell
-  local Lproc
+  local Lshell Lproc
 
   Lproc="$(ps hp $$ | grep "$$")"
 
   # Workaround for su spawned shells
   if [ -n "$(echo "${Lproc}" | grep '\-su')" ] ; then
-    Lshell="$(
-      basename "$(
-        echo "${Lproc}" |
-        sed 's/^.*(\([^)]*\)).*$/\1/'
-      )"
-    )"
+    Lshell="$(basename "$(echo "${Lproc}" | sed 's/^.*(\([^)]*\)).*$/\1/')")"
   else
     Lshell="$(
       basename "$(
-        echo "${Lproc}" |
-        sed 's/-//' |
-        awk '{ print $5 ; exit }'
+        echo "${Lproc}" | sed 's/-//' | awk '{ print $5 ; exit }'
       )"
     )"
   fi
 
   # Resolve symlinked shells
-  Lshell="$(
-    basename "$(
-      Path::Bin.abs "${Lshell}"
-    )"
-  )"
+  Lshell="$(basename "$(Path::Bin.abs "${Lshell}")")"
 
   # Remove appended major version
-  Lshell="$(
-    echo "${Lshell}" |
-      sed 's/^\([a-z]*\).*/\1/'
-  )"
+  Lshell="$(echo "${Lshell}" | sed 's/^\([a-z]*\).*/\1/')"
 
-  Lshell="$(
-    String::LowerCase "${Lshell}"
-  )"
+  Lshell="$(String::LowerCase "${Lshell}")"
 
   echo "${Lshell}"
 }
 
-KRATOS::Lib:sudo_wrap() {
-  if Path::Check 'sudo' ; then
-    sudo $@
-  else
-    $@
-  fi
-}
+KRATOS::Lib:sudo_wrap() { if Path::Check 'sudo' ; then sudo $@ ; else $@ ; fi ; }

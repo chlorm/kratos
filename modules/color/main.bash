@@ -84,8 +84,7 @@ Color::Term() {
 }
 
 Color::SetColorScheme() {
-  local Current
-  local i
+  local Current i
 
   for i in {1..16} ; do
     eval Current="\${KRATOS_COLOR_${i}}"

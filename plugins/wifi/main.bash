@@ -39,24 +39,21 @@ EOF
 }
 
 Wifi::Command() {
+  local Arg="${1}" ; shift
   local Pass
   local Ssid
 
   ${PathHasBinNMCLI}
 
-  case "${1}" in
+  case "${Arg}" in
     '')
       Wifi::Usage
       Log::Message 'error' 'no input provided'
       ;;
-    'list') # List saved connections
-      nmcli d wifi list
-      ;;
-    'connections')
-      nmcli c
-      ;;
+    # List saved connections
+    'list') nmcli d wifi list ;;
+    'connections') nmcli c ;;
     'add') # Add a saved connection
-      shift
       Pass="${2}"
       Ssid="${1}"
       # If no password is provided, assume one is not needed
@@ -74,30 +71,18 @@ Wifi::Command() {
         }
       ;;
     'connect') # Connect to a saved connection
-      shift
       Ssid="${1}"
       nmcli c up id "${Ssid}"
       ;;
-    'disconnect') # Disconnect from current wireless network
-      nmcli d disconnect iface "$(Wifi::Interface)"
-      ;;
+    'disconnect') nmcli d disconnect iface "$(Wifi::Interface)" ;;
     'remove') # Remove a saved connection
-      shift
       Ssid="${1}"
       nmcli c delete id "${Ssid}"
       ;;
-    'status') # List active connections if any
-      nmcli g status
-      ;;
-    'on') # Turn wireless on
-      nmcli r wifi on
-      ;;
-    'off') # Turn wireless off
-      nmcli r wifi off
-      ;;
-    '-h'|'--help'|'help')
-      Wifi::Usage
-      ;;
+    'status') nmcli g status ;;
+    'on') nmcli r wifi on ;;
+    'off') nmcli r wifi off ;;
+    '-h'|'--help'|'help') Wifi::Usage ;;
     *)
       Wifi::Usage
       Log::Message 'error' "invalid option: $@"

@@ -146,9 +146,7 @@ UserAgent::DefaultArgs() {
   fi
 
   case "${UserAgent}" in
-    'gpg-agent')
-      echo '--daemon --enable-ssh-support'
-      ;;
+    'gpg-agent') echo '--daemon --enable-ssh-support' ;;
   esac
 }
 
