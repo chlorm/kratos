@@ -12,11 +12,45 @@ Dotfiles::GenerateHook.pre() {
 }
 
 Dotfiles::GenerateHook() {
-  if [ -f "${1}.generate" ] ; then
-    # TODO:
-    # Needs to parse file and replace variable, but not shell style variables
-    :
-  fi
+  local -r Dotfile="${1}"
+  local OutputDirRel OutputFile TMPDIR Variable VariableValue
+  local -a Variables
+
+  TMPDIR=`mktemp -d`
+
+  # Find all variables in dotfile (e.g. `@{var}@')
+  Variables=($(
+    cat "${Dotfile}" |
+      # Parse out variables between `@{' & `}@'
+      grep -o -P '(?<=@{)[a-zA-Z0-9_]*(?=}@)' |
+      # sed g already takes care of multiple instances
+      uniq
+  ))
+
+  OutputName="$(echo "$(basename "${Dotfile}")" | sed -e 's/.generate//')"
+  OutputDirRel="$(dirname "${Dotfile}" | sed -e "s|${DOTFILES_DIR}\/||")"
+
+  cp "${Dotfile}" "${TMPDIR}/${OutputName}"
+
+  # Replace variables with the contents of their shell equivalents
+  # e.g. $USER == bob
+  # replace all instances of `@{USER}@' with `bob')
+  for Variable in "${Variables[@]}" ; do
+    eval VariableValue="\"\$${Variable}\""
+    # XXX: will fail if variable contains pipes (e.g. |) or sed
+    #      special characters/escapes.
+    sed -i "${TMPDIR}/${OutputName}" \
+      -e "s|\(@{\)${Variable}\(}@\)|${VariableValue}|g"
+  done
+
+  # Store the generated file in ~/.local/share for easy removal rather
+  # than polluting the filesystem & symlink to target.
+  Directory::Create "${HOME}/.local/share/kratos/generated/${OutputDirRel}"
+  cp "${TMPDIR}/${OutputName}" \
+    "${HOME}/.local/share/kratos/generated/${OutputDirRel}/${OutputName}"
+  Symlink::Create \
+    "${HOME}/.local/share/kratos/generated/${OutputDirRel}/${OutputName}" \
+    "${HOME}/.${OutputDirRel}/${OutputName}"
 }
 
 Dotfiles::GenerateHook.post() {
@@ -109,7 +143,7 @@ Dotfiles::Hook() {
       continue
     fi
 
-    # Ignore kratos hooks
+    # Ignore kratos hooks; these are only invoked under special conditions.
     case "${Dotfile##*.}" in
       'install-pre'|\
       'install'|\
@@ -154,10 +188,8 @@ Dotfiles::Hook() {
       if [ -f "${Dotfile}.install" ] ; then
         Dotfiles::InstallHook "${Dotfile}"
       else
-
-        # TODO: Add DotfilesPreGenerateHook & DotfilesPostGenerateHook
-
         if [[ "${Dotfile##*.}" == 'generate' ]] ; then
+          printf "Generating: ${Dotfile}"\\n
           Dotfiles::GenerateHook.pre "${Dotfile}"
           Dotfiles::GenerateHook "${Dotfile}"
           Dotfiles::GenerateHook.post "${Dotfile}"
