@@ -61,17 +61,6 @@ Dotfiles::UninstallHook.post() {
   fi
 }
 
-Dotfiles::SystemdHook() {
-  # Find type for symlinking
-
-  local TYPE
-
-  #exist -dc "${HOME}/.config/systemd/user/${TYPE}.target.wants"
-  #symlink "${1}" "${HOME}/.config/systemd/user/${TYPE}.target.wants/$(basename "${DOTFILE}")"
-
-  return 0
-}
-
 Dotfiles::Hook() {
   local Dotfile
   local -a Dotfiles
@@ -172,8 +161,6 @@ Dotfiles::Hook() {
           Dotfiles::GenerateHook.pre "${Dotfile}"
           Dotfiles::GenerateHook "${Dotfile}"
           Dotfiles::GenerateHook.post "${Dotfile}"
-        elif [ -n "$(echo "${Dotfile}" | grep "config/systemd/user")" ] ; then
-          Dotfiles::SystemdHook "${Dotfile}"
         else
           if [ ! -e "${HOME}/.$(echo "${Dotfile}" | \
                    sed -e "s|${DOTFILES_DIR}\/||")" ] ; then
