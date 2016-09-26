@@ -13,7 +13,14 @@ Dotfiles::GenerateHook.pre() {
 
 Dotfiles::GenerateHook() {
   local -r Dotfile="${1}"
-  local OutputDirRel OutputFile TMPDIR Variable VariableValue
+  local -A CommandSubstitutions
+  local -a CommandSubstitutionsUnevaled
+  local CommandSubstitution
+  local OutputDirRel
+  local OutputFile
+  local TMPDIR
+  local Variable
+  local VariableValue
   local -a Variables
 
   TMPDIR=`mktemp -d`
@@ -26,6 +33,21 @@ Dotfiles::GenerateHook() {
       # sed g already takes care of multiple instances
       uniq
   ))
+
+  # Find all command substitutions in dotfile (e.g. `@(command --args)@')
+  mapfile -t CommandSubstitutionsUnevaled < <(
+    cat "${Dotfile}" | grep -o -P '(?<=@\().*(?=\)@)' | uniq
+  )
+  # Add add command substitutions and their evaluated strings to an
+  # associative array;
+  for CommandSubstitution in "${CommandSubstitutionsUnevaled[@]}" ; do
+    # Evaluate command substitution
+    CommandSubstitutionResult="$(${CommandSubstitution})"
+
+    CommandSubstitutions=(
+      ["${CommandSubstitution}"]="${CommandSubstitutionResult}"
+    )
+  done
 
   OutputName="$(echo "$(basename "${Dotfile}")" | sed -e 's/.generate//')"
   OutputDirRel="$(dirname "${Dotfile}" | sed -e "s|${DOTFILES_DIR}\/||")"
@@ -41,6 +63,17 @@ Dotfiles::GenerateHook() {
     #      special characters/escapes.
     sed -i "${TMPDIR}/${OutputName}" \
       -e "s|\(@{\)${Variable}\(}@\)|${VariableValue}|g"
+  done
+
+  # Replace command substitutions with the contents of their
+  # evaluated strings.
+  # e.g. $(uname -s) == Linux
+  # replace all instances of `@(uname -a)@' with `Linux')
+  for CommandSubstitution in "${!CommandSubstitutions[@]}" ; do
+    # XXX: will fail if variable contains pipes (e.g. |) or sed
+    #      special characters/escapes.
+    sed -i "${TMPDIR}/${OutputName}" \
+      -e "s|\(@(\)${CommandSubstitution}\()@\)|${CommandSubstitutions["${CommandSubstitution}"]}|g"
   done
 
   # Store the generated file in ~/.local/share for easy removal rather
