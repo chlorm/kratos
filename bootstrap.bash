@@ -13,7 +13,19 @@ if [ -z "${KRATOS_DIR}" ] ; then
   exit 1
 fi
 
-source "$(lib-bash)"
+if [ -f "${KRATOS_DIR}/vendor/lib-bash/src/share/lib-bash/lib.bash" ] ; then
+  source "${KRATOS_DIR}/vendor/lib-bash/src/share/lib-bash/lib.bash"
+elif
+  pushd "${KRATOS_DIR}"
+    git submodule update --init --recursive
+  popd ; then
+  source "${KRATOS_DIR}/vendor/lib-bash/src/share/lib-bash/lib.bash"
+elif type 'lib-bash' ; then
+  source "$(lib-bash)"
+else
+  echo "ERROR: can't find lib-bash"
+  exit 1
+fi
 source "${KRATOS_DIR}/lib/core.bash"
 source "${KRATOS_DIR}/lib/DEFAULTS.bash"
 
