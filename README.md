@@ -6,7 +6,7 @@ A user environment configuration framework
 # Installation
 
 ### Prerequisites
-* bash >=4.2+
+* bash >=4.4
 * Linux, FreeBSD (will work on other platforms, however it is untested)
 
 ### Recommended:
