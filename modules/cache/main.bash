@@ -39,18 +39,9 @@ Cache::Mount() {
     CacheDir="${HOME}/.cache"
   fi
 
-  # Make sure cache is cleared on start
-  Directory::Remove "${HOME}/.cache"
-
   if [ ! -d "${CacheDir}" ] ; then
     Directory::Create "${CacheDir}"
     chmod 0700 "${CacheDir}"
-  fi
-
-  # Make sure to wipe the cache directory incase it was not previously
-  # on tmpfs.
-  if [ "${CacheDir}" != "${HOME}/.cache" ] ; then
-    Directory::Remove "${HOME}/.cache"
   fi
 
   # Make sure the symlink still points to the correct location.
