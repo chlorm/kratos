@@ -143,9 +143,9 @@ Dotfiles::Hook() {
 
   Dotfiles=()
   # Respect filenames with spaces
-  while read -rd '' ; do
-    Dotfiles+=("${REPLY}")
-  done < <(find ${DOTFILES_DIR} -type f -not -iwholename '*.git*' -print0)
+  mapfile -t Dotfiles < <(
+    find "${DOTFILES_DIR}" -type f -not -iwholename '*.git*'
+  )
 
   IgnoreList=()
   if [[ -f "${DOTFILES_DIR}/.kratosignore" ]] ; then
