@@ -44,7 +44,7 @@ Dotfiles::GenerateHook() {
     # Evaluate command substitution
     CommandSubstitutionResult="$(${CommandSubstitution})"
 
-    CommandSubstitutions=(
+    CommandSubstitutions+=(
       ["${CommandSubstitution}"]="${CommandSubstitutionResult}"
     )
   done
