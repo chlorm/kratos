@@ -41,17 +41,15 @@ SSH::GenerateKeys() {
 
 SSH::AuthorizedKeys() {
   local Key
-  local -a PopKeys
+
   # Populates the authorized_keys file
   File::Remove "${HOME}/.ssh/authorized_keys"
-  PopKeys=($(
-    find ${DOTFILES_DIR}/ssh/authorized-keys -type f -name '*.pub'
-  ))
-  if [[ ${#PopKeys[@]} -ge 1 ]] ; then
-    for Key in "${PopKeys[@]}" ; do
+
+  while read Key ; do
+    if [ -n "${Key}" ] ; then
       cat "${Key}" >> "${HOME}/.ssh/authorized_keys"
-    done
-  fi
+    fi
+  done < <(find ${DOTFILES_DIR}/ssh/authorized-keys -type f -name '*.pub')
 }
 
 SSH::KnownHosts() {
