@@ -6,5 +6,5 @@
 # the `LICENSE' file in the top level source directory.
 
 if ${PathHasBinGO} ; then
-  Golang::Directories
+  Golang::Directories || :
 fi

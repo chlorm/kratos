@@ -6,4 +6,4 @@
 # the `LICENSE' file in the top level source directory.
 
 # Configure a user cache directory
-Cache::Mount
+Cache::Mount || :
