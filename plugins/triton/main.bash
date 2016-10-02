@@ -33,3 +33,38 @@ function Triton::RemoveReferences {
     fi
   done < <(find -L "${SearchPath}" -xtype l -name "result*")
 }
+
+function Triton::CopyClosures {
+  local -a Closures
+  local -a EnvNames
+  local -r Target="${1}"
+
+  Var::Type.string "${Target}" || return 1
+
+  mapfile -t EnvNames < <(
+    awk 'c&&!--c;!/^.*\/\*/ && /buildEnv/ {c=1}' "${HOME}/.nixpkgs/config.nix" |
+      grep -o -P '(?<=").*(?=")' || :
+  )
+
+  for i in "${EnvNames[@]}" ; do
+    Closures+=($(find /nix/store -name "*${i}*"))
+  done
+
+  Closures+=($(find /nix/store -name "*$(hostname)*"))
+
+  for i in "${Closures[@]}" ; do
+    nix-copy-closure --to "${Target}" "${i}" || :
+  done
+}
+
+function Triton::RebuildEnvs {
+  local -a EnvAttrNames
+
+  mapfile -t EnvAttrNames < <(
+    awk '!/^.*\/\*/ && /buildEnv/ {print $1}' "${HOME}/.nixpkgs/config.nix"
+  )
+
+  for i in "${EnvAttrNames[@]}" ; do
+    nix-env -iA "${i}" -f "${HOME}/Projects/triton" -k || :
+  done
+}

@@ -7,3 +7,5 @@
 
 alias triton-rebuild='sudo nixos-rebuild boot -I nixos-config=/etc/nixos/configuration.nix -I nixpkgs=${HOME}/Projects/triton'
 alias triton-remove-references='Triton::RemoveReferences'
+alias triton-copy-closures='Triton::CopyClosures'
+alias triton-rebuild-envs='Triton::RebuildEnvs'
