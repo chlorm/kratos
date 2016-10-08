@@ -6,8 +6,8 @@
 # the `LICENSE' file in the top level source directory.
 
 Dotfiles::GenerateHook.pre() {
-  if [ -f "${1}.generate-pre" ] ; then
-    source "${1}.generate-pre"
+  if [ -f "${1}-pre" ] ; then
+    source "${1}-pre"
   fi
 }
 
@@ -87,8 +87,8 @@ Dotfiles::GenerateHook() {
 }
 
 Dotfiles::GenerateHook.post() {
-  if [ -f "${1}.generate-post" ] ; then
-    source "${1}.generate-post"
+  if [ -f "${1}-post" ] ; then
+    source "${1}-post"
   fi
 }
 
