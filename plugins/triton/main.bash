@@ -58,6 +58,8 @@ function Triton::CopyClosures {
 }
 
 function Triton::RebuildEnvs {
+  local -a ConcurrentArgs
+  local CONCURRENT_LIMIT=1
   local -a EnvAttrNames
 
   mapfile -t EnvAttrNames < <(
@@ -65,6 +67,12 @@ function Triton::RebuildEnvs {
   )
 
   for i in "${EnvAttrNames[@]}" ; do
-    nix-env -iA "${i}" -f "${HOME}/Projects/triton" -k || :
+    if [ -n "${i}" ] ; then
+      ConcurrentArgs+=(
+        '-' "${i}" "nix-env -iA ${i} -f ${HOME}/Projects/triton -k"
+      )
+    fi
   done
+
+  concurrent ${ConcurrentArgs[@]}
 }
