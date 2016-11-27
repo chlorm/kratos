@@ -57,6 +57,15 @@ function Triton::CopyClosures {
   done
 }
 
+function Triton::Rebuild {
+  local -r Target="${1}"
+
+  sudo nixos-rebuild "${Target}" \
+    -I "nixos-config=/etc/nixos/configuration.nix" \
+    -I "nixpkgs=${HOME}/Projects/triton"
+
+}
+
 function Triton::RebuildEnvs {
   local -a ConcurrentArgs
   local CONCURRENT_LIMIT=1

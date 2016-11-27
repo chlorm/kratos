@@ -5,7 +5,7 @@
 # BSD-3 license.  A copy of the license can be found in
 # the `LICENSE' file in the top level source directory.
 
-alias triton-rebuild='sudo nixos-rebuild boot -I nixos-config=/etc/nixos/configuration.nix -I nixpkgs=${HOME}/Projects/triton'
+alias triton-rebuild='Triton::Rebuild'
 alias triton-remove-references='Triton::RemoveReferences'
 alias triton-copy-closures='Triton::CopyClosures'
 alias triton-rebuild-envs='Triton::RebuildEnvs'
