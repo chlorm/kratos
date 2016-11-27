@@ -75,6 +75,10 @@ function Triton::RebuildEnvs {
     awk '!/^.*\/\*/ && /buildEnv/ {print $1}' "${HOME}/.nixpkgs/config.nix"
   )
 
+  # qt5 fails to parallel build when invoked by nix-env or when concurrently
+  # building with another package.  In the meantime build it seperately.
+  ConcurrentArgs+=('-' 'building-qt5' "nix-build -A qt5 ${HOME}/Projects/triton")
+
   for i in "${EnvAttrNames[@]}" ; do
     if [ -n "${i}" ] ; then
       ConcurrentArgs+=(
