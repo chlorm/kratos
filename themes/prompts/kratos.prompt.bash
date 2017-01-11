@@ -31,7 +31,7 @@ Prompts::Kratos.vcs() {
       else
         VcsCheckout="${VcsCheckoutBranch}"
       fi
-      echo -e "${KCLR_FG_11}git$(kprmt bold)$(kprmt f1)∫$(kprmt f16)${VcsCheckout}${VcsStatus}$(kprmt reset)"
+      echo -e "$(kprmt f11)git$(kprmt bold)$(kprmt f1)∫$(kprmt f16)${VcsCheckout}${VcsStatus}$(kprmt reset)"
     fi
   fi
 
@@ -58,7 +58,7 @@ Prompts::Kratos.vcs() {
   return 0
 }
 
-KRATOS_PROMPT_1='$(kprmt f11)\\u$(kprmt bold)$(kprmt f1)@$(kprmt bold)$(kprmt ${SSH_CLIENT:+f10}${SSH_CLIENT:-f16})\\H$(kprmt f1)[$(kprmt reset)$(kprmt f2)\\w$(kprmt bold)$(kprmt f1)]\\$(Prompts::Kratos.vcs)$(kprmt f7)〉$(kprmt reset)'
+KRATOS_PROMPT_1='$(kprmt f11)\\u$(kprmt bold)$(kprmt f1)@$(kprmt bold)$(kprmt ${SSH_CLIENT:+f10}${SSH_CLIENT:-f16})\\H$(kprmt f1)[$(kprmt reset)$(kprmt f2)\\w$(kprmt bold)$(kprmt f1)]$(Prompts::Kratos.vcs)$(kprmt f7)〉$(kprmt reset)'
 KRATOS_PROMPT_2=''
 KRATOS_PROMPT_3=''
 KRATOS_PROMPT_4=''
