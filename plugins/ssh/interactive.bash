@@ -6,3 +6,6 @@
 # the `LICENSE' file in the top level source directory.
 
 alias ssh-generate-keys='SSH::GenerateKeys force'
+
+# Always attempt to correct permissions
+SSH::FixPermissions || :

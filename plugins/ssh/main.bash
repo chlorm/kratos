@@ -10,6 +10,7 @@ SSH::Auto() {
   SSH::GenerateKeys
   SSH::AuthorizedKeys
   SSH::KnownHosts
+  SSH::FixPermissions
 
   # TODO: handle with user-agent
   ssh-add "${HOME}/.ssh/id_rsa" > /dev/null 2>&1
@@ -50,6 +51,29 @@ SSH::AuthorizedKeys() {
       cat "${Key}" >> "${HOME}/.ssh/authorized_keys"
     fi
   done < <(find ${DOTFILES_DIR}/ssh/authorized-keys -type f -name '*.pub')
+}
+
+# Make sure all directories and files have the correct permissions
+# to make sure everything works with StrictModes enabled.
+SSH::FixPermissions() {
+  local IsPrivateKey
+  local PubKey
+  local SshFile
+  local -a SshFiles
+
+  mapfile -t SshFiles < <(find "${HOME}/.ssh" -type f)
+
+  for SshFile in "${SshFiles[@]}" ; do
+    IsPrivateKey="$(cat "${SshFile}" | grep -o -m 1 'PRIVATE KEY-----')"
+
+    if [ "${IsPrivateKey}" == 'PRIVATE KEY-----' ] ; then
+      # Private keys should never be readable by other users
+      chmod 0600 "${SshFile}"
+    else
+      # All files other than private keys need to be readable by root
+      chmod 0644 "${SshFile}"
+    fi
+  done
 }
 
 SSH::KnownHosts() {
