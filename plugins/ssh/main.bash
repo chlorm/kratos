@@ -65,6 +65,8 @@ SSH::FixPermissions() {
   local SshFile
   local -a SshFiles
 
+  chmod 700 "${HOME}/.ssh"
+
   mapfile -t SshFiles < <(find "${HOME}/.ssh" -type f)
 
   for SshFile in "${SshFiles[@]}" ; do
@@ -72,10 +74,10 @@ SSH::FixPermissions() {
 
     if [ "${IsPrivateKey}" == 'PRIVATE KEY-----' ] ; then
       # Private keys should never be readable by other users
-      chmod 0600 "${SshFile}"
+      chmod 600 "${SshFile}"
     else
       # All files other than private keys need to be readable by root
-      chmod 0644 "${SshFile}"
+      chmod 644 "${SshFile}"
     fi
   done
 }
