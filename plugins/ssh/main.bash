@@ -80,6 +80,8 @@ SSH::FixPermissions() {
       chmod 644 "${SshFile}"
     fi
   done
+
+  chmod 600 "${HOME}/.ssh/config"
 }
 
 SSH::KnownHosts() {
