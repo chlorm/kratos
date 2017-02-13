@@ -20,10 +20,13 @@ SSH::Requires() {
   # Makes sure the ssh directory exists
   Directory::Create "${HOME}/.ssh"
   # Makes sure the client configuration is installed
-  [ -f "${HOME}/.ssh/config" ]
+  [ -f "${HOME}/.ssh/config" ] || {
+    Log::Message 'error' 'ssh config is not installed'
+    return 1
+  }
   # Make sure that we have the required binaries
-  ${PathHasBinSSH_KEYGEN}
-  ${PathHasBinOPENSSL}
+  Path::Check 'ssh-keygen'
+  Path::Check 'openssl'
 }
 
 SSH::GenerateKeys() {
@@ -40,16 +43,17 @@ SSH::GenerateKeys() {
   fi
 }
 
+# (Re)Populates the authorized_keys file
 SSH::AuthorizedKeys() {
   local Key
 
-  # Populates the authorized_keys file
   File::Remove "${HOME}/.ssh/authorized_keys"
 
   while read Key ; do
-    if [ -n "${Key}" ] ; then
-      cat "${Key}" >> "${HOME}/.ssh/authorized_keys"
+    if [ -z "${Key}" ] ; then
+      continue
     fi
+    cat "${Key}" >> "${HOME}/.ssh/authorized_keys"
   done < <(find ${DOTFILES_DIR}/ssh/authorized-keys -type f -name '*.pub')
 }
 
