@@ -133,7 +133,7 @@ Dotfiles::Hook() {
   local -a Dotfiles
   local Uninstall
   local IgnoreItem
-  local -a IgnoreList
+  local -a IgnoreList=()
   local IgnoreStatus
 
   Uninstall=false
@@ -147,16 +147,12 @@ Dotfiles::Hook() {
     find "${DOTFILES_DIR}" -type f -not -iwholename '*.git*'
   )
 
-  IgnoreList=()
-  if [[ -f "${DOTFILES_DIR}/.kratosignore" ]] ; then
-    IgnoreList+=($(cat "${DOTFILES_DIR}/.kratosignore"))
-  fi
-  # TODO: Add systemd support
   IgnoreList+=("${HOME}/.config/systemd")
 
   # Respect .kratosignore file
   if [ -f "${DOTFILES_DIR}/.kratosignore" ] ; then
     IgnoreList+=($(cat "${DOTFILES_DIR}/.kratosignore"))
+    IgnoreList+=("${DOTFILES_DIR}/.kratosignore")
   fi
 
   for Dotfile in "${Dotfiles[@]}" ; do
