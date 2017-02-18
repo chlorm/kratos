@@ -6,7 +6,7 @@
 # the `LICENSE' file in the top level source directory.
 
 # Determine if the current directory is a vcs repo
-Prompts::Kratos.vcs() {
+Prompt::Kratos.vcs() {
   local VcsIsRepo
   local VcsBranch
   local VcsStatus
@@ -66,7 +66,8 @@ Prompt::Kratos.ssh() {
   fi
 }
 
-KRATOS_PROMPT_1='$(kprmt f11)\\u$(kprmt bold)$(kprmt f1)@$(kprmt bold)$(kprmt "$(Prompt::Kratos.ssh)")\\H$(kprmt f1)[$(kprmt reset)$(kprmt f2)\\w$(kprmt bold)$(kprmt f1)]$(Prompts::Kratos.vcs)$(kprmt f7)〉$(kprmt reset)'
+#KRATOS_PROMPT_1='$(kprmt f11)\\u$(kprmt bold)$(kprmt f1)@$(kprmt bold)$(kprmt "$(Prompt::Kratos.ssh)")\\H$(kprmt f1)[$(kprmt reset)$(kprmt f2)\\w$(kprmt bold)$(kprmt f1)]$(Prompt::Kratos.vcs)$(kprmt f7)〉$(kprmt reset)'
+KRATOS_PROMPT_1='$(kprmt f11)\\u$(kprmt bold)$(kprmt f1)@$(kprmt bold)$(kprmt "$(Prompt::Kratos.ssh)")\\H$(kprmt f1)[$(kprmt reset)$(kprmt f2)\\w$(kprmt bold)$(kprmt f1)]$(kprmt f7)〉$(kprmt reset)'
 KRATOS_PROMPT_2=''
 KRATOS_PROMPT_3=''
 KRATOS_PROMPT_4=''
