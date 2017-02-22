@@ -77,7 +77,8 @@ if [ -z ${KRATOS_SHELL_INIT+x} ] ; then
 
   Loader::All 'interactive'
 
-  Path::Add "${HOME}/.bin"
+  Path::Add "${HOME}/.bin" || :
+  Path::Add "${HOME}/.local/bin" || :
 
   if [ ! -f "${HOME}/.cache/kratos/cache-rc" ] ; then
     KRATOS_CURRENT_KERNEL="$(OS::Kernel)"
