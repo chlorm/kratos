@@ -108,6 +108,8 @@ Kratos::Command() {
       Symlink::Create "${KRATOS_DIR}/rc/zshrc" "${HOME}/.zshrc"
       Symlink::Create "${KRATOS_DIR}/rc/zprofile" "${HOME}/.zprofile"
       Symlink::Create "${KRATOS_DIR}/rc/zlogout" "${HOME}/.zlogout"
+
+      echo "update complete"
       ;;
     'upgrade')
       ;;
