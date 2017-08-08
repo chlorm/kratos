@@ -7,19 +7,19 @@
 
 # http://www.monokai.nl/blog/2006/07/15/textmate-color-theme/
 
-KRATOS_COLOR_1='272822' # Black
-KRATOS_COLOR_2='f92672' # Red
-KRATOS_COLOR_3='a6e22e' # Green
-KRATOS_COLOR_4='e6db74' # Yellow
-KRATOS_COLOR_5='2196e8' # Blue (dark blue)
-KRATOS_COLOR_6='ae81ff' # Magenta
-KRATOS_COLOR_7='66d9ef' # Cyan
-KRATOS_COLOR_8='f8f8f2' # Light gray
-KRATOS_COLOR_9='75715e' # Dark gray
-KRATOS_COLOR_10="fd971f" # Light red (orange)
+KRATOS_COLOR_1='27/28/22' # Black
+KRATOS_COLOR_2='f9/26/72' # Red
+KRATOS_COLOR_3='a6/e2/2e' # Green
+KRATOS_COLOR_4='e6/db/74' # Yellow
+KRATOS_COLOR_5='21/96/e8' # Blue (dark blue)
+KRATOS_COLOR_6='ae/81/ff' # Magenta
+KRATOS_COLOR_7='66/d9/ef' # Cyan
+KRATOS_COLOR_8='f8/f8/f2' # Light gray
+KRATOS_COLOR_9='75/71/5e' # Dark gray
+KRATOS_COLOR_10="fd/97/1f" # Light red (orange)
 KRATOS_COLOR_11="${KRATOS_COLOR_3}" # Light green
 KRATOS_COLOR_12="${KRATOS_COLOR_4}" # Light yellow
 KRATOS_COLOR_13="${KRATOS_COLOR_5}" # Light blue
 KRATOS_COLOR_14="${KRATOS_COLOR_6}" # Light magenta
 KRATOS_COLOR_15="${KRATOS_COLOR_7}" # Light cyan
-KRATOS_COLOR_16='f8f8f0' # White
+KRATOS_COLOR_16='f8/f8/f0' # White
