@@ -75,21 +75,27 @@ Color::LS() {
 
 # TODO: fix this shit
 Color::Term() {
-  if [[ "${TERM}" == 'xterm' || "${TERM}" == 'rxvt-unicode-256color' ]] ; then
-    # See if xterm supports 256 color
-    if [[ -n "${VTE_VERSION}" ]] ; then
+  # if [[ "${TERM}" == @('xterm' || "${TERM}" == 'rxvt-unicode-256color' ]] ; then
+  #   # See if xterm supports 256 color
+  #   if [[ -n "${VTE_VERSION}" ]] ; then
       export TERM='xterm-256color'
-    fi
-  fi
+  #   fi
+  # fi
+}
+
+Color::SetColor() {
+  local -r ansi="$1"
+  local -r rgb="$2"
+
+  printf "\x1b]4;${ansi};rgb:${rgb}\a" || return 1
 }
 
 Color::SetColorScheme() {
-  local Current i
+  local ansi rgb
 
-  for i in {1..16} ; do
-    eval Current="\${KRATOS_COLOR_${i}}"
+  for ansi in {0..15}; do
     # Terminal color codes start from zero, kratos starts from 1
-    i=$(( ${i} - 1 ))
-    printf "\033]4;${i};rgb:${Current}\033\\" || return 1
+    eval rgb="\$KRATOS_COLOR_$(( $ansi + 1 ))"
+    Color::SetColor $ansi "$rgb"
   done
 }
