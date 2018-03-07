@@ -1,0 +1,16 @@
+Kratos
+======
+
+###### A user environment configuration framework.
+
+### Prerequisites
+* elvish >= https://github.com/elves/elvish/commit/231925395f0e86bb24bacdd55355204bfb445228
+* git >=2
+
+### Installation
+```elvish
+# Add the following to the end of your rc.elv
+use epm
+epm:install github.com/chlorm/kratos
+use github.com/chlorm/kratos/kratos-init
+```

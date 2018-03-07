@@ -1,3 +1,0 @@
-[submodule "vendor/lib-bash"]
-	path = vendor/lib-bash
-	url = https://github.com/chlorm/lib-bash
