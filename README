@@ -11,6 +11,6 @@ Kratos
 ```elvish
 # Add the following to the end of your rc.elv
 use epm
-epm:install github.com/chlorm/kratos
+epm:install &silent-if-installed=$true github.com/chlorm/kratos
 use github.com/chlorm/kratos/kratos-init
 ```
