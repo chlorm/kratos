@@ -62,7 +62,7 @@ fn init-dirs {
     if (and (not ?(test -d $dir)) (!=s $dir '')) {
       try {
         mkdir -p $dir
-      } except {
+      } except _ {
         fail 'Failed to create directory: '$dir
       }
     }
