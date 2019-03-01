@@ -89,11 +89,11 @@ fn init-session {
 
   init-dirs
 
-  if (not ?(test -d $E:XDG_RUNTIME_DIR'/kratos/')) {
+  if (not ?(test -d (get-env XDG_RUNTIME_DIR)'/kratos/')) {
     # Don't create parent dirs, we want to catch failures here.
-    mkdir $E:XDG_RUNTIME_DIR'/kratos/'
+    mkdir (get-env XDG_RUNTIME_DIR)'/kratos/'
   }
-  touch $E:XDG_RUNTIME_DIR'/kratos/initialized'
+  touch (get-env XDG_RUNTIME_DIR)'/kratos/initialized'
 }
 
 fn init-instance {
@@ -106,7 +106,7 @@ fn init-instance {
   term-color:set (color-scheme:monokai)
 
   paths = [
-    $E:XDG_PREFIX_HOME'/bin'
+    (get-env XDG_PREFIX_HOME)'/bin'
     $@paths
   ]
 }
