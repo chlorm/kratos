@@ -82,7 +82,7 @@ fn init-session {
   require github.com/chlorm/elvish-color-schemes
 
   use github.com/chlorm/elvish-xdg/xdg
-  xdg:populate-xdg-env-vars
+  xdg:populate-env-vars
 
   use github.com/chlorm/elvish-as-default-shell/default-shell
   use github.com/chlorm/elvish-user-tmpfs/tmpfs-automount
@@ -98,7 +98,7 @@ fn init-session {
 
 fn init-instance {
   use github.com/chlorm/elvish-xdg/xdg
-  xdg:populate-xdg-env-vars
+  xdg:populate-env-vars
 
   use github.com/chlorm/elvish-term-color/term-color
   use github.com/chlorm/elvish-color-schemes/color-scheme
