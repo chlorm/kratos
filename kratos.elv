@@ -12,14 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-fn require [pkg]{
-  use epm
-  if (epm:is-installed $pkg) {
-    epm:upgrade $pkg
-  } else {
-    epm:install &silent-if-installed=$true $pkg
-  }
-}
 
 # TODO: add overrides and add interface for defining custom directories
 fn init-dirs {
@@ -73,14 +65,6 @@ fn init-dirs {
 # TODO: add an interface to allow user defined functions to be run.
 # TODO: add an interface to allow user defined required packages to be checked.
 fn init-session {
-  # Session
-  require github.com/chlorm/kratos
-  require github.com/chlorm/elvish-xdg
-  require github.com/chlorm/elvish-as-default-shell
-  require github.com/chlorm/elvish-user-tmpfs
-  require github.com/chlorm/elvish-term-color
-  require github.com/chlorm/elvish-color-schemes
-
   use github.com/chlorm/elvish-xdg/xdg
   xdg:populate-env-vars
 
