@@ -81,6 +81,8 @@ fn init-session {
 }
 
 fn init-instance {
+  epm:upgrade
+
   use github.com/chlorm/elvish-xdg/xdg
   xdg:populate-env-vars
 
