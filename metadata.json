@@ -2,6 +2,7 @@
   "dependencies": [
     "github.com/chlorm/elvish-as-default-shell",
     "github.com/chlorm/elvish-color-schemes",
+    "github.com/chlorm/elvish-stl",
     "github.com/chlorm/elvish-term-color",
     "github.com/chlorm/elvish-user-tmpfs",
     "github.com/chlorm/elvish-xdg"

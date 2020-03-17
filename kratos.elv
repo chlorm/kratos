@@ -1,4 +1,4 @@
-# Copyright (c) 2018, Cody Opel <codyopel@gmail.com>
+# Copyright (c) 2018, 2020, Cody Opel <cwopel@chlorm.net>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,47 +13,23 @@
 # limitations under the License.
 
 
-# TODO: add overrides and add interface for defining custom directories
+use github.com/chlorm/elvish-stl/os
+
+
 fn init-dirs {
-  local:xdg-dirs = [
-    (get-env XDG_CACHE_HOME)
-    (get-env XDG_CONFIG_HOME)
-    (get-env XDG_DATA_HOME)
-    (get-env XDG_DESKTOP_DIR)
-    (get-env XDG_DOCUMENTS_DIR)
-    (get-env XDG_DOWNLOAD_DIR)
-    (get-env XDG_MUSIC_DIR)
-    (get-env XDG_PICTURES_DIR)
-    (get-env XDG_PREFIX_HOME)
-    (get-env XDG_PUBLICSHARE_DIR)
-    (get-env XDG_TEMPLATES_DIR)
-    (get-env XDG_VIDEOS_DIR)
-  ]
+  local:init-dirs = [ ]
+  try {
+    for local:i [ (splits ':' (get-env KRATOS_INIT_DIRS)) ] {
+      init-dirs = [ $@init-dirs $i ]
+    }
+  } except _ {
+    return
+  }
 
-  local:trash-dirs = [
-    (get-env XDG_DATA_HOME)'/trash/files'
-    (get-env XDG_DATA_HOME)'/trash/info'
-  ]
-
-  local:custom-dirs = [
-    (get-env HOME)'/Projects'
-  ]
-
-  local:kratos-dirs = [
-    (get-env HOME)'/.local/share/kratos'
-  ]
-
-  local:create-dirs = [
-    $@custom-dirs
-    $@kratos-dirs
-    $@xdg-dirs
-    $@trash-dirs
-  ]
-
-  for local:dir $create-dirs {
-    if (and (not ?(test -d $dir)) (!=s $dir '')) {
+  for local:dir $init-dirs {
+    if (not (os:is-dir $dir)) {
       try {
-        mkdir -p $dir
+        os:makedirs $dir
       } except _ {
         fail 'Failed to create directory: '$dir
       }
@@ -62,9 +38,10 @@ fn init-dirs {
 }
 
 
-# TODO: add an interface to allow user defined functions to be run.
-# TODO: add an interface to allow user defined required packages to be checked.
 fn init-session {
+  use epm
+  epm:upgrade
+
   use github.com/chlorm/elvish-xdg/xdg
   xdg:populate-env-vars
 
@@ -73,16 +50,15 @@ fn init-session {
 
   init-dirs
 
-  if (not ?(test -d (get-env XDG_RUNTIME_DIR)'/kratos/')) {
+  local:kratos-dir = (get-env XDG_RUNTIME_DIR)'/kratos/'
+  if (not (os:is-dir $kratos-dir)) {
     # Don't create parent dirs, we want to catch failures here.
-    mkdir (get-env XDG_RUNTIME_DIR)'/kratos/'
+    os:mkdir $kratos-dir
   }
-  touch (get-env XDG_RUNTIME_DIR)'/kratos/initialized'
+  os:touch $kratos-dir'/initialized'
 }
 
 fn init-instance {
-  epm:upgrade
-
   use github.com/chlorm/elvish-xdg/xdg
   xdg:populate-env-vars
 

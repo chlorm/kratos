@@ -1,4 +1,4 @@
-# Copyright (c) 2018, Cody Opel <codyopel@gmail.com>
+# Copyright (c) 2018, Cody Opel <cwopel@chlorm.net>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,12 @@
 # limitations under the License.
 
 
+use github.com/chlorm/elvish-stl/os
+use github.com/chlorm/elvish-xdg/xdg
 use github.com/chlorm/kratos/kratos
 
 
-if (not ?(test -f $E:XDG_RUNTIME_DIR'/kratos/initialized')) {
+if (not (os:exists (xdg:get-dir XDG_RUNTIME_DIR)'/kratos/initialized')) {
   kratos:init-session
 }
 
