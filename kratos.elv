@@ -53,7 +53,7 @@ fn init-session {
   local:kratos-dir = (get-env XDG_RUNTIME_DIR)'/kratos/'
   if (not (os:is-dir $kratos-dir)) {
     # Don't create parent dirs, we want to catch failures here.
-    os:mkdir $kratos-dir
+    os:makedir $kratos-dir
   }
   os:touch $kratos-dir'/initialized'
 }
