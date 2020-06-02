@@ -13,13 +13,14 @@
 # limitations under the License.
 
 
+use str
 use github.com/chlorm/elvish-stl/os
 
 
 fn init-dirs {
   local:init-dirs = [ ]
   try {
-    for local:i [ (splits ':' (get-env KRATOS_INIT_DIRS)) ] {
+    for local:i [ (str:split ':' (get-env KRATOS_INIT_DIRS)) ] {
       init-dirs = [ $@init-dirs $i ]
     }
   } except _ {
