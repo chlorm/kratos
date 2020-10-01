@@ -18,7 +18,7 @@ use github.com/chlorm/elvish-xdg/xdg
 use github.com/chlorm/kratos/kratos
 
 
-if (not (os:exists (xdg:get-dir XDG_RUNTIME_DIR)'/kratos/initialized')) {
+if (not $kratos:initialized) {
   kratos:init-session
 }
 

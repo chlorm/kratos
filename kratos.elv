@@ -15,7 +15,11 @@
 
 use str
 use github.com/chlorm/elvish-stl/os
+use github.com/chlorm/elvish-xdg/xdg
 
+kratos-dir = (xdg:get-dir XDG_RUNTIME_DIR)'/kratos/'
+lockfile = $kratos-dir'/initialized'
+initialized = (os:exists $lockfile)
 
 fn init-dirs {
   local:init-dirs = [ ]
@@ -51,12 +55,11 @@ fn init-session {
 
   init-dirs
 
-  local:kratos-dir = (get-env XDG_RUNTIME_DIR)'/kratos/'
   if (not (os:is-dir $kratos-dir)) {
     # Don't create parent dirs, we want to catch failures here.
     os:makedir $kratos-dir
   }
-  os:touch $kratos-dir'/initialized'
+  os:touch $lockfile
 }
 
 fn init-instance {
