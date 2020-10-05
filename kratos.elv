@@ -74,6 +74,16 @@ fn init-instance {
   use github.com/chlorm/elvish-util-wrappers/dircolors
   dircolors:set
 
+  try {
+    use github.com/chlorm/elvish-auto-env/editor
+    editor:set
+  } except _ { echo $e }
+
+  try {
+    use github.com/chlorm/elvish-auto-env/pager
+    pager:set
+  } except e { echo $e }
+
   paths = [
     (get-env XDG_PREFIX_HOME)'/bin'
     $@paths
