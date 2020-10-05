@@ -22,76 +22,76 @@ lockfile = $kratos-dir'/initialized'
 initialized = (os:exists $lockfile)
 
 fn init-dirs {
-  local:init-dirs = [ ]
-  try {
-    for local:i [ (str:split ':' (get-env KRATOS_INIT_DIRS)) ] {
-      init-dirs = [ $@init-dirs $i ]
+    local:init-dirs = [ ]
+    try {
+        for local:i [ (str:split ':' (get-env KRATOS_INIT_DIRS)) ] {
+            init-dirs = [ $@init-dirs $i ]
+        }
+    } except _ {
+        return
     }
-  } except _ {
-    return
-  }
 
-  for local:dir $init-dirs {
-    if (not (os:is-dir $dir)) {
-      try {
-        os:makedirs $dir
-      } except _ {
-        fail 'Failed to create directory: '$dir
-      }
+    for local:dir $init-dirs {
+        if (not (os:is-dir $dir)) {
+            try {
+                os:makedirs $dir
+            } except _ {
+                fail 'Failed to create directory: '$dir
+            }
+        }
     }
-  }
 }
 
 
 fn init-session {
-  use epm
-  epm:upgrade
+    use epm
+    epm:upgrade
 
-  use github.com/chlorm/elvish-xdg/xdg
-  xdg:populate-env-vars
+    use github.com/chlorm/elvish-xdg/xdg
+    xdg:populate-env-vars
 
-  use github.com/chlorm/elvish-as-default-shell/default-shell
-  use github.com/chlorm/elvish-user-tmpfs/tmpfs-automount
+    use github.com/chlorm/elvish-as-default-shell/default-shell
+    use github.com/chlorm/elvish-user-tmpfs/tmpfs-automount
 
-  init-dirs
+    init-dirs
 
-  if (not (os:is-dir $kratos-dir)) {
-    # Don't create parent dirs, we want to catch failures here.
-    os:makedir $kratos-dir
-  }
-  os:touch $lockfile
+    if (not (os:is-dir $kratos-dir)) {
+        # Don't create parent dirs, we want to catch failures here.
+        os:makedir $kratos-dir
+    }
+    os:touch $lockfile
 }
 
 fn init-instance {
-  try {
-    use github.com/chlorm/elvish-xdg/xdg
-    xdg:populate-env-vars
-  } except e { echo $e }
+    try {
+        use github.com/chlorm/elvish-xdg/xdg
+        xdg:populate-env-vars
+    } except e { echo $e }
 
-  try {
-    use github.com/chlorm/elvish-term-color/term-color
-    use github.com/chlorm/elvish-color-schemes/color-scheme
-    # TODO: add an interface to allow user defined themes
-    term-color:set (color-scheme:monokai)
-  } except e { echo $e }
+    try {
+        use github.com/chlorm/elvish-term-color/term-color
+        use github.com/chlorm/elvish-color-schemes/color-scheme
+        # TODO: add an interface to allow user defined themes
+        term-color:set (color-scheme:monokai)
+    } except e { echo $e }
 
-  try {
-    use github.com/chlorm/elvish-util-wrappers/dircolors
-    dircolors:set
-  } except e { echo $e }
+    try {
+        use github.com/chlorm/elvish-util-wrappers/dircolors
+        dircolors:set
+    } except e { echo $e }
 
-  try {
-    use github.com/chlorm/elvish-auto-env/editor
-    editor:set
-  } except e { echo $e }
+    try {
+        use github.com/chlorm/elvish-auto-env/editor
+        editor:set
+    } except e { echo $e }
 
-  try {
-    use github.com/chlorm/elvish-auto-env/pager
-    pager:set
-  } except e { echo $e }
+    try {
+        use github.com/chlorm/elvish-auto-env/pager
+        pager:set
+    } except e { echo $e }
 
-  paths = [
-    (get-env XDG_PREFIX_HOME)'/bin'
-    $@paths
-  ]
+    paths = [
+        (get-env XDG_PREFIX_HOME)'/bin'
+        $@paths
+    ]
 }
