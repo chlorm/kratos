@@ -71,6 +71,9 @@ fn init-instance {
   # TODO: add an interface to allow user defined themes
   term-color:set (color-scheme:monokai)
 
+  use github.com/chlorm/elvish-util-wrappers/dircolors
+  dircolors:set
+
   paths = [
     (get-env XDG_PREFIX_HOME)'/bin'
     $@paths

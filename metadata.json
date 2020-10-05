@@ -5,6 +5,7 @@
     "github.com/chlorm/elvish-stl",
     "github.com/chlorm/elvish-term-color",
     "github.com/chlorm/elvish-user-tmpfs",
+    "github.com/chlorm/elvish-util-wrappers",
     "github.com/chlorm/elvish-xdg"
   ]
 }
