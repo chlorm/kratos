@@ -66,24 +66,24 @@ fn init-instance {
   try {
     use github.com/chlorm/elvish-xdg/xdg
     xdg:populate-env-vars
-  } except _ { echo $e }
+  } except e { echo $e }
 
   try {
     use github.com/chlorm/elvish-term-color/term-color
     use github.com/chlorm/elvish-color-schemes/color-scheme
     # TODO: add an interface to allow user defined themes
     term-color:set (color-scheme:monokai)
-  } except _ { echo $e }
+  } except e { echo $e }
 
   try {
     use github.com/chlorm/elvish-util-wrappers/dircolors
     dircolors:set
-  } except _ { echo $e }
+  } except e { echo $e }
 
   try {
     use github.com/chlorm/elvish-auto-env/editor
     editor:set
-  } except _ { echo $e }
+  } except e { echo $e }
 
   try {
     use github.com/chlorm/elvish-auto-env/pager
