@@ -14,12 +14,40 @@
 
 
 use str
+use github.com/chlorm/elvish-stl/io
 use github.com/chlorm/elvish-stl/os
+use github.com/chlorm/elvish-stl/path
 use github.com/chlorm/elvish-xdg/xdg
+
 
 kratos-dir = (xdg:get-dir XDG_RUNTIME_DIR)'/kratos/'
 lockfile = $kratos-dir'/initialized'
 initialized = (os:exists $lockfile)
+
+fn cache-new [name contents~]{
+    local:c = (path:join $kratos-dir $name)
+    if (not (os:exists $c)) {
+        os:touch $c
+        os:chmod 0600 $c
+        try {
+            print ($contents~) > $c
+            put $c
+        } except e {
+            os:remove $c
+            echo $e[reason] >&2
+        }
+    } else {
+        put $c
+    }
+}
+
+fn cache-read [cache]{
+    put (io:open $cache)
+}
+
+fn cache-remove [cache]{
+    os:remove $cache
+}
 
 fn init-dirs {
     local:init-dirs = [ ]
@@ -77,18 +105,27 @@ fn init-instance {
 
     try {
         use github.com/chlorm/elvish-util-wrappers/dircolors
-        dircolors:set
-    } except e { echo $e }
+        local:dircolors-cache = (cache-new 'dircolors' $dircolors:get~)
+        try {
+            dircolors:set &static=(cache-read $dircolors-cache)
+        } except e { echo $e[reason] >&2 }
+    } except e { echo $e[reason] >&2 }
 
     try {
         use github.com/chlorm/elvish-auto-env/editor
-        editor:set
-    } except e { echo $e }
+        local:editor-cache = (cache-new 'editor' $editor:get~)
+        try {
+            editor:set &static=(cache-read $editor-cache)
+        } except e { echo $e[reason] >&2 }
+    } except e { echo $e[reason] >&2 }
 
     try {
         use github.com/chlorm/elvish-auto-env/pager
-        pager:set
-    } except e { echo $e }
+        local:pager-cache = (cache-new 'pager' $pager:get~)
+        try {
+            pager:set &static=(cache-read $pager-cache)
+        } except e { echo $e[reason] >&2 }
+    } except e { echo $e[reason] >&2 }
 
     paths = [
         (get-env XDG_PREFIX_HOME)'/bin'
