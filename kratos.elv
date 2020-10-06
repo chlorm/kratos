@@ -72,6 +72,15 @@ fn init-dirs {
 
 
 fn init-session {
+    os:makedir $kratos-dir
+    local:startup = (cache-new 'startup' $echo~)
+
+    # FIXME: should sleep until initialized and then re-exec elvish.
+    # Prevent race condition when multiple shells are started in parallel.
+    if (os:exists $startup) {
+        return
+    }
+
     use epm
     epm:upgrade
 
@@ -83,11 +92,8 @@ fn init-session {
 
     init-dirs
 
-    if (not (os:is-dir $kratos-dir)) {
-        # Don't create parent dirs, we want to catch failures here.
-        os:makedir $kratos-dir
-    }
-    os:touch $lockfile
+    local:initialized = (cache-new 'initialized' $echo~)
+    cache-remove $startup
 }
 
 fn init-instance {
