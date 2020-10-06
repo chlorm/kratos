@@ -31,14 +31,9 @@ fn cache-new [name contents~]{
         os:chmod 0600 $c
         try {
             print ($contents~) > $c
-            put $c
-        } except e {
-            os:remove $c
-            echo $e[reason] >&2
-        }
-    } else {
-        put $c
+        } except e { fail $e[reason] }
     }
+    put $c
 }
 
 fn cache-read [cache]{
