@@ -19,7 +19,7 @@ use github.com/chlorm/kratos/kratos
 
 
 if (not $kratos:initialized) {
-  kratos:init-session
+    kratos:init-session
 }
 
 kratos:init-instance
