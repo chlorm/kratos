@@ -20,8 +20,8 @@ use github.com/chlorm/elvish-stl/path
 use github.com/chlorm/elvish-xdg/xdg
 
 
-kratos-dir = (xdg:get-dir XDG_RUNTIME_DIR)'/kratos/'
-lockfile = $kratos-dir'/initialized'
+kratos-dir = (path:join (xdg:get-dir XDG_RUNTIME_DIR) 'kratos')
+lockfile = (path:join $kratos-dir 'initialized')
 initialized = (os:exists $lockfile)
 
 fn cache-new [name contents~]{
@@ -132,7 +132,7 @@ fn init-instance {
     } except e { echo $e[reason] >&2 }
 
     paths = [
-        (get-env XDG_PREFIX_HOME)'/bin'
+        (path:join (get-env XDG_PREFIX_HOME) 'bin')
         $@paths
     ]
 }
