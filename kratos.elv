@@ -105,10 +105,10 @@ fn init-instance {
     } except e { echo $e[reason] >&2 }
 
     try {
-        use github.com/chlorm/elvish-util-wrappers/dircolors
-        local:dircolors-cache = (cache-new 'dircolors' $dircolors:get~)
+        use github.com/chlorm/elvish-auto-env/ls
+        local:ls-cache = (cache-new 'ls' $ls:get~)
         try {
-            dircolors:set &static=(cache-read $dircolors-cache)
+            ls:set &static=(cache-read $ls-cache)
         } except e { echo $e[reason] >&2 }
     } except e { echo $e[reason] >&2 }
 
