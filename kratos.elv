@@ -13,6 +13,7 @@
 # limitations under the License.
 
 
+use platform
 use str
 use github.com/chlorm/elvish-stl/io
 use github.com/chlorm/elvish-stl/os
