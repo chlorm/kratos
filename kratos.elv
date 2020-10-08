@@ -118,12 +118,9 @@ fn init-instance {
         } except e { echo $e[reason] >&2 }
     } except e { echo $e[reason] >&2 }
 
+    use github.com/chlorm/elvish-auto-env/editor
     try {
-        use github.com/chlorm/elvish-auto-env/editor
-        local:editor-cache = (cache-new 'editor' $editor:get~)
-        try {
-            editor:set &static=(cache-read $editor-cache)
-        } except e { echo $e[reason] >&2 }
+        editor:set
     } except e { echo $e[reason] >&2 }
 
     try {
