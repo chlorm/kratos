@@ -86,10 +86,7 @@ fn init-session {
     use github.com/chlorm/elvish-xdg/xdg
     xdg:populate-env-vars
     
-    if (not $platform:is-windows) {
-        use github.com/chlorm/elvish-as-default-shell/default-shell
-    }
-
+    use github.com/chlorm/elvish-as-default-shell/default-shell
     use github.com/chlorm/elvish-user-tmpfs/tmpfs-automount
 
     init-dirs
