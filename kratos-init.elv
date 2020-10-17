@@ -18,7 +18,7 @@ use github.com/chlorm/elvish-xdg/xdg
 use github.com/chlorm/kratos/kratos
 
 
-if (not $kratos:initialized) {
+if (not $kratos:INITIALIZED) {
     kratos:init-session
 }
 
