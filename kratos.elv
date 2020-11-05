@@ -78,7 +78,7 @@ fn init-session {
         os:makedir $KRATOS-DIR
     }
 
-    startup = (cache-new 'startup' $echo~)
+    startup = (cache-new 'startup' $nop~)
 
     use epm
     epm:upgrade
@@ -92,7 +92,7 @@ fn init-session {
     init-dirs
     #init-dotfiles
 
-    initialized = (cache-new 'initialized' $echo~)
+    initialized = (cache-new 'initialized' $nop~)
     cache-remove $startup
 }
 
