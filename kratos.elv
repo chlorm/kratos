@@ -130,7 +130,7 @@ fn init-instance {
         } except e { echo $e[reason] >&2 }
     } except e { echo $e[reason] >&2 }
 
-    var paths = [
+    set paths = [
         (path:join (get-env XDG_PREFIX_HOME) 'bin')
         $@paths
     ]
