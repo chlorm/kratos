@@ -21,12 +21,12 @@ use github.com/chlorm/elvish-stl/path
 use github.com/chlorm/elvish-xdg/xdg
 
 
-KRATOS-DIR = (path:join (xdg:get-dir XDG_RUNTIME_DIR) 'kratos')
-LOCKFILE = (path:join $KRATOS-DIR 'initialized')
-INITIALIZED = (os:exists $LOCKFILE)
+var KRATOS-DIR = (path:join (xdg:get-dir XDG_RUNTIME_DIR) 'kratos')
+var LOCKFILE = (path:join $KRATOS-DIR 'initialized')
+var INITIALIZED = (os:exists $LOCKFILE)
 
 fn cache-new [name contents~]{
-    c = (path:join $KRATOS-DIR $name)
+    var c = (path:join $KRATOS-DIR $name)
     if (not (os:exists $c)) {
         os:touch $c
         os:chmod 0600 $c
@@ -46,10 +46,10 @@ fn cache-remove [cache]{
 }
 
 fn init-dirs {
-    initDirs = [ ]
+    var initDirs = [ ]
     try {
         for i [ (str:split ':' (get-env KRATOS_INIT_DIRS)) ] {
-            initDirs = [ $@initDirs $i ]
+            set initDirs = [ $@initDirs $i ]
         }
     } except _ {
         return
@@ -78,7 +78,7 @@ fn init-session {
         os:makedir $KRATOS-DIR
     }
 
-    startup = (cache-new 'startup' $nop~)
+    var startup = (cache-new 'startup' $nop~)
 
     use epm
     epm:upgrade
@@ -92,7 +92,7 @@ fn init-session {
     init-dirs
     #init-dotfiles
 
-    initialized = (cache-new 'initialized' $nop~)
+    var _ = (cache-new 'initialized' $nop~)
     cache-remove $startup
 }
 
@@ -111,7 +111,7 @@ fn init-instance {
 
     try {
         use github.com/chlorm/elvish-auto-env/ls
-        lsCache = (cache-new 'ls' $ls:get~)
+        var lsCache = (cache-new 'ls' $ls:get~)
         try {
             ls:set &static=(cache-read $lsCache)
         } except e { echo $e[reason] >&2 }
@@ -124,13 +124,13 @@ fn init-instance {
 
     try {
         use github.com/chlorm/elvish-auto-env/pager
-        pagerCache = (cache-new 'pager' $pager:get~)
+        var pagerCache = (cache-new 'pager' $pager:get~)
         try {
             pager:set &static=(cache-read $pagerCache)
         } except e { echo $e[reason] >&2 }
     } except e { echo $e[reason] >&2 }
 
-    paths = [
+    var paths = [
         (path:join (get-env XDG_PREFIX_HOME) 'bin')
         $@paths
     ]
