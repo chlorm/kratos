@@ -18,10 +18,10 @@ use str
 use github.com/chlorm/elvish-stl/io
 use github.com/chlorm/elvish-stl/os
 use github.com/chlorm/elvish-stl/path
-use github.com/chlorm/elvish-xdg/xdg
+use github.com/chlorm/elvish-xdg/xdg-dirs
 
 
-var KRATOS-DIR = (path:join (xdg:get-dir 'XDG_RUNTIME_DIR') 'kratos')
+var KRATOS-DIR = (path:join (xdg-dirs:runtime-dir) 'kratos')
 var LOCKFILE = (path:join $KRATOS-DIR 'initialized')
 var INITIALIZED = (os:exists $LOCKFILE)
 
@@ -83,9 +83,9 @@ fn init-session {
     use epm
     epm:upgrade
 
-    use github.com/chlorm/elvish-xdg/xdg
-    xdg:populate-env-vars
-    
+    use github.com/chlorm/elvish-xdg/xdg-dirs
+    xdg-dirs:populate-env
+
     use github.com/chlorm/elvish-as-default-shell/default-shell
     use github.com/chlorm/elvish-user-tmpfs/tmpfs-automount
 
@@ -98,8 +98,8 @@ fn init-session {
 
 fn init-instance {
     try {
-        use github.com/chlorm/elvish-xdg/xdg
-        xdg:populate-env-vars
+        use github.com/chlorm/elvish-xdg/xdg-dirs
+        xdg-dirs:populate-env
     } except e { echo $e['reason'] >&2 }
 
     try {
@@ -131,7 +131,7 @@ fn init-instance {
     } except e { echo $e['reason'] >&2 }
 
     set paths = [
-        (path:join (get-env XDG_PREFIX_HOME) 'bin')
+        (get-env $xdg-dirs:XDG-BIN-HOME)
         $@paths
     ]
 }
