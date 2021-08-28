@@ -59,8 +59,8 @@ fn init-dirs {
         if (not (os:exists $dir)) {
             try {
                 os:makedirs $dir
-            } except _ {
-                fail 'Failed to create directory: '$dir
+            } except e {
+                fail $e
             }
         }
     }
