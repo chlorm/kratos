@@ -87,7 +87,7 @@ fn init-session {
     xdg-dirs:populate-env
 
     use github.com/chlorm/elvish-as-default-shell/default-shell
-    use github.com/chlorm/elvish-user-tmpfs/tmpfs-automount
+    use github.com/chlorm/elvish-tmpfs/automount
 
     init-dirs
     #init-dotfiles
