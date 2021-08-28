@@ -13,8 +13,6 @@
 # limitations under the License.
 
 
-use github.com/chlorm/elvish-stl/os
-use github.com/chlorm/elvish-xdg/xdg
 use github.com/chlorm/kratos/kratos
 
 
