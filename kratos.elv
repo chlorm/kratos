@@ -56,7 +56,7 @@ fn init-dirs {
     }
 
     for dir $initDirs {
-        if (not (os:is-dir $dir)) {
+        if (not (os:exists $dir)) {
             try {
                 os:makedirs $dir
             } except _ {
