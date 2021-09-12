@@ -103,10 +103,9 @@ fn init-instance {
     } except e { echo $e['reason'] >&2 }
 
     try {
-        use github.com/chlorm/elvish-term-color/term-color
-        use github.com/chlorm/elvish-color-schemes/color-scheme
+        use github.com/chlorm/elvish-term/color-scheme
         # TODO: add an interface to allow user defined themes
-        term-color:set (color-scheme:monokai)
+        color-scheme:set (color-scheme:monokai)
     } except e { echo $e['reason'] >&2 }
 
     try {

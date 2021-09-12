@@ -4,7 +4,7 @@
     "github.com/chlorm/elvish-auto-env",
     "github.com/chlorm/elvish-color-schemes",
     "github.com/chlorm/elvish-stl",
-    "github.com/chlorm/elvish-term-color",
+    "github.com/chlorm/elvish-term",
     "github.com/chlorm/elvish-tmpfs",
     "github.com/chlorm/elvish-util-wrappers",
     "github.com/chlorm/elvish-xdg"
