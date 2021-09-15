@@ -4,7 +4,7 @@
 
 ### Prerequisites
 
--   elvish >= 0.14.0
+-   elvish >= 0.16.0
 -   git >=2
 
 ### Installation
