@@ -25,7 +25,7 @@ var KRATOS-DIR = (path:join (xdg-dirs:runtime-dir) 'kratos')
 var LOCKFILE = (path:join $KRATOS-DIR 'initialized')
 var INITIALIZED = (os:exists $LOCKFILE)
 
-fn cache-new [name contents~]{
+fn cache-new {|name contents~|
     var c = (path:join $KRATOS-DIR $name)
     if (not (os:exists $c)) {
         os:touch $c
@@ -37,11 +37,11 @@ fn cache-new [name contents~]{
     put $c
 }
 
-fn cache-read [cache]{
+fn cache-read {|cache|
     put (io:open $cache)
 }
 
-fn cache-remove [cache]{
+fn cache-remove {|cache|
     os:remove $cache
 }
 
