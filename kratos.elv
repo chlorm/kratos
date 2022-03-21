@@ -32,7 +32,7 @@ fn cache-new {|name contents~|
         os:chmod 0600 $c
         try {
             print ($contents~) > $c
-        } except e { fail $e['reason'] }
+        } catch e { fail $e['reason'] }
     }
     put $c
 }
@@ -51,7 +51,7 @@ fn init-dirs {
         for i [ (str:split ':' (get-env 'KRATOS_INIT_DIRS')) ] {
             set initDirs = [ $@initDirs $i ]
         }
-    } except _ {
+    } catch _ {
         return
     }
 
@@ -59,7 +59,7 @@ fn init-dirs {
         if (not (os:exists $dir)) {
             try {
                 os:makedirs $dir
-            } except e {
+            } catch e {
                 fail $e
             }
         }
@@ -100,34 +100,34 @@ fn init-instance {
     try {
         use github.com/chlorm/elvish-xdg/xdg-dirs
         xdg-dirs:populate-env
-    } except e { echo $e['reason'] >&2 }
+    } catch e { echo $e['reason'] >&2 }
 
     try {
         use github.com/chlorm/elvish-term/color-scheme
         # TODO: add an interface to allow user defined themes
         color-scheme:set (color-scheme:monokai)
-    } except e { echo $e['reason'] >&2 }
+    } catch e { echo $e['reason'] >&2 }
 
     try {
         use github.com/chlorm/elvish-auto-env/ls
         var lsCache = (cache-new 'ls' $ls:get~)
         try {
             ls:set &static=(cache-read $lsCache)
-        } except e { echo $e['reason'] >&2 }
-    } except e { echo $e['reason'] >&2 }
+        } catch e { echo $e['reason'] >&2 }
+    } catch e { echo $e['reason'] >&2 }
 
     use github.com/chlorm/elvish-auto-env/editor
     try {
         editor:set
-    } except e { echo $e['reason'] >&2 }
+    } catch e { echo $e['reason'] >&2 }
 
     try {
         use github.com/chlorm/elvish-auto-env/pager
         var pagerCache = (cache-new 'pager' $pager:get~)
         try {
             pager:set &static=(cache-read $pagerCache)
-        } except e { echo $e['reason'] >&2 }
-    } except e { echo $e['reason'] >&2 }
+        } catch e { echo $e['reason'] >&2 }
+    } catch e { echo $e['reason'] >&2 }
 
     set paths = [
         (get-env $xdg-dirs:XDG-BIN-HOME)
