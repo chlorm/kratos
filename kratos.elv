@@ -13,8 +13,8 @@
 # limitations under the License.
 
 
-use platform
 use str
+use github.com/chlorm/elvish-stl/env
 use github.com/chlorm/elvish-stl/io
 use github.com/chlorm/elvish-stl/os
 use github.com/chlorm/elvish-stl/path
@@ -48,7 +48,7 @@ fn cache-remove {|cache|
 fn init-dirs {
     var initDirs = [ ]
     try {
-        for i [ (str:split ':' (get-env 'KRATOS_INIT_DIRS')) ] {
+        for i [ (str:split ':' (env:get 'KRATOS_INIT_DIRS')) ] {
             set initDirs = [ $@initDirs $i ]
         }
     } catch _ {
@@ -130,7 +130,7 @@ fn init-instance {
     } catch e { echo $e['reason'] >&2 }
 
     set paths = [
-        (get-env $xdg-dirs:XDG-BIN-HOME)
+        (env:get $xdg-dirs:XDG-BIN-HOME)
         $@paths
     ]
 }
