@@ -22,7 +22,8 @@ use github.com/chlorm/elvish-xdg/xdg-dirs
 
 
 var KRATOS-DIR = (path:join (xdg-dirs:runtime-dir) 'kratos')
-var LOCKFILE = (path:join $KRATOS-DIR 'initialized')
+var LOCKFILENAME = 'session.lock'
+var LOCKFILE = (path:join $KRATOS-DIR $LOCKFILENAME)
 var INITIALIZED = (os:exists $LOCKFILE)
 
 fn cache-new {|name contents~|
@@ -68,9 +69,10 @@ fn init-dirs {
 
 
 fn init-session {
+    var startupLock = 'startup.lock'
     # FIXME: should sleep until initialized and then re-exec elvish.
     # Prevent race condition when multiple shells are started in parallel.
-    if (os:exists (path:join $KRATOS-DIR 'startup')) {
+    if (os:exists (path:join $KRATOS-DIR $startupLock)) {
         return
     }
 
@@ -78,7 +80,7 @@ fn init-session {
         os:makedir $KRATOS-DIR
     }
 
-    var startup = (cache-new 'startup' $nop~)
+    var startup = (cache-new $startupLock $nop~)
 
     use epm
     epm:upgrade
@@ -92,7 +94,7 @@ fn init-session {
     init-dirs
     #init-dotfiles
 
-    var _ = (cache-new 'initialized' $nop~)
+    var _ = (cache-new $LOCKFILENAME $nop~)
     cache-remove $startup
 }
 
