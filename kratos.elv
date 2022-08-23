@@ -133,6 +133,8 @@ fn init-instance {
 
     set paths = [
         (env:get $xdg-dirs:XDG-BIN-HOME)
+        (path:join (path:home) '.cargo' 'bin')
+        (path:join (path:home) 'go' 'bin')
         $@paths
     ]
 }
