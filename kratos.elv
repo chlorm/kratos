@@ -91,6 +91,10 @@ fn init-session {
     use github.com/chlorm/elvish-as-default-shell/default-shell
     use github.com/chlorm/elvish-tmpfs/automount
 
+    try {
+        agent:init-session
+    } catch e { echo $e['reason'] >&2 }
+
     init-dirs
     #init-dotfiles
 
@@ -130,6 +134,10 @@ fn init-instance {
             pager:set &static=(cache-read $pagerCache)
         } catch e { echo $e['reason'] >&2 }
     } catch e { echo $e['reason'] >&2 }
+
+    try {
+        agent:init-instance
+    } catch e { echo 'Agent: '(to-string $e['reason']['content']) >&2 }
 
     set paths = [
         (env:get $xdg-dirs:XDG-BIN-HOME)
