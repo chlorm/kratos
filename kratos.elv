@@ -149,7 +149,7 @@ fn init-instance {
 
     try {
         agent:init-instance
-    } catch e { echo 'Agent: '(to-string $e['reason']['content']) >&2 }
+    } catch e { echo 'Agent: '(to-string $e['reason']) >&2 }
 
     set paths = [
         (env:get $xdg-dirs:XDG-BIN-HOME)
