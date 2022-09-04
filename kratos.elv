@@ -151,6 +151,13 @@ fn init-instance {
         agent:init-instance
     } catch e { echo 'Agent: '(to-string $e['reason']) >&2 }
 
+    try {
+        if (os:is-dir $E:ROOT'/nix/store') {
+            use github.com/chlorm/elvish-util-wrappers/nix
+            nix:user-profile-init
+        }
+    } catch e { echo $e['reason'] >&2 }
+
     set paths = [
         (env:get $xdg-dirs:XDG-BIN-HOME)
         (path:join (path:home) '.cargo' 'bin')
