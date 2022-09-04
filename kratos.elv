@@ -92,6 +92,8 @@ fn init-session {
     xdg-dirs:populate-env
 
     use github.com/chlorm/elvish-as-default-shell/default-shell
+    default-shell:init-session
+
     use github.com/chlorm/elvish-tmpfs/automount
 
     try {
