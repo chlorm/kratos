@@ -13,6 +13,7 @@
 # limitations under the License.
 
 
+use github.com/chlorm/elvish-git/status
 use github.com/chlorm/elvish-ssh/agent
 use github.com/chlorm/elvish-stl/env
 use github.com/chlorm/elvish-stl/io
@@ -147,4 +148,60 @@ fn init-instance {
         (path:join (path:home) 'go' 'bin')
         $@paths
     ]
+
+    set edit:prompt = {
+        var user = $nil
+        fn pill-begin {
+            var p = "\ue0b6"
+            # Fix ligatures in alacritty
+            try {
+                var _ = (env:get 'ALACRITTY_SOCKET')
+                set p = $p' '
+            } catch _ { }
+            styled $p fg-black
+        }
+        fn pill-end {
+            var p = "\ue0b4 "
+            # Fix ligatures in Alacritty
+            try {
+                var _ = (env:get 'ALACRITTY_SOCKET')
+                set p = "\ue0b4"
+            } catch _ { }
+            styled $p fg-black
+        }
+        try {
+            set user = (env:get 'USER')
+        } catch _ {
+            set user = (env:get 'username')
+        }
+        pill-begin
+        styled $user fg-green bg-black
+        if (env:has 'SSH_CLIENT') {
+            styled-segment &dim=$true &fg-color=white '@' &bg-color=black
+            styled-segment (platform:hostname) &bold=$true &fg-color=red &bg-color=black
+        #} else {
+        #    styled-segment &bold=$true &fg-color=white (platform:hostname)
+        }
+        pill-end
+        try {
+            var g = (status:status)
+            pill-begin
+            styled ' '$g['branch']['head']' ' fg-white bg-black
+            try {
+                styled '+'(status:count-unstaged $g) fg-green bg-black
+            } catch _ { }
+            try {
+                styled '~'(status:count-untracked $g) fg-yellow bg-black
+            } catch _ { }
+            try {
+                styled '-'(status:count-deleted $g) fg-red bg-black
+            } catch _ { }
+            pill-end
+        } catch _ { }
+        pill-begin
+        styled (tilde-abbr $pwd) fg-red bg-black
+        pill-end
+        styled-segment ' ' &fg-color=cyan
+    }
+    set edit:rprompt = { }
 }
