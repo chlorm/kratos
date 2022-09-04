@@ -97,6 +97,13 @@ fn init-session {
     use github.com/chlorm/elvish-tmpfs/automount
 
     try {
+        var data = (xdg-dirs:data-home)
+        if (os:is-dir (path:join $data 'nvim' 'site' 'pack' 'packer')) {
+            e:nvim --headless '+PackerSync' '+qa'
+        }
+    } catch e { echo $e['reason'] >&2 }
+
+    try {
         agent:init-session
     } catch e { echo $e['reason'] >&2 }
 
