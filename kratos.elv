@@ -13,11 +13,13 @@
 # limitations under the License.
 
 
-use str
+use github.com/chlorm/elvish-ssh/agent
 use github.com/chlorm/elvish-stl/env
 use github.com/chlorm/elvish-stl/io
 use github.com/chlorm/elvish-stl/os
 use github.com/chlorm/elvish-stl/path
+use github.com/chlorm/elvish-stl/platform
+use github.com/chlorm/elvish-stl/str
 use github.com/chlorm/elvish-xdg/xdg-dirs
 
 
