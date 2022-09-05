@@ -114,18 +114,22 @@ fn init-session {
     cache-remove $startup
 }
 
-fn init-instance {
+fn init-instance-xdg-dir-vars {
     try {
         use github.com/chlorm/elvish-xdg/xdg-dirs
         xdg-dirs:populate-env
     } catch e { echo $e['reason'] >&2 }
+}
 
+fn init-instance-color-scheme {
     try {
         use github.com/chlorm/elvish-term/color-scheme
         # TODO: add an interface to allow user defined themes
         color-scheme:set (color-scheme:monokai)
     } catch e { echo $e['reason'] >&2 }
+}
 
+fn init-instance-ls-colors {
     try {
         use github.com/chlorm/elvish-auto-env/ls
         var lsCache = (cache-new 'ls' $ls:get~)
@@ -133,12 +137,15 @@ fn init-instance {
             ls:set &static=(cache-read $lsCache)
         } catch e { echo $e['reason'] >&2 }
     } catch e { echo $e['reason'] >&2 }
+}
 
+fn init-instance-editor-env {
     use github.com/chlorm/elvish-auto-env/editor
     try {
         editor:set
     } catch e { echo $e['reason'] >&2 }
-
+}
+fn init-instance-pager-env {
     try {
         use github.com/chlorm/elvish-auto-env/pager
         var pagerCache = (cache-new 'pager' $pager:get~)
@@ -146,25 +153,33 @@ fn init-instance {
             pager:set &static=(cache-read $pagerCache)
         } catch e { echo $e['reason'] >&2 }
     } catch e { echo $e['reason'] >&2 }
+}
 
+fn init-instance-agent {
     try {
         agent:init-instance
     } catch e { echo 'Agent: '(to-string $e['reason']) >&2 }
+}
 
+fn init-instance-nix-per-user-profile {
     try {
         if (os:is-dir $E:ROOT'/nix/store') {
             use github.com/chlorm/elvish-util-wrappers/nix
             nix:user-profile-init
         }
     } catch e { echo $e['reason'] >&2 }
+}
 
+fn init-instance-path {
     set paths = [
         (env:get $xdg-dirs:XDG-BIN-HOME)
         (path:join (path:home) '.cargo' 'bin')
         (path:join (path:home) 'go' 'bin')
         $@paths
     ]
+}
 
+fn init-instance-prompt {
     set edit:prompt = {
         var user = $nil
         fn pill-begin {
@@ -220,4 +235,17 @@ fn init-instance {
         styled-segment ' ' &fg-color=cyan
     }
     set edit:rprompt = { }
+}
+
+fn init-instance {
+    init-instance-xdg-dir-vars
+    run-parallel ^
+        $init-instance-color-scheme~ ^
+        $init-instance-ls-colors~ ^
+        $init-instance-editor-env~ ^
+        $init-instance-pager-env~ ^
+        $init-instance-agent~ ^
+        $init-instance-nix-per-user-profile~ ^
+        $init-instance-path~ ^
+        $init-instance-prompt~
 }
