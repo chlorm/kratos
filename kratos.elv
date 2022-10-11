@@ -52,7 +52,7 @@ fn cache-remove {|cache|
 fn init-dirs {
     var initDirs = [ ]
     try {
-        for i [ (str:split ':' (env:get 'KRATOS_INIT_DIRS')) ] {
+        for i [ (str:split $env:DELIMITER (env:get 'KRATOS_INIT_DIRS')) ] {
             set initDirs = [ $@initDirs $i ]
         }
     } catch _ {
