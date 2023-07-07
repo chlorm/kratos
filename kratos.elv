@@ -125,7 +125,7 @@ fn init-instance-color-scheme {
     try {
         use github.com/chlorm/elvish-term/color-scheme
         # TODO: add an interface to allow user defined themes
-        color-scheme:set (color-scheme:monokai)
+        color-scheme:set $color-scheme:gitiles
     } catch e { echo $e['reason'] >&2 }
 }
 
