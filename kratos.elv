@@ -49,7 +49,35 @@ fn cache-remove {|cache|
     os:remove $cache
 }
 
-fn init-dirs {
+fn init-xdg-dir-vars {
+    try {
+        use ../elvish-xdg/xdg-dirs
+        xdg-dirs:populate-env
+    } catch e { echo $e['reason'] >&2 }
+}
+
+fn init-session-default-shell {
+    if $platform:is-windows { return }
+    try {
+        use ../elvish-as-default-shell/default-shell
+        default-shell:init-session
+    } catch e { echo $e['reason'] >&2 }
+}
+
+fn init-session-automount-tmpfs {
+    if $platform:is-windows { return }
+    try {
+        use ../elvish-tmpfs/automount
+    } catch e { echo $e['reason'] >&2 }
+}
+
+fn init-session-agent {
+    try {
+        agent:init-session
+    } catch e { echo $e['reason'] >&2 }
+}
+
+fn init-session-dirs {
     var initDirs = [ ]
     try {
         for i [ (str:split $env:DELIMITER (env:get 'KRATOS_INIT_DIRS')) ] {
@@ -63,62 +91,30 @@ fn init-dirs {
         if (not (os:exists $dir)) {
             try {
                 os:makedirs $dir
-            } catch e {
-                fail $e
-            }
+            } catch e { echo $e['reason'] >&2 }
         }
     }
 }
-
 
 fn init-session {
     var startupLock = 'startup.lock'
-    # FIXME: should sleep until initialized and then re-exec elvish.
-    # Prevent race condition when multiple shells are started in parallel.
     if (os:exists (path:join $KRATOS-DIR $startupLock)) {
         return
     }
-
     if (not (os:exists $KRATOS-DIR)) {
         os:makedir $KRATOS-DIR
     }
-
     var startup = (cache-new $startupLock $nop~)
 
-    use epm
-    epm:upgrade
-
-    use github.com/chlorm/elvish-xdg/xdg-dirs
-    xdg-dirs:populate-env
-
-    use github.com/chlorm/elvish-as-default-shell/default-shell
-    default-shell:init-session
-
-    use github.com/chlorm/elvish-tmpfs/automount
-
-    try {
-        var data = (xdg-dirs:data-home)
-        if (os:is-dir (path:join $data 'nvim' 'site' 'pack' 'packer')) {
-            e:nvim --headless '+PackerSync' '+qa'
-        }
-    } catch e { echo $e['reason'] >&2 }
-
-    try {
-        agent:init-session
-    } catch e { echo $e['reason'] >&2 }
-
-    init-dirs
-    #init-dotfiles
+    init-xdg-dir-vars
+    init-session-dirs
+    run-parallel ^
+        $init-session-agent~ ^
+        $init-session-automount-tmpfs~ ^
+        $init-session-default-shell~
 
     var _ = (cache-new $LOCKFILENAME $nop~)
     cache-remove $startup
-}
-
-fn init-instance-xdg-dir-vars {
-    try {
-        use github.com/chlorm/elvish-xdg/xdg-dirs
-        xdg-dirs:populate-env
-    } catch e { echo $e['reason'] >&2 }
 }
 
 fn init-instance-color-scheme {
@@ -130,6 +126,7 @@ fn init-instance-color-scheme {
 }
 
 fn init-instance-ls-colors {
+    if $platform:is-windows { return }
     try {
         use github.com/chlorm/elvish-auto-env/ls
         var lsCache = (cache-new 'ls' $ls:get~)
@@ -238,7 +235,7 @@ fn init-instance-prompt {
 }
 
 fn init-instance {
-    init-instance-xdg-dir-vars
+    init-xdg-dir-vars
     run-parallel ^
         $init-instance-color-scheme~ ^
         $init-instance-ls-colors~ ^
