@@ -33,7 +33,7 @@ fn cache-new {|name contents~|
     var c = (path:join $KRATOS-DIR $name)
     if (not (os:exists $c)) {
         os:touch $c
-        os:chmod 0600 $c
+        os:chmod 600 $c
         try {
             print ($contents~) > $c
         } catch e { fail $e['reason'] }
