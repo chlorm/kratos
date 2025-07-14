@@ -207,10 +207,10 @@ fn init-instance-prompt {
             pill-begin
             styled ' '$g['branch']['head']' ' fg-white bg-black
             try {
-                styled '+'(status:count-unstaged $g) fg-green bg-black
+                styled '+'(status:count-untracked $g) fg-green bg-black
             } catch _ { }
             try {
-                styled '~'(status:count-untracked $g) fg-yellow bg-black
+                styled '~'(status:count-unstaged $g) fg-yellow bg-black
             } catch _ { }
             try {
                 styled '-'(status:count-deleted $g) fg-red bg-black
