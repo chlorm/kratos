@@ -177,27 +177,14 @@ fn init-instance-path {
 }
 
 fn init-instance-prompt {
-    var alacritty = $false
-    try {
-        var _ = (get-env 'ALACRITTY_SOCKET')
-        set alacritty = $true
-    } catch _ { }
     set edit:prompt = {
         var user = $nil
         fn pill-begin {
             var p = "\ue0b6"
-            # Fix ligatures in alacritty
-            if $alacritty {
-                set p = $p' '
-            }
             styled $p fg-black
         }
         fn pill-end {
             var p = "\ue0b4 "
-            # Fix ligatures in Alacritty
-            if $alacritty {
-                set p = "\ue0b4"
-            }
             styled $p fg-black
         }
         try {
