@@ -192,15 +192,13 @@ fn init-instance-prompt {
         } catch _ {
             set user = (env:get 'username')
         }
-        pill-begin
-        styled $user fg-green bg-black
         if (env:has 'SSH_CLIENT') {
+            pill-begin
+            styled $user fg-green bg-black
             styled-segment &dim=$true &fg-color=white '@' &bg-color=black
             styled-segment (platform:hostname) &bold=$true &fg-color=red &bg-color=black
-        #} else {
-        #    styled-segment &bold=$true &fg-color=white (platform:hostname)
+            pill-end
         }
-        pill-end
         try {
             var g = (status:status)
             var _ = $g['branch']
