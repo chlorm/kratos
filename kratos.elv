@@ -215,9 +215,7 @@ fn init-instance-prompt {
             } catch _ { }
             pill-end
         } catch _ { }
-        pill-begin
-        styled (tilde-abbr $pwd) fg-red bg-black
-        pill-end
+        styled (tilde-abbr $pwd) fg-red
         styled-segment ' ' &fg-color=cyan
     }
     set edit:rprompt = { }
