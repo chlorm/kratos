@@ -203,6 +203,7 @@ fn init-instance-prompt {
         pill-end
         try {
             var g = (status:status)
+            var _ = $g['branch']
             pill-begin
             styled ' '$g['branch']['head']' ' fg-white bg-black
             try {
