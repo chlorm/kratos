@@ -29,6 +29,10 @@ var LOCKFILENAME = 'session.lock'
 var LOCKFILE = (path:join $KRATOS-DIR $LOCKFILENAME)
 var INITIALIZED = (os:exists $LOCKFILE)
 
+fn error-prefix {|name|
+    print 'Kratos(init-'$name'): ' >&2
+}
+
 fn cache-new {|name contents~|
     var c = (path:join $KRATOS-DIR $name)
     if (not (os:exists $c)) {
@@ -53,7 +57,7 @@ fn init-xdg-dir-vars {
     try {
         use ../elvish-xdg/xdg-dirs
         xdg-dirs:populate-env
-    } catch e { echo $e['reason'] >&2 }
+    } catch e { error-prefix 'xdg-dir-vars'; echo $e['reason'] >&2 }
 }
 
 fn init-session-default-shell {
@@ -61,20 +65,20 @@ fn init-session-default-shell {
     try {
         use ../elvish-as-default-shell/default-shell
         default-shell:init-session
-    } catch e { echo $e['reason'] >&2 }
+    } catch e { error-prefix 'session-default-shell'; echo $e['reason'] >&2 }
 }
 
 fn init-session-automount-tmpfs {
     if $platform:is-windows { return }
     try {
         use ../elvish-tmpfs/automount
-    } catch e { echo $e['reason'] >&2 }
+    } catch e { error-prefix 'session-automount-tmpfs'; echo $e['reason'] >&2 }
 }
 
 fn init-session-agent {
     try {
         agent:init-session
-    } catch e { echo $e['reason'] >&2 }
+    } catch e { error-prefix 'session-agent'; echo $e['reason'] >&2 }
 }
 
 fn init-session-dirs {
@@ -91,7 +95,7 @@ fn init-session-dirs {
         if (not (os:exists $dir)) {
             try {
                 os:makedirs $dir
-            } catch e { echo $e['reason'] >&2 }
+            } catch e { error-prefix 'session-dirs'; echo $e['reason'] >&2 }
         }
     }
 }
@@ -122,7 +126,7 @@ fn init-instance-color-scheme {
         use github.com/chlorm/elvish-term/color-scheme
         # TODO: add an interface to allow user defined themes
         color-scheme:set $color-scheme:gitiles
-    } catch e { echo $e['reason'] >&2 }
+    } catch e { error-prefix 'instance-color-scheme'; echo $e['reason'] >&2 }
 }
 
 fn init-instance-ls-colors {
@@ -132,15 +136,15 @@ fn init-instance-ls-colors {
         var lsCache = (cache-new 'ls' $ls:get~)
         try {
             ls:set &static=(cache-read $lsCache)
-        } catch e { echo $e['reason'] >&2 }
-    } catch e { echo $e['reason'] >&2 }
+        } catch e { error-prefix 'instance-ls-colors:set'; echo $e['reason'] >&2 }
+    } catch e { error-prefix 'instance-ls-colors'; echo $e['reason'] >&2 }
 }
 
 fn init-instance-editor-env {
     use github.com/chlorm/elvish-auto-env/editor
     try {
         editor:set
-    } catch e { echo $e['reason'] >&2 }
+    } catch e { error-prefix 'instance-editor-env'; echo $e['reason'] >&2 }
 }
 fn init-instance-pager-env {
     try {
@@ -148,14 +152,14 @@ fn init-instance-pager-env {
         var pagerCache = (cache-new 'pager' $pager:get~)
         try {
             pager:set &static=(cache-read $pagerCache)
-        } catch e { echo $e['reason'] >&2 }
-    } catch e { echo $e['reason'] >&2 }
+        } catch e { error-prefix 'instance-pager-env:set'; echo $e['reason'] >&2 }
+    } catch e { error-prefix 'instance-pager-env'; echo $e['reason'] >&2 }
 }
 
 fn init-instance-agent {
     try {
         agent:init-instance
-    } catch e { echo 'Agent: '(to-string $e['reason']) >&2 }
+    } catch e { error-prefix 'instance-agent'; echo $e['reason'] >&2 }
 }
 
 fn init-instance-nix-per-user-profile {
@@ -164,7 +168,7 @@ fn init-instance-nix-per-user-profile {
             use github.com/chlorm/elvish-util-wrappers/nix
             nix:user-profile-init
         }
-    } catch e { echo $e['reason'] >&2 }
+    } catch e { error-prefix 'instance-nix-per-user-profile'; echo $e['reason'] >&2 }
 }
 
 fn init-instance-path {
