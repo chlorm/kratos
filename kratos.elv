@@ -46,7 +46,7 @@ fn cache-new {|name contents~|
 }
 
 fn cache-read {|cache|
-    put (io:open $cache)
+    put (io:read $cache)
 }
 
 fn cache-remove {|cache|
